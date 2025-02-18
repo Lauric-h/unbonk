@@ -1,7 +1,5 @@
 <?php
 
-
-
 use Rector\CodingStyle\Rector\ArrowFunction\StaticArrowFunctionRector;
 use Rector\CodingStyle\Rector\Closure\StaticClosureRector;
 use Rector\Config\RectorConfig;
@@ -18,7 +16,7 @@ return RectorConfig::configure()
     ->withSets([
         SymfonySetList::SYMFONY_CONSTRUCTOR_INJECTION,
         PHPUnitSetList::ANNOTATIONS_TO_ATTRIBUTES,
-        PHPUnitSetList::PHPUNIT_100
+        PHPUnitSetList::PHPUNIT_100,
     ])
     ->withAttributesSets(symfony: true)
     ->withRules([
