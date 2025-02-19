@@ -7,6 +7,10 @@
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "doctrine/dbal": "^3",
+        "doctrine/doctrine-bundle": "^2.13",
+        "doctrine/doctrine-migrations-bundle": "^3.4",
+        "doctrine/orm": "^3.3",
         "symfony/console": "7.2.*",
         "symfony/dotenv": "7.2.*",
         "symfony/flex": "^2",
@@ -18,7 +22,8 @@
         "friendsofphp/php-cs-fixer": "^3.69",
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^12",
-        "rector/rector": "^2.0"
+        "rector/rector": "^2.0",
+        "symfony/maker-bundle": "^1.62"
     },
     "config": {
         "allow-plugins": {
