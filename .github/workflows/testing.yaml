@@ -1,0 +1,88 @@
+name: Testing
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP, extensions and composer with shivammathur/setup-php
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: intl, bcmath
+
+      - name: Cache vendor
+        id: cache-vendor
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+
+      - name: Install dependencies
+        if: steps.cache-vendor.outputs.cache-hit != 'true'
+        run: composer install --prefer-dist --no-progress --no-suggest
+
+      - name: Archive vendor
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependencies-${{github.sha}}
+          retention-days: 1
+          path: vendor
+
+  tests:
+    timeout-minutes: 10
+    needs: dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup PHP, extensions and composer with shivammathur/setup-php
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: intl, bcmath
+          ini-values: date.timezone=Europe/Paris
+        env:
+          update: true
+      - name: Download dependencies folders
+        uses: actions/download-artifact@v4
+        with:
+          name: dependencies-${{github.sha}}
+          path: vendor
+      - name: Fix permissions
+        run: chmod +x vendor/bin/*
+      - name: Run phpunit
+        env:
+          XDEBUG_MODE: coverage
+        run: vendor/bin/phpunit --coverage-cobertura coverage.cobertura.xml --exclude-group=integration
+
+  linter:
+    timeout-minutes: 10
+    needs: dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup PHP, extensions and composer with shivammathur/setup-php
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.3"
+          extensions: intl, bcmath
+        env:
+          update: true
+          INTEGRATION: true
+      - name: Download dependencies folders
+        uses: actions/download-artifact@v4
+        with:
+          name: dependencies-${{github.sha}}
+          path: vendor
+      - run: chmod +x vendor/bin/*
+      - run: vendor/bin/rector process --config=rector.php --dry-run
+      - run: vendor/bin/php-cs-fixer fix --dry-run  --verbose --show-progress=dots
+      - run: vendor/bin/phpstan analyze -c phpstan.neon
+
