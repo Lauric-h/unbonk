@@ -11,6 +11,12 @@ services:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
 
+    _instanceof:
+        # All instances of this type will be autowired
+        App\Infrastructure\Shared\Bus\CommandHandlerInterface:
+            tags:
+                - { name: messenger.message_handler, bus: command.bus }
+
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
@@ -30,3 +36,6 @@ services:
     App\UI\Http\Rest\:
         resource: '../src/UI/Http/Rest/'
         tags: [ 'controller.service_arguments' ]
+
+    App\Infrastructure\:
+        resource: '../src/Infrastructure/'
