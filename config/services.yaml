@@ -16,7 +16,6 @@ services:
     App\:
         resource: '../src/'
         exclude:
-            - '../src/Domain/'
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
@@ -27,3 +26,7 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    App\UI\Http\Rest\:
+        resource: '../src/UI/Http/Rest/'
+        tags: [ 'controller.service_arguments' ]
