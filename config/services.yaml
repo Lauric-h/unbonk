@@ -16,9 +16,11 @@ services:
     App\:
         resource: '../src/'
         exclude:
+            - '../src/Domain/'
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+            - '../src/Infrastructure/Shared/Migrations'
 
     App\Domain\Shared\:
         resource: '../src/Domain/Shared/'
