@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UI\Http\Rest\Food;
+namespace App\UI\Http\Rest\Food\Brand;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

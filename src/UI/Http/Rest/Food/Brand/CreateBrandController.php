@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UI\Http\Rest\Food;
+namespace App\UI\Http\Rest\Food\Brand;
 
 use App\Application\Food\CreateBrand\CreateBrandCommand;
 use App\Application\Food\CreateBrand\CreateBrandRequest;
