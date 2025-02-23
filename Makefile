@@ -13,7 +13,7 @@ cs-fix:
 	$(PHP) vendor/bin/php-cs-fixer fix --verbose --diff --show-progress=dots
 
 tests:
-	INTEGRATION=1 $(PHP) vendor/bin/phpunit tests/Unit
+	$(PHP) vendor/bin/phpunit tests/Unit
 
 migrate:
 	$(PHP) bin/console do:mi:mi --no-interaction --allow-no-migration
