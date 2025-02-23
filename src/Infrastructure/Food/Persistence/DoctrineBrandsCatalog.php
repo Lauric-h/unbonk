@@ -28,4 +28,11 @@ class DoctrineBrandsCatalog implements BrandsCatalog
 
         return $brand;
     }
+
+    public function remove(string $id): void
+    {
+        $brand = $this->get($id);
+
+        $this->entityManager->remove($brand);
+    }
 }

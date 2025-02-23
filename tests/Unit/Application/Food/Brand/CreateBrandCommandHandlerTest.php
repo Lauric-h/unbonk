@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\Application;
+namespace App\Tests\Unit\Application\Food\Brand;
 
 use App\Application\Food\CreateBrand\CreateBrandCommand;
 use App\Application\Food\CreateBrand\CreateBrandCommandHandler;
