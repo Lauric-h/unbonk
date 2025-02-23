@@ -20,6 +20,11 @@ final class Brand implements WithDomainEventInterface
         $this->recordEvent(new BrandCreated($id));
     }
 
+    public function update(string $name): void
+    {
+        $this->name = $name;
+    }
+
     public function recordEvent(DomainEventInterface $event): void
     {
         $this->events[] = $event;

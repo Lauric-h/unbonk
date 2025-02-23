@@ -37,8 +37,10 @@ final class CreateBrandController extends AbstractController
 
         $this->bus->dispatch($createBrandCommand);
 
-        $location = $this->urlGenerator->generate('app.brand.get', ['id' => $id]);
-
-        return new JsonResponse([], Response::HTTP_CREATED, ['Location' => $location]);
+        return new JsonResponse(
+            [],
+            Response::HTTP_NO_CONTENT,
+            ['Location' => $this->urlGenerator->generate('app.brand.get', ['id' => $id])]
+        );
     }
 }

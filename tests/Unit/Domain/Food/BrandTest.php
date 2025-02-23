@@ -31,4 +31,12 @@ class BrandTest extends TestCase
         $this->assertCount(1, $events);
         $this->assertInstanceOf(BrandCreated::class, $events[0]);
     }
+
+    public function testUpdate(): void
+    {
+        $brand = new Brand('id', 'name');
+
+        $brand->update('new name');
+        $this->assertSame('new name', $brand->name);
+    }
 }
