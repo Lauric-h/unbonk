@@ -3,10 +3,9 @@
 namespace App\Application\Food\UpdateBrand;
 
 use App\Domain\Food\Repository\BrandsCatalog;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use App\Infrastructure\Shared\Bus\CommandHandlerInterface;
 
-#[AsMessageHandler]
-final readonly class UpdateBrandCommandHandler
+final readonly class UpdateBrandCommandHandler implements CommandHandlerInterface
 {
     public function __construct(private BrandsCatalog $brandsCatalog)
     {

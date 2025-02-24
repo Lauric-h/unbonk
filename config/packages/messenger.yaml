@@ -13,12 +13,15 @@ framework:
             # Route your messages to the transports
             # 'App\Message\YourMessage': async
 
-        default_bus: messenger.bus.command
+        default_bus: command.bus
 
         buses:
-            messenger.bus.command:
+            command.bus:
                 default_middleware: false
                 middleware:
                     - validation
                     - doctrine_transaction
                     - handle_message
+            query.bus:
+                middleware:
+                    - validation
