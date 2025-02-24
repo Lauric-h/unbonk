@@ -13,9 +13,13 @@ class Brand implements WithDomainEventInterface
      */
     private array $events = [];
 
+    /**
+     * @param Food[] $foods
+     */
     public function __construct(
         public string $id,
         public string $name,
+        public array $foods = [],
     ) {
         $this->recordEvent(new BrandCreated($id));
     }
