@@ -3,10 +3,9 @@
 namespace App\Application\Food\DeleteBrand;
 
 use App\Domain\Food\Repository\BrandsCatalog;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use App\Infrastructure\Shared\Bus\CommandHandlerInterface;
 
-#[AsMessageHandler]
-final readonly class DeleteBrandCommandHandler
+final readonly class DeleteBrandCommandHandler implements CommandHandlerInterface
 {
     public function __construct(private BrandsCatalog $brandsCatalog)
     {

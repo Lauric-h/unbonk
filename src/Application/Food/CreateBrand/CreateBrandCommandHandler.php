@@ -4,10 +4,9 @@ namespace App\Application\Food\CreateBrand;
 
 use App\Domain\Food\Entity\Brand;
 use App\Domain\Food\Repository\BrandsCatalog;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use App\Infrastructure\Shared\Bus\CommandHandlerInterface;
 
-#[AsMessageHandler]
-final readonly class CreateBrandCommandHandler
+final readonly class CreateBrandCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private BrandsCatalog $brandsCatalog,

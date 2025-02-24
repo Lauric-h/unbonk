@@ -6,7 +6,7 @@ use App\Domain\Food\Event\BrandCreated;
 use App\Domain\Shared\DomainEventInterface;
 use App\Domain\Shared\WithDomainEventInterface;
 
-final class Brand implements WithDomainEventInterface
+class Brand implements WithDomainEventInterface
 {
     /**
      * @var DomainEventInterface[]

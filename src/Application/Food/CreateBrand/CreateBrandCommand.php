@@ -2,9 +2,10 @@
 
 namespace App\Application\Food\CreateBrand;
 
+use App\Infrastructure\Shared\Bus\CommandInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final readonly class CreateBrandCommand
+final readonly class CreateBrandCommand implements CommandInterface
 {
     public function __construct(
         #[Assert\Uuid]
