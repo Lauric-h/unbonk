@@ -50,4 +50,11 @@ class DoctrineBrandsCatalog implements BrandsCatalog
             throw new \LogicException(sprintf('Impossible to remove brand with id %s', $id));
         }
     }
+
+    public function getAll(): array
+    {
+        return $this->entityManager
+            ->createQuery('SELECT b FROM App\Domain\Food\Entity\Brand b')
+            ->getResult();
+    }
 }
