@@ -11,4 +11,9 @@ interface BrandsCatalog
     public function get(string $id): Brand;
 
     public function remove(string $id): void;
+
+    /**
+     * @return Brand[]
+     */
+    public function getAll(): array;
 }
