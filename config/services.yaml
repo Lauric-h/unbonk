@@ -30,7 +30,6 @@ services:
             - '../src/Kernel.php'
             - '../src/Infrastructure/Shared/Migrations'
             - '../src/Infrastructure/Food'
-            - '../src/UI/Http/Rest/**/View/**'
 
     App\Domain\Shared\:
         resource: '../src/Domain/Shared/'
