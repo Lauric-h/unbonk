@@ -3,6 +3,8 @@
 namespace App\Tests\Unit\Domain\Food;
 
 use App\Domain\Food\Entity\Brand;
+use App\Domain\Food\Entity\Food;
+use App\Domain\Food\Entity\IngestionType;
 use App\Domain\Food\Event\BrandCreated;
 use PHPUnit\Framework\TestCase;
 
@@ -38,5 +40,29 @@ class BrandTest extends TestCase
 
         $brand->update('new name');
         $this->assertSame('new name', $brand->name);
+    }
+
+    public function testAddFood(): void
+    {
+        $brand = new Brand('id', 'name');
+        $food = new Food('id', $brand, 'name', 10, IngestionType::Liquid, 10);
+
+        $brand->addFood($food);
+
+        $this->assertCount(1, $brand->foods);
+        $this->assertSame($brand, $food->brand);
+    }
+
+    public function testAddFoodWithExistingFoodDoesNothing(): void
+    {
+        $brand = new Brand('id', 'name');
+        $food = new Food('id', $brand, 'name', 10, IngestionType::Liquid, 10);
+        $food2 = new Food('id2', $brand, 'name2', 20, IngestionType::Liquid, 20);
+        $brand->foods->add($food);
+        $brand->foods->add($food2);
+
+        $brand->addFood($food);
+
+        $this->assertCount(2, $brand->foods);
     }
 }

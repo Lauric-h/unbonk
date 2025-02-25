@@ -11,6 +11,6 @@ final class GetFoodController extends AbstractController
 {
     public function __invoke(): JsonResponse
     {
-        return new JsonResponse([], 200);
+        return new JsonResponse([], \Symfony\Component\HttpFoundation\Response::HTTP_OK);
     }
 }
