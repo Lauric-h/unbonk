@@ -4,10 +4,10 @@ namespace App\Domain\Food\Exception;
 
 use App\Domain\Shared\Exception\NotFoundException;
 
-class BrandNotFoundException extends NotFoundException
+final class FoodNotFoundException extends NotFoundException
 {
     public function __construct(string $id)
     {
-        parent::__construct(\sprintf('Brand with id "%s" not found', $id));
+        parent::__construct(\sprintf('Food with id "%s" not found', $id));
     }
 }
