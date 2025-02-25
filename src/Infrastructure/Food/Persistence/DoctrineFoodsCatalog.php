@@ -20,7 +20,7 @@ final class DoctrineFoodsCatalog implements FoodsCatalog
         try {
             $this->entityManager->persist($food);
         } catch (ORMInvalidArgumentException|ORMException $exception) {
-            throw new \LogicException(sprintf('Impossible to add food with id %s', $id));
+            throw new \LogicException(sprintf('Impossible to add food with id %s', $food->id));
         }
     }
 

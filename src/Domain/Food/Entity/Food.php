@@ -2,9 +2,6 @@
 
 namespace App\Domain\Food\Entity;
 
-use App\Domain\Shared\DomainEventInterface;
-use App\Domain\Shared\WithDomainEventInterface;
-
 class Food
 {
     public function __construct(
