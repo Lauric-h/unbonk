@@ -5,6 +5,8 @@ namespace App\Domain\Food\Entity;
 use App\Domain\Food\Event\BrandCreated;
 use App\Domain\Shared\DomainEventInterface;
 use App\Domain\Shared\WithDomainEventInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class Brand implements WithDomainEventInterface
 {
@@ -14,12 +16,12 @@ class Brand implements WithDomainEventInterface
     private array $events = [];
 
     /**
-     * @param Food[] $foods
+     * @param Collection<int, Food> $foods
      */
     public function __construct(
         public string $id,
         public string $name,
-        public array $foods = [],
+        public Collection $foods = new ArrayCollection(),
     ) {
         $this->recordEvent(new BrandCreated($id));
     }
@@ -27,6 +29,14 @@ class Brand implements WithDomainEventInterface
     public function update(string $name): void
     {
         $this->name = $name;
+    }
+
+    public function addFood(Food $food): void
+    {
+        if (!$this->foods->contains($food)) {
+            $this->foods[] = $food;
+            $food->brand = $this;
+        }
     }
 
     public function recordEvent(DomainEventInterface $event): void
