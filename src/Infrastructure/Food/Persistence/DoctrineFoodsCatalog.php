@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\ORMInvalidArgumentException;
 
-final class DoctrineFoodsCatalog implements FoodsCatalog
+class DoctrineFoodsCatalog implements FoodsCatalog
 {
     public function __construct(private EntityManagerInterface $entityManager)
     {
