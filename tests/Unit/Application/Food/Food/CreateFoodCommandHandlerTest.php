@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\Application\Food\Food;
 
-use App\Application\Food\CreateFood\CreateFoodCommand;
-use App\Application\Food\CreateFood\CreateFoodCommandHandler;
+use App\Application\Food\UseCase\CreateFood\CreateFoodCommand;
+use App\Application\Food\UseCase\CreateFood\CreateFoodCommandHandler;
 use App\Domain\Food\Entity\Brand;
 use App\Domain\Food\Repository\BrandsCatalog;
 use PHPUnit\Framework\TestCase;

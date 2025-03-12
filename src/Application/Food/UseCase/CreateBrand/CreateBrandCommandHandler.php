@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Food\CreateBrand;
+namespace App\Application\Food\UseCase\CreateBrand;
 
 use App\Domain\Food\Entity\Brand;
 use App\Domain\Food\Repository\BrandsCatalog;

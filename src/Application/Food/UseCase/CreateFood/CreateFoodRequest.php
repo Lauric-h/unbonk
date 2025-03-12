@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Food\CreateFood;
+namespace App\Application\Food\UseCase\CreateFood;
 
 final readonly class CreateFoodRequest
 {

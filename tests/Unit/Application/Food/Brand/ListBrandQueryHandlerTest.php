@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\Application\Food\Brand;
 
-use App\Application\Food\ListBrand\ListBrandQuery;
-use App\Application\Food\ListBrand\ListBrandQueryHandler;
+use App\Application\Food\UseCase\ListBrand\ListBrandQuery;
+use App\Application\Food\UseCase\ListBrand\ListBrandQueryHandler;
 use App\Domain\Food\Entity\Brand;
 use App\Domain\Food\Repository\BrandsCatalog;
 use App\UI\Http\Rest\Food\View\BrandReadModel;

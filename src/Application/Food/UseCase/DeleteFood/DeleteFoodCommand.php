@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Application\Food\GetBrand;
+namespace App\Application\Food\UseCase\DeleteFood;
 
-use App\Infrastructure\Shared\Bus\QueryInterface;
+use App\Infrastructure\Shared\Bus\CommandInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final readonly class GetBrandQuery implements QueryInterface
+final class DeleteFoodCommand implements CommandInterface
 {
     public function __construct(
         #[Assert\Uuid]

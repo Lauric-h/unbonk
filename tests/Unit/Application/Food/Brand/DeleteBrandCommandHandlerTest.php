@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\Application\Food\Brand;
 
-use App\Application\Food\DeleteBrand\DeleteBrandCommand;
-use App\Application\Food\DeleteBrand\DeleteBrandCommandHandler;
+use App\Application\Food\UseCase\DeleteBrand\DeleteBrandCommand;
+use App\Application\Food\UseCase\DeleteBrand\DeleteBrandCommandHandler;
 use App\Infrastructure\Food\Persistence\DoctrineBrandsCatalog;
 use PHPUnit\Framework\TestCase;
 

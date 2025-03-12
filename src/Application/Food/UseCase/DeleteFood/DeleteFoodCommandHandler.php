@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Food\DeleteFood;
+namespace App\Application\Food\UseCase\DeleteFood;
 
 use App\Domain\Food\Repository\FoodsCatalog;
 use App\Infrastructure\Shared\Bus\CommandHandlerInterface;

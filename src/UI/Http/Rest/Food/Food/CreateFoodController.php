@@ -2,8 +2,8 @@
 
 namespace App\UI\Http\Rest\Food\Food;
 
-use App\Application\Food\CreateFood\CreateFoodCommand;
-use App\Application\Food\CreateFood\CreateFoodRequest;
+use App\Application\Food\UseCase\CreateFood\CreateFoodCommand;
+use App\Application\Food\UseCase\CreateFood\CreateFoodRequest;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\SharedKernel\IdGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

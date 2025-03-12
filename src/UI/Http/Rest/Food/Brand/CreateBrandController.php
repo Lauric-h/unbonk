@@ -2,8 +2,8 @@
 
 namespace App\UI\Http\Rest\Food\Brand;
 
-use App\Application\Food\CreateBrand\CreateBrandCommand;
-use App\Application\Food\CreateBrand\CreateBrandRequest;
+use App\Application\Food\UseCase\CreateBrand\CreateBrandCommand;
+use App\Application\Food\UseCase\CreateBrand\CreateBrandRequest;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\SharedKernel\IdGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\Application\Food\Food;
 
-use App\Application\Food\DeleteFood\DeleteFoodCommand;
-use App\Application\Food\DeleteFood\DeleteFoodCommandHandler;
+use App\Application\Food\UseCase\DeleteFood\DeleteFoodCommand;
+use App\Application\Food\UseCase\DeleteFood\DeleteFoodCommandHandler;
 use App\Infrastructure\Food\Persistence\DoctrineFoodsCatalog;
 use PHPUnit\Framework\TestCase;
 

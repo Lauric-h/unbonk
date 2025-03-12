@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Food\UpdateBrand;
+namespace App\Application\Food\UseCase\UpdateBrand;
 
 use App\Domain\Food\Repository\BrandsCatalog;
 use App\Infrastructure\Shared\Bus\CommandHandlerInterface;

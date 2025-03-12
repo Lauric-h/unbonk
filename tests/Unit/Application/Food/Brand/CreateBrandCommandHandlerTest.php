@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\Application\Food\Brand;
 
-use App\Application\Food\CreateBrand\CreateBrandCommand;
-use App\Application\Food\CreateBrand\CreateBrandCommandHandler;
+use App\Application\Food\UseCase\CreateBrand\CreateBrandCommand;
+use App\Application\Food\UseCase\CreateBrand\CreateBrandCommandHandler;
 use App\Domain\Food\Entity\Brand;
 use App\Infrastructure\Food\Persistence\DoctrineBrandsCatalog;
 use PHPUnit\Framework\TestCase;
