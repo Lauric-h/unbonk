@@ -26,7 +26,7 @@ final readonly class UpdateFoodCommandHandler implements CommandHandlerInterface
             name: $command->name,
             carbs: $command->carbs,
             ingestionType: $ingestionType,
-            calories: $food->calories
+            calories: $command->calories
         );
 
         $this->foodsCatalog->add($food);
