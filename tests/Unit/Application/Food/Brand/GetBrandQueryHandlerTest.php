@@ -22,9 +22,9 @@ class GetBrandQueryHandlerTest extends TestCase
             ->willReturn($brand);
 
         $handler = new GetBrandQueryHandler($repository);
-        ($handler)($query);
+        $actual = ($handler)($query);
 
-        $this->assertSame('brand-id', $brand->id);
-        $this->assertSame('brand-name', $brand->name);
+        $this->assertSame('brand-id', $actual->id);
+        $this->assertSame('brand-name', $actual->name);
     }
 }
