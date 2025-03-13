@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Food\UpdateBrand;
+namespace App\Application\Food\UseCase\UpdateBrand;
 
 use App\Infrastructure\Shared\Bus\CommandInterface;
 use Symfony\Component\Validator\Constraints as Assert;

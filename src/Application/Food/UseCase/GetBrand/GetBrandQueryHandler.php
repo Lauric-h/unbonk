@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Food\GetBrand;
+namespace App\Application\Food\UseCase\GetBrand;
 
 use App\Domain\Food\Repository\BrandsCatalog;
 use App\Infrastructure\Shared\Bus\QueryHandlerInterface;

@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\Application\Food\Brand;
 
-use App\Application\Food\GetBrand\GetBrandQuery;
-use App\Application\Food\GetBrand\GetBrandQueryHandler;
+use App\Application\Food\UseCase\GetBrand\GetBrandQuery;
+use App\Application\Food\UseCase\GetBrand\GetBrandQueryHandler;
 use App\Domain\Food\Entity\Brand;
 use App\Domain\Food\Repository\BrandsCatalog;
 use PHPUnit\Framework\TestCase;

@@ -2,7 +2,7 @@
 
 namespace App\UI\Http\Rest\Food\Brand;
 
-use App\Application\Food\UpdateBrand\UpdateBrandCommand;
+use App\Application\Food\UseCase\UpdateBrand\UpdateBrandCommand;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

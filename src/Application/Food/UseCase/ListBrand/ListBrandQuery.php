@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Food\ListBrand;
+namespace App\Application\Food\UseCase\ListBrand;
 
 use App\Infrastructure\Shared\Bus\QueryInterface;
 

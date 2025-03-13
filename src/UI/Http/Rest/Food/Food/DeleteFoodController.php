@@ -2,7 +2,7 @@
 
 namespace App\UI\Http\Rest\Food\Food;
 
-use App\Application\Food\DeleteFood\DeleteFoodCommand;
+use App\Application\Food\UseCase\DeleteFood\DeleteFoodCommand;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

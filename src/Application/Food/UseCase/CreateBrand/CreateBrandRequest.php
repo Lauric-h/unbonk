@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Food\CreateBrand;
+namespace App\Application\Food\UseCase\CreateBrand;
 
 final readonly class CreateBrandRequest
 {

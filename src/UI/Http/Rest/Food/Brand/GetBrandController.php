@@ -2,7 +2,7 @@
 
 namespace App\UI\Http\Rest\Food\Brand;
 
-use App\Application\Food\GetBrand\GetBrandQuery;
+use App\Application\Food\UseCase\GetBrand\GetBrandQuery;
 use App\Infrastructure\Shared\Bus\QueryBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
