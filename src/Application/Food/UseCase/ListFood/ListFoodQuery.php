@@ -5,6 +5,7 @@ namespace App\Application\Food\UseCase\ListFood;
 use App\Domain\Food\Entity\IngestionType;
 use App\Infrastructure\Shared\Bus\QueryInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+
 final readonly class ListFoodQuery implements QueryInterface
 {
     public function __construct(

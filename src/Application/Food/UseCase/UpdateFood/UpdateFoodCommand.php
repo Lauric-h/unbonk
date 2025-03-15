@@ -16,7 +16,7 @@ final class UpdateFoodCommand implements CommandInterface
         #[Assert\Positive]
         public int $carbs,
         #[Assert\Choice(callback: [IngestionType::class, 'cases'])]
-        public string $ingestionType,
+        public IngestionType $ingestionType,
         #[Assert\Positive]
         public ?int $calories,
     ) {

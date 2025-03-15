@@ -3,6 +3,7 @@
 namespace App\Domain\Food\Repository;
 
 use App\Domain\Food\Entity\Food;
+use App\Domain\Food\Entity\IngestionType;
 
 interface FoodsCatalog
 {
@@ -15,5 +16,5 @@ interface FoodsCatalog
     /**
      * @return Food[]
      */
-    public function getAll(): array;
+    public function getAll(?string $brandId, ?string $name, ?IngestionType $ingestionType): array;
 }
