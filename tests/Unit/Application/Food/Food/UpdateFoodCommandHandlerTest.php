@@ -21,7 +21,7 @@ final class UpdateFoodCommandHandlerTest extends TestCase
             name: 'food-name updated',
             carbs: 100,
             calories: 100,
-            ingestionType: 'semi_liquid',
+            ingestionType: IngestionType::SemiLiquid,
         );
 
         $beforeUpdateFood = new Food(

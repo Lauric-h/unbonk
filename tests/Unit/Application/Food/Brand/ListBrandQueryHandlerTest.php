@@ -37,8 +37,8 @@ final class ListBrandQueryHandlerTest extends TestCase
         $this->assertContainsOnlyInstancesOf(BrandReadModel::class, $actual->brands);
 
         foreach ($actual->brands as $key => $brand) {
-            $this->assertEquals($expected->brands[$key]->id, $brand->id);
-            $this->assertEquals($expected->brands[$key]->name, $brand->name);
+            $this->assertSame($expected->brands[$key]->id, $brand->id);
+            $this->assertSame($expected->brands[$key]->name, $brand->name);
         }
     }
 }

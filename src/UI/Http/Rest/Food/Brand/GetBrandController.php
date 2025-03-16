@@ -18,8 +18,9 @@ final class GetBrandController extends AbstractController
 
     public function __invoke(string $id): JsonResponse
     {
-        $brand = $this->queryBus->query(new GetBrandQuery($id));
-
-        return new JsonResponse($brand, Response::HTTP_OK);
+        return new JsonResponse(
+            $this->queryBus->query(new GetBrandQuery($id)),
+            Response::HTTP_OK
+        );
     }
 }

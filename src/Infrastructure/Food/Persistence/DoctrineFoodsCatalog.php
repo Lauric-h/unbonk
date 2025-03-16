@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Food\Persistence;
 
 use App\Domain\Food\Entity\Food;
+use App\Domain\Food\Entity\IngestionType;
 use App\Domain\Food\Exception\FoodNotFoundException;
 use App\Domain\Food\Repository\FoodsCatalog;
 use Doctrine\ORM\EntityManagerInterface;
@@ -58,10 +59,29 @@ class DoctrineFoodsCatalog implements FoodsCatalog
     /**
      * @return Food[]
      */
-    public function getAll(): array
+    public function getAll(?string $brandId, ?string $name, ?IngestionType $ingestionType): array
     {
-        return $this->entityManager
-            ->createQuery('SELECT f FROM App\Domain\Food\Entity\Food f')
-            ->getResult();
+        $qb = $this->entityManager
+            ->createQueryBuilder()
+            ->select('f')
+            ->from(Food::class, 'f');
+
+        if (null !== $brandId) {
+            $qb->join('f.brand', 'b')
+                ->andWhere('b.id = :brandId')
+                ->setParameter('brandId', $brandId);
+        }
+
+        if (null !== $name) {
+            $qb->andWhere('f.name LIKE :name')
+                ->setParameter('name', '%'.$name.'%');
+        }
+
+        if (null !== $ingestionType) {
+            $qb->andWhere('f.ingestionType = :ingestionType')
+            ->setParameter('ingestionType', $ingestionType);
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }

@@ -41,6 +41,7 @@ services:
         resource: '../src/UI/Http/Rest/'
         exclude:
             - '../src/UI/Http/Rest/**/View/**'
+            - '../src/UI/Http/Rest/**/Request/**'
         tags: [ 'controller.service_arguments' ]
 
     App\Infrastructure\:

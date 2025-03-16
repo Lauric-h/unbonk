@@ -3,9 +3,9 @@
 namespace App\UI\Http\Rest\Food\Food;
 
 use App\Application\Food\UseCase\CreateFood\CreateFoodCommand;
-use App\Application\Food\UseCase\CreateFood\CreateFoodRequest;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\SharedKernel\IdGenerator;
+use App\UI\Http\Rest\Food\Request\CreateFoodRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
