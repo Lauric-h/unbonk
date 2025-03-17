@@ -37,7 +37,7 @@ final class UserAdapterTest extends TestCase
         $user = new User('id', 'name', '', 'password');
         $adapter = new UserAdapter($user);
 
-        $this->expectException(\AssertionError::class);
+        $this->expectException(\LogicException::class);
         $adapter->getUserIdentifier();
     }
 

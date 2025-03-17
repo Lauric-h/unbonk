@@ -33,7 +33,9 @@ final readonly class UserAdapter implements UserInterface, PasswordAuthenticated
     {
         $email = $this->user->email;
 
-        assert('' !== $email);
+        if (empty($email)) {
+            throw new \LogicException('Email cannot be empty');
+        }
 
         return $email;
     }
