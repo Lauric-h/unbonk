@@ -26,9 +26,9 @@ final class ListFoodQueryHandlerTest extends TestCase
                 id: 'id'.$i,
                 brand: $brand,
                 name: 'name'.$i,
-                carbs: $i,
+                carbs: $i + 1,
                 ingestionType: IngestionType::Liquid,
-                calories: $i
+                calories: $i + 1
             );
         }
 
@@ -42,9 +42,9 @@ final class ListFoodQueryHandlerTest extends TestCase
                 id: 'id'.$i,
                 brandName: 'brand-name',
                 name: 'name'.$i,
-                carbs: $i,
+                carbs: $i + 1,
                 ingestionType: IngestionType::Liquid->value,
-                calories: $i
+                calories: $i + 1
             );
         }
 

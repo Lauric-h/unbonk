@@ -15,6 +15,12 @@ class Food
         public IngestionType $ingestionType,
         public ?int $calories,
     ) {
+        if ($carbs <= 0) {
+            throw new FoodCarbsMustBePositiveException($carbs);
+        }
+        if (null !== $calories && $calories <= 0) {
+            throw new FoodCaloriesMustBePositiveException($calories);
+        }
     }
 
     public function update(
