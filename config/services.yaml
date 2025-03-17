@@ -28,8 +28,8 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-            - '../src/Infrastructure/Shared/Migrations'
             - '../src/Infrastructure/Food'
+            - '../src/Infrastructure/Shared/Migrations/'
 
     App\Domain\Shared\:
         resource: '../src/Domain/Shared/'
@@ -46,6 +46,8 @@ services:
 
     App\Infrastructure\:
         resource: '../src/Infrastructure/'
+        exclude:
+            - '../src/Infrastructure/Shared/Migrations/'
 
     App\Infrastructure\Shared\Bus\QueryBus:
         arguments:
