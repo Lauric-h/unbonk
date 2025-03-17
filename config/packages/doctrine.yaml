@@ -21,7 +21,13 @@ doctrine:
                 is_bundle: false
                 dir: '%kernel.project_dir%/src/Infrastructure/Food/Persistence'
                 prefix: 'App\Domain\Food\Entity'
-                alias: App
+                alias: Food
+            User:
+                type: xml
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Infrastructure/User/Persistence'
+                prefix: 'App\Domain\User\Entity'
+                alias: User
         controller_resolver:
             auto_mapping: false
 
