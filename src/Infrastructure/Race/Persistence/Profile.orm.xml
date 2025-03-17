@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <embeddable name="App\Domain\Race\Entity\Profile">
+        <field name="distance" type="integer" />
+        <field name="elevationGain" type="integer" column="elevation_gain" />
+        <field name="elevationLoss" type="integer" column="elevation_loss" />
+    </embeddable>
+
+</doctrine-mapping>

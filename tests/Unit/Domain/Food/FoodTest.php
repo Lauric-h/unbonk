@@ -11,6 +11,32 @@ use PHPUnit\Framework\TestCase;
 
 final class FoodTest extends TestCase
 {
+    public function testNegativeCarbsThrowsException(): void
+    {
+        $this->expectException(FoodCarbsMustBePositiveException::class);
+        new Food(
+            'id',
+            new Brand('id', 'brand name'),
+            'name',
+            0,
+            IngestionType::Liquid,
+            300
+        );
+    }
+
+    public function testNegativeCaloriesThrowsException(): void
+    {
+        $this->expectException(FoodCaloriesMustBePositiveException::class);
+        new Food(
+            'id',
+            new Brand('id', 'brand name'),
+            'name',
+            100,
+            IngestionType::Liquid,
+            0
+        );
+    }
+
     public function testUpdateNegativeCarbsThrowsException(): void
     {
         $food = new Food(

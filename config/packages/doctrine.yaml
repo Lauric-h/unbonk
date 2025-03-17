@@ -28,6 +28,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Infrastructure/User/Persistence'
                 prefix: 'App\Domain\User\Entity'
                 alias: User
+            Race:
+                type: xml
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Infrastructure/Race/Persistence'
+                prefix: 'App\Domain\Race\Entity'
+                alias: Race
         controller_resolver:
             auto_mapping: false
 
