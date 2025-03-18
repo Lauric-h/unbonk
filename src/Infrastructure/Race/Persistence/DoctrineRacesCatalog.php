@@ -9,7 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\ORMInvalidArgumentException;
 
-final readonly class DoctrineRacesCatalog implements RacesCatalog
+readonly class DoctrineRacesCatalog implements RacesCatalog
 {
     public function __construct(private EntityManagerInterface $entityManager)
     {
