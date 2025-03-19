@@ -10,6 +10,8 @@ final class DeleteRaceCommand implements CommandInterface
     public function __construct(
         #[Assert\Uuid]
         public string $id,
+        #[Assert\Uuid]
+        public string $runnerId,
     ) {
     }
 }

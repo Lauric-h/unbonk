@@ -3,6 +3,7 @@
 namespace App\Infrastructure\Race\Persistence;
 
 use App\Domain\Race\Entity\Race;
+use App\Domain\Race\Exception\RaceDoesNotBelongToRunnerException;
 use App\Domain\Race\Exception\RaceNotFoundException;
 use App\Domain\Race\Repository\RacesCatalog;
 use Doctrine\ORM\EntityManagerInterface;
@@ -35,12 +36,16 @@ readonly class DoctrineRacesCatalog implements RacesCatalog
         return $race;
     }
 
-    public function remove(string $id): void
+    public function remove(string $id, string $runnerId): void
     {
         $race = $this->entityManager->getReference(Race::class, $id);
 
         if (null === $race) {
             throw new RaceNotFoundException();
+        }
+
+        if ($race->runnerId !== $runnerId) {
+            throw new RaceDoesNotBelongToRunnerException($id, $runnerId);
         }
 
         $this->entityManager->remove($race);
