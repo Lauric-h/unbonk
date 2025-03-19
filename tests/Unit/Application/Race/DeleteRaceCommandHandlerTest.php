@@ -13,11 +13,11 @@ final class DeleteRaceCommandHandlerTest extends TestCase
     {
         $repository = $this->createMock(DoctrineRacesCatalog::class);
         $handler = new DeleteRaceCommandHandler($repository);
-        $command = new DeleteRaceCommand('id');
+        $command = new DeleteRaceCommand('id', 'runner-id');
 
         $repository->expects($this->once())
             ->method('remove')
-            ->with('id');
+            ->with('id', 'runner-id');
 
         ($handler)($command);
     }

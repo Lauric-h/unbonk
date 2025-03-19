@@ -18,7 +18,8 @@ final class DeleteRaceController extends AbstractController
 
     public function __invoke(string $id): JsonResponse
     {
-        $this->commandBus->dispatch(new DeleteRaceCommand($id));
+        /* @phpstan-ignore-next-line */
+        $this->commandBus->dispatch(new DeleteRaceCommand($id, $this->getUser()->getUser()->id));
 
         return new JsonResponse([], Response::HTTP_NO_CONTENT);
     }

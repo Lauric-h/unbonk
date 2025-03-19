@@ -2,7 +2,7 @@
 
 namespace App\Domain\Race\Entity;
 
-final class Race
+class Race
 {
     public function __construct(
         public string $id,
@@ -12,5 +12,24 @@ final class Race
         public Address $address,
         public string $runnerId,
     ) {
+    }
+
+    public function update(
+        string $name,
+        \DateTimeImmutable $date,
+        int $distance,
+        int $elevationGain,
+        int $elevationLoss,
+        string $city,
+        string $postalCode,
+    ): void {
+        $this->name = $name;
+        $this->date = $date;
+
+        $profile = new Profile($distance, $elevationGain, $elevationLoss);
+        $this->profile = $profile;
+
+        $address = new Address($city, $postalCode);
+        $this->address = $address;
     }
 }

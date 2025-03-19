@@ -12,7 +12,7 @@ interface RacesCatalog
 
     public function getByIdAndRunnerId(string $id, string $runnerId): Race;
 
-    public function remove(string $id): void;
+    public function remove(string $id, string $runnerId): void;
 
     /**
      * @return Race[]

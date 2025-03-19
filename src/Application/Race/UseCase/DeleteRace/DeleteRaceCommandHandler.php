@@ -13,6 +13,6 @@ final class DeleteRaceCommandHandler implements CommandHandlerInterface
 
     public function __invoke(DeleteRaceCommand $command): void
     {
-        $this->racesCatalog->remove($command->id);
+        $this->racesCatalog->remove($command->id, $command->runnerId);
     }
 }
