@@ -10,6 +10,8 @@ interface RacesCatalog
 
     public function get(string $id): Race;
 
+    public function getByIdAndRunnerId(string $id, string $runnerId): Race;
+
     public function remove(string $id): void;
 
     /**

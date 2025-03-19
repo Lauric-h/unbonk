@@ -49,8 +49,23 @@ readonly class DoctrineRacesCatalog implements RacesCatalog
     public function getAll(string $runnerId): array
     {
         return $this->entityManager
-            ->createQuery('SELECT r FROM App\Domain\Race\Entity\Race r WHERE r.runner_id = :runner')
-            ->setParameter('runner_id', $runnerId)
+            ->createQuery('SELECT r FROM App\Domain\Race\Entity\Race r WHERE r.runnerId = :runner')
+            ->setParameter('runner', $runnerId)
             ->getResult();
+    }
+
+    public function getByIdAndRunnerId(string $id, string $runnerId): Race
+    {
+        $race = $this->entityManager
+            ->createQuery('SELECT r FROM App\Domain\Race\Entity\Race r WHERE r.id = :id AND r.runnerId = :runner')
+            ->setParameter('id', $id)
+            ->setParameter('runner', $runnerId)
+            ->getOneOrNullResult();
+
+        if (null === $race) {
+            throw new RaceNotFoundException();
+        }
+
+        return $race;
     }
 }
