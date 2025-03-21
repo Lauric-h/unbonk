@@ -2,8 +2,14 @@
 
 namespace App\Domain\Race\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
 class Race
 {
+    /**
+     * @param Collection<int, Checkpoint> $checkpoints
+     */
     public function __construct(
         public string $id,
         public \DateTimeImmutable $date,
@@ -11,6 +17,7 @@ class Race
         public Profile $profile,
         public Address $address,
         public string $runnerId,
+        public Collection $checkpoints = new ArrayCollection(),
     ) {
     }
 

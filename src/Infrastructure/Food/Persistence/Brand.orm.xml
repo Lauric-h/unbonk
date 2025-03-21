@@ -9,6 +9,7 @@
         <one-to-many field="foods" target-entity="App\Domain\Food\Entity\Food" mapped-by="brand" orphan-removal="true">
             <cascade>
                 <cascade-persist/>
+                <cascade-remove/>
             </cascade>
         </one-to-many>
     </entity>
