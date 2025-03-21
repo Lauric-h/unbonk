@@ -10,6 +10,12 @@
         <field name="runnerId" type="string" column="runner_id"/>
         <embedded name="address" class="Address" />
         <embedded name="profile" class="Profile" />
+        <one-to-many field="checkpoints" target-entity="App\Domain\Race\Entity\Checkpoint" mapped-by="race" orphan-removal="true">
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
+        </one-to-many>
     </entity>
     
 </doctrine-mapping>
