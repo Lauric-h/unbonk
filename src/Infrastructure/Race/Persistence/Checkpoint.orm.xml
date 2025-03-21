@@ -3,7 +3,7 @@
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-    <entity name="App\Domain\Race\Entity\Checkpoint" table="checkpoint" repository-class="App\Infrastructure\Race\Persistence\DoctrineCheckpointsCatalog">
+    <entity name="App\Domain\Race\Entity\Checkpoint" table="checkpoint">
         <id name="id" type="string" />
         <field name="name" type="string" />
         <field name="location" type="string" />

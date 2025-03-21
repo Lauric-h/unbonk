@@ -24,21 +24,8 @@ readonly class DoctrineRacesCatalog implements RacesCatalog
         }
     }
 
-    public function get(string $id): Race
+    public function remove(Race $race): void
     {
-        $race = $this->entityManager->find(Race::class, $id);
-
-        if (null === $race) {
-            throw new RaceNotFoundException();
-        }
-
-        return $race;
-    }
-
-    public function remove(string $id, string $runnerId): void
-    {
-        $race = $this->getByIdAndRunnerId($id, $runnerId);
-
         $this->entityManager->remove($race);
     }
 

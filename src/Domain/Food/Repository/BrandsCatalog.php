@@ -10,7 +10,7 @@ interface BrandsCatalog
 
     public function get(string $id): Brand;
 
-    public function remove(string $id): void;
+    public function remove(Brand $brand): void;
 
     /**
      * @return Brand[]

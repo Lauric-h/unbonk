@@ -13,6 +13,7 @@ final readonly class DeleteFoodCommandHandler implements CommandHandlerInterface
 
     public function __invoke(DeleteFoodCommand $command): void
     {
-        $this->foodsCatalog->remove($command->id);
+        $food = $this->foodsCatalog->get($command->id);
+        $this->foodsCatalog->remove($food);
     }
 }
