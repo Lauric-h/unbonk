@@ -39,4 +39,26 @@ class Race
         $address = new Address($city, $postalCode);
         $this->address = $address;
     }
+
+    public function addCheckpoint(Checkpoint $checkpoint): void
+    {
+        if ($this->getCheckpointAtDistance($checkpoint->metricsFromStart->distance)) {
+            throw new CheckpointWithSameDistanceException();
+        }
+
+        $this->checkpoints->add($checkpoint);
+    }
+
+    public function getCheckpointAtDistance(int $distance): ?Checkpoint
+    {
+        $existingCheckpoints = $this->checkpoints->filter(function (Checkpoint $checkpoint) use ($distance) {
+            return $checkpoint->metricsFromStart->distance === $distance;
+        });
+
+        if (\count($existingCheckpoints) > 1) {
+            throw new \DomainException(\sprintf('Multiple checkpoint for same distance: %d', $distance));
+        }
+
+        return $existingCheckpoints->first() ?: null;
+    }
 }
