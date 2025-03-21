@@ -34,21 +34,9 @@ class DoctrineBrandsCatalog implements BrandsCatalog
         return $brand;
     }
 
-    public function remove(string $id): void
+    public function remove(Brand $brand): void
     {
-        try {
-            $brand = $this->entityManager->getReference(
-                Brand::class,
-                $id,
-            );
-            if (null === $brand) {
-                throw new BrandNotFoundException($id);
-            }
-
-            $this->entityManager->remove($brand);
-        } catch (ORMInvalidArgumentException|ORMException $exception) {
-            throw new \LogicException(sprintf('Impossible to remove brand with id %s', $id));
-        }
+        $this->entityManager->remove($brand);
     }
 
     public function getAll(): array

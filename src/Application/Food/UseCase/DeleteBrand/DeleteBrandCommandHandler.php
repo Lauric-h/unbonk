@@ -13,6 +13,7 @@ final readonly class DeleteBrandCommandHandler implements CommandHandlerInterfac
 
     public function __invoke(DeleteBrandCommand $command): void
     {
-        $this->brandsCatalog->remove($command->id);
+        $brand = $this->brandsCatalog->get($command->id);
+        $this->brandsCatalog->remove($brand);
     }
 }

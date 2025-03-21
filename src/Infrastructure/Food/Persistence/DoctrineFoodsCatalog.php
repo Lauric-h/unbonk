@@ -39,21 +39,9 @@ class DoctrineFoodsCatalog implements FoodsCatalog
         return $food;
     }
 
-    public function remove(string $id): void
+    public function remove(Food $food): void
     {
-        try {
-            $food = $this->entityManager->getReference(
-                Food::class,
-                $id,
-            );
-            if (null === $food) {
-                throw new FoodNotFoundException($id);
-            }
-
-            $this->entityManager->remove($food);
-        } catch (ORMInvalidArgumentException|ORMException $exception) {
-            throw new \LogicException(sprintf('Impossible to remove food with id %s', $id));
-        }
+        $this->entityManager->remove($food);
     }
 
     /**

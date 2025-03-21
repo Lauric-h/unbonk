@@ -11,7 +11,7 @@ interface FoodsCatalog
 
     public function get(string $id): Food;
 
-    public function remove(string $id): void;
+    public function remove(Food $food): void;
 
     /**
      * @return Food[]
