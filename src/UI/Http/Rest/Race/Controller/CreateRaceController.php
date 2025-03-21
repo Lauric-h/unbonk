@@ -3,7 +3,9 @@
 namespace App\UI\Http\Rest\Race\Controller;
 
 use App\Application\Race\UseCase\CreateRace\CreateRaceCommand;
+use App\Application\Race\UseCase\GetRace\GetRaceQuery;
 use App\Infrastructure\Shared\Bus\CommandBus;
+use App\Infrastructure\Shared\Bus\QueryBus;
 use App\SharedKernel\IdGenerator;
 use App\UI\Http\Rest\Race\Request\CreateRaceRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,6 +21,7 @@ final class CreateRaceController extends AbstractController
 {
     public function __construct(
         private readonly CommandBus $commandBus,
+        private readonly QueryBus $queryBus,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly IdGenerator $idGenerator,
         private readonly SerializerInterface $serializer,
@@ -46,8 +49,11 @@ final class CreateRaceController extends AbstractController
 
         $this->commandBus->dispatch($command);
 
+        /** @phpstan-ignore-next-line */
+        $query = new GetRaceQuery($id, $this->getUser()->getUser()->id);
+
         return new JsonResponse(
-            [],
+            $this->queryBus->query($query),
             Response::HTTP_CREATED,
             ['Location' => $this->urlGenerator->generate('app.race.get', ['id' => $id])]
         );

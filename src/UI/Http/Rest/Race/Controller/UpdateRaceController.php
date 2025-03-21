@@ -2,8 +2,10 @@
 
 namespace App\UI\Http\Rest\Race\Controller;
 
+use App\Application\Race\UseCase\GetRace\GetRaceQuery;
 use App\Application\Race\UseCase\UpdateRace\UpdateRaceCommand;
 use App\Infrastructure\Shared\Bus\CommandBus;
+use App\Infrastructure\Shared\Bus\QueryBus;
 use App\UI\Http\Rest\Race\Request\UpdateRaceRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Clock\DatePoint;
@@ -21,6 +23,7 @@ final class UpdateRaceController extends AbstractController
         private readonly SerializerInterface $serializer,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly CommandBus $commandBus,
+        private readonly QueryBus $queryBus,
     ) {
     }
 
@@ -43,10 +46,13 @@ final class UpdateRaceController extends AbstractController
 
         $this->commandBus->dispatch($command);
 
+        /** @phpstan-ignore-next-line */
+        $query = new GetRaceQuery($id, $this->getUser()->getUser()->id);
+
         return new JsonResponse(
-            [],
-            Response::HTTP_NO_CONTENT,
-            ['Location' => $this->urlGenerator->generate('app.race.get', ['id' => $id])]
+            $this->queryBus->query($query),
+            Response::HTTP_OK,
+            ['Location' => $this->urlGenerator->generate('app.race.get', ['id' => $command->id])]
         );
     }
 }

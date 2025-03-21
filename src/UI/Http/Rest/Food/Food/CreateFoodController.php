@@ -3,7 +3,9 @@
 namespace App\UI\Http\Rest\Food\Food;
 
 use App\Application\Food\UseCase\CreateFood\CreateFoodCommand;
+use App\Application\Food\UseCase\GetFood\GetFoodQuery;
 use App\Infrastructure\Shared\Bus\CommandBus;
+use App\Infrastructure\Shared\Bus\QueryBus;
 use App\SharedKernel\IdGenerator;
 use App\UI\Http\Rest\Food\Request\CreateFoodRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,6 +21,7 @@ final class CreateFoodController extends AbstractController
 {
     public function __construct(
         private readonly CommandBus $commandBus,
+        private readonly QueryBus $queryBus,
         private readonly IdGenerator $idGenerator,
         private readonly SerializerInterface $serializer,
         private readonly UrlGeneratorInterface $urlGenerator,
@@ -40,9 +43,9 @@ final class CreateFoodController extends AbstractController
         ));
 
         return new JsonResponse(
-            [],
+            $this->queryBus->query(new GetFoodQuery($id)),
             Response::HTTP_CREATED,
-            ['Location' => $this->urlGenerator->generate('app.brand.food.get', ['brandId' => $brandId, 'id' => $id])]
+            ['Location' => $this->urlGenerator->generate('app.food.get', ['brandId' => $brandId, 'id' => $id])]
         );
     }
 }

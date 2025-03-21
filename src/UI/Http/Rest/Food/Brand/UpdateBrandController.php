@@ -2,8 +2,10 @@
 
 namespace App\UI\Http\Rest\Food\Brand;
 
+use App\Application\Food\UseCase\GetBrand\GetBrandQuery;
 use App\Application\Food\UseCase\UpdateBrand\UpdateBrandCommand;
 use App\Infrastructure\Shared\Bus\CommandBus;
+use App\Infrastructure\Shared\Bus\QueryBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +19,7 @@ final class UpdateBrandController extends AbstractController
 {
     public function __construct(
         private readonly CommandBus $messageBus,
+        private readonly QueryBus $queryBus,
         private readonly SerializerInterface $serializer,
         private readonly UrlGeneratorInterface $urlGenerator,
     ) {
@@ -29,8 +32,8 @@ final class UpdateBrandController extends AbstractController
         $this->messageBus->dispatch($command);
 
         return new JsonResponse(
-            [],
-            Response::HTTP_NO_CONTENT,
+            $this->queryBus->query(new GetBrandQuery($command->id)),
+            Response::HTTP_OK,
             ['Location' => $this->urlGenerator->generate('app.brand.get', ['id' => $command->id])]
         );
     }

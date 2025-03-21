@@ -3,7 +3,9 @@
 namespace App\UI\Http\Rest\Food\Brand;
 
 use App\Application\Food\UseCase\CreateBrand\CreateBrandCommand;
+use App\Application\Food\UseCase\GetBrand\GetBrandQuery;
 use App\Infrastructure\Shared\Bus\CommandBus;
+use App\Infrastructure\Shared\Bus\QueryBus;
 use App\SharedKernel\IdGenerator;
 use App\UI\Http\Rest\Food\Request\CreateBrandRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,6 +21,7 @@ final class CreateBrandController extends AbstractController
 {
     public function __construct(
         private readonly CommandBus $messageBus,
+        private readonly QueryBus $queryBus,
         private readonly IdGenerator $idGenerator,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly SerializerInterface $serializer,
@@ -38,8 +41,8 @@ final class CreateBrandController extends AbstractController
         $this->messageBus->dispatch($createBrandCommand);
 
         return new JsonResponse(
-            [],
-            Response::HTTP_NO_CONTENT,
+            $this->queryBus->query(new GetBrandQuery($id)),
+            Response::HTTP_CREATED,
             ['Location' => $this->urlGenerator->generate('app.brand.get', ['id' => $id])]
         );
     }
