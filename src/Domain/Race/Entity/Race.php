@@ -36,7 +36,8 @@ class Race
 
         $profile = new Profile($distance, $elevationGain, $elevationLoss);
         $this->profile = $profile;
-        $this->getFinishCheckpoint()->updateProfileMetrics($this->profile);
+        // To do in next PR
+        //        $this->getFinishCheckpoint()->updateProfileMetrics($this->profile);
 
         $address = new Address($city, $postalCode);
         $this->address = $address;
@@ -49,6 +50,7 @@ class Race
         }
 
         $this->checkpoints->add($checkpoint);
+        $checkpoint->race = $this;
         $this->sortCheckpointByDistance();
     }
 
