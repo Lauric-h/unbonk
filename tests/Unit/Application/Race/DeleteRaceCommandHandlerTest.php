@@ -28,7 +28,7 @@ final class DeleteRaceCommandHandlerTest extends TestCase
             'runner-id'
         );
 
-        $repository->expects(self::once())
+        $repository->expects($this->once())
             ->method('getByIdAndRunnerId')
             ->with('id', 'runner-id')
             ->willReturn($race);

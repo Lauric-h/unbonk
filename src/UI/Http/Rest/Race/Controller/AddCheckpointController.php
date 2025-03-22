@@ -3,7 +3,6 @@
 namespace App\UI\Http\Rest\Race\Controller;
 
 use App\Application\Race\UseCase\AddCheckpoint\AddCheckpointCommand;
-use App\Domain\Race\Entity\CheckpointType;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\SharedKernel\IdGenerator;
 use App\UI\Http\Rest\Race\Request\AddCheckpointRequest;
@@ -15,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
-#[Route('/races/{id}/checkpoints', name: 'app.race.checkpoint.add', methods: ['POST'])]
+#[Route('/races/{raceId}/checkpoints', name: 'app.race.checkpoint.add', methods: ['POST'])]
 final class AddCheckpointController extends AbstractController
 {
     public function __construct(
@@ -35,19 +34,20 @@ final class AddCheckpointController extends AbstractController
             id: $id,
             name: $addCheckpointRequest->name,
             location: $addCheckpointRequest->location,
-            checkpointType: CheckpointType::tryFrom($addCheckpointRequest->checkpointType),
+            checkpointType: $addCheckpointRequest->checkpointType,
             estimatedTimeInMinutes: $addCheckpointRequest->estimatedTimeInMinutes,
             distance: $addCheckpointRequest->distance,
             elevationGain: $addCheckpointRequest->elevationGain,
             elevationLoss: $addCheckpointRequest->elevationLoss,
             raceId: $raceId,
+            /* @phpstan-ignore-next-line */
             runnerId: $this->getUser()->getUser()->id,
         ));
 
         return new JsonResponse(
             [],
             Response::HTTP_CREATED,
-            ['Location' => $this->urlGenerator->generate('app.race.get', ['raceId' => $raceId])]
+            ['Location' => $this->urlGenerator->generate('app.race.get', ['id' => $raceId])]
         );
     }
 }

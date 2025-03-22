@@ -2,6 +2,7 @@
 
 namespace App\Domain\Race\Entity;
 
+use App\Domain\Race\Exception\CheckpointWithSameDistanceException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -35,6 +36,7 @@ class Race
 
         $profile = new Profile($distance, $elevationGain, $elevationLoss);
         $this->profile = $profile;
+        $this->getFinishCheckpoint()->updateProfileMetrics($this->profile);
 
         $address = new Address($city, $postalCode);
         $this->address = $address;
@@ -43,22 +45,49 @@ class Race
     public function addCheckpoint(Checkpoint $checkpoint): void
     {
         if ($this->getCheckpointAtDistance($checkpoint->metricsFromStart->distance)) {
-            throw new CheckpointWithSameDistanceException();
+            throw new CheckpointWithSameDistanceException($checkpoint->metricsFromStart->distance);
         }
 
         $this->checkpoints->add($checkpoint);
+        $this->sortCheckpointByDistance();
     }
 
     public function getCheckpointAtDistance(int $distance): ?Checkpoint
     {
-        $existingCheckpoints = $this->checkpoints->filter(function (Checkpoint $checkpoint) use ($distance) {
-            return $checkpoint->metricsFromStart->distance === $distance;
-        });
+        $existingCheckpoints = $this->checkpoints->filter(static fn (Checkpoint $checkpoint) => $checkpoint->metricsFromStart->distance === $distance);
 
         if (\count($existingCheckpoints) > 1) {
             throw new \DomainException(\sprintf('Multiple checkpoint for same distance: %d', $distance));
         }
 
         return $existingCheckpoints->first() ?: null;
+    }
+
+    public function sortCheckpointByDistance(): void
+    {
+        $checkpoints = $this->checkpoints->toArray();
+        usort($checkpoints, static fn (Checkpoint $a, Checkpoint $b) => $a->metricsFromStart->distance <=> $b->metricsFromStart->distance);
+
+        $this->checkpoints = new ArrayCollection($checkpoints);
+    }
+
+    public function getStartCheckpoint(): Checkpoint
+    {
+        $start = $this->checkpoints->first();
+        if (false === $start) {
+            throw new \DomainException('Race does not have start checkpoint');
+        }
+
+        return $start;
+    }
+
+    public function getFinishCheckpoint(): Checkpoint
+    {
+        $finish = $this->checkpoints->last();
+        if (false === $finish) {
+            throw new \DomainException('Race does not have finish checkpoint');
+        }
+
+        return $finish;
     }
 }

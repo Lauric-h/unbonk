@@ -17,13 +17,13 @@ final class AddCheckpointCommand implements CommandInterface
         public string $location,
         #[Assert\Choice(callback: [CheckpointType::class, 'cases'])]
         public CheckpointType $checkpointType,
-        #[Assert\GreaterThan(0)]
+        #[Assert\GreaterThanOrEqual(0)]
         public int $estimatedTimeInMinutes,
-        #[Assert\GreaterThan(0)]
+        #[Assert\GreaterThanOrEqual(0)]
         public int $distance,
-        #[Assert\GreaterThan(0)]
+        #[Assert\GreaterThanOrEqual(0)]
         public int $elevationGain,
-        #[Assert\GreaterThan(0)]
+        #[Assert\GreaterThanOrEqual(0)]
         public int $elevationLoss,
         #[Assert\Uuid]
         public string $raceId,

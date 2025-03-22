@@ -13,4 +13,11 @@ class Checkpoint
         public Race $race,
     ) {
     }
+
+    public function updateProfileMetrics(Profile $profile): void
+    {
+        $estimatedTime = $this->metricsFromStart->estimatedTimeInMinutes;
+        $metrics = new MetricsFromStart($estimatedTime, $profile->distance, $profile->elevationGain, $profile->elevationLoss);
+        $this->metricsFromStart = $metrics;
+    }
 }
