@@ -70,7 +70,10 @@ class Race
         $checkpoints = $this->checkpoints->toArray();
         usort($checkpoints, static fn (Checkpoint $a, Checkpoint $b) => $a->metricsFromStart->distance <=> $b->metricsFromStart->distance);
 
-        $this->checkpoints = new ArrayCollection($checkpoints);
+        $this->checkpoints->clear();
+        foreach ($checkpoints as $checkpoint) {
+            $this->checkpoints->add($checkpoint);
+        }
     }
 
     public function getStartCheckpoint(): Checkpoint
