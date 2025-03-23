@@ -23,7 +23,7 @@ final readonly class MetricsFromStart
         if ($elevationLoss < 0) {
             throw new ElevationValueCannotBeNegativeException('elevationLoss', $elevationLoss);
         }
-        if ($distance <= 0) {
+        if ($distance < 0) {
             throw new DistanceCannotBeNegativeException($distance);
         }
     }

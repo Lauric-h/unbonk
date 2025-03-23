@@ -9,6 +9,7 @@ use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
 use App\Infrastructure\Race\Persistence\DoctrineRacesCatalog;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Clock\DatePoint;
 
 final class DeleteRaceCommandHandlerTest extends TestCase
 {
@@ -20,7 +21,7 @@ final class DeleteRaceCommandHandlerTest extends TestCase
 
         $race = new Race(
             'id',
-            new \DateTimeImmutable(),
+            new DatePoint('2025-03-19'),
             'Le Bélier',
             new Profile(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
