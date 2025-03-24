@@ -43,7 +43,6 @@ final class AddCheckpointCommandHandlerTest extends TestCase
             'runnerId',
         );
 
-        $raceWithCheckpoint = $date = new DatePoint('2025-03-19');
         $raceWithCheckpoint = new Race(
             'raceId',
             $date,

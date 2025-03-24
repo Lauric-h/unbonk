@@ -31,4 +31,9 @@ readonly class DoctrineCheckpointsCatalog implements CheckpointsCatalog
 
         return $checkpoint;
     }
+
+    public function add(Checkpoint $checkpoint): void
+    {
+        $this->entityManager->persist($checkpoint);
+    }
 }
