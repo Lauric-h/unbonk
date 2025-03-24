@@ -83,6 +83,10 @@ class Race
             throw new \DomainException('Race does not have start checkpoint');
         }
 
+        if (CheckpointType::Start !== $start->checkpointType) {
+            throw new \DomainException('Invalid Checkpoint type');
+        }
+
         return $start;
     }
 
@@ -93,6 +97,22 @@ class Race
             throw new \DomainException('Race does not have finish checkpoint');
         }
 
+        if (CheckpointType::Finish !== $finish->checkpointType) {
+            throw new \DomainException('Invalid Checkpoint type');
+        }
+
         return $finish;
+    }
+
+    public function removeCheckpoint(Checkpoint $checkpoint): void
+    {
+        if ($checkpoint === $this->getStartCheckpoint()
+            || $checkpoint === $this->getFinishCheckpoint()
+        ) {
+            throw new \DomainException('Cannot remove start or finish checkpoint');
+        }
+
+        $this->checkpoints->removeElement($checkpoint);
+        $this->sortCheckpointByDistance();
     }
 }
