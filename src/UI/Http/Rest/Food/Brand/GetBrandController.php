@@ -20,7 +20,7 @@ final class GetBrandController extends AbstractController
     {
         return new JsonResponse(
             $this->queryBus->query(new GetBrandQuery($id)),
-            Response::HTTP_OK
+            Response::HTTP_OK,
         );
     }
 }

@@ -2,10 +2,14 @@
 
 namespace App\UI\Http\Rest\Race\View;
 
+use App\Domain\Race\Entity\Checkpoint;
 use App\Domain\Race\Entity\Race;
 
 final class RaceReadModel
 {
+    /**
+     * @param CheckpointReadModel[] $checkpoints
+     */
     public function __construct(
         public string $id,
         public string $date,
@@ -13,6 +17,7 @@ final class RaceReadModel
         public ProfileReadModel $profile,
         public AddressReadModel $address,
         public string $runnerId,
+        public array $checkpoints = [],
     ) {
     }
 
@@ -25,6 +30,10 @@ final class RaceReadModel
             ProfileReadModel::fromDomain($race->profile),
             AddressReadModel::fromDomain($race->address),
             $race->runnerId,
+            array_map(
+                static fn (Checkpoint $checkpoint) => CheckpointReadModel::fromCheckpoint($checkpoint),
+                $race->checkpoints->toArray(),
+            )
         );
     }
 }
