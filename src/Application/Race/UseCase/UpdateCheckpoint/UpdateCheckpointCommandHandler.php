@@ -27,6 +27,7 @@ final readonly class UpdateCheckpointCommandHandler implements CommandHandlerInt
             $command->elevationLoss
         );
 
-        $this->checkpointsCatalog->add($checkpoint);
+        $race->sortCheckpointByDistance();
+        $this->racesCatalog->add($race);
     }
 }
