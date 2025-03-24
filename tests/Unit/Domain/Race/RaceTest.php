@@ -493,7 +493,18 @@ final class RaceTest extends TestCase
             $race
         );
 
+        $start = new Checkpoint(
+            'id1',
+            'name1',
+            'location1',
+            CheckpointType::Start,
+            new MetricsFromStart(1000, 0, 2000, 2000),
+            $race
+        );
+
         $race->checkpoints->add($checkpoint);
+        $race->checkpoints->add($start);
+        $race->sortCheckpointByDistance();
 
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Cannot remove start or finish checkpoint');
