@@ -4,12 +4,12 @@ namespace App\Application\Race\UseCase\AddCheckpoint;
 
 use App\Domain\Race\Entity\Checkpoint;
 use App\Domain\Race\Entity\MetricsFromStart;
-use App\Infrastructure\Race\Persistence\DoctrineRacesCatalog;
+use App\Domain\Race\Repository\RacesCatalog;
 use App\Infrastructure\Shared\Bus\CommandHandlerInterface;
 
 final readonly class AddCheckpointCommandHandler implements CommandHandlerInterface
 {
-    public function __construct(private DoctrineRacesCatalog $racesCatalog)
+    public function __construct(private RacesCatalog $racesCatalog)
     {
     }
 
