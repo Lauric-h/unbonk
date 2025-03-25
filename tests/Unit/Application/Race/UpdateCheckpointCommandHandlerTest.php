@@ -5,45 +5,45 @@ namespace App\Tests\Unit\Application\Race;
 use App\Application\Race\UseCase\UpdateCheckpoint\UpdateCheckpointCommand;
 use App\Application\Race\UseCase\UpdateCheckpoint\UpdateCheckpointCommandHandler;
 use App\Domain\Race\Entity\Address;
-use App\Domain\Race\Entity\Checkpoint;
+use App\Domain\Race\Entity\AidStationCheckpoint;
 use App\Domain\Race\Entity\CheckpointType;
+use App\Domain\Race\Entity\IntermediateCheckpoint;
 use App\Domain\Race\Entity\MetricsFromStart;
 use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
 use App\Infrastructure\Race\Persistence\DoctrineCheckpointsCatalog;
 use App\Infrastructure\Race\Persistence\DoctrineRacesCatalog;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Clock\DatePoint;
 
 final class UpdateCheckpointCommandHandlerTest extends TestCase
 {
-    public function testUpdateCheckpointCommand(): void
+    public function testUpdateIntermediateCheckpointUpdatesAllFields(): void
     {
-        $date = new DatePoint('2025-03-19');
-        $race = new Race(
-            'raceId',
-            $date,
-            'Le Bélier',
-            new Profile(42, 2000, 2000),
-            new Address('La Clusaz', '74xxx'),
-            'runnerId',
-        );
-
-        $checkpoint = new Checkpoint(
-            'cpId',
-            'name',
-            'location',
-            CheckpointType::Start,
-            new MetricsFromStart(120, 120, 5000, 5000),
-            $race
-        );
-
-        $race->checkpoints->add($checkpoint);
-
         $raceRepository = $this->createMock(DoctrineRacesCatalog::class);
         $checkpointRepository = $this->createMock(DoctrineCheckpointsCatalog::class);
 
         $handler = new UpdateCheckpointCommandHandler($raceRepository, $checkpointRepository);
+
+        $race = Race::create(
+            'raceId',
+            new \DateTimeImmutable('2025-01-01'),
+            'Le Bélier',
+            new Profile(42, 2000, 2000),
+            new Address('La Clusaz', '74xxx'),
+            'runner-id',
+            'startId',
+            'finishId'
+        );
+
+        $checkpoint = new IntermediateCheckpoint(
+            'cpId',
+            'name',
+            'location',
+            new MetricsFromStart(120, 10, 1000, 1000),
+            $race
+        );
+
+        $race->addCheckpoint($checkpoint);
 
         $raceRepository->expects($this->once())
             ->method('getByIdAndRunnerId')
@@ -62,13 +62,176 @@ final class UpdateCheckpointCommandHandlerTest extends TestCase
             'cpId',
             'updated',
             'updated',
-            CheckpointType::Start,
-            0,
-            0,
-            0,
-            0,
+            CheckpointType::Intermediate,
+            100,
+            20,
+            10,
+            10,
             'raceId',
             'runnerId',
         ));
+
+        $this->assertEquals($checkpoint, $race->getCheckpoints()->get(1));
+    }
+
+    public function testUpdateAidStationCheckpointUpdatesAllFields(): void
+    {
+        $raceRepository = $this->createMock(DoctrineRacesCatalog::class);
+        $checkpointRepository = $this->createMock(DoctrineCheckpointsCatalog::class);
+
+        $handler = new UpdateCheckpointCommandHandler($raceRepository, $checkpointRepository);
+
+        $race = Race::create(
+            'raceId',
+            new \DateTimeImmutable('2025-01-01'),
+            'Le Bélier',
+            new Profile(42, 2000, 2000),
+            new Address('La Clusaz', '74xxx'),
+            'runner-id',
+            'startId',
+            'finishId'
+        );
+
+        $checkpoint = new AidStationCheckpoint(
+            'cpId',
+            'name',
+            'location',
+            new MetricsFromStart(120, 10, 1000, 1000),
+            $race
+        );
+
+        $race->addCheckpoint($checkpoint);
+
+        $raceRepository->expects($this->once())
+            ->method('getByIdAndRunnerId')
+            ->with('raceId', 'runnerId')
+            ->willReturn($race);
+
+        $checkpointRepository->expects($this->once())
+            ->method('getByIdAndRaceId')
+            ->with('cpId', 'raceId')
+            ->willReturn($checkpoint);
+
+        $raceRepository->expects($this->once())
+            ->method('add');
+
+        ($handler)(new UpdateCheckpointCommand(
+            'cpId',
+            'updated',
+            'updated',
+            CheckpointType::AidStation,
+            100,
+            20,
+            10,
+            10,
+            'raceId',
+            'runnerId',
+        ));
+
+        $this->assertEquals($checkpoint, $race->getCheckpoints()->get(1));
+    }
+
+    public function testUpdateStartCheckpointUpdatesNameAndLocationOnly(): void
+    {
+        $raceRepository = $this->createMock(DoctrineRacesCatalog::class);
+        $checkpointRepository = $this->createMock(DoctrineCheckpointsCatalog::class);
+
+        $handler = new UpdateCheckpointCommandHandler($raceRepository, $checkpointRepository);
+
+        $race = Race::create(
+            'raceId',
+            new \DateTimeImmutable('2025-01-01'),
+            'Le Bélier',
+            new Profile(42, 2000, 2000),
+            new Address('La Clusaz', '74xxx'),
+            'runner-id',
+            'startId',
+            'finishId'
+        );
+
+        $raceRepository->expects($this->once())
+            ->method('getByIdAndRunnerId')
+            ->with('raceId', 'runnerId')
+            ->willReturn($race);
+
+        $checkpointRepository->expects($this->once())
+            ->method('getByIdAndRaceId')
+            ->with('cpId', 'raceId')
+            ->willReturn($race->getStartCheckpoint());
+
+        $raceRepository->expects($this->once())
+            ->method('add');
+
+        ($handler)(new UpdateCheckpointCommand(
+            'cpId',
+            'updated',
+            'updated',
+            CheckpointType::Start,
+            100,
+            20,
+            10,
+            10,
+            'raceId',
+            'runnerId',
+        ));
+
+        $this->assertSame('updated', $race->getStartCheckpoint()->getName());
+        $this->assertSame('updated', $race->getStartCheckpoint()->getLocation());
+        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->distance);
+        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->elevationGain);
+        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->elevationLoss);
+        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->estimatedTimeInMinutes);
+    }
+
+    public function testUpdateFinishCheckpointUpdatesNameAndLocationOnly(): void
+    {
+        $raceRepository = $this->createMock(DoctrineRacesCatalog::class);
+        $checkpointRepository = $this->createMock(DoctrineCheckpointsCatalog::class);
+
+        $handler = new UpdateCheckpointCommandHandler($raceRepository, $checkpointRepository);
+
+        $race = Race::create(
+            'raceId',
+            new \DateTimeImmutable('2025-01-01'),
+            'Le Bélier',
+            new Profile(42, 2000, 2000),
+            new Address('La Clusaz', '74xxx'),
+            'runner-id',
+            'startId',
+            'finishId'
+        );
+
+        $raceRepository->expects($this->once())
+            ->method('getByIdAndRunnerId')
+            ->with('raceId', 'runnerId')
+            ->willReturn($race);
+
+        $checkpointRepository->expects($this->once())
+            ->method('getByIdAndRaceId')
+            ->with('cpId', 'raceId')
+            ->willReturn($race->getFinishCheckpoint());
+
+        $raceRepository->expects($this->once())
+            ->method('add');
+
+        ($handler)(new UpdateCheckpointCommand(
+            'cpId',
+            'updated',
+            'updated',
+            CheckpointType::Finish,
+            100,
+            20,
+            10,
+            10,
+            'raceId',
+            'runnerId',
+        ));
+
+        $this->assertSame('updated', $race->getFinishCheckpoint()->getName());
+        $this->assertSame('updated', $race->getFinishCheckpoint()->getLocation());
+        $this->assertSame(42, $race->getFinishCheckpoint()->getMetricsFromStart()->distance);
+        $this->assertSame(2000, $race->getFinishCheckpoint()->getMetricsFromStart()->elevationGain);
+        $this->assertSame(2000, $race->getFinishCheckpoint()->getMetricsFromStart()->elevationLoss);
+        $this->assertSame(0, $race->getFinishCheckpoint()->getMetricsFromStart()->estimatedTimeInMinutes);
     }
 }
