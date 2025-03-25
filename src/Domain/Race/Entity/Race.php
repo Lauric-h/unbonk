@@ -22,6 +22,10 @@ class Race
     ) {
     }
 
+    // TODO
+    // Migration / XML
+    // Factory Race
+
     public function update(
         string $name,
         \DateTimeImmutable $date,
@@ -45,18 +49,18 @@ class Race
 
     public function addCheckpoint(Checkpoint $checkpoint): void
     {
-        if ($this->getCheckpointAtDistance($checkpoint->metricsFromStart->distance)) {
-            throw new CheckpointWithSameDistanceException($checkpoint->metricsFromStart->distance);
+        if ($this->getCheckpointAtDistance($checkpoint->getMetricsFromStart()->distance)) {
+            throw new CheckpointWithSameDistanceException($checkpoint->getMetricsFromStart()->distance);
         }
 
         $this->checkpoints->add($checkpoint);
-        $checkpoint->race = $this;
+        $checkpoint->setRace($this);
         $this->sortCheckpointByDistance();
     }
 
     public function getCheckpointAtDistance(int $distance): ?Checkpoint
     {
-        $existingCheckpoints = $this->checkpoints->filter(static fn (Checkpoint $checkpoint) => $checkpoint->metricsFromStart->distance === $distance);
+        $existingCheckpoints = $this->checkpoints->filter(static fn (Checkpoint $checkpoint) => $checkpoint->getMetricsFromStart()->distance === $distance);
 
         if (\count($existingCheckpoints) > 1) {
             throw new \DomainException(\sprintf('Multiple checkpoint for same distance: %d', $distance));
@@ -68,7 +72,7 @@ class Race
     public function sortCheckpointByDistance(): void
     {
         $checkpoints = $this->checkpoints->toArray();
-        usort($checkpoints, static fn (Checkpoint $a, Checkpoint $b) => $a->metricsFromStart->distance <=> $b->metricsFromStart->distance);
+        usort($checkpoints, static fn (Checkpoint $a, Checkpoint $b) => $a->getMetricsFromStart()->distance <=> $b->getMetricsFromStart()->distance);
 
         $this->checkpoints->clear();
         foreach ($checkpoints as $checkpoint) {
@@ -83,7 +87,7 @@ class Race
             throw new \DomainException('Race does not have start checkpoint');
         }
 
-        if (CheckpointType::Start !== $start->checkpointType) {
+        if (CheckpointType::Start !== $start->getCheckpointType()) {
             throw new \DomainException('Invalid Checkpoint type');
         }
 
@@ -97,7 +101,7 @@ class Race
             throw new \DomainException('Race does not have finish checkpoint');
         }
 
-        if (CheckpointType::Finish !== $finish->checkpointType) {
+        if (CheckpointType::Finish !== $finish->getCheckpointType()) {
             throw new \DomainException('Invalid Checkpoint type');
         }
 

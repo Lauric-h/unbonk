@@ -2,54 +2,82 @@
 
 namespace App\Domain\Race\Entity;
 
-class Checkpoint
+abstract class Checkpoint
 {
+    private string $id;
+    private string $name;
+    private string $location;
+    private MetricsFromStart $metricsFromStart;
+    private Race $race;
+
     public function __construct(
-        public string $id,
-        public string $name,
-        public string $location,
-        public CheckpointType $checkpointType,
-        public MetricsFromStart $metricsFromStart,
-        public Race $race,
-    ) {
-    }
-
-    public function updateProfileMetrics(Profile $profile): void
-    {
-        $estimatedTime = $this->metricsFromStart->estimatedTimeInMinutes;
-        $metrics = new MetricsFromStart($estimatedTime, $profile->distance, $profile->elevationGain, $profile->elevationLoss);
-        $this->metricsFromStart = $metrics;
-    }
-
-    public function update(
+        string $id,
         string $name,
         string $location,
-        CheckpointType $checkpointType,
-        int $estimatedTimeInMinutes,
-        int $distance,
-        int $elevationGain,
-        int $elevationLoss,
-    ): void {
+        MetricsFromStart $metricsFromStart,
+        Race $race,
+    ) {
+        $this->id = $id;
         $this->name = $name;
         $this->location = $location;
-
-        if ($this->isStartCheckpoint()
-            || $this->isFinishCheckpoint()
-        ) {
-            return;
-        }
-
-        $this->checkpointType = $checkpointType;
-        $this->metricsFromStart = new MetricsFromStart($estimatedTimeInMinutes, $distance, $elevationGain, $elevationLoss);
+        $this->metricsFromStart = $metricsFromStart;
+        $this->race = $race;
     }
 
-    public function isStartCheckpoint(): bool
+    abstract public function getCheckpointType(): CheckpointType;
+
+    abstract public function validate(): void;
+
+    public function setName(string $name): self
     {
-        return CheckpointType::Start === $this->checkpointType;
+        $this->name = $name;
+
+        return $this;
     }
 
-    public function isFinishCheckpoint(): bool
+    public function setId(string $id): self
     {
-        return CheckpointType::Finish === $this->checkpointType;
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function setLocation(string $location): self
+    {
+        $this->location = $location;
+
+        return $this;
+    }
+
+    public function setRace(Race $race): self
+    {
+        $this->race = $race;
+
+        return $this;
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getLocation(): string
+    {
+        return $this->location;
+    }
+
+    public function getMetricsFromStart(): MetricsFromStart
+    {
+        return $this->metricsFromStart;
+    }
+
+    public function getRace(): Race
+    {
+        return $this->race;
     }
 }

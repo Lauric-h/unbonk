@@ -2,7 +2,7 @@
 
 namespace App\Domain\Race\Entity;
 
-final class FinishCheckpoint extends AbstractCheckpoint
+final class FinishCheckpoint extends Checkpoint
 {
     public function __construct(
         string $id,
@@ -22,7 +22,6 @@ final class FinishCheckpoint extends AbstractCheckpoint
             $id,
             $name,
             $location,
-            CheckpointType::Finish,
             $metricsFromStart,
             $race
         );
@@ -46,5 +45,10 @@ final class FinishCheckpoint extends AbstractCheckpoint
         if (CheckpointType::Finish !== $this->getCheckpointType()) {
             throw new \DomainException('Invalid Checkpoint Type');
         }
+    }
+
+    public function getCheckpointType(): CheckpointType
+    {
+        return CheckpointType::Finish;
     }
 }

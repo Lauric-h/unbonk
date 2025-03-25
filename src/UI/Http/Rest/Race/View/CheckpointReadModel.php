@@ -18,11 +18,11 @@ final class CheckpointReadModel
     public static function fromCheckpoint(Checkpoint $checkpoint): self
     {
         return new self(
-            $checkpoint->id,
-            $checkpoint->name,
-            $checkpoint->location,
-            $checkpoint->checkpointType->value,
-            MetricsFromStartReadModel::fromDomain($checkpoint->metricsFromStart)
+            $checkpoint->getId(),
+            $checkpoint->getName(),
+            $checkpoint->getLocation(),
+            $checkpoint->getCheckpointType()->value,
+            MetricsFromStartReadModel::fromDomain($checkpoint->getMetricsFromStart())
         );
     }
 }
