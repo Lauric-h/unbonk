@@ -20,13 +20,15 @@ final class GetRaceCommandHandlerTest extends TestCase
         $query = new GetRaceQuery('id', 'runner-id');
         $handler = new GetRaceQueryHandler($repository);
         $date = new DatePoint('2025-03-19');
-        $race = new Race(
-            'id',
+        $race = Race::create(
+            'raceId',
             $date,
             'Le Bélier',
             new Profile(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
-            'runner-id'
+            'runner-id',
+            'startId',
+            'finishId'
         );
 
         $repository->expects($this->once())

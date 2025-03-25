@@ -3,224 +3,98 @@
 namespace App\Tests\Unit\Domain\Race;
 
 use App\Domain\Race\Entity\Address;
-use App\Domain\Race\Entity\Checkpoint;
-use App\Domain\Race\Entity\CheckpointType;
+use App\Domain\Race\Entity\FinishCheckpoint;
+use App\Domain\Race\Entity\IntermediateCheckpoint;
 use App\Domain\Race\Entity\MetricsFromStart;
 use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
+use App\Domain\Race\Entity\StartCheckpoint;
 use App\Domain\Race\Exception\CheckpointWithSameDistanceException;
-use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Clock\DatePoint;
 
 final class RaceTest extends TestCase
 {
-    public function testGetStartCheckpoint(): void
+    public function testCreateAddsStartAndFinishCheckpoints(): void
     {
-        $date = new DatePoint('2025-03-19');
-        $race = new Race(
-            'id',
-            $date,
+        $race = Race::create(
+            'raceId',
+            new \DateTimeImmutable(),
             'Le Bélier',
             new Profile(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
-            'runner-id'
+            'runner-id',
+            'startId',
+            'finishId'
         );
 
-        $checkpoint1 = new Checkpoint(
-            'id',
-            'name',
-            'location',
-            CheckpointType::Start,
-            new MetricsFromStart(0, 0, 0, 0),
-            $race
+        $this->assertCount(2, $race->getCheckpoints());
+        $this->assertInstanceOf(StartCheckpoint::class, $race->getCheckpoints()[0]);
+        $this->assertInstanceOf(FinishCheckpoint::class, $race->getCheckpoints()[1]);
+        $this->assertSame(0, $race->getCheckpoints()[0]->getMetricsFromStart()->distance);
+        $this->assertSame(0, $race->getCheckpoints()[0]->getMetricsFromStart()->elevationGain);
+        $this->assertSame(0, $race->getCheckpoints()[0]->getMetricsFromStart()->elevationLoss);
+        $this->assertSame(0, $race->getCheckpoints()[0]->getMetricsFromStart()->estimatedTimeInMinutes);
+
+        $this->assertSame($race->profile->distance, $race->getCheckpoints()[1]->getMetricsFromStart()->distance);
+        $this->assertSame($race->profile->elevationGain, $race->getCheckpoints()[1]->getMetricsFromStart()->elevationGain);
+        $this->assertSame($race->profile->elevationLoss, $race->getCheckpoints()[1]->getMetricsFromStart()->elevationLoss);
+        $this->assertSame(0, $race->getCheckpoints()[1]->getMetricsFromStart()->estimatedTimeInMinutes);
+    }
+
+    public function testGetStartCheckpoint(): void
+    {
+        $race = Race::create(
+            'raceId',
+            new \DateTimeImmutable(),
+            'Le Bélier',
+            new Profile(42, 2000, 2000),
+            new Address('La Clusaz', '74xxx'),
+            'runner-id',
+            'startId',
+            'finishId'
         );
 
-        $checkpoint2 = new Checkpoint(
-            'id2',
-            'name2',
-            'location2',
-            CheckpointType::Finish,
-            new MetricsFromStart(500, 42, 2000, 2000),
-            $race
-        );
-
-        $race->checkpoints->add($checkpoint1);
-        $race->checkpoints->add($checkpoint2);
-
-        $actual = $race->getStartCheckpoint();
-
-        $this->assertSame($checkpoint1, $actual);
+        $this->assertInstanceOf(StartCheckpoint::class, $race->getStartCheckpoint());
+        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->distance);
+        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->elevationGain);
+        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->elevationLoss);
     }
 
     public function testGetFinishCheckpoint(): void
     {
-        $date = new DatePoint('2025-03-19');
-        $race = new Race(
-            'id',
-            $date,
+        $race = Race::create(
+            'raceId',
+            new \DateTimeImmutable(),
             'Le Bélier',
             new Profile(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
-            'runner-id'
+            'runner-id',
+            'startId',
+            'finishId'
         );
 
-        $checkpoint1 = new Checkpoint(
-            'id',
-            'name',
-            'location',
-            CheckpointType::Start,
-            new MetricsFromStart(0, 0, 0, 0),
-            $race
-        );
-
-        $checkpoint2 = new Checkpoint(
-            'id2',
-            'name2',
-            'location2',
-            CheckpointType::Finish,
-            new MetricsFromStart(500, 42, 2000, 2000),
-            $race
-        );
-
-        $race->checkpoints->add($checkpoint1);
-        $race->checkpoints->add($checkpoint2);
-
-        $actual = $race->getFinishCheckpoint();
-
-        $this->assertSame($checkpoint2, $actual);
-    }
-
-    public function testGetFinishCheckpointWrongTypeThrowsException(): void
-    {
-        $date = new DatePoint('2025-03-19');
-        $race = new Race(
-            'id',
-            $date,
-            'Le Bélier',
-            new Profile(42, 2000, 2000),
-            new Address('La Clusaz', '74xxx'),
-            'runner-id'
-        );
-
-        $checkpoint1 = new Checkpoint(
-            'id',
-            'name',
-            'location',
-            CheckpointType::Start,
-            new MetricsFromStart(0, 0, 0, 0),
-            $race
-        );
-
-        $race->checkpoints->add($checkpoint1);
-
-        $this->expectException(\DomainException::class);
-        $this->expectExceptionMessage('Invalid Checkpoint type');
-
-        $race->getFinishCheckpoint();
-    }
-
-    public function testGetStartCheckpointWrongTypeThrowsException(): void
-    {
-        $date = new DatePoint('2025-03-19');
-        $race = new Race(
-            'id',
-            $date,
-            'Le Bélier',
-            new Profile(42, 2000, 2000),
-            new Address('La Clusaz', '74xxx'),
-            'runner-id'
-        );
-
-        $checkpoint1 = new Checkpoint(
-            'id',
-            'name',
-            'location',
-            CheckpointType::Finish,
-            new MetricsFromStart(0, 0, 0, 0),
-            $race
-        );
-
-        $race->checkpoints->add($checkpoint1);
-
-        $this->expectException(\DomainException::class);
-        $this->expectExceptionMessage('Invalid Checkpoint type');
-
-        $race->getStartCheckpoint();
-    }
-
-    public function testGetStartCheckpointEmptyThrowsException(): void
-    {
-        $date = new DatePoint('2025-03-19');
-        $race = new Race(
-            'id',
-            $date,
-            'Le Bélier',
-            new Profile(42, 2000, 2000),
-            new Address('La Clusaz', '74xxx'),
-            'runner-id'
-        );
-
-        $this->expectException(\DomainException::class);
-        $this->expectExceptionMessage('Race does not have start checkpoint');
-
-        $race->getStartCheckpoint();
-    }
-
-    public function testGetFinishCheckpointEmptyThrowsException(): void
-    {
-        $date = new DatePoint('2025-03-19');
-        $race = new Race(
-            'id',
-            $date,
-            'Le Bélier',
-            new Profile(42, 2000, 2000),
-            new Address('La Clusaz', '74xxx'),
-            'runner-id'
-        );
-
-        $this->expectException(\DomainException::class);
-        $this->expectExceptionMessage('Race does not have finish checkpoint');
-
-        $race->getFinishCheckpoint();
+        $this->assertInstanceOf(FinishCheckpoint::class, $race->getFinishCheckpoint());
+        $this->assertSame($race->profile->distance, $race->getFinishCheckpoint()->getMetricsFromStart()->distance);
+        $this->assertSame($race->profile->elevationGain, $race->getFinishCheckpoint()->getMetricsFromStart()->elevationGain);
+        $this->assertSame($race->profile->elevationLoss, $race->getFinishCheckpoint()->getMetricsFromStart()->elevationLoss);
     }
 
     public function testUpdate(): void
     {
-        $date = new DatePoint('2025-03-19');
-        $race = new Race(
-            'id',
-            $date,
+        $race = Race::create(
+            'raceId',
+            new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
             new Profile(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
-            'runner-id'
-        );
-
-        $checkpoint2 = new Checkpoint(
-            'id2',
-            'name2',
-            'location2',
-            CheckpointType::Finish,
-            new MetricsFromStart(500, 42, 2000, 2000),
-            $race
-        );
-
-        $race->checkpoints->add($checkpoint2);
-
-        $expected = new Race(
-            'id',
-            $date,
-            'Le Bélier update',
-            new Profile(43, 2001, 2001),
-            new Address('La Clusaze', '74xx1'),
             'runner-id',
-            new ArrayCollection([$checkpoint2])
+            'startId',
+            'finishId'
         );
 
         $race->update(
             'Le Bélier update',
-            $date,
+            new \DateTimeImmutable('2025-01-02'),
             43,
             2001,
             2001,
@@ -228,336 +102,207 @@ final class RaceTest extends TestCase
             '74xx1'
         );
 
-        $this->assertEquals($expected, $race);
+        $this->assertSame('raceId', $race->id);
+        $this->assertSame('2025-01-02', $race->date->format('Y-m-d'));
+        $this->assertSame(43, $race->profile->distance);
+        $this->assertSame(2001, $race->profile->elevationGain);
+        $this->assertSame(2001, $race->profile->elevationLoss);
+        $this->assertSame('La Clusaze', $race->address->city);
+        $this->assertSame('74xx1', $race->address->postalCode);
+        $this->assertSame(43, $race->getFinishCheckpoint()->getMetricsFromStart()->distance);
+        $this->assertSame(2001, $race->getFinishCheckpoint()->getMetricsFromStart()->elevationGain);
+        $this->assertSame(2001, $race->getFinishCheckpoint()->getMetricsFromStart()->elevationLoss);
     }
 
     public function testAddCheckpoint(): void
     {
-        $date = new DatePoint('2025-03-19');
-        $race = new Race(
-            'id',
-            $date,
+        $race = Race::create(
+            'raceId',
+            new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
             new Profile(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
-            'runner-id'
+            'runner-id',
+            'startId',
+            'finishId'
         );
 
-        $checkpoint2 = new Checkpoint(
-            'id2',
-            'name2',
-            'location2',
-            CheckpointType::Finish,
-            new MetricsFromStart(500, 42, 2000, 2000),
+        $checkpoint = new IntermediateCheckpoint(
+            'cpId',
+            'name',
+            'location',
+            new MetricsFromStart(120, 10, 1000, 1000),
             $race
         );
 
-        $race->addCheckpoint($checkpoint2);
+        $race->addCheckpoint($checkpoint);
 
-        $this->assertCount(1, $race->checkpoints);
-        $this->assertSame($checkpoint2, $race->checkpoints->first());
+        $this->assertCount(3, $race->getCheckpoints());
+        $this->assertSame($checkpoint, $race->getCheckpoints()->get(1));
     }
 
     public function testAddCheckpointToSameDistanceThrowsException(): void
     {
-        $date = new DatePoint('2025-03-19');
-        $race = new Race(
-            'id',
-            $date,
+        $race = Race::create(
+            'raceId',
+            new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
             new Profile(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
-            'runner-id'
+            'runner-id',
+            'startId',
+            'finishId'
         );
 
-        $checkpoint2 = new Checkpoint(
-            'id2',
-            'name2',
-            'location2',
-            CheckpointType::Finish,
-            new MetricsFromStart(500, 42, 2000, 2000),
+        $checkpoint = new IntermediateCheckpoint(
+            'cpId',
+            'name',
+            'location',
+            new MetricsFromStart(120, 10, 1000, 1000),
             $race
         );
-        $race->addCheckpoint($checkpoint2);
+
+        $checkpoint2 = new IntermediateCheckpoint(
+            'cpId2',
+            'name2',
+            'location2',
+            new MetricsFromStart(120, 10, 1000, 1000),
+            $race
+        );
 
         $this->expectException(CheckpointWithSameDistanceException::class);
-        $this->expectExceptionMessage('Checkpoint already exists at distance 42');
+        $this->expectExceptionMessage('Checkpoint already exists at distance 10');
+
+        $race->addCheckpoint($checkpoint);
         $race->addCheckpoint($checkpoint2);
-    }
-
-    public function testGetCheckpointAtDistanceWithSameDistanceThrowsException(): void
-    {
-        $date = new DatePoint('2025-03-19');
-        $race = new Race(
-            'id',
-            $date,
-            'Le Bélier',
-            new Profile(42, 2000, 2000),
-            new Address('La Clusaz', '74xxx'),
-            'runner-id',
-        );
-
-        $checkpoint1 = new Checkpoint(
-            'id2',
-            'name2',
-            'location2',
-            CheckpointType::Finish,
-            new MetricsFromStart(500, 42, 2000, 2000),
-            $race
-        );
-
-        $checkpoint2 = new Checkpoint(
-            'id2',
-            'name2',
-            'location2',
-            CheckpointType::Finish,
-            new MetricsFromStart(500, 42, 2000, 2000),
-            $race
-        );
-
-        $race->checkpoints->add($checkpoint1);
-        $race->checkpoints->add($checkpoint2);
-
-        $this->expectException(\DomainException::class);
-        $this->expectExceptionMessage('Multiple checkpoint for same distance: 42');
-        $race->getCheckpointAtDistance(42);
-    }
-
-    public function testGetCheckpointAtDistanceWithNoCheckpointReturnsNull(): void
-    {
-        $date = new DatePoint('2025-03-19');
-        $race = new Race(
-            'id',
-            $date,
-            'Le Bélier',
-            new Profile(42, 2000, 2000),
-            new Address('La Clusaz', '74xxx'),
-            'runner-id',
-        );
-
-        $checkpoint1 = new Checkpoint(
-            'id2',
-            'name2',
-            'location2',
-            CheckpointType::Finish,
-            new MetricsFromStart(500, 42, 2000, 2000),
-            $race
-        );
-
-        $race->checkpoints->add($checkpoint1);
-
-        $actual = $race->getCheckpointAtDistance(1);
-
-        $this->assertNotInstanceOf(Checkpoint::class, $actual);
-    }
-
-    public function testGetCheckpointAtDistanceWithEmptyCheckpointsReturnsNull(): void
-    {
-        $date = new DatePoint('2025-03-19');
-        $race = new Race(
-            'id',
-            $date,
-            'Le Bélier',
-            new Profile(42, 2000, 2000),
-            new Address('La Clusaz', '74xxx'),
-            'runner-id',
-        );
-
-        $actual = $race->getCheckpointAtDistance(1);
-
-        $this->assertNotInstanceOf(Checkpoint::class, $actual);
     }
 
     public function testGetCheckpointAtDistance(): void
     {
-        $date = new DatePoint('2025-03-19');
-        $race = new Race(
-            'id',
-            $date,
+        $race = Race::create(
+            'raceId',
+            new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
             new Profile(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
+            'startId',
+            'finishId'
         );
 
-        $checkpoint1 = new Checkpoint(
-            'id2',
-            'name2',
-            'location2',
-            CheckpointType::Finish,
-            new MetricsFromStart(500, 42, 2000, 2000),
+        $checkpoint = new IntermediateCheckpoint(
+            'cpId',
+            'name',
+            'location',
+            new MetricsFromStart(120, 10, 1000, 1000),
             $race
         );
 
-        $race->checkpoints->add($checkpoint1);
+        $race->addCheckpoint($checkpoint);
 
-        $actual = $race->getCheckpointAtDistance(42);
+        $actual = $race->getCheckpointAtDistance(10);
 
-        $this->assertSame($checkpoint1, $actual);
+        $this->assertSame($checkpoint, $actual);
     }
 
     public function testSortCheckpointByDistance()
     {
-        $date = new DatePoint('2025-03-19');
-        $race = new Race(
-            'id',
-            $date,
+        $race = Race::create(
+            'raceId',
+            new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
             new Profile(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
+            'startId',
+            'finishId'
         );
 
-        $checkpoint1 = new Checkpoint(
-            'id1',
-            'name1',
-            'location1',
-            CheckpointType::Start,
-            new MetricsFromStart(1000, 42, 2000, 2000),
+        $checkpoint = new IntermediateCheckpoint(
+            'cpId',
+            'name',
+            'location',
+            new MetricsFromStart(120, 10, 1000, 1000),
             $race
         );
 
-        $checkpoint2 = new Checkpoint(
-            'id2',
-            'name2',
-            'location2',
-            CheckpointType::Finish,
-            new MetricsFromStart(500, 22, 2000, 2000),
-            $race
-        );
-
-        $checkpoint3 = new Checkpoint(
-            'id3',
-            'name3',
-            'location3',
-            CheckpointType::None,
-            new MetricsFromStart(1500, 12, 2000, 2000),
-            $race
-        );
-
-        $race->checkpoints = new ArrayCollection([$checkpoint1, $checkpoint2, $checkpoint3]);
+        $race->addCheckpoint($checkpoint);
 
         $race->sortCheckpointByDistance();
 
-        $sortedCheckpoints = $race->checkpoints->toArray();
-        $this->assertSame([$checkpoint3, $checkpoint2, $checkpoint1], $sortedCheckpoints);
+        $this->assertSame(0, $race->getCheckpoints()->get(0)->getMetricsFromStart()->distance);
+        $this->assertSame(10, $race->getCheckpoints()->get(1)->getMetricsFromStart()->distance);
+        $this->assertSame(42, $race->getCheckpoints()->get(2)->getMetricsFromStart()->distance);
     }
 
     public function testRemoveCheckpointStartThrowsException(): void
     {
-        $date = new DatePoint('2025-03-19');
-        $race = new Race(
-            'id',
-            $date,
+        $race = Race::create(
+            'raceId',
+            new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
             new Profile(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
+            'startId',
+            'finishId'
         );
 
-        $checkpoint = new Checkpoint(
-            'id',
-            'name',
-            'location',
-            CheckpointType::Start,
-            new MetricsFromStart(0, 0, 0, 0),
-            $race
-        );
-
-        $race->checkpoints->add($checkpoint);
+        $cp = $race->getStartCheckpoint();
 
         $this->expectException(\DomainException::class);
-        $this->expectExceptionMessage('Cannot remove start or finish checkpoint');
+        $this->expectExceptionMessage('Cannot remove Start or Finish Checkpoint');
 
-        $race->removeCheckpoint($checkpoint);
+        $race->removeCheckpoint($cp);
     }
 
     public function testRemoveCheckpointFinishThrowsException(): void
     {
-        $date = new DatePoint('2025-03-19');
-        $race = new Race(
-            'id',
-            $date,
+        $race = Race::create(
+            'raceId',
+            new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
             new Profile(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
+            'startId',
+            'finishId'
         );
 
-        $checkpoint = new Checkpoint(
-            'id',
-            'name',
-            'location',
-            CheckpointType::Finish,
-            new MetricsFromStart(0, 42, 2000, 2000),
-            $race
-        );
-
-        $start = new Checkpoint(
-            'id1',
-            'name1',
-            'location1',
-            CheckpointType::Start,
-            new MetricsFromStart(1000, 0, 2000, 2000),
-            $race
-        );
-
-        $race->checkpoints->add($checkpoint);
-        $race->checkpoints->add($start);
-        $race->sortCheckpointByDistance();
+        $cp = $race->getFinishCheckpoint();
 
         $this->expectException(\DomainException::class);
-        $this->expectExceptionMessage('Cannot remove start or finish checkpoint');
+        $this->expectExceptionMessage('Cannot remove Start or Finish Checkpoint');
 
-        $race->removeCheckpoint($checkpoint);
+        $race->removeCheckpoint($cp);
     }
 
     public function testRemoveCheckpoint(): void
     {
-        $date = new DatePoint('2025-03-19');
-        $race = new Race(
-            'id',
-            $date,
+        $race = Race::create(
+            'raceId',
+            new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
             new Profile(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
+            'startId',
+            'finishId'
         );
 
-        $checkpoint1 = new Checkpoint(
-            'id1',
-            'name1',
-            'location1',
-            CheckpointType::Start,
-            new MetricsFromStart(0, 0, 0, 0),
+        $checkpoint = new IntermediateCheckpoint(
+            'cpId',
+            'name',
+            'location',
+            new MetricsFromStart(120, 10, 1000, 1000),
             $race
         );
 
-        $checkpoint2 = new Checkpoint(
-            'id2',
-            'name2',
-            'location2',
-            CheckpointType::None,
-            new MetricsFromStart(500, 12, 2000, 2000),
-            $race
-        );
+        $race->addCheckpoint($checkpoint);
 
-        $checkpoint3 = new Checkpoint(
-            'id3',
-            'name3',
-            'location3',
-            CheckpointType::Finish,
-            new MetricsFromStart(500, 42, 2000, 2000),
-            $race
-        );
+        $race->removeCheckpoint($checkpoint);
 
-        $race->checkpoints->add($checkpoint1);
-        $race->checkpoints->add($checkpoint2);
-        $race->checkpoints->add($checkpoint3);
-
-        $race->removeCheckpoint($checkpoint2);
-
-        $this->assertCount(2, $race->checkpoints);
-        $this->assertFalse($race->checkpoints->contains($checkpoint2));
+        $this->assertCount(2, $race->getCheckpoints());
+        $this->assertFalse($race->getCheckpoints()->contains($checkpoint));
     }
 }

@@ -32,7 +32,7 @@ final class RaceReadModel
             $race->runnerId,
             array_map(
                 static fn (Checkpoint $checkpoint) => CheckpointReadModel::fromCheckpoint($checkpoint),
-                $race->checkpoints->toArray(),
+                $race->getCheckpoints()->toArray(),
             )
         );
     }

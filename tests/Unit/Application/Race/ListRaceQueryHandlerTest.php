@@ -18,25 +18,29 @@ final class ListRaceQueryHandlerTest extends TestCase
     public function testListRace(): void
     {
         $date = new DatePoint('2025-03-19');
-        $race1 = new Race(
+        $race = Race::create(
             'id1',
             $date,
             'Le Bélier',
             new Profile(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
-            'runner-id'
+            'runner-id',
+            'startId',
+            'finishId'
         );
 
-        $race2 = new Race(
+        $race2 = Race::create(
             'id2',
             $date,
             'Trail des Aravis',
             new Profile(50, 3000, 3000),
             new Address('Thônes', '74xxx'),
-            'runner-id'
+            'runner-id',
+            'startId',
+            'finishId'
         );
 
-        $races = [$race1, $race2];
+        $races = [$race, $race2];
 
         $repository = $this->createMock(DoctrineRacesCatalog::class);
         $handler = new ListRaceQueryHandler($repository);

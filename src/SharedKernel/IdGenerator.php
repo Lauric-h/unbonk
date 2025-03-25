@@ -2,9 +2,10 @@
 
 namespace App\SharedKernel;
 
+use App\Application\Shared\IdGeneratorInterface;
 use Symfony\Component\Uid\Uuid;
 
-final class IdGenerator
+final class IdGenerator implements IdGeneratorInterface
 {
     public function generate(): string
     {

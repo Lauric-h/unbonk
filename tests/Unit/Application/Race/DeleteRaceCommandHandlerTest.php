@@ -9,7 +9,6 @@ use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
 use App\Infrastructure\Race\Persistence\DoctrineRacesCatalog;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Clock\DatePoint;
 
 final class DeleteRaceCommandHandlerTest extends TestCase
 {
@@ -19,13 +18,15 @@ final class DeleteRaceCommandHandlerTest extends TestCase
         $handler = new DeleteRaceCommandHandler($repository);
         $command = new DeleteRaceCommand('id', 'runner-id');
 
-        $race = new Race(
-            'id',
-            new DatePoint('2025-03-19'),
+        $race = Race::create(
+            'raceId',
+            new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
             new Profile(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
-            'runner-id'
+            'runner-id',
+            'startId',
+            'finishId'
         );
 
         $repository->expects($this->once())

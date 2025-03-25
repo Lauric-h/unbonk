@@ -8,6 +8,7 @@ use App\Domain\Race\Entity\Address;
 use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
 use App\Infrastructure\Race\Persistence\DoctrineRacesCatalog;
+use App\Tests\Unit\MockIdGenerator;
 use PHPUnit\Framework\TestCase;
 
 final class CreateRaceCommandHandlerTest extends TestCase
@@ -15,12 +16,13 @@ final class CreateRaceCommandHandlerTest extends TestCase
     public function testCreateRace(): void
     {
         $repository = $this->createMock(DoctrineRacesCatalog::class);
+        $idGenerator = new MockIdGenerator('id');
 
-        $now = new \DateTimeImmutable();
+        $date = new \DateTimeImmutable('2025-01-01');
         $command = new CreateRaceCommand(
-            id: 'race-id',
+            id: 'id',
             runnerId: 'runner-id',
-            date: $now,
+            date: $date,
             name: 'Le Bélier',
             distance: 42,
             elevationGain: 2000,
@@ -29,16 +31,18 @@ final class CreateRaceCommandHandlerTest extends TestCase
             postalCode: '74xxx'
         );
 
-        $expected = new Race(
-            id: 'race-id',
-            date: $now,
-            name: 'Le Bélier',
-            profile: new Profile(42, 2000, 2000),
-            address: new Address('La Clusaz', '74xxx'),
-            runnerId: 'runner-id',
+        $expected = Race::create(
+            'id',
+            $date,
+            'Le Bélier',
+            new Profile(42, 2000, 2000),
+            new Address('La Clusaz', '74xxx'),
+            'runner-id',
+            'id',
+            'id'
         );
 
-        $handler = new CreateRaceCommandHandler($repository);
+        $handler = new CreateRaceCommandHandler($repository, $idGenerator);
 
         $repository->expects($this->once())
             ->method('add')
