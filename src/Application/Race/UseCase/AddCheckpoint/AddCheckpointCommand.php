@@ -15,7 +15,7 @@ final class AddCheckpointCommand implements CommandInterface
         public string $name,
         #[Assert\NotBlank]
         public string $location,
-        #[Assert\Choice(callback: [CheckpointType::class, 'cases'])]
+        #[Assert\Choice(choices: [CheckpointType::AidStation, CheckpointType::Intermediate])]
         public CheckpointType $checkpointType,
         #[Assert\GreaterThanOrEqual(0)]
         public int $estimatedTimeInMinutes,

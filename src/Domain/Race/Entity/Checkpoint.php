@@ -28,6 +28,11 @@ abstract class Checkpoint
 
     abstract public function validate(): void;
 
+    protected function setMetricsFromStart(MetricsFromStart $metricsFromStart): void
+    {
+        $this->metricsFromStart = $metricsFromStart;
+    }
+
     public function setName(string $name): self
     {
         $this->name = $name;

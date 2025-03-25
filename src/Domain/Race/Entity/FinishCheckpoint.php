@@ -4,6 +4,8 @@ namespace App\Domain\Race\Entity;
 
 final class FinishCheckpoint extends Checkpoint
 {
+    public const DEFAULT_NAME = 'finish';
+
     public function __construct(
         string $id,
         string $name,
@@ -25,6 +27,24 @@ final class FinishCheckpoint extends Checkpoint
             $metricsFromStart,
             $race
         );
+
+        $this->validate();
+    }
+
+    public function updateProfileMetrics(Profile $profile): void
+    {
+        $metrics = new MetricsFromStart(
+            $this->getMetricsFromStart()->estimatedTimeInMinutes,
+            $profile->distance,
+            $profile->elevationGain,
+            $profile->elevationLoss,
+        );
+        $this->setMetricsFromStart($metrics);
+    }
+
+    protected function setMetricsFromStart(MetricsFromStart $metricsFromStart): void
+    {
+        $this->setMetricsFromStart($metricsFromStart);
     }
 
     public function update(string $name, string $location): void

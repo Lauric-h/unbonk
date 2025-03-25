@@ -4,6 +4,8 @@ namespace App\Domain\Race\Entity;
 
 final class StartCheckpoint extends Checkpoint
 {
+    public const DEFAULT_NAME = 'start';
+
     public function __construct(
         string $id,
         string $name,
@@ -18,6 +20,7 @@ final class StartCheckpoint extends Checkpoint
             $metricsFromStart,
             $race
         );
+        $this->validate();
     }
 
     public function update(string $name, string $location): void

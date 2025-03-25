@@ -18,6 +18,17 @@ final class IntermediateCheckpoint extends Checkpoint
             $metricsFromStart,
             $race,
         );
+        $this->validate();
+    }
+
+    public function update(
+        string $name,
+        string $location,
+        MetricsFromStart $metricsFromStart,
+    ): void {
+        $this->setName($name);
+        $this->setLocation($location);
+        $this->setMetricsFromStart($metricsFromStart);
     }
 
     public function validate(): void
