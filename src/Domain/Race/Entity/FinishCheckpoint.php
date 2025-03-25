@@ -42,11 +42,6 @@ final class FinishCheckpoint extends Checkpoint
         $this->setMetricsFromStart($metrics);
     }
 
-    protected function setMetricsFromStart(MetricsFromStart $metricsFromStart): void
-    {
-        $this->setMetricsFromStart($metricsFromStart);
-    }
-
     public function update(string $name, string $location): void
     {
         $this->setName($name);

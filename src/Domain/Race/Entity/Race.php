@@ -9,8 +9,10 @@ use Doctrine\Common\Collections\Collection;
 class Race
 {
     /**
-     * @param Collection<int, Checkpoint> $checkpoints
+     * @var Collection<int, Checkpoint>
      */
+    private Collection $checkpoints;
+
     private function __construct(
         public string $id,
         public \DateTimeImmutable $date,
@@ -18,8 +20,8 @@ class Race
         public Profile $profile,
         public Address $address,
         public string $runnerId,
-        public Collection $checkpoints = new ArrayCollection(),
     ) {
+        $this->checkpoints = new ArrayCollection();
     }
 
     public static function create(
@@ -87,6 +89,14 @@ class Race
     {
         if ($this->getCheckpointAtDistance($checkpoint->getMetricsFromStart()->distance)) {
             throw new CheckpointWithSameDistanceException($checkpoint->getMetricsFromStart()->distance);
+        }
+
+        if ($checkpoint->getMetricsFromStart()->distance >= $this->profile->distance) {
+            throw new \DomainException('New Checkpoint cannot exceed Race distance');
+        }
+
+        if ($checkpoint->getMetricsFromStart()->distance <= 0) {
+            throw new \DomainException('New Checkpoint cannot be negative');
         }
 
         $this->checkpoints->add($checkpoint);
@@ -166,5 +176,13 @@ class Race
 
         $this->checkpoints->removeElement($checkpoint);
         $this->sortCheckpointByDistance();
+    }
+
+    /**
+     * @return Collection<int, Checkpoint>
+     */
+    public function getCheckpoints(): Collection
+    {
+        return $this->checkpoints;
     }
 }

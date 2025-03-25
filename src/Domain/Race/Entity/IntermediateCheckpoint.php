@@ -36,6 +36,24 @@ final class IntermediateCheckpoint extends Checkpoint
         if (CheckpointType::Intermediate !== $this->getCheckpointType()) {
             throw new \DomainException('Invalid Checkpoint Type');
         }
+
+        if ($this->getMetricsFromStart()->distance >= $this->getRace()->profile->distance
+            || $this->getMetricsFromStart()->distance <= 0
+        ) {
+            throw new \DomainException(\sprintf('Invalid Checkpoint Distance: %d', $this->getMetricsFromStart()->distance));
+        }
+
+        if ($this->getMetricsFromStart()->elevationGain > $this->getRace()->profile->elevationGain
+            || $this->getMetricsFromStart()->elevationGain < 0
+        ) {
+            throw new \DomainException(\sprintf('Invalid Checkpoint elevation gain: %d', $this->getMetricsFromStart()->elevationGain));
+        }
+
+        if ($this->getMetricsFromStart()->elevationLoss > $this->getRace()->profile->elevationLoss
+            || $this->getMetricsFromStart()->elevationLoss < 0
+        ) {
+            throw new \DomainException(\sprintf('Invalid Checkpoint elevation loss: %d', $this->getMetricsFromStart()->elevationLoss));
+        }
     }
 
     public function getCheckpointType(): CheckpointType
