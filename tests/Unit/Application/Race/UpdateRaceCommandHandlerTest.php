@@ -9,6 +9,7 @@ use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
 use App\Infrastructure\Race\Persistence\DoctrineRacesCatalog;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Clock\DatePoint;
 
 final class UpdateRaceCommandHandlerTest extends TestCase
 {
@@ -29,13 +30,16 @@ final class UpdateRaceCommandHandlerTest extends TestCase
             postalCode: '74xxx'
         );
 
-        $expected = new Race(
-            id: 'race-id',
-            date: $now,
-            name: 'Le Bélier',
-            profile: new Profile(42, 2000, 2000),
-            address: new Address('La Clusaz', '74xxx'),
-            runnerId: 'runner-id',
+        $date = new DatePoint('2025-03-19');
+        $expected = Race::create(
+            'id1',
+            $date,
+            'Le Bélier',
+            new Profile(42, 2000, 2000),
+            new Address('La Clusaz', '74xxx'),
+            'runner-id',
+            'startId',
+            'finishId'
         );
 
         $repository->expects($this->once())
