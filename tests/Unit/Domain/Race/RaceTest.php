@@ -430,7 +430,7 @@ final class RaceTest extends TestCase
             'id3',
             'name3',
             'location3',
-            CheckpointType::None,
+            CheckpointType::Intermediate,
             new MetricsFromStart(1500, 12, 2000, 2000),
             $race
         );
@@ -537,7 +537,7 @@ final class RaceTest extends TestCase
             'id2',
             'name2',
             'location2',
-            CheckpointType::None,
+            CheckpointType::Intermediate,
             new MetricsFromStart(500, 12, 2000, 2000),
             $race
         );

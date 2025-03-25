@@ -61,7 +61,7 @@ final class RemoveCheckpointCommandHandlerTest extends TestCase
             'id',
             'name1',
             'location1',
-            CheckpointType::None,
+            CheckpointType::Intermediate,
             new MetricsFromStart(0, 10, 0, 0),
             $race
         );
