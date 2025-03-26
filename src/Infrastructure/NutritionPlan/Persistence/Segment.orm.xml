@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Domain\NutritionPlan\Entity\Segment">
+        <id name="id" type="string" />
+        <field name="startId" type="string" />
+        <field name="finishId" type="string" />
+
+        <embedded name="distance" class="App\Domain\Shared\Entity\Distance" />
+        <embedded name="ascent" class="App\Domain\Shared\Entity\Ascent" />
+        <embedded name="descent" class="App\Domain\Shared\Entity\Descent" />
+        <embedded name="estimatedTimeInMinutes" class="App\Domain\Shared\Entity\Duration" />
+        <embedded name="carbsTarget" class="App\Domain\Shared\Entity\Carbs" />
+
+        <many-to-one field="nutritionPlan" target-entity="App\Domain\NutritionPlan\Entity\NutritionPlan" inversed-by="segments" >
+            <join-column name="nutrition_plan_id" referenced-column-name="id" nullable="false" on-delete="CASCADE" />
+        </many-to-one>
+
+        <one-to-many field="nutritionItems" target-entity="App\Domain\NutritionPlan\Entity\NutritionItem" orphan-removal="true" mapped-by="segment">
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
+            <order-by>
+                <order-by-field name="carbs.value" direction="ASC" />
+            </order-by>
+        </one-to-many>
+    </entity>
+
+</doctrine-mapping>

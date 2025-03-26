@@ -34,6 +34,18 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Infrastructure/Race/Persistence'
                 prefix: 'App\Domain\Race\Entity'
                 alias: Race
+            NutritionPlan:
+                type: xml
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Infrastructure/NutritionPlan/Persistence'
+                prefix: 'App\Domain\NutritionPlan\Entity'
+                alias: NutritionPlan
+            Shared:
+                type: xml
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Infrastructure/Shared/Persistence'
+                prefix: 'App\Domain\Shared\Entity'
+                alias: Shared
         controller_resolver:
             auto_mapping: false
 
