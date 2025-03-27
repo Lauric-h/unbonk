@@ -2,7 +2,7 @@
 
 namespace App\Application\Food\UseCase\CreateFood;
 
-use App\Infrastructure\Shared\Bus\CommandInterface;
+use App\Domain\Shared\Bus\CommandInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final readonly class CreateFoodCommand implements CommandInterface

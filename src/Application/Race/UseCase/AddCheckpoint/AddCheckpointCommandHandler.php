@@ -7,7 +7,7 @@ use App\Domain\Race\Entity\CheckpointType;
 use App\Domain\Race\Entity\IntermediateCheckpoint;
 use App\Domain\Race\Entity\MetricsFromStart;
 use App\Domain\Race\Repository\RacesCatalog;
-use App\Infrastructure\Shared\Bus\CommandHandlerInterface;
+use App\Domain\Shared\Bus\CommandHandlerInterface;
 
 final readonly class AddCheckpointCommandHandler implements CommandHandlerInterface
 {

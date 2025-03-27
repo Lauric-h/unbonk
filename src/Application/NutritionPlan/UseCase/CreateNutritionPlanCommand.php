@@ -2,7 +2,7 @@
 
 namespace App\Application\NutritionPlan\UseCase;
 
-use App\Infrastructure\Shared\Bus\CommandInterface;
+use App\Domain\Shared\Bus\CommandInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final readonly class CreateNutritionPlanCommand implements CommandInterface

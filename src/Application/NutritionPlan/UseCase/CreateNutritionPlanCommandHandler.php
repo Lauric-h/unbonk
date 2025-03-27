@@ -4,7 +4,7 @@ namespace App\Application\NutritionPlan\UseCase;
 
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
-use App\Infrastructure\Shared\Bus\CommandHandlerInterface;
+use App\Domain\Shared\Bus\CommandHandlerInterface;
 
 final readonly class CreateNutritionPlanCommandHandler implements CommandHandlerInterface
 {

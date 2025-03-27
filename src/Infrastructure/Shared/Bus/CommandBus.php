@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Shared\Bus;
 
+use App\Domain\Shared\Bus\CommandInterface;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -9,7 +10,7 @@ class CommandBus
 {
     use MessageBusExceptionTrait;
 
-    public function __construct(private MessageBusInterface $messageBus)
+    public function __construct(private readonly MessageBusInterface $messageBus)
     {
     }
 

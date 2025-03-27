@@ -3,7 +3,7 @@
 namespace App\Application\Race\UseCase\DeleteRace;
 
 use App\Domain\Race\Repository\RacesCatalog;
-use App\Infrastructure\Shared\Bus\CommandHandlerInterface;
+use App\Domain\Shared\Bus\CommandHandlerInterface;
 
 final readonly class DeleteRaceCommandHandler implements CommandHandlerInterface
 {

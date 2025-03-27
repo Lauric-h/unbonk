@@ -3,7 +3,7 @@
 namespace App\Application\Race\UseCase\UpdateCheckpoint;
 
 use App\Domain\Race\Entity\CheckpointType;
-use App\Infrastructure\Shared\Bus\CommandInterface;
+use App\Domain\Shared\Bus\CommandInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final readonly class UpdateCheckpointCommand implements CommandInterface

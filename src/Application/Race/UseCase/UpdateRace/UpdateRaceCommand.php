@@ -2,7 +2,7 @@
 
 namespace App\Application\Race\UseCase\UpdateRace;
 
-use App\Infrastructure\Shared\Bus\CommandInterface;
+use App\Domain\Shared\Bus\CommandInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final readonly class UpdateRaceCommand implements CommandInterface

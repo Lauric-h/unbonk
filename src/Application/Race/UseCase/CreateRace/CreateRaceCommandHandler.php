@@ -6,13 +6,18 @@ use App\Application\Shared\IdGeneratorInterface;
 use App\Domain\Race\Entity\Address;
 use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
+use App\Domain\Race\Event\RaceCreated;
 use App\Domain\Race\Repository\RacesCatalog;
-use App\Infrastructure\Shared\Bus\CommandHandlerInterface;
+use App\Domain\Shared\Bus\CommandHandlerInterface;
+use App\Infrastructure\Shared\Bus\EventBus;
 
 final readonly class CreateRaceCommandHandler implements CommandHandlerInterface
 {
-    public function __construct(private RacesCatalog $racesCatalog, private IdGeneratorInterface $idGenerator)
-    {
+    public function __construct(
+        private RacesCatalog $racesCatalog,
+        private IdGeneratorInterface $idGenerator,
+        private EventBus $eventBus,
+    ) {
     }
 
     public function __invoke(CreateRaceCommand $command): void
@@ -29,5 +34,7 @@ final readonly class CreateRaceCommandHandler implements CommandHandlerInterface
         );
 
         $this->racesCatalog->add($race);
+
+        $this->eventBus->dispatchAfterCurrentBusHasFinished(new RaceCreated($race->id, $race->runnerId));
     }
 }

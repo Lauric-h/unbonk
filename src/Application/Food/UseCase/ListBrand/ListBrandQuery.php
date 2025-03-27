@@ -2,7 +2,7 @@
 
 namespace App\Application\Food\UseCase\ListBrand;
 
-use App\Infrastructure\Shared\Bus\QueryInterface;
+use App\Domain\Shared\Bus\QueryInterface;
 
 final class ListBrandQuery implements QueryInterface
 {
