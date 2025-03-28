@@ -3,7 +3,7 @@
 namespace App\Infrastructure\Race\EventSubscriber;
 
 use App\Domain\Race\Event\RaceCreated;
-use App\Infrastructure\Shared\Bus\EventBus;
+use App\Domain\Shared\Bus\EventBusInterface;
 use App\Infrastructure\Shared\Event\RaceCreatedIntegrationEvent;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -11,7 +11,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 final class PublishRaceCreatedListener
 {
     public function __construct(
-        private EventBus $eventBus,
+        private EventBusInterface $eventBus,
     ) {
     }
 

@@ -7,7 +7,9 @@ use App\Application\Race\UseCase\CreateRace\CreateRaceCommandHandler;
 use App\Domain\Race\Entity\Address;
 use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
+use App\Domain\Race\Event\RaceCreated;
 use App\Infrastructure\Race\Persistence\DoctrineRacesCatalog;
+use App\Infrastructure\Shared\Bus\EventBus;
 use App\Tests\Unit\MockIdGenerator;
 use PHPUnit\Framework\TestCase;
 
@@ -17,6 +19,7 @@ final class CreateRaceCommandHandlerTest extends TestCase
     {
         $repository = $this->createMock(DoctrineRacesCatalog::class);
         $idGenerator = new MockIdGenerator('id');
+        $eventBus = $this->createMock(EventBus::class);
 
         $date = new \DateTimeImmutable('2025-01-01');
         $command = new CreateRaceCommand(
@@ -42,11 +45,15 @@ final class CreateRaceCommandHandlerTest extends TestCase
             'id'
         );
 
-        $handler = new CreateRaceCommandHandler($repository, $idGenerator);
+        $handler = new CreateRaceCommandHandler($repository, $idGenerator, $eventBus);
 
         $repository->expects($this->once())
             ->method('add')
             ->with($expected);
+
+        $eventBus->expects($this->once())
+            ->method('dispatchAfterCurrentBusHasFinished')
+            ->with(new RaceCreated($expected->id, $expected->runnerId));
 
         ($handler)($command);
     }
