@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\NutritionPlan\UseCase;
+namespace App\Application\NutritionPlan\UseCase\CreateNutritionPlan;
 
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;

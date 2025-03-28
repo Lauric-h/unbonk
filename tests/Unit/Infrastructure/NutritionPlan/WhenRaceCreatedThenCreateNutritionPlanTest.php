@@ -2,7 +2,7 @@
 
 namespace App\Tests\Unit\Infrastructure\NutritionPlan;
 
-use App\Application\NutritionPlan\UseCase\CreateNutritionPlanCommand;
+use App\Application\NutritionPlan\UseCase\CreateNutritionPlan\CreateNutritionPlanCommand;
 use App\Infrastructure\NutritionPlan\EventSubscriber\WhenRaceCreatedThenCreateNutritionPlan;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\Infrastructure\Shared\Event\RaceCreatedIntegrationEvent;

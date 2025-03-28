@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\Application\NutritionPlan;
 
-use App\Application\NutritionPlan\UseCase\CreateNutritionPlanCommand;
-use App\Application\NutritionPlan\UseCase\CreateNutritionPlanCommandHandler;
+use App\Application\NutritionPlan\UseCase\CreateNutritionPlan\CreateNutritionPlanCommand;
+use App\Application\NutritionPlan\UseCase\CreateNutritionPlan\CreateNutritionPlanCommandHandler;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Infrastructure\NutritionPlan\Persistence\DoctrineNutritionPlansCatalog;
 use PHPUnit\Framework\TestCase;
