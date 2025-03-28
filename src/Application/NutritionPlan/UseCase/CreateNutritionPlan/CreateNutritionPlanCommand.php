@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\NutritionPlan\UseCase;
+namespace App\Application\NutritionPlan\UseCase\CreateNutritionPlan;
 
 use App\Domain\Shared\Bus\CommandInterface;
 use Symfony\Component\Validator\Constraints as Assert;
