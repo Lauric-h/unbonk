@@ -13,10 +13,10 @@ services:
 
     _instanceof:
         # All instances of this type will be autowired
-        App\Infrastructure\Shared\Bus\CommandHandlerInterface:
+        App\Domain\Shared\Bus\CommandHandlerInterface:
             tags:
                 - { name: messenger.message_handler, bus: command.bus }
-        App\Infrastructure\Shared\Bus\QueryHandlerInterface:
+        App\Domain\Shared\Bus\QueryHandlerInterface:
             tags:
                 - { name: messenger.message_handler, bus: query.bus }
 

@@ -3,7 +3,7 @@
 namespace App\Application\Food\UseCase\UpdateFood;
 
 use App\Domain\Food\Entity\IngestionType;
-use App\Infrastructure\Shared\Bus\CommandInterface;
+use App\Domain\Shared\Bus\CommandInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 final class UpdateFoodCommand implements CommandInterface

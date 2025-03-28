@@ -3,7 +3,7 @@
 namespace App\Application\Food\UseCase\DeleteBrand;
 
 use App\Domain\Food\Repository\BrandsCatalog;
-use App\Infrastructure\Shared\Bus\CommandHandlerInterface;
+use App\Domain\Shared\Bus\CommandHandlerInterface;
 
 final readonly class DeleteBrandCommandHandler implements CommandHandlerInterface
 {

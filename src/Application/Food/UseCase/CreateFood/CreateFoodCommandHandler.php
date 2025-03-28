@@ -5,7 +5,7 @@ namespace App\Application\Food\UseCase\CreateFood;
 use App\Domain\Food\Entity\Food;
 use App\Domain\Food\Entity\IngestionType;
 use App\Domain\Food\Repository\BrandsCatalog;
-use App\Infrastructure\Shared\Bus\CommandHandlerInterface;
+use App\Domain\Shared\Bus\CommandHandlerInterface;
 
 final readonly class CreateFoodCommandHandler implements CommandHandlerInterface
 {

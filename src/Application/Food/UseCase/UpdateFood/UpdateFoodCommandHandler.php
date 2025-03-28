@@ -3,7 +3,7 @@
 namespace App\Application\Food\UseCase\UpdateFood;
 
 use App\Domain\Food\Repository\FoodsCatalog;
-use App\Infrastructure\Shared\Bus\CommandHandlerInterface;
+use App\Domain\Shared\Bus\CommandHandlerInterface;
 
 final readonly class UpdateFoodCommandHandler implements CommandHandlerInterface
 {

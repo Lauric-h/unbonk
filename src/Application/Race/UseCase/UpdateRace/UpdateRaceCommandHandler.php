@@ -3,7 +3,7 @@
 namespace App\Application\Race\UseCase\UpdateRace;
 
 use App\Domain\Race\Repository\RacesCatalog;
-use App\Infrastructure\Shared\Bus\CommandHandlerInterface;
+use App\Domain\Shared\Bus\CommandHandlerInterface;
 
 final readonly class UpdateRaceCommandHandler implements CommandHandlerInterface
 {

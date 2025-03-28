@@ -3,7 +3,7 @@
 namespace App\Application\Food\UseCase\ListFood;
 
 use App\Domain\Food\Repository\FoodsCatalog;
-use App\Infrastructure\Shared\Bus\QueryHandlerInterface;
+use App\Domain\Shared\Bus\QueryHandlerInterface;
 use App\UI\Http\Rest\Food\View\ListFoodReadModel;
 
 final readonly class ListFoodQueryHandler implements QueryHandlerInterface

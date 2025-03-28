@@ -20,8 +20,13 @@ framework:
                 default_middleware: false
                 middleware:
                     - validation
+                    - dispatch_after_current_bus
                     - doctrine_transaction
                     - handle_message
             query.bus:
                 middleware:
                     - validation
+                    - dispatch_after_current_bus
+            event.bus:
+                middleware:
+                    - dispatch_after_current_bus

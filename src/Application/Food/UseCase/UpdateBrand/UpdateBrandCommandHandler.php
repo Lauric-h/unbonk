@@ -3,7 +3,7 @@
 namespace App\Application\Food\UseCase\UpdateBrand;
 
 use App\Domain\Food\Repository\BrandsCatalog;
-use App\Infrastructure\Shared\Bus\CommandHandlerInterface;
+use App\Domain\Shared\Bus\CommandHandlerInterface;
 
 final readonly class UpdateBrandCommandHandler implements CommandHandlerInterface
 {
