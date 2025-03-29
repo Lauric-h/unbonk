@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\Infrastructure\Race;
+namespace App\Tests\Unit\Infrastructure\Race\Listener;
 
 use App\Domain\Race\Event\RaceCreated;
 use App\Infrastructure\Race\EventSubscriber\PublishRaceCreatedListener;

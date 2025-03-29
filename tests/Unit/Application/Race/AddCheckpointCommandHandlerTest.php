@@ -10,7 +10,9 @@ use App\Domain\Race\Entity\IntermediateCheckpoint;
 use App\Domain\Race\Entity\MetricsFromStart;
 use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
+use App\Domain\Race\Event\CheckpointAdded;
 use App\Infrastructure\Race\Persistence\DoctrineRacesCatalog;
+use App\Infrastructure\Shared\Bus\EventBus;
 use PHPUnit\Framework\TestCase;
 
 final class AddCheckpointCommandHandlerTest extends TestCase
@@ -18,7 +20,8 @@ final class AddCheckpointCommandHandlerTest extends TestCase
     public function testAddCheckpointCommand(): void
     {
         $repository = $this->createMock(DoctrineRacesCatalog::class);
-        $handler = new AddCheckpointCommandHandler($repository);
+        $eventBus = $this->createMock(EventBus::class);
+        $handler = new AddCheckpointCommandHandler($repository, $eventBus);
         $command = new AddCheckpointCommand(
             'cpId',
             'name',
@@ -59,6 +62,10 @@ final class AddCheckpointCommandHandlerTest extends TestCase
         $repository->expects($this->once())
             ->method('add');
 
+        $eventBus->expects($this->once())
+            ->method('dispatchAfterCurrentBusHasFinished')
+            ->with(new CheckpointAdded($race->id, $race->runnerId));
+
         ($handler)($command);
 
         $this->assertCount(3, $race->getCheckpoints());
@@ -68,7 +75,8 @@ final class AddCheckpointCommandHandlerTest extends TestCase
     public function testAddStartCheckpointCommandThrowsException(): void
     {
         $repository = $this->createMock(DoctrineRacesCatalog::class);
-        $handler = new AddCheckpointCommandHandler($repository);
+        $eventBus = $this->createMock(EventBus::class);
+        $handler = new AddCheckpointCommandHandler($repository, $eventBus);
         $command = new AddCheckpointCommand(
             'cpId',
             'name',
@@ -101,6 +109,9 @@ final class AddCheckpointCommandHandlerTest extends TestCase
         $repository->expects($this->never())
             ->method('add');
 
+        $eventBus->expects($this->never())
+            ->method('dispatchAfterCurrentBusHasFinished');
+
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('You can only add Intermediate or AidStation checkpoints');
         ($handler)($command);
@@ -109,7 +120,8 @@ final class AddCheckpointCommandHandlerTest extends TestCase
     public function testAddFinishCheckpointCommandThrowsException(): void
     {
         $repository = $this->createMock(DoctrineRacesCatalog::class);
-        $handler = new AddCheckpointCommandHandler($repository);
+        $eventBus = $this->createMock(EventBus::class);
+        $handler = new AddCheckpointCommandHandler($repository, $eventBus);
         $command = new AddCheckpointCommand(
             'cpId',
             'name',
@@ -141,6 +153,9 @@ final class AddCheckpointCommandHandlerTest extends TestCase
 
         $repository->expects($this->never())
             ->method('add');
+
+        $eventBus->expects($this->never())
+            ->method('dispatchAfterCurrentBusHasFinished');
 
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('You can only add Intermediate or AidStation checkpoints');

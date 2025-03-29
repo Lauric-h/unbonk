@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\Infrastructure\Race;
+namespace App\Tests\Unit\Infrastructure\Race\Listener;
 
 use App\Domain\Race\Event\RaceDeleted;
 use App\Infrastructure\Race\EventSubscriber\PublishRaceDeletedListener;

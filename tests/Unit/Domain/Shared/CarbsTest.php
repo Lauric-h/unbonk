@@ -15,11 +15,11 @@ final class CarbsTest extends TestCase
         new Carbs(-1);
     }
 
-    public function testCanInitializeWithZeroValue(): void
+    public function testZeroValueInitializesWithDefaultValue(): void
     {
         $carbs = new Carbs(0);
 
-        $this->assertSame(0, $carbs->value);
+        $this->assertSame(Carbs::DEFAULT_PER_HOUR, $carbs->value);
     }
 
     public function testCanInitializeWithPositiveValue(): void

@@ -10,4 +10,9 @@ final readonly class Duration
             throw new \DomainException(\sprintf('Minutes cannot be negative: %d', $this->minutes));
         }
     }
+
+    public function hours(): float
+    {
+        return $this->minutes / 3600;
+    }
 }

@@ -6,12 +6,14 @@ use App\Domain\Race\Entity\AidStationCheckpoint;
 use App\Domain\Race\Entity\CheckpointType;
 use App\Domain\Race\Entity\IntermediateCheckpoint;
 use App\Domain\Race\Entity\MetricsFromStart;
+use App\Domain\Race\Event\CheckpointAdded;
 use App\Domain\Race\Repository\RacesCatalog;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
+use App\Infrastructure\Shared\Bus\EventBus;
 
 final readonly class AddCheckpointCommandHandler implements CommandHandlerInterface
 {
-    public function __construct(private RacesCatalog $racesCatalog)
+    public function __construct(private RacesCatalog $racesCatalog, private EventBus $eventBus)
     {
     }
 
@@ -40,5 +42,7 @@ final readonly class AddCheckpointCommandHandler implements CommandHandlerInterf
         $race->addCheckpoint($checkpoint);
 
         $this->racesCatalog->add($race);
+
+        $this->eventBus->dispatchAfterCurrentBusHasFinished(new CheckpointAdded($race->id, $race->runnerId));
     }
 }
