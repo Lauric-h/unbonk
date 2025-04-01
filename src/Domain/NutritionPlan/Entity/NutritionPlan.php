@@ -17,4 +17,20 @@ final class NutritionPlan
         public Collection $segments = new ArrayCollection(),
     ) {
     }
+
+    public function getSegmentByStartId(string $startId): ?Segment
+    {
+        return $this->segments->findFirst(static fn (int $key, Segment $segment) => $segment->startId === $startId);
+    }
+
+    /**
+     * @param Collection<int, Segment> $segments
+     */
+    public function replaceAllSegments(Collection $segments): void
+    {
+        $this->segments->clear();
+        foreach ($segments as $segment) {
+            $this->segments->add($segment);
+        }
+    }
 }

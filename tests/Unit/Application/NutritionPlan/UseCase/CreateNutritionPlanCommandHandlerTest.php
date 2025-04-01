@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\Application\NutritionPlan;
+namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 
 use App\Application\NutritionPlan\UseCase\CreateNutritionPlan\CreateNutritionPlanCommand;
 use App\Application\NutritionPlan\UseCase\CreateNutritionPlan\CreateNutritionPlanCommandHandler;

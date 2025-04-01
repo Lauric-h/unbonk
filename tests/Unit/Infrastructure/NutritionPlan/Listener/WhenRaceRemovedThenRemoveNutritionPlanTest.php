@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\Infrastructure\NutritionPlan;
+namespace App\Tests\Unit\Infrastructure\NutritionPlan\Listener;
 
 use App\Application\NutritionPlan\UseCase\DeleteNutritionPlan\DeleteNutritionPlanCommand;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
