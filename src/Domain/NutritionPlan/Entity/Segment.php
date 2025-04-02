@@ -28,4 +28,9 @@ class Segment
         public Collection $nutritionItems = new ArrayCollection(),
     ) {
     }
+
+    public function addNutritionItem(NutritionItem $nutritionItem): void
+    {
+        // TODO
+    }
 }
