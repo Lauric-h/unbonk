@@ -232,6 +232,6 @@ final class UpdateCheckpointCommandHandlerTest extends TestCase
         $this->assertSame(42, $race->getFinishCheckpoint()->getMetricsFromStart()->distance);
         $this->assertSame(2000, $race->getFinishCheckpoint()->getMetricsFromStart()->elevationGain);
         $this->assertSame(2000, $race->getFinishCheckpoint()->getMetricsFromStart()->elevationLoss);
-        $this->assertSame(0, $race->getFinishCheckpoint()->getMetricsFromStart()->estimatedTimeInMinutes);
+        $this->assertSame(360, $race->getFinishCheckpoint()->getMetricsFromStart()->estimatedTimeInMinutes);
     }
 }

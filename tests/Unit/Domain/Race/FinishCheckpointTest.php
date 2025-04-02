@@ -11,7 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 final class FinishCheckpointTest extends TestCase
 {
-    public function testStartCheckpoint(): void
+    public function testFinishCheckpoint(): void
     {
         $race = Race::create(
             'id',
@@ -35,7 +35,7 @@ final class FinishCheckpointTest extends TestCase
         $this->assertSame(CheckpointType::Finish, $checkpoint->getCheckpointType());
     }
 
-    public function testStartCheckpointUpdate(): void
+    public function testFinishCheckpointUpdate(): void
     {
         $race = Race::create(
             'id',
@@ -60,6 +60,10 @@ final class FinishCheckpointTest extends TestCase
 
         $this->assertSame('updated', $checkpoint->getName());
         $this->assertSame('updatedLocation', $checkpoint->getLocation());
+        $this->assertSame(2000, $checkpoint->getMetricsFromStart()->elevationGain);
+        $this->assertSame(2000, $checkpoint->getMetricsFromStart()->elevationLoss);
+        $this->assertSame(42, $checkpoint->getMetricsFromStart()->distance);
+        $this->assertSame(120, $checkpoint->getMetricsFromStart()->estimatedTimeInMinutes);
     }
 
     public function testFinishCheckpointUpdateProfileMetrics(): void

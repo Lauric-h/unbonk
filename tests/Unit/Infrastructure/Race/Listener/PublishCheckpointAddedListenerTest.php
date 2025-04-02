@@ -51,7 +51,7 @@ final class PublishCheckpointAddedListenerTest extends TestCase
         $checkpointDTOs = [
             new CheckpointDTO('startId', 'start', 'La Clusaz', 0, 0, 0, 0),
             new CheckpointDTO('cpId', 'name', 'location', 10, 120, 1000, 1000),
-            new CheckpointDTO('finishId', 'finish', 'La Clusaz', 42, 0, 2000, 2000),
+            new CheckpointDTO('finishId', 'finish', 'La Clusaz', 42, 360, 2000, 2000),
         ];
 
         $eventToDispatch = new CheckpointAddedIntegrationEvent(
