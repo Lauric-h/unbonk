@@ -61,13 +61,9 @@ final class FinishCheckpoint extends Checkpoint
             throw new \DomainException('Invalid Checkpoint Type');
         }
 
-        /*
-         * TODO
-         * Uncomment when default duration is set
-         */
-        //        if ($this->getMetricsFromStart()->estimatedTimeInMinutes === 0) {
-        //            throw new \DomainException('Cannot have FinishCheckpoint with 0 minute');
-        //        }
+        if (0 === $this->getMetricsFromStart()->estimatedTimeInMinutes) {
+            throw new \DomainException('Cannot have FinishCheckpoint with 0 minute');
+        }
     }
 
     public function getCheckpointType(): CheckpointType

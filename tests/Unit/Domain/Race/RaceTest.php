@@ -38,7 +38,7 @@ final class RaceTest extends TestCase
         $this->assertSame($race->profile->distance, $race->getCheckpoints()[1]->getMetricsFromStart()->distance);
         $this->assertSame($race->profile->elevationGain, $race->getCheckpoints()[1]->getMetricsFromStart()->elevationGain);
         $this->assertSame($race->profile->elevationLoss, $race->getCheckpoints()[1]->getMetricsFromStart()->elevationLoss);
-        $this->assertSame(0, $race->getCheckpoints()[1]->getMetricsFromStart()->estimatedTimeInMinutes);
+        $this->assertSame(360, $race->getCheckpoints()[1]->getMetricsFromStart()->estimatedTimeInMinutes);
     }
 
     public function testGetStartCheckpoint(): void

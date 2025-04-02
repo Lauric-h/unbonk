@@ -32,6 +32,10 @@ final class StartCheckpointTest extends TestCase
         );
 
         $this->assertSame(CheckpointType::Start, $checkpoint->getCheckpointType());
+        $this->assertSame(0, $checkpoint->getMetricsFromStart()->elevationGain);
+        $this->assertSame(0, $checkpoint->getMetricsFromStart()->elevationLoss);
+        $this->assertSame(0, $checkpoint->getMetricsFromStart()->distance);
+        $this->assertSame(0, $checkpoint->getMetricsFromStart()->estimatedTimeInMinutes);
     }
 
     public function testStartCheckpointUpdate(): void
@@ -58,5 +62,9 @@ final class StartCheckpointTest extends TestCase
 
         $this->assertSame('updated', $checkpoint->getName());
         $this->assertSame('updatedLocation', $checkpoint->getLocation());
+        $this->assertSame(0, $checkpoint->getMetricsFromStart()->elevationGain);
+        $this->assertSame(0, $checkpoint->getMetricsFromStart()->elevationLoss);
+        $this->assertSame(0, $checkpoint->getMetricsFromStart()->distance);
+        $this->assertSame(0, $checkpoint->getMetricsFromStart()->estimatedTimeInMinutes);
     }
 }

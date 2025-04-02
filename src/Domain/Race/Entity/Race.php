@@ -8,6 +8,8 @@ use Doctrine\Common\Collections\Collection;
 
 class Race
 {
+    private const DEFAULT_PACE = 10;
+
     /**
      * @var Collection<int, Checkpoint>
      */
@@ -54,7 +56,7 @@ class Race
             $finishCheckpointId,
             FinishCheckpoint::DEFAULT_NAME,
             $address->city,
-            0,
+            $race->setDefaultEstimatedFinishDurationTime(),
             $race
         );
 
@@ -184,5 +186,14 @@ class Race
     public function getCheckpoints(): Collection
     {
         return $this->checkpoints;
+    }
+
+    private function setDefaultEstimatedFinishDurationTime(): int
+    {
+        $distance = $this->profile->distance;
+        $ascentInKmEffort = $this->profile->elevationGain / 100 >= 1 ? $this->profile->elevationGain / 100 : 0;
+        $defaultInHours = ($distance + $ascentInKmEffort) / self::DEFAULT_PACE;
+
+        return (int) $defaultInHours * 60;
     }
 }
