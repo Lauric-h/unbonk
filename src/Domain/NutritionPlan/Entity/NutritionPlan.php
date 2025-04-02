@@ -5,7 +5,7 @@ namespace App\Domain\NutritionPlan\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-final class NutritionPlan
+class NutritionPlan
 {
     /**
      * @param Collection<int, Segment> $segments
