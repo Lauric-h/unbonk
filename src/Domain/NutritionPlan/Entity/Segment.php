@@ -43,4 +43,13 @@ class Segment
     {
         return $this->nutritionItems->findFirst(static fn (int $key, NutritionItem $nutritionItem) => $nutritionItem->externalReference === $externalReference);
     }
+
+    public function removeNutritionItem(string $nutritionItemId): void
+    {
+        $nutritionItem = $this->nutritionItems->findFirst(static fn (int $key, NutritionItem $nutritionItem) => $nutritionItem->id === $nutritionItemId);
+        if (null === $nutritionItem) {
+            throw new \DomainException(\sprintf('Segment does not have NutritionItem with id %s', $nutritionItemId));
+        }
+        $this->nutritionItems->removeElement($nutritionItem);
+    }
 }
