@@ -169,4 +169,79 @@ final class SegmentTest extends TestCase
 
         $this->assertNotInstanceOf(NutritionItem::class, $segment->getNutritionItemByExternalReference('abcde'));
     }
+
+    public function testRemoveNutritionItemNotFoundThrowsException(): void
+    {
+        $nutritionPlan = new NutritionPlan(
+            'id',
+            'raceId',
+            'runnerId',
+            new ArrayCollection([])
+        );
+
+        $segment = new Segment(
+            id: 'segmentId',
+            startId: 'startId',
+            finishId: 'finishId',
+            distance: new Distance(1),
+            ascent: new Ascent(1),
+            descent: new Descent(1),
+            estimatedTimeInMinutes: new Duration(120),
+            carbsTarget: new Carbs(0),
+            nutritionPlan: $nutritionPlan
+        );
+
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('Segment does not have NutritionItem with id abcde');
+        $segment->removeNutritionItem('abcde');
+    }
+
+    public function testRemoveNutritionItem(): void
+    {
+        $nutritionPlan = new NutritionPlan(
+            'id',
+            'raceId',
+            'runnerId',
+            new ArrayCollection([])
+        );
+
+        $segment = new Segment(
+            id: 'segmentId',
+            startId: 'startId',
+            finishId: 'finishId',
+            distance: new Distance(1),
+            ascent: new Ascent(1),
+            descent: new Descent(1),
+            estimatedTimeInMinutes: new Duration(120),
+            carbsTarget: new Carbs(0),
+            nutritionPlan: $nutritionPlan
+        );
+
+        $nutritionItem = new NutritionItem(
+            id: 'abcde',
+            externalReference: 'externalReference',
+            name: 'name',
+            carbs: new Carbs(40),
+            quantity: new Quantity(2),
+            segment: $segment,
+            calories: null
+        );
+        $segment->nutritionItems->add($nutritionItem);
+
+        $nutritionItem2 = new NutritionItem(
+            id: 'fghij',
+            externalReference: 'externalReference',
+            name: 'name',
+            carbs: new Carbs(40),
+            quantity: new Quantity(2),
+            segment: $segment,
+            calories: null
+        );
+        $segment->nutritionItems->add($nutritionItem2);
+
+        $segment->removeNutritionItem('abcde');
+
+        $this->assertCount(1, $segment->nutritionItems);
+        $this->assertSame('fghij', $segment->nutritionItems->first()->id);
+    }
 }

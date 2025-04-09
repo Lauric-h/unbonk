@@ -9,4 +9,6 @@ interface SegmentsCatalog
     public function get(string $id): Segment;
 
     public function add(Segment $segment): void;
+
+    public function getByNutritionPlanAndId(string $nutritionPlanId, string $segmentId): Segment;
 }
