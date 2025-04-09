@@ -28,4 +28,19 @@ class Segment
         public Collection $nutritionItems = new ArrayCollection(),
     ) {
     }
+
+    public function addNutritionItem(NutritionItem $nutritionItem): void
+    {
+        $existingNutritionItem = $this->getNutritionItemByExternalReference($nutritionItem->externalReference);
+        if (null !== $existingNutritionItem) {
+            $this->nutritionItems->removeElement($existingNutritionItem);
+        }
+
+        $this->nutritionItems->add($nutritionItem);
+    }
+
+    public function getNutritionItemByExternalReference(string $externalReference): ?NutritionItem
+    {
+        return $this->nutritionItems->findFirst(static fn (int $key, NutritionItem $nutritionItem) => $nutritionItem->externalReference === $externalReference);
+    }
 }
