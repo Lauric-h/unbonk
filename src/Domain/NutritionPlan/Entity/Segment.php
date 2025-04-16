@@ -44,6 +44,11 @@ class Segment
         return $this->nutritionItems->findFirst(static fn (int $key, NutritionItem $nutritionItem) => $nutritionItem->externalReference === $externalReference);
     }
 
+    public function getNutritionItemById(string $nutritionItemId): ?NutritionItem
+    {
+        return $this->nutritionItems->findFirst(static fn (int $key, NutritionItem $nutritionItem) => $nutritionItem->id === $nutritionItemId);
+    }
+
     public function removeNutritionItem(string $nutritionItemId): void
     {
         $nutritionItem = $this->nutritionItems->findFirst(static fn (int $key, NutritionItem $nutritionItem) => $nutritionItem->id === $nutritionItemId);
