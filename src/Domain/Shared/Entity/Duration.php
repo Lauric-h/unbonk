@@ -13,6 +13,6 @@ final readonly class Duration
 
     public function hours(): float
     {
-        return $this->minutes / 3600;
+        return $this->minutes / 60;
     }
 }
