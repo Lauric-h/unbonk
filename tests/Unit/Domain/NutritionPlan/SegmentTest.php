@@ -244,4 +244,63 @@ final class SegmentTest extends TestCase
         $this->assertCount(1, $segment->nutritionItems);
         $this->assertSame('fghij', $segment->nutritionItems->first()->id);
     }
+
+    public function testGetNutritionItemById(): void
+    {
+        $nutritionPlan = new NutritionPlan(
+            'id',
+            'raceId',
+            'runnerId',
+            new ArrayCollection([])
+        );
+
+        $segment = new Segment(
+            id: 'segmentId',
+            startId: 'startId',
+            finishId: 'finishId',
+            distance: new Distance(1),
+            ascent: new Ascent(1),
+            descent: new Descent(1),
+            estimatedTimeInMinutes: new Duration(120),
+            carbsTarget: new Carbs(0),
+            nutritionPlan: $nutritionPlan
+        );
+
+        $nutritionItem = new NutritionItem(
+            id: 'itemId',
+            externalReference: 'externalReference',
+            name: 'name',
+            carbs: new Carbs(40),
+            quantity: new Quantity(2),
+            segment: $segment,
+            calories: null
+        );
+        $segment->nutritionItems->add($nutritionItem);
+
+        $this->assertSame($nutritionItem, $segment->getNutritionItemById('itemId'));
+    }
+
+    public function testGetNutritionItemByIdReturnsNull(): void
+    {
+        $nutritionPlan = new NutritionPlan(
+            'id',
+            'raceId',
+            'runnerId',
+            new ArrayCollection([])
+        );
+
+        $segment = new Segment(
+            id: 'segmentId',
+            startId: 'startId',
+            finishId: 'finishId',
+            distance: new Distance(1),
+            ascent: new Ascent(1),
+            descent: new Descent(1),
+            estimatedTimeInMinutes: new Duration(120),
+            carbsTarget: new Carbs(0),
+            nutritionPlan: $nutritionPlan
+        );
+
+        $this->assertNotInstanceOf(NutritionItem::class, $segment->getNutritionItemById('abcde'));
+    }
 }
