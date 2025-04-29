@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\UI\Race;
 
+use App\Application\Race\ReadModel\ProfileReadModel;
 use App\Domain\Race\Entity\Profile;
-use App\UI\Http\Rest\Race\View\ProfileReadModel;
 use PHPUnit\Framework\TestCase;
 
 final class ProfileReadModelTest extends TestCase

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UI\Http\Rest\NutritionPlan\View;
+namespace App\Application\NutritionPlan\ReadModel;
 
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Domain\NutritionPlan\Entity\Segment;

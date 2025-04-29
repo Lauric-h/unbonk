@@ -2,11 +2,11 @@
 
 namespace App\Tests\Unit\UI\Race;
 
+use App\Application\Race\ReadModel\ListRaceReadModel;
+use App\Application\Race\ReadModel\RaceReadModel;
 use App\Domain\Race\Entity\Address;
 use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
-use App\UI\Http\Rest\Race\View\ListRaceReadModel;
-use App\UI\Http\Rest\Race\View\RaceReadModel;
 use PHPUnit\Framework\TestCase;
 
 final class ListRaceReadModelTest extends TestCase

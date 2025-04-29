@@ -2,10 +2,10 @@
 
 namespace App\Tests\Unit\UI\Food;
 
+use App\Application\Food\ReadModel\FoodReadModel;
 use App\Domain\Food\Entity\Brand;
 use App\Domain\Food\Entity\Food;
 use App\Domain\Food\Entity\IngestionType;
-use App\UI\Http\Rest\Food\View\FoodReadModel;
 use PHPUnit\Framework\TestCase;
 
 final class FoodReadModelTest extends TestCase

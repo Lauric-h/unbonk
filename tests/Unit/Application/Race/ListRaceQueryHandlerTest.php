@@ -2,14 +2,14 @@
 
 namespace App\Tests\Unit\Application\Race;
 
+use App\Application\Race\ReadModel\ListRaceReadModel;
+use App\Application\Race\ReadModel\RaceReadModel;
 use App\Application\Race\UseCase\ListRace\ListRaceQuery;
 use App\Application\Race\UseCase\ListRace\ListRaceQueryHandler;
 use App\Domain\Race\Entity\Address;
 use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
 use App\Infrastructure\Race\Persistence\DoctrineRacesCatalog;
-use App\UI\Http\Rest\Race\View\ListRaceReadModel;
-use App\UI\Http\Rest\Race\View\RaceReadModel;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Clock\DatePoint;
 

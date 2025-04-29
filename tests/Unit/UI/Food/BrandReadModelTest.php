@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\UI\Food;
 
+use App\Application\Food\ReadModel\BrandReadModel;
 use App\Domain\Food\Entity\Brand;
-use App\UI\Http\Rest\Food\View\BrandReadModel;
 use PHPUnit\Framework\TestCase;
 
 class BrandReadModelTest extends TestCase

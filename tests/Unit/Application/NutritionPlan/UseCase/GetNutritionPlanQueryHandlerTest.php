@@ -2,6 +2,9 @@
 
 namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 
+use App\Application\NutritionPlan\ReadModel\NutritionItemReadModel;
+use App\Application\NutritionPlan\ReadModel\NutritionPlanReadModel;
+use App\Application\NutritionPlan\ReadModel\SegmentReadModel;
 use App\Application\NutritionPlan\UseCase\GetNutritionPlan\GetNutritionPlanQuery;
 use App\Application\NutritionPlan\UseCase\GetNutritionPlan\GetNutritionPlanQueryHandler;
 use App\Domain\NutritionPlan\Entity\NutritionItem;
@@ -15,9 +18,6 @@ use App\Domain\Shared\Entity\Carbs;
 use App\Domain\Shared\Entity\Descent;
 use App\Domain\Shared\Entity\Distance;
 use App\Domain\Shared\Entity\Duration;
-use App\UI\Http\Rest\NutritionPlan\View\NutritionItemReadModel;
-use App\UI\Http\Rest\NutritionPlan\View\NutritionPlanReadModel;
-use App\UI\Http\Rest\NutritionPlan\View\SegmentReadModel;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 

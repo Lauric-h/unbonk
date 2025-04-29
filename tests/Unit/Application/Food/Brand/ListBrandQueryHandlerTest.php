@@ -2,12 +2,12 @@
 
 namespace App\Tests\Unit\Application\Food\Brand;
 
+use App\Application\Food\ReadModel\BrandReadModel;
+use App\Application\Food\ReadModel\ListBrandReadModel;
 use App\Application\Food\UseCase\ListBrand\ListBrandQuery;
 use App\Application\Food\UseCase\ListBrand\ListBrandQueryHandler;
 use App\Domain\Food\Entity\Brand;
 use App\Domain\Food\Repository\BrandsCatalog;
-use App\UI\Http\Rest\Food\View\BrandReadModel;
-use App\UI\Http\Rest\Food\View\ListBrandReadModel;
 use PHPUnit\Framework\TestCase;
 
 final class ListBrandQueryHandlerTest extends TestCase

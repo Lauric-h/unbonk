@@ -2,9 +2,9 @@
 
 namespace App\Application\Race\UseCase\GetRace;
 
+use App\Application\Race\ReadModel\RaceReadModel;
 use App\Domain\Race\Repository\RacesCatalog;
 use App\Domain\Shared\Bus\QueryHandlerInterface;
-use App\UI\Http\Rest\Race\View\RaceReadModel;
 
 final class GetRaceQueryHandler implements QueryHandlerInterface
 {
