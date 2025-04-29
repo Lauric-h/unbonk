@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UI\Http\Rest\Race\View;
+namespace App\Application\Race\ReadModel;
 
 use App\Domain\Race\Entity\MetricsFromStart;
 

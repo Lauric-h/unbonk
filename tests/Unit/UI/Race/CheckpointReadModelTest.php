@@ -2,12 +2,12 @@
 
 namespace App\Tests\Unit\UI\Race;
 
+use App\Application\Race\ReadModel\CheckpointReadModel;
+use App\Application\Race\ReadModel\MetricsFromStartReadModel;
 use App\Domain\Race\Entity\Address;
 use App\Domain\Race\Entity\CheckpointType;
 use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
-use App\UI\Http\Rest\Race\View\CheckpointReadModel;
-use App\UI\Http\Rest\Race\View\MetricsFromStartReadModel;
 use PHPUnit\Framework\TestCase;
 
 final class CheckpointReadModelTest extends TestCase

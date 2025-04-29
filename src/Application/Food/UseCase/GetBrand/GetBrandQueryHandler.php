@@ -2,9 +2,9 @@
 
 namespace App\Application\Food\UseCase\GetBrand;
 
+use App\Application\Food\ReadModel\BrandReadModel;
 use App\Domain\Food\Repository\BrandsCatalog;
 use App\Domain\Shared\Bus\QueryHandlerInterface;
-use App\UI\Http\Rest\Food\View\BrandReadModel;
 
 final readonly class GetBrandQueryHandler implements QueryHandlerInterface
 {

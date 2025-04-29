@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\UI\NutritionPlan;
 
+use App\Application\NutritionPlan\ReadModel\NutritionPlanReadModel;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
-use App\UI\Http\Rest\NutritionPlan\View\NutritionPlanReadModel;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 

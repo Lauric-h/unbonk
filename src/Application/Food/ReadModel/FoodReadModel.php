@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UI\Http\Rest\Food\View;
+namespace App\Application\Food\ReadModel;
 
 use App\Domain\Food\Entity\Food;
 

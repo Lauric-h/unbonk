@@ -2,9 +2,9 @@
 
 namespace App\Application\NutritionPlan\UseCase\GetNutritionPlan;
 
+use App\Application\NutritionPlan\ReadModel\NutritionPlanReadModel;
 use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
 use App\Domain\Shared\Bus\QueryHandlerInterface;
-use App\UI\Http\Rest\NutritionPlan\View\NutritionPlanReadModel;
 
 final readonly class GetNutritionPlanQueryHandler implements QueryHandlerInterface
 {

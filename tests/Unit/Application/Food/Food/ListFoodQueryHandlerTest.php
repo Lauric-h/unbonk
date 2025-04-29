@@ -2,14 +2,14 @@
 
 namespace App\Tests\Unit\Application\Food\Food;
 
+use App\Application\Food\ReadModel\FoodReadModel;
+use App\Application\Food\ReadModel\ListFoodReadModel;
 use App\Application\Food\UseCase\ListFood\ListFoodQuery;
 use App\Application\Food\UseCase\ListFood\ListFoodQueryHandler;
 use App\Domain\Food\Entity\Brand;
 use App\Domain\Food\Entity\Food;
 use App\Domain\Food\Entity\IngestionType;
 use App\Domain\Food\Repository\FoodsCatalog;
-use App\UI\Http\Rest\Food\View\FoodReadModel;
-use App\UI\Http\Rest\Food\View\ListFoodReadModel;
 use PHPUnit\Framework\TestCase;
 
 final class ListFoodQueryHandlerTest extends TestCase
