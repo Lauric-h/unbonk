@@ -7,14 +7,20 @@ use App\Domain\Race\Entity\FinishCheckpoint;
 use App\Domain\Race\Entity\IntermediateCheckpoint;
 use App\Domain\Race\Entity\MetricsFromStart;
 use App\Domain\Race\Entity\StartCheckpoint;
+use App\Domain\Race\Event\CheckpointAdded;
+use App\Domain\Race\Event\CheckpointUpdated;
 use App\Domain\Race\Repository\CheckpointsCatalog;
 use App\Domain\Race\Repository\RacesCatalog;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
+use App\Infrastructure\Shared\Bus\EventBus;
 
 final readonly class UpdateCheckpointCommandHandler implements CommandHandlerInterface
 {
-    public function __construct(private RacesCatalog $racesCatalog, private CheckpointsCatalog $checkpointsCatalog)
-    {
+    public function __construct(
+        private RacesCatalog $racesCatalog,
+        private CheckpointsCatalog $checkpointsCatalog,
+        private EventBus $eventBus
+    ) {
     }
 
     public function __invoke(UpdateCheckpointCommand $command): void
@@ -40,5 +46,7 @@ final readonly class UpdateCheckpointCommandHandler implements CommandHandlerInt
 
         $race->sortCheckpointByDistance();
         $this->racesCatalog->add($race);
+
+        $this->eventBus->dispatchAfterCurrentBusHasFinished(new CheckpointUpdated($race->id, $checkpoint->getId()));
     }
 }

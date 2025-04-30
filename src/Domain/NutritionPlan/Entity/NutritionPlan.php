@@ -23,6 +23,11 @@ class NutritionPlan
         return $this->segments->findFirst(static fn (int $key, Segment $segment) => $segment->startId === $startId);
     }
 
+    public function getSegmentByFinishId(string $finishId): ?Segment
+    {
+        return $this->segments->findFirst(static fn (int $key, Segment $segment) => $segment->finishId === $finishId);
+    }
+
     /**
      * @param Collection<int, Segment> $segments
      */
