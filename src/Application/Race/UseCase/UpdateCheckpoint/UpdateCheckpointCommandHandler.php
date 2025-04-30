@@ -47,6 +47,7 @@ final readonly class UpdateCheckpointCommandHandler implements CommandHandlerInt
         $race->sortCheckpointByDistance();
         $this->racesCatalog->add($race);
 
-        $this->eventBus->dispatchAfterCurrentBusHasFinished(new CheckpointUpdated($race->id, $checkpoint->getId()));
+        // Trigger only if metrics were changed
+        $this->eventBus->dispatchAfterCurrentBusHasFinished(new CheckpointUpdated($race->id));
     }
 }

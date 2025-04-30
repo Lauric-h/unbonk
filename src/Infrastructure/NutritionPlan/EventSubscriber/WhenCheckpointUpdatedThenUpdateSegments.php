@@ -17,9 +17,8 @@ final readonly class WhenCheckpointUpdatedThenUpdateSegments
     {
         // TODO
         // Trigger event only if metrics were changed
-        // Event should send previous CP + next CP
-        // Get All Segments corresponding to all CP
-        // Update metrics
+        // Integration Event should contain all CP sorted
+        // Update all segments with CreateSegmentsCommandHandler
         // Save
         $nutritionPlan = $this->nutritionPlansCatalog->getByRaceId($event->raceId);
 
