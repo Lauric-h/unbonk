@@ -42,12 +42,16 @@ final readonly class UpdateCheckpointCommandHandler implements CommandHandlerInt
                 $command->location,
                 new MetricsFromStart($command->estimatedTimeInMinutes, $command->distance, $command->elevationGain, $command->elevationLoss),
             );
+
+
         }
 
         $race->sortCheckpointByDistance();
         $this->racesCatalog->add($race);
 
         // Trigger only if metrics were changed
-        $this->eventBus->dispatchAfterCurrentBusHasFinished(new CheckpointUpdated($race->id));
+        if () {
+            $this->eventBus->dispatchAfterCurrentBusHasFinished(new CheckpointUpdated($race->id));
+        }
     }
 }

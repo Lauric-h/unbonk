@@ -2,7 +2,9 @@
 
 namespace App\Infrastructure\NutritionPlan\EventSubscriber;
 
+use App\Application\NutritionPlan\DTO\PointDTO;
 use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
+use App\Infrastructure\Race\DTO\CheckpointDTO;
 use App\Infrastructure\Shared\Event\CheckpointUpdatedIntegrationEvent;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -21,6 +23,10 @@ final readonly class WhenCheckpointUpdatedThenUpdateSegments
         // Update all segments with CreateSegmentsCommandHandler
         // Save
         $nutritionPlan = $this->nutritionPlansCatalog->getByRaceId($event->raceId);
+        $points = [];
+        foreach ($event->checkpoints as $checkpoint) {
+            $points[] = PointDTO::fromArray((array) $checkpoint);
+        }
 
         dd($event, $nutritionPlan);
     }
