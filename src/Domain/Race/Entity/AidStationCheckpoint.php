@@ -29,7 +29,7 @@ final class AidStationCheckpoint extends Checkpoint
         $this->setName($name);
         $this->setLocation($location);
 
-        if ($this->willMetricsChange($metricsFromStart) === true) {
+        if (true === $this->willMetricsChange($metricsFromStart)) {
             $this->setMetricsFromStart($metricsFromStart);
         }
     }

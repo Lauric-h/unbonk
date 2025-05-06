@@ -4,7 +4,6 @@ namespace App\Tests\Unit\Domain\Race;
 
 use App\Domain\Race\Entity\Address;
 use App\Domain\Race\Entity\CheckpointType;
-use App\Domain\Race\Entity\FinishCheckpoint;
 use App\Domain\Race\Entity\MetricsFromStart;
 use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;

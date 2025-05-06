@@ -3,7 +3,6 @@
 namespace App\Tests\Unit\Domain\Race;
 
 use App\Domain\Race\Entity\Address;
-use App\Domain\Race\Entity\AidStationCheckpoint;
 use App\Domain\Race\Entity\CheckpointType;
 use App\Domain\Race\Entity\IntermediateCheckpoint;
 use App\Domain\Race\Entity\MetricsFromStart;
