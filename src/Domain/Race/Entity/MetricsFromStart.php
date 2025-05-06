@@ -31,7 +31,7 @@ final readonly class MetricsFromStart
     public function equals(MetricsFromStart $metrics): bool
     {
         return $this->distance === $metrics->distance
-            || $this->elevationGain === $metrics->elevationGain
-            || $this->elevationLoss === $metrics->elevationLoss;
+            && $this->elevationGain === $metrics->elevationGain
+            && $this->elevationLoss === $metrics->elevationLoss;
     }
 }

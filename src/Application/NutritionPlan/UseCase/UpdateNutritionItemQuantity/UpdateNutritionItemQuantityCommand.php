@@ -12,7 +12,7 @@ final readonly class UpdateNutritionItemQuantityCommand implements CommandInterf
         public string $segmentId,
         #[Assert\Uuid]
         public string $nutritionItemId,
-        #[Assert\GreaterThanOrEqual(0)]
+        #[Assert\PositiveOrZero]
         public int $quantity,
     ) {
     }

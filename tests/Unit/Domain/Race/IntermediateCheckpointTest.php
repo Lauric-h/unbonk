@@ -3,6 +3,7 @@
 namespace App\Tests\Unit\Domain\Race;
 
 use App\Domain\Race\Entity\Address;
+use App\Domain\Race\Entity\AidStationCheckpoint;
 use App\Domain\Race\Entity\CheckpointType;
 use App\Domain\Race\Entity\IntermediateCheckpoint;
 use App\Domain\Race\Entity\MetricsFromStart;
@@ -171,5 +172,57 @@ final class IntermediateCheckpointTest extends TestCase
             new MetricsFromStart(120, 10, 1000, 3000),
             $race
         );
+    }
+
+    public function testWillMetricsChangeIsTrue(): void
+    {
+        $race = Race::create(
+            'id',
+            new \DateTimeImmutable(),
+            'name',
+            new Profile(42, 2000, 2000),
+            new Address('city', '74xxx'),
+            'runnerId',
+            'startId',
+            'finishId'
+        );
+
+        $checkpoint = new IntermediateCheckpoint(
+            'cpId',
+            'name',
+            'location',
+            new MetricsFromStart(120, 10, 1000, 1000),
+            $race
+        );
+
+        $newMetrics = new MetricsFromStart(300, 30, 2000, 2000);
+
+        $this->assertTrue($checkpoint->willMetricsChange($newMetrics));
+    }
+
+    public function testWillMetricsChangeIsFalse(): void
+    {
+        $race = Race::create(
+            'id',
+            new \DateTimeImmutable(),
+            'name',
+            new Profile(42, 2000, 2000),
+            new Address('city', '74xxx'),
+            'runnerId',
+            'startId',
+            'finishId'
+        );
+
+        $checkpoint = new IntermediateCheckpoint(
+            'cpId',
+            'name',
+            'location',
+            new MetricsFromStart(120, 10, 1000, 1000),
+            $race
+        );
+
+        $newMetrics = new MetricsFromStart(120, 10, 1000, 1000);
+
+        $this->assertFalse($checkpoint->willMetricsChange($newMetrics));
     }
 }

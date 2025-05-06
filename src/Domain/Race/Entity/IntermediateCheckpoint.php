@@ -66,6 +66,6 @@ final class IntermediateCheckpoint extends Checkpoint
 
     public function willMetricsChange(MetricsFromStart $metrics): bool
     {
-        return $this->getMetricsFromStart()->equals($metrics);
+        return !$this->getMetricsFromStart()->equals($metrics);
     }
 }
