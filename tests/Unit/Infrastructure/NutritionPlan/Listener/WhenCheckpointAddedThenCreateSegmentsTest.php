@@ -5,11 +5,11 @@ namespace App\Tests\Unit\Infrastructure\NutritionPlan\Listener;
 use App\Application\NutritionPlan\DTO\PointDTO;
 use App\Application\NutritionPlan\UseCase\CreateSegments\CreateSegmentsCommand;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
-use App\Infrastructure\NutritionPlan\EventSubscriber\WhenCheckpointAddedThenCreateSegments;
+use App\Infrastructure\NutritionPlan\EventSubscriber\WhenRaceCheckpointsChangedThenReplaceSegments;
 use App\Infrastructure\NutritionPlan\Persistence\DoctrineNutritionPlansCatalog;
 use App\Infrastructure\Race\DTO\CheckpointDTO;
 use App\Infrastructure\Shared\Bus\CommandBus;
-use App\Infrastructure\Shared\Event\CheckpointAddedIntegrationEvent;
+use App\Infrastructure\Shared\Event\RaceCheckpointsChangedIntegrationEvent;
 use PHPUnit\Framework\TestCase;
 
 final class WhenCheckpointAddedThenCreateSegmentsTest extends TestCase
@@ -18,10 +18,10 @@ final class WhenCheckpointAddedThenCreateSegmentsTest extends TestCase
     {
         $commandBus = $this->createMock(CommandBus::class);
         $repository = $this->createMock(DoctrineNutritionPlansCatalog::class);
-        $listener = new WhenCheckpointAddedThenCreateSegments($commandBus, $repository);
+        $listener = new WhenRaceCheckpointsChangedThenReplaceSegments($commandBus, $repository);
 
         $raceId = 'raceId';
-        $event = new CheckpointAddedIntegrationEvent(
+        $event = new RaceCheckpointsChangedIntegrationEvent(
             'raceId',
             [
                 new CheckpointDTO('externalIdStart', 'Start', 'location', 0, 0, 0, 0),

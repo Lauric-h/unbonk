@@ -7,12 +7,12 @@ use App\Domain\Race\Entity\IntermediateCheckpoint;
 use App\Domain\Race\Entity\MetricsFromStart;
 use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
-use App\Domain\Race\Event\CheckpointAdded;
+use App\Domain\Race\Event\RaceCheckpointsChanged;
 use App\Domain\Race\Repository\RacesCatalog;
 use App\Domain\Shared\Bus\EventBusInterface;
 use App\Infrastructure\Race\DTO\CheckpointDTO;
-use App\Infrastructure\Race\EventSubscriber\PublishCheckpointAddedListener;
-use App\Infrastructure\Shared\Event\CheckpointAddedIntegrationEvent;
+use App\Infrastructure\Race\EventSubscriber\PublishRaceCheckpointsChangedListener;
+use App\Infrastructure\Shared\Event\RaceCheckpointsChangedIntegrationEvent;
 use PHPUnit\Framework\TestCase;
 
 final class PublishCheckpointAddedListenerTest extends TestCase
@@ -21,12 +21,12 @@ final class PublishCheckpointAddedListenerTest extends TestCase
     {
         $eventBus = $this->createMock(EventBusInterface::class);
         $repository = $this->createMock(RacesCatalog::class);
-        $listener = new PublishCheckpointAddedListener($eventBus, $repository);
+        $listener = new PublishRaceCheckpointsChangedListener($eventBus, $repository);
 
         $raceId = 'raceId';
         $runnerId = 'runnerId';
 
-        $event = new CheckpointAdded($raceId, $runnerId);
+        $event = new RaceCheckpointsChanged($raceId, $runnerId);
 
         $race = Race::create(
             'raceId',
@@ -54,7 +54,7 @@ final class PublishCheckpointAddedListenerTest extends TestCase
             new CheckpointDTO('finishId', 'finish', 'La Clusaz', 42, 360, 2000, 2000),
         ];
 
-        $eventToDispatch = new CheckpointAddedIntegrationEvent(
+        $eventToDispatch = new RaceCheckpointsChanged(
             $raceId,
             $checkpointDTOs
         );

@@ -28,7 +28,10 @@ final class IntermediateCheckpoint extends Checkpoint
     ): void {
         $this->setName($name);
         $this->setLocation($location);
-        $this->setMetricsFromStart($metricsFromStart);
+
+        if ($this->willMetricsChange($metricsFromStart) === true) {
+            $this->setMetricsFromStart($metricsFromStart);
+        }
     }
 
     public function validate(): void
@@ -59,5 +62,10 @@ final class IntermediateCheckpoint extends Checkpoint
     public function getCheckpointType(): CheckpointType
     {
         return CheckpointType::Intermediate;
+    }
+
+    public function willMetricsChange(MetricsFromStart $metrics): bool
+    {
+        return $this->getMetricsFromStart()->equals($metrics);
     }
 }

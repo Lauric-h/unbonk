@@ -48,4 +48,9 @@ final class StartCheckpoint extends Checkpoint
     {
         return CheckpointType::Start;
     }
+
+    public function willMetricsChange(MetricsFromStart $metrics): bool
+    {
+        return false;
+    }
 }

@@ -27,4 +27,11 @@ final readonly class MetricsFromStart
             throw new DistanceCannotBeNegativeException($distance);
         }
     }
+
+    public function equals(MetricsFromStart $metrics): bool
+    {
+        return $this->distance === $metrics->distance
+            || $this->elevationGain === $metrics->elevationGain
+            || $this->elevationLoss === $metrics->elevationLoss;
+    }
 }
