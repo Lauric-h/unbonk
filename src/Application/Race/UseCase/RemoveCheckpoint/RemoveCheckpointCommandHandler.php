@@ -4,15 +4,18 @@ namespace App\Application\Race\UseCase\RemoveCheckpoint;
 
 use App\Domain\Race\Entity\FinishCheckpoint;
 use App\Domain\Race\Entity\StartCheckpoint;
+use App\Domain\Race\Event\RaceCheckpointsChanged;
 use App\Domain\Race\Repository\CheckpointsCatalog;
 use App\Domain\Race\Repository\RacesCatalog;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
+use App\Infrastructure\Shared\Bus\EventBus;
 
 final readonly class RemoveCheckpointCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private RacesCatalog $racesCatalog,
         private CheckpointsCatalog $checkpointsCatalog,
+        private EventBus $eventBus,
     ) {
     }
 
@@ -30,5 +33,7 @@ final readonly class RemoveCheckpointCommandHandler implements CommandHandlerInt
         $race->removeCheckpoint($checkpoint);
 
         $this->racesCatalog->add($race);
+
+        $this->eventBus->dispatchAfterCurrentBusHasFinished(new RaceCheckpointsChanged($race->id, $race->runnerId));
     }
 }

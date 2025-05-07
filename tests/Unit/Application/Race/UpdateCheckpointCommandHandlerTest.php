@@ -11,6 +11,7 @@ use App\Domain\Race\Entity\IntermediateCheckpoint;
 use App\Domain\Race\Entity\MetricsFromStart;
 use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
+use App\Domain\Race\Event\RaceCheckpointsChanged;
 use App\Infrastructure\Race\Persistence\DoctrineCheckpointsCatalog;
 use App\Infrastructure\Race\Persistence\DoctrineRacesCatalog;
 use App\Infrastructure\Shared\Bus\EventBus;
@@ -59,6 +60,10 @@ final class UpdateCheckpointCommandHandlerTest extends TestCase
 
         $raceRepository->expects($this->once())
             ->method('add');
+
+        $eventBus->expects($this->once())
+            ->method('dispatchAfterCurrentBusHasFinished')
+            ->with(new RaceCheckpointsChanged($race->id, $race->runnerId));
 
         ($handler)(new UpdateCheckpointCommand(
             'cpId',
@@ -118,6 +123,10 @@ final class UpdateCheckpointCommandHandlerTest extends TestCase
         $raceRepository->expects($this->once())
             ->method('add');
 
+        $eventBus->expects($this->once())
+            ->method('dispatchAfterCurrentBusHasFinished')
+            ->with(new RaceCheckpointsChanged($race->id, $race->runnerId));
+
         ($handler)(new UpdateCheckpointCommand(
             'cpId',
             'updated',
@@ -165,6 +174,9 @@ final class UpdateCheckpointCommandHandlerTest extends TestCase
 
         $raceRepository->expects($this->once())
             ->method('add');
+
+        $eventBus->expects($this->never())
+            ->method('dispatchAfterCurrentBusHasFinished');
 
         ($handler)(new UpdateCheckpointCommand(
             'cpId',
@@ -218,6 +230,9 @@ final class UpdateCheckpointCommandHandlerTest extends TestCase
 
         $raceRepository->expects($this->once())
             ->method('add');
+
+        $eventBus->expects($this->never())
+            ->method('dispatchAfterCurrentBusHasFinished');
 
         ($handler)(new UpdateCheckpointCommand(
             'cpId',
