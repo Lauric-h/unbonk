@@ -12,6 +12,7 @@ use App\Domain\Race\Repository\RacesCatalog;
 use App\Domain\Shared\Bus\EventBusInterface;
 use App\Infrastructure\Race\DTO\CheckpointDTO;
 use App\Infrastructure\Race\EventSubscriber\PublishRaceCheckpointsChangedListener;
+use App\Infrastructure\Shared\Event\RaceCheckpointsChangedIntegrationEvent;
 use PHPUnit\Framework\TestCase;
 
 final class PublishCheckpointAddedListenerTest extends TestCase
@@ -53,7 +54,7 @@ final class PublishCheckpointAddedListenerTest extends TestCase
             new CheckpointDTO('finishId', 'finish', 'La Clusaz', 42, 360, 2000, 2000),
         ];
 
-        $eventToDispatch = new RaceCheckpointsChanged(
+        $eventToDispatch = new RaceCheckpointsChangedIntegrationEvent(
             $raceId,
             $checkpointDTOs
         );
