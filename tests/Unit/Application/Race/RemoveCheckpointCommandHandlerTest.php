@@ -11,8 +11,10 @@ use App\Domain\Race\Entity\MetricsFromStart;
 use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
 use App\Domain\Race\Entity\StartCheckpoint;
+use App\Domain\Race\Event\RaceCheckpointsChanged;
 use App\Infrastructure\Race\Persistence\DoctrineCheckpointsCatalog;
 use App\Infrastructure\Race\Persistence\DoctrineRacesCatalog;
+use App\Infrastructure\Shared\Bus\EventBus;
 use PHPUnit\Framework\TestCase;
 
 final class RemoveCheckpointCommandHandlerTest extends TestCase
@@ -21,7 +23,8 @@ final class RemoveCheckpointCommandHandlerTest extends TestCase
     {
         $raceRepository = $this->createMock(DoctrineRacesCatalog::class);
         $checkpointRepository = $this->createMock(DoctrineCheckpointsCatalog::class);
-        $handler = new RemoveCheckpointCommandHandler($raceRepository, $checkpointRepository);
+        $eventBus = $this->createMock(EventBus::class);
+        $handler = new RemoveCheckpointCommandHandler($raceRepository, $checkpointRepository, $eventBus);
 
         $command = new RemoveCheckpointCommand(
             'cpId',
@@ -64,6 +67,10 @@ final class RemoveCheckpointCommandHandlerTest extends TestCase
             ->method('add')
             ->with($race);
 
+        $eventBus->expects($this->once())
+            ->method('dispatchAfterCurrentBusHasFinished')
+            ->with(new RaceCheckpointsChanged($race->id, $race->runnerId));
+
         ($handler)($command);
 
         $this->assertCount(2, $race->getCheckpoints());
@@ -74,7 +81,8 @@ final class RemoveCheckpointCommandHandlerTest extends TestCase
     {
         $raceRepository = $this->createMock(DoctrineRacesCatalog::class);
         $checkpointRepository = $this->createMock(DoctrineCheckpointsCatalog::class);
-        $handler = new RemoveCheckpointCommandHandler($raceRepository, $checkpointRepository);
+        $eventBus = $this->createMock(EventBus::class);
+        $handler = new RemoveCheckpointCommandHandler($raceRepository, $checkpointRepository, $eventBus);
 
         $command = new RemoveCheckpointCommand(
             'cpId',
@@ -110,6 +118,9 @@ final class RemoveCheckpointCommandHandlerTest extends TestCase
             ->with($command->id, $command->raceId)
             ->willReturn($checkpoint);
 
+        $eventBus->expects($this->never())
+            ->method('dispatchAfterCurrentBusHasFinished');
+
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Cannot remove Start or Finish Checkpoint');
 
@@ -120,7 +131,8 @@ final class RemoveCheckpointCommandHandlerTest extends TestCase
     {
         $raceRepository = $this->createMock(DoctrineRacesCatalog::class);
         $checkpointRepository = $this->createMock(DoctrineCheckpointsCatalog::class);
-        $handler = new RemoveCheckpointCommandHandler($raceRepository, $checkpointRepository);
+        $eventBus = $this->createMock(EventBus::class);
+        $handler = new RemoveCheckpointCommandHandler($raceRepository, $checkpointRepository, $eventBus);
 
         $command = new RemoveCheckpointCommand(
             'cpId',
@@ -156,6 +168,9 @@ final class RemoveCheckpointCommandHandlerTest extends TestCase
             ->method('getByIdAndRaceId')
             ->with($command->id, $command->raceId)
             ->willReturn($checkpoint);
+
+        $eventBus->expects($this->never())
+            ->method('dispatchAfterCurrentBusHasFinished');
 
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Cannot remove Start or Finish Checkpoint');
