@@ -17,13 +17,13 @@ final readonly class UpdateCheckpointCommand implements CommandInterface
         public string $location,
         #[Assert\Choice(callback: [CheckpointType::class, 'cases'])]
         public CheckpointType $checkpointType,
-        #[Assert\GreaterThanOrEqual(0)]
+        #[Assert\PositiveOrZero]
         public int $estimatedTimeInMinutes,
-        #[Assert\GreaterThanOrEqual(0)]
+        #[Assert\PositiveOrZero]
         public int $distance,
-        #[Assert\GreaterThanOrEqual(0)]
+        #[Assert\PositiveOrZero]
         public int $elevationGain,
-        #[Assert\GreaterThanOrEqual(0)]
+        #[Assert\PositiveOrZero]
         public int $elevationLoss,
         #[Assert\Uuid]
         public string $raceId,

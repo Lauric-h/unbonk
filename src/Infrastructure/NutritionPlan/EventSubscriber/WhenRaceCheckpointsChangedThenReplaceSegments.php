@@ -6,17 +6,17 @@ use App\Application\NutritionPlan\DTO\PointDTO;
 use App\Application\NutritionPlan\UseCase\CreateSegments\CreateSegmentsCommand;
 use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
 use App\Infrastructure\Shared\Bus\CommandBus;
-use App\Infrastructure\Shared\Event\CheckpointAddedIntegrationEvent;
+use App\Infrastructure\Shared\Event\RaceCheckpointsChangedIntegrationEvent;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-final readonly class WhenCheckpointAddedThenCreateSegments
+final readonly class WhenRaceCheckpointsChangedThenReplaceSegments
 {
     public function __construct(private CommandBus $commandBus, private NutritionPlansCatalog $nutritionPlansCatalog)
     {
     }
 
-    public function __invoke(CheckpointAddedIntegrationEvent $event): void
+    public function __invoke(RaceCheckpointsChangedIntegrationEvent $event): void
     {
         $nutritionPlan = $this->nutritionPlansCatalog->getByRaceId($event->raceId);
 

@@ -17,9 +17,9 @@ final readonly class UpdateRaceCommand implements CommandInterface
         public string $name,
         #[Assert\GreaterThan(0)]
         public int $distance,
-        #[Assert\GreaterThanOrEqual(0)]
+        #[Assert\PositiveOrZero]
         public int $elevationGain,
-        #[Assert\GreaterThanOrEqual(0)]
+        #[Assert\PositiveOrZero]
         public int $elevationLoss,
         #[Assert\NotBlank]
         public string $city,

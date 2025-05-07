@@ -28,7 +28,10 @@ final class AidStationCheckpoint extends Checkpoint
     ): void {
         $this->setName($name);
         $this->setLocation($location);
-        $this->setMetricsFromStart($metricsFromStart);
+
+        if (true === $this->willMetricsChange($metricsFromStart)) {
+            $this->setMetricsFromStart($metricsFromStart);
+        }
     }
 
     public function validate(): void
@@ -59,5 +62,10 @@ final class AidStationCheckpoint extends Checkpoint
     public function getCheckpointType(): CheckpointType
     {
         return CheckpointType::AidStation;
+    }
+
+    public function willMetricsChange(MetricsFromStart $metrics): bool
+    {
+        return !$this->getMetricsFromStart()->equals($metrics);
     }
 }

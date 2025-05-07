@@ -70,4 +70,9 @@ final class FinishCheckpoint extends Checkpoint
     {
         return CheckpointType::Finish;
     }
+
+    public function willMetricsChange(MetricsFromStart $metrics): bool
+    {
+        return false;
+    }
 }

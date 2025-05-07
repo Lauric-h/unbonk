@@ -13,6 +13,7 @@ use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
 use App\Infrastructure\Race\Persistence\DoctrineCheckpointsCatalog;
 use App\Infrastructure\Race\Persistence\DoctrineRacesCatalog;
+use App\Infrastructure\Shared\Bus\EventBus;
 use PHPUnit\Framework\TestCase;
 
 final class UpdateCheckpointCommandHandlerTest extends TestCase
@@ -21,8 +22,9 @@ final class UpdateCheckpointCommandHandlerTest extends TestCase
     {
         $raceRepository = $this->createMock(DoctrineRacesCatalog::class);
         $checkpointRepository = $this->createMock(DoctrineCheckpointsCatalog::class);
+        $eventBus = $this->createMock(EventBus::class);
 
-        $handler = new UpdateCheckpointCommandHandler($raceRepository, $checkpointRepository);
+        $handler = new UpdateCheckpointCommandHandler($raceRepository, $checkpointRepository, $eventBus);
 
         $race = Race::create(
             'raceId',
@@ -78,8 +80,9 @@ final class UpdateCheckpointCommandHandlerTest extends TestCase
     {
         $raceRepository = $this->createMock(DoctrineRacesCatalog::class);
         $checkpointRepository = $this->createMock(DoctrineCheckpointsCatalog::class);
+        $eventBus = $this->createMock(EventBus::class);
 
-        $handler = new UpdateCheckpointCommandHandler($raceRepository, $checkpointRepository);
+        $handler = new UpdateCheckpointCommandHandler($raceRepository, $checkpointRepository, $eventBus);
 
         $race = Race::create(
             'raceId',
@@ -135,8 +138,9 @@ final class UpdateCheckpointCommandHandlerTest extends TestCase
     {
         $raceRepository = $this->createMock(DoctrineRacesCatalog::class);
         $checkpointRepository = $this->createMock(DoctrineCheckpointsCatalog::class);
+        $eventBus = $this->createMock(EventBus::class);
 
-        $handler = new UpdateCheckpointCommandHandler($raceRepository, $checkpointRepository);
+        $handler = new UpdateCheckpointCommandHandler($raceRepository, $checkpointRepository, $eventBus);
 
         $race = Race::create(
             'raceId',
@@ -187,8 +191,9 @@ final class UpdateCheckpointCommandHandlerTest extends TestCase
     {
         $raceRepository = $this->createMock(DoctrineRacesCatalog::class);
         $checkpointRepository = $this->createMock(DoctrineCheckpointsCatalog::class);
+        $eventBus = $this->createMock(EventBus::class);
 
-        $handler = new UpdateCheckpointCommandHandler($raceRepository, $checkpointRepository);
+        $handler = new UpdateCheckpointCommandHandler($raceRepository, $checkpointRepository, $eventBus);
 
         $race = Race::create(
             'raceId',

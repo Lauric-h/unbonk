@@ -28,6 +28,8 @@ abstract class Checkpoint
 
     abstract public function validate(): void;
 
+    abstract public function willMetricsChange(MetricsFromStart $metrics): bool;
+
     protected function setMetricsFromStart(MetricsFromStart $metricsFromStart): void
     {
         $this->metricsFromStart = $metricsFromStart;

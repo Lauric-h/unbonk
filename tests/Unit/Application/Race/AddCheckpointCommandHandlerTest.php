@@ -10,7 +10,7 @@ use App\Domain\Race\Entity\IntermediateCheckpoint;
 use App\Domain\Race\Entity\MetricsFromStart;
 use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
-use App\Domain\Race\Event\CheckpointAdded;
+use App\Domain\Race\Event\RaceCheckpointsChanged;
 use App\Infrastructure\Race\Persistence\DoctrineRacesCatalog;
 use App\Infrastructure\Shared\Bus\EventBus;
 use PHPUnit\Framework\TestCase;
@@ -64,7 +64,7 @@ final class AddCheckpointCommandHandlerTest extends TestCase
 
         $eventBus->expects($this->once())
             ->method('dispatchAfterCurrentBusHasFinished')
-            ->with(new CheckpointAdded($race->id, $race->runnerId));
+            ->with(new RaceCheckpointsChanged($race->id, $race->runnerId));
 
         ($handler)($command);
 

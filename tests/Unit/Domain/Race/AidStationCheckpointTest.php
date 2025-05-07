@@ -164,12 +164,64 @@ final class AidStationCheckpointTest extends TestCase
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Invalid Checkpoint elevation loss: 3000');
 
-        $checkpoint = new AidStationCheckpoint(
+        new AidStationCheckpoint(
             'cpId',
             'name',
             'location',
             new MetricsFromStart(120, 10, 1000, 3000),
             $race
         );
+    }
+
+    public function testWillMetricsChangeIsTrue(): void
+    {
+        $race = Race::create(
+            'id',
+            new \DateTimeImmutable(),
+            'name',
+            new Profile(42, 2000, 2000),
+            new Address('city', '74xxx'),
+            'runnerId',
+            'startId',
+            'finishId'
+        );
+
+        $checkpoint = new AidStationCheckpoint(
+            'cpId',
+            'name',
+            'location',
+            new MetricsFromStart(120, 10, 1000, 1000),
+            $race
+        );
+
+        $newMetrics = new MetricsFromStart(300, 30, 2000, 2000);
+
+        $this->assertTrue($checkpoint->willMetricsChange($newMetrics));
+    }
+
+    public function testWillMetricsChangeIsFalse(): void
+    {
+        $race = Race::create(
+            'id',
+            new \DateTimeImmutable(),
+            'name',
+            new Profile(42, 2000, 2000),
+            new Address('city', '74xxx'),
+            'runnerId',
+            'startId',
+            'finishId'
+        );
+
+        $checkpoint = new AidStationCheckpoint(
+            'cpId',
+            'name',
+            'location',
+            new MetricsFromStart(120, 10, 1000, 1000),
+            $race
+        );
+
+        $newMetrics = new MetricsFromStart(120, 10, 1000, 1000);
+
+        $this->assertFalse($checkpoint->willMetricsChange($newMetrics));
     }
 }
