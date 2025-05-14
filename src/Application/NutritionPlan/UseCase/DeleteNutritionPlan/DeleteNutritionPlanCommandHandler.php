@@ -13,7 +13,7 @@ final readonly class DeleteNutritionPlanCommandHandler implements CommandHandler
 
     public function __invoke(DeleteNutritionPlanCommand $command): void
     {
-        $nutritionPlan = $this->nutritionPlansCatalog->get($command->id);
+        $nutritionPlan = $this->nutritionPlansCatalog->getForUser($command->id, $command->getUserId());
         $this->nutritionPlansCatalog->remove($nutritionPlan);
     }
 }

@@ -6,6 +6,8 @@ use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Domain\NutritionPlan\Exception\NutritionPlanNotFoundException;
 use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 readonly class DoctrineNutritionPlansCatalog implements NutritionPlansCatalog
 {
@@ -46,6 +48,24 @@ readonly class DoctrineNutritionPlansCatalog implements NutritionPlansCatalog
 
         if (null === $nutritionPlan) {
             throw new NutritionPlanNotFoundException($raceId);
+        }
+
+        return $nutritionPlan;
+
+    }
+
+    public function getForUser(string $id, string $userId): NutritionPlan
+    {
+        $nutritionPlan = $this->entityManager->createQueryBuilder()
+            ->select('nutritionPlan')
+            ->from(NutritionPlan::class, 'nutritionPlan')
+            ->where('nutritionPlan.runnerId = :runnerId')
+            ->setParameter('runnerId', $userId)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        if (null === $nutritionPlan) {
+            throw new NutritionPlanNotFoundException($userId);
         }
 
         return $nutritionPlan;

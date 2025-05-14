@@ -2,6 +2,7 @@
 
 namespace App\Application\NutritionPlan\UseCase\UpdateNutritionItemQuantity;
 
+use _PHPStan_d25a815b1\Symfony\Component\Finder\Exception\AccessDeniedException;
 use App\Domain\NutritionPlan\Entity\Quantity;
 use App\Domain\NutritionPlan\Repository\SegmentsCatalog;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
@@ -15,6 +16,10 @@ final readonly class UpdateNutritionItemQuantityCommandHandler implements Comman
     public function __invoke(UpdateNutritionItemQuantityCommand $command): void
     {
         $segment = $this->segmentsCatalog->get($command->segmentId);
+        if ($command->getUserId() !== $segment->nutritionPlan->runnerId) {
+            throw new AccessDeniedException();
+        }
+
         $nutritionItem = $segment->getNutritionItemById($command->nutritionItemId);
 
         if (null === $nutritionItem) {

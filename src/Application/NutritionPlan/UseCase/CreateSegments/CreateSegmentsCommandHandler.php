@@ -18,7 +18,7 @@ final readonly class CreateSegmentsCommandHandler implements CommandHandlerInter
 
     public function __invoke(CreateSegmentsCommand $command): void
     {
-        $nutritionPlan = $this->nutritionPlansCatalog->get($command->nutritionPlanId);
+        $nutritionPlan = $this->nutritionPlansCatalog->getForUser($command->nutritionPlanId, $command->getUserId());
 
         $points = $command->points;
         usort($points, static fn (PointDTO $a, PointDTO $b) => $a->distance <=> $b->distance);

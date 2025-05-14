@@ -19,7 +19,7 @@ final class GetNutritionPlanController extends AbstractController
     public function __invoke(string $nutritionPlanId): JsonResponse
     {
         return new JsonResponse(
-            $this->queryBus->query(new GetNutritionPlanQuery($nutritionPlanId)),
+        $this->queryBus->query(new GetNutritionPlanQuery($nutritionPlanId)),
             Response::HTTP_OK
         );
     }

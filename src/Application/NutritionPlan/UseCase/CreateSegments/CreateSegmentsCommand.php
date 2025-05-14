@@ -4,10 +4,14 @@ namespace App\Application\NutritionPlan\UseCase\CreateSegments;
 
 use App\Application\NutritionPlan\DTO\PointDTO;
 use App\Domain\Shared\Bus\CommandInterface;
+use App\Infrastructure\Shared\Bus\UserAwareInterface;
+use App\Infrastructure\Shared\Bus\UserAwareTrait;
 use Symfony\Component\Validator\Constraints as Assert;
 
-final readonly class CreateSegmentsCommand implements CommandInterface
+final readonly class CreateSegmentsCommand implements CommandInterface, UserAwareInterface
 {
+    use UserAwareTrait;
+
     /**
      * @param PointDTO[] $points
      */
