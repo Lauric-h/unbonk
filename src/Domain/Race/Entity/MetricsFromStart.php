@@ -2,36 +2,35 @@
 
 namespace App\Domain\Race\Entity;
 
-use App\Domain\Race\Exception\DistanceCannotBeNegativeException;
-use App\Domain\Race\Exception\ElevationValueCannotBeNegativeException;
-use App\Domain\Race\Exception\EstimatedTimeCannotBeNegativeException;
+use App\Domain\Shared\Entity\Ascent;
+use App\Domain\Shared\Entity\Descent;
+use App\Domain\Shared\Entity\Distance;
+use App\Domain\Shared\Entity\Duration;
 
 final readonly class MetricsFromStart
 {
     public function __construct(
-        public int $estimatedTimeInMinutes,
-        public int $distance,
-        public int $elevationGain,
-        public int $elevationLoss,
+        public Duration $estimatedTimeInMinutes,
+        public Distance $distance,
+        public Ascent $ascent,
+        public Descent $descent,
     ) {
-        if ($this->estimatedTimeInMinutes < 0) {
-            throw new EstimatedTimeCannotBeNegativeException($estimatedTimeInMinutes);
-        }
-        if ($elevationGain < 0) {
-            throw new ElevationValueCannotBeNegativeException('elevationGain', $elevationGain);
-        }
-        if ($elevationLoss < 0) {
-            throw new ElevationValueCannotBeNegativeException('elevationLoss', $elevationLoss);
-        }
-        if ($distance < 0) {
-            throw new DistanceCannotBeNegativeException($distance);
-        }
+    }
+
+    public static function create(int $duration, int $distance, int $ascent, int $descent): self
+    {
+        return new self(
+            new Duration($duration),
+            new Distance($distance),
+            new Ascent($ascent),
+            new Descent($descent),
+        );
     }
 
     public function equals(MetricsFromStart $metrics): bool
     {
-        return $this->distance === $metrics->distance
-            && $this->elevationGain === $metrics->elevationGain
-            && $this->elevationLoss === $metrics->elevationLoss;
+        return $this->distance->value === $metrics->distance->value
+            && $this->ascent->value === $metrics->ascent->value
+            && $this->descent->value === $metrics->descent->value;
     }
 }

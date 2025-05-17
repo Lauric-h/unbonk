@@ -5,9 +5,9 @@
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
     <embeddable name="App\Domain\Race\Entity\Profile">
-        <field name="distance" type="integer" />
-        <field name="elevationGain" type="integer" column="elevation_gain" />
-        <field name="elevationLoss" type="integer" column="elevation_loss" />
+        <embedded name="distance" class="App\Domain\Shared\Entity\Distance" />
+        <embedded name="ascent" class="App\Domain\Shared\Entity\Ascent" />
+        <embedded name="descent" class="App\Domain\Shared\Entity\Descent" />
     </embeddable>
 
 </doctrine-mapping>

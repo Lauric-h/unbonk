@@ -31,7 +31,7 @@ final class UpdateCheckpointCommandHandlerTest extends TestCase
             'raceId',
             new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',
@@ -42,7 +42,7 @@ final class UpdateCheckpointCommandHandlerTest extends TestCase
             'cpId',
             'name',
             'location',
-            new MetricsFromStart(120, 10, 1000, 1000),
+            MetricsFromStart::create(120, 10, 1000, 1000),
             $race
         );
 
@@ -93,7 +93,7 @@ final class UpdateCheckpointCommandHandlerTest extends TestCase
             'raceId',
             new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',
@@ -104,7 +104,7 @@ final class UpdateCheckpointCommandHandlerTest extends TestCase
             'cpId',
             'name',
             'location',
-            new MetricsFromStart(120, 10, 1000, 1000),
+            MetricsFromStart::create(120, 10, 1000, 1000),
             $race
         );
 
@@ -155,7 +155,7 @@ final class UpdateCheckpointCommandHandlerTest extends TestCase
             'raceId',
             new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',
@@ -193,10 +193,10 @@ final class UpdateCheckpointCommandHandlerTest extends TestCase
 
         $this->assertSame('updated', $race->getStartCheckpoint()->getName());
         $this->assertSame('updated', $race->getStartCheckpoint()->getLocation());
-        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->distance);
-        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->elevationGain);
-        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->elevationLoss);
-        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->estimatedTimeInMinutes);
+        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->distance->value);
+        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->ascent->value);
+        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->descent->value);
+        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->estimatedTimeInMinutes->minutes);
     }
 
     public function testUpdateFinishCheckpointUpdatesNameAndLocationOnly(): void
@@ -211,7 +211,7 @@ final class UpdateCheckpointCommandHandlerTest extends TestCase
             'raceId',
             new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',
@@ -249,9 +249,9 @@ final class UpdateCheckpointCommandHandlerTest extends TestCase
 
         $this->assertSame('updated', $race->getFinishCheckpoint()->getName());
         $this->assertSame('updated', $race->getFinishCheckpoint()->getLocation());
-        $this->assertSame(42, $race->getFinishCheckpoint()->getMetricsFromStart()->distance);
-        $this->assertSame(2000, $race->getFinishCheckpoint()->getMetricsFromStart()->elevationGain);
-        $this->assertSame(2000, $race->getFinishCheckpoint()->getMetricsFromStart()->elevationLoss);
-        $this->assertSame(360, $race->getFinishCheckpoint()->getMetricsFromStart()->estimatedTimeInMinutes);
+        $this->assertSame(42, $race->getFinishCheckpoint()->getMetricsFromStart()->distance->value);
+        $this->assertSame(2000, $race->getFinishCheckpoint()->getMetricsFromStart()->ascent->value);
+        $this->assertSame(2000, $race->getFinishCheckpoint()->getMetricsFromStart()->descent->value);
+        $this->assertSame(360, $race->getFinishCheckpoint()->getMetricsFromStart()->estimatedTimeInMinutes->minutes);
     }
 }

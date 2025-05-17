@@ -16,9 +16,9 @@ final class ProfileReadModel
     public static function fromDomain(Profile $profile): self
     {
         return new self(
-            distance: $profile->distance,
-            elevationGain: $profile->elevationGain,
-            elevationLoss: $profile->elevationLoss,
+            distance: $profile->distance->value,
+            elevationGain: $profile->ascent->value,
+            elevationLoss: $profile->descent->value,
         );
     }
 }

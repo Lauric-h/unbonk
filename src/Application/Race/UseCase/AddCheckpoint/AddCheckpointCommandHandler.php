@@ -26,14 +26,14 @@ final readonly class AddCheckpointCommandHandler implements CommandHandlerInterf
                 id: $command->id,
                 name: $command->name,
                 location: $command->location,
-                metricsFromStart: new MetricsFromStart($command->estimatedTimeInMinutes, $command->distance, $command->elevationGain, $command->elevationLoss),
+                metricsFromStart: MetricsFromStart::create($command->estimatedTimeInMinutes, $command->distance, $command->elevationGain, $command->elevationLoss),
                 race: $race
             ),
             CheckpointType::Intermediate => new IntermediateCheckpoint(
                 id: $command->id,
                 name: $command->name,
                 location: $command->location,
-                metricsFromStart: new MetricsFromStart($command->estimatedTimeInMinutes, $command->distance, $command->elevationGain, $command->elevationLoss),
+                metricsFromStart: MetricsFromStart::create($command->estimatedTimeInMinutes, $command->distance, $command->elevationGain, $command->elevationLoss),
                 race: $race
             ),
             default => throw new \DomainException('You can only add Intermediate or AidStation checkpoints'),

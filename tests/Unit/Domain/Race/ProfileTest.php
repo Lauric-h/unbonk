@@ -3,33 +3,40 @@
 namespace App\Tests\Unit\Domain\Race;
 
 use App\Domain\Race\Entity\Profile;
-use App\Domain\Race\Exception\DistanceCannotBeNegativeException;
-use App\Domain\Race\Exception\ElevationValueCannotBeNegativeException;
 use PHPUnit\Framework\TestCase;
 
 final class ProfileTest extends TestCase
 {
-    public function testElevationGainCannotBeNegative(): void
+    public function testCreate(): void
     {
-        $this->expectException(ElevationValueCannotBeNegativeException::class);
-        $this->expectExceptionMessage('Field elevationGain value cannot be negative, got -10');
+        $profile = Profile::create(100, 10, 100);
 
-        new Profile(100, -10, 100);
+        $this->assertSame(100, $profile->distance->value);
+        $this->assertSame(10, $profile->ascent->value);
+        $this->assertSame(100, $profile->descent->value);
     }
 
-    public function testElevationLossCannotBeNegative(): void
+    public function testAscentCannotBeNegative(): void
     {
-        $this->expectException(ElevationValueCannotBeNegativeException::class);
-        $this->expectExceptionMessage('Field elevationLoss value cannot be negative, got -10');
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('Ascent cannot be negative: -10');
 
-        new Profile(100, 100, -10);
+        Profile::create(100, -10, 100);
+    }
+
+    public function testDescentCannotBeNegative(): void
+    {
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('Descent cannot be negative: -10');
+
+        Profile::create(100, 100, -10);
     }
 
     public function testDistanceCannotBeNegative(): void
     {
-        $this->expectException(DistanceCannotBeNegativeException::class);
-        $this->expectExceptionMessage('Race distance cannot be negative, got -10');
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('Distance cannot be negative: -10');
 
-        new Profile(-10, 100, 100);
+        Profile::create(-10, 100, 100);
     }
 }

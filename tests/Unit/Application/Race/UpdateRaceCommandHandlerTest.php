@@ -35,7 +35,7 @@ final class UpdateRaceCommandHandlerTest extends TestCase
             'id1',
             $date,
             'Le Bélier',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',

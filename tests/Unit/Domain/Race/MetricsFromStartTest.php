@@ -8,6 +8,16 @@ use PHPUnit\Framework\TestCase;
 
 final class MetricsFromStartTest extends TestCase
 {
+    public function testCreate(): void
+    {
+        $metrics = MetricsFromStart::create(1, 1, 1, 1);
+
+        $this->assertSame(1, $metrics->ascent->value);
+        $this->assertSame(1, $metrics->descent->value);
+        $this->assertSame(1, $metrics->distance->value);
+        $this->assertSame(1, $metrics->estimatedTimeInMinutes->minutes);
+    }
+
     #[DataProvider('provide')]
     public function testEquals(MetricsFromStart $oldMetrics, MetricsFromStart $newMetrics, bool $expected): void
     {
@@ -17,23 +27,23 @@ final class MetricsFromStartTest extends TestCase
     public static function provide(): \Generator
     {
         yield [
-            'oldMetrics' => new MetricsFromStart(1, 1, 1, 1),
-            'newMetrics' => new MetricsFromStart(1, 1, 1, 1),
+            'oldMetrics' => MetricsFromStart::create(1, 1, 1, 1),
+            'newMetrics' => MetricsFromStart::create(1, 1, 1, 1),
             'expected' => true,
         ];
         yield [
-            'oldMetrics' => new MetricsFromStart(1, 1, 1, 1),
-            'newMetrics' => new MetricsFromStart(2, 1, 1, 1),
+            'oldMetrics' => MetricsFromStart::create(1, 1, 1, 1),
+            'newMetrics' => MetricsFromStart::create(2, 1, 1, 1),
             'expected' => true,
         ];
         yield [
-            'oldMetrics' => new MetricsFromStart(1, 1, 1, 1),
-            'newMetrics' => new MetricsFromStart(2, 2, 2, 2),
+            'oldMetrics' => MetricsFromStart::create(1, 1, 1, 1),
+            'newMetrics' => MetricsFromStart::create(2, 2, 2, 2),
             'expected' => false,
         ];
         yield [
-            'oldMetrics' => new MetricsFromStart(1, 1, 1, 1),
-            'newMetrics' => new MetricsFromStart(1, 2, 2, 2),
+            'oldMetrics' => MetricsFromStart::create(1, 1, 1, 1),
+            'newMetrics' => MetricsFromStart::create(1, 2, 2, 2),
             'expected' => false,
         ];
     }

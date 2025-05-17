@@ -18,7 +18,7 @@ final class FinishCheckpointTest extends TestCase
             'id',
             new \DateTimeImmutable(),
             'name',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('city', '74xxx'),
             'runnerId',
             'startId',
@@ -42,7 +42,7 @@ final class FinishCheckpointTest extends TestCase
             'id',
             new \DateTimeImmutable(),
             'name',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('city', '74xxx'),
             'runnerId',
             'startId',
@@ -61,10 +61,10 @@ final class FinishCheckpointTest extends TestCase
 
         $this->assertSame('updated', $checkpoint->getName());
         $this->assertSame('updatedLocation', $checkpoint->getLocation());
-        $this->assertSame(2000, $checkpoint->getMetricsFromStart()->elevationGain);
-        $this->assertSame(2000, $checkpoint->getMetricsFromStart()->elevationLoss);
-        $this->assertSame(42, $checkpoint->getMetricsFromStart()->distance);
-        $this->assertSame(120, $checkpoint->getMetricsFromStart()->estimatedTimeInMinutes);
+        $this->assertSame(2000, $checkpoint->getMetricsFromStart()->ascent->value);
+        $this->assertSame(2000, $checkpoint->getMetricsFromStart()->descent->value);
+        $this->assertSame(42, $checkpoint->getMetricsFromStart()->distance->value);
+        $this->assertSame(120, $checkpoint->getMetricsFromStart()->estimatedTimeInMinutes->minutes);
     }
 
     public function testFinishCheckpointUpdateProfileMetrics(): void
@@ -73,7 +73,7 @@ final class FinishCheckpointTest extends TestCase
             'id',
             new \DateTimeImmutable(),
             'name',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('city', '74xxx'),
             'runnerId',
             'startId',
@@ -88,14 +88,14 @@ final class FinishCheckpointTest extends TestCase
             $race
         );
 
-        $profile = new Profile(50, 3000, 3000);
+        $profile = Profile::create(50, 3000, 3000);
 
         $checkpoint->updateProfileMetrics($profile);
 
-        $this->assertSame(50, $checkpoint->getMetricsFromStart()->distance);
-        $this->assertSame(3000, $checkpoint->getMetricsFromStart()->elevationGain);
-        $this->assertSame(3000, $checkpoint->getMetricsFromStart()->elevationLoss);
-        $this->assertSame(120, $checkpoint->getMetricsFromStart()->estimatedTimeInMinutes);
+        $this->assertSame(50, $checkpoint->getMetricsFromStart()->distance->value);
+        $this->assertSame(3000, $checkpoint->getMetricsFromStart()->ascent->value);
+        $this->assertSame(3000, $checkpoint->getMetricsFromStart()->descent->value);
+        $this->assertSame(120, $checkpoint->getMetricsFromStart()->estimatedTimeInMinutes->minutes);
     }
 
     public function testWillMetricsChange(): void
@@ -104,7 +104,7 @@ final class FinishCheckpointTest extends TestCase
             'id',
             new \DateTimeImmutable(),
             'name',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('city', '74xxx'),
             'runnerId',
             'startId',
@@ -119,6 +119,6 @@ final class FinishCheckpointTest extends TestCase
             $race
         );
 
-        $this->assertFalse($checkpoint->willMetricsChange(new MetricsFromStart(1, 1, 1, 1)));
+        $this->assertFalse($checkpoint->willMetricsChange(MetricsFromStart::create(1, 1, 1, 1)));
     }
 }

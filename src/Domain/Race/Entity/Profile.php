@@ -2,24 +2,25 @@
 
 namespace App\Domain\Race\Entity;
 
-use App\Domain\Race\Exception\DistanceCannotBeNegativeException;
-use App\Domain\Race\Exception\ElevationValueCannotBeNegativeException;
+use App\Domain\Shared\Entity\Ascent;
+use App\Domain\Shared\Entity\Descent;
+use App\Domain\Shared\Entity\Distance;
 
 final readonly class Profile
 {
     public function __construct(
-        public int $distance,
-        public int $elevationGain,
-        public int $elevationLoss,
+        public Distance $distance,
+        public Ascent $ascent,
+        public Descent $descent,
     ) {
-        if ($elevationGain < 0) {
-            throw new ElevationValueCannotBeNegativeException('elevationGain', $elevationGain);
-        }
-        if ($elevationLoss < 0) {
-            throw new ElevationValueCannotBeNegativeException('elevationLoss', $elevationLoss);
-        }
-        if ($distance <= 0) {
-            throw new DistanceCannotBeNegativeException($distance);
-        }
+    }
+
+    public static function create(int $distance, int $ascent, int $descent): self
+    {
+        return new self(
+            new Distance($distance),
+            new Ascent($ascent),
+            new Descent($descent),
+        );
     }
 }

@@ -37,7 +37,7 @@ final readonly class UpdateCheckpointCommandHandler implements CommandHandlerInt
         if ($checkpoint instanceof AidStationCheckpoint
             || $checkpoint instanceof IntermediateCheckpoint
         ) {
-            $metrics = new MetricsFromStart($command->estimatedTimeInMinutes, $command->distance, $command->elevationGain, $command->elevationLoss);
+            $metrics = MetricsFromStart::create($command->estimatedTimeInMinutes, $command->distance, $command->elevationGain, $command->elevationLoss);
             $metricsWillChange = $checkpoint->willMetricsChange($metrics);
 
             $checkpoint->update(

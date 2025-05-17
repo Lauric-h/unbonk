@@ -23,10 +23,10 @@ final class CheckpointDTO
             $checkpoint->getId(),
             $checkpoint->getName(),
             $checkpoint->getLocation(),
-            $checkpoint->getMetricsFromStart()->distance,
-            $checkpoint->getMetricsFromStart()->estimatedTimeInMinutes,
-            $checkpoint->getMetricsFromStart()->elevationGain,
-            $checkpoint->getMetricsFromStart()->elevationLoss,
+            $checkpoint->getMetricsFromStart()->distance->value,
+            $checkpoint->getMetricsFromStart()->estimatedTimeInMinutes->minutes,
+            $checkpoint->getMetricsFromStart()->ascent->value,
+            $checkpoint->getMetricsFromStart()->descent->value,
         );
     }
 }

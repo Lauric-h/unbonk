@@ -6,10 +6,10 @@
 
 
     <embeddable name="App\Domain\Race\Entity\MetricsFromStart">
-        <field name="estimatedTimeInMinutes" type="integer" />
-        <field name="distance" type="integer" />
-        <field name="elevationGain" type="integer" />
-        <field name="elevationLoss" type="integer" />
+        <embedded name="estimatedTimeInMinutes" class="App\Domain\Shared\Entity\Duration" />
+        <embedded name="distance" class="App\Domain\Shared\Entity\Distance" />
+        <embedded name="ascent" class="App\Domain\Shared\Entity\Ascent" />
+        <embedded name="descent" class="App\Domain\Shared\Entity\Descent" />
     </embeddable>
 
 </doctrine-mapping>

@@ -18,7 +18,7 @@ final class IntermediateCheckpointTest extends TestCase
             'id',
             new \DateTimeImmutable(),
             'name',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('city', '74xxx'),
             'runnerId',
             'startId',
@@ -29,7 +29,7 @@ final class IntermediateCheckpointTest extends TestCase
             'cpId',
             'name',
             'location',
-            new MetricsFromStart(120, 10, 1000, 1000),
+            MetricsFromStart::create(120, 10, 1000, 1000),
             $race
         );
 
@@ -42,7 +42,7 @@ final class IntermediateCheckpointTest extends TestCase
             'id',
             new \DateTimeImmutable(),
             'name',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('city', '74xxx'),
             'runnerId',
             'startId',
@@ -53,11 +53,11 @@ final class IntermediateCheckpointTest extends TestCase
             'cpId',
             'name',
             'location',
-            new MetricsFromStart(120, 10, 1000, 1000),
+            MetricsFromStart::create(120, 10, 1000, 1000),
             $race
         );
 
-        $newMetrics = new MetricsFromStart(300, 30, 2000, 2000);
+        $newMetrics = MetricsFromStart::create(300, 30, 2000, 2000);
 
         $checkpoint->update(
             'new name',
@@ -67,10 +67,10 @@ final class IntermediateCheckpointTest extends TestCase
 
         $this->assertSame('new name', $checkpoint->getName());
         $this->assertSame('new location', $checkpoint->getLocation());
-        $this->assertSame(300, $checkpoint->getMetricsFromStart()->estimatedTimeInMinutes);
-        $this->assertSame(30, $checkpoint->getMetricsFromStart()->distance);
-        $this->assertSame(2000, $checkpoint->getMetricsFromStart()->elevationGain);
-        $this->assertSame(2000, $checkpoint->getMetricsFromStart()->elevationLoss);
+        $this->assertSame(300, $checkpoint->getMetricsFromStart()->estimatedTimeInMinutes->minutes);
+        $this->assertSame(30, $checkpoint->getMetricsFromStart()->distance->value);
+        $this->assertSame(2000, $checkpoint->getMetricsFromStart()->ascent->value);
+        $this->assertSame(2000, $checkpoint->getMetricsFromStart()->descent->value);
     }
 
     public function testValidateDistanceCannotBeMoreThanRace(): void
@@ -79,7 +79,7 @@ final class IntermediateCheckpointTest extends TestCase
             'id',
             new \DateTimeImmutable(),
             'name',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('city', '74xxx'),
             'runnerId',
             'startId',
@@ -93,7 +93,7 @@ final class IntermediateCheckpointTest extends TestCase
             'cpId',
             'name',
             'location',
-            new MetricsFromStart(120, 43, 1000, 1000),
+            MetricsFromStart::create(120, 43, 1000, 1000),
             $race
         );
     }
@@ -104,7 +104,7 @@ final class IntermediateCheckpointTest extends TestCase
             'id',
             new \DateTimeImmutable(),
             'name',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('city', '74xxx'),
             'runnerId',
             'startId',
@@ -118,7 +118,7 @@ final class IntermediateCheckpointTest extends TestCase
             'cpId',
             'name',
             'location',
-            new MetricsFromStart(120, 0, 1000, 1000),
+            MetricsFromStart::create(120, 0, 1000, 1000),
             $race
         );
     }
@@ -129,7 +129,7 @@ final class IntermediateCheckpointTest extends TestCase
             'id',
             new \DateTimeImmutable(),
             'name',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('city', '74xxx'),
             'runnerId',
             'startId',
@@ -143,7 +143,7 @@ final class IntermediateCheckpointTest extends TestCase
             'cpId',
             'name',
             'location',
-            new MetricsFromStart(120, 10, 3000, 1000),
+            MetricsFromStart::create(120, 10, 3000, 1000),
             $race
         );
     }
@@ -154,7 +154,7 @@ final class IntermediateCheckpointTest extends TestCase
             'id',
             new \DateTimeImmutable(),
             'name',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('city', '74xxx'),
             'runnerId',
             'startId',
@@ -168,7 +168,7 @@ final class IntermediateCheckpointTest extends TestCase
             'cpId',
             'name',
             'location',
-            new MetricsFromStart(120, 10, 1000, 3000),
+            MetricsFromStart::create(120, 10, 1000, 3000),
             $race
         );
     }
@@ -179,7 +179,7 @@ final class IntermediateCheckpointTest extends TestCase
             'id',
             new \DateTimeImmutable(),
             'name',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('city', '74xxx'),
             'runnerId',
             'startId',
@@ -190,11 +190,11 @@ final class IntermediateCheckpointTest extends TestCase
             'cpId',
             'name',
             'location',
-            new MetricsFromStart(120, 10, 1000, 1000),
+            MetricsFromStart::create(120, 10, 1000, 1000),
             $race
         );
 
-        $newMetrics = new MetricsFromStart(300, 30, 2000, 2000);
+        $newMetrics = MetricsFromStart::create(300, 30, 2000, 2000);
 
         $this->assertTrue($checkpoint->willMetricsChange($newMetrics));
     }
@@ -205,7 +205,7 @@ final class IntermediateCheckpointTest extends TestCase
             'id',
             new \DateTimeImmutable(),
             'name',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('city', '74xxx'),
             'runnerId',
             'startId',
@@ -216,11 +216,11 @@ final class IntermediateCheckpointTest extends TestCase
             'cpId',
             'name',
             'location',
-            new MetricsFromStart(120, 10, 1000, 1000),
+            MetricsFromStart::create(120, 10, 1000, 1000),
             $race
         );
 
-        $newMetrics = new MetricsFromStart(120, 10, 1000, 1000);
+        $newMetrics = MetricsFromStart::create(120, 10, 1000, 1000);
 
         $this->assertFalse($checkpoint->willMetricsChange($newMetrics));
     }
