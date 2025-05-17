@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\Infrastructure\NutritionPlan\Service;
+namespace App\Tests\Unit\Infrastructure\NutritionPlan\Adapter;
 
 use App\Domain\Food\DTO\FoodDTO;
 use App\Domain\NutritionPlan\DTO\ExternalNutritionItemDTO;
