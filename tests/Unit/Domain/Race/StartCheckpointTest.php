@@ -18,7 +18,7 @@ final class StartCheckpointTest extends TestCase
             'id',
             new \DateTimeImmutable(),
             'name',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('city', '74xxx'),
             'runnerId',
             'startId',
@@ -33,10 +33,10 @@ final class StartCheckpointTest extends TestCase
         );
 
         $this->assertSame(CheckpointType::Start, $checkpoint->getCheckpointType());
-        $this->assertSame(0, $checkpoint->getMetricsFromStart()->elevationGain);
-        $this->assertSame(0, $checkpoint->getMetricsFromStart()->elevationLoss);
-        $this->assertSame(0, $checkpoint->getMetricsFromStart()->distance);
-        $this->assertSame(0, $checkpoint->getMetricsFromStart()->estimatedTimeInMinutes);
+        $this->assertSame(0, $checkpoint->getMetricsFromStart()->ascent->value);
+        $this->assertSame(0, $checkpoint->getMetricsFromStart()->descent->value);
+        $this->assertSame(0, $checkpoint->getMetricsFromStart()->distance->value);
+        $this->assertSame(0, $checkpoint->getMetricsFromStart()->estimatedTimeInMinutes->minutes);
     }
 
     public function testStartCheckpointUpdate(): void
@@ -45,7 +45,7 @@ final class StartCheckpointTest extends TestCase
             'id',
             new \DateTimeImmutable(),
             'name',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('city', '74xxx'),
             'runnerId',
             'startId',
@@ -63,10 +63,10 @@ final class StartCheckpointTest extends TestCase
 
         $this->assertSame('updated', $checkpoint->getName());
         $this->assertSame('updatedLocation', $checkpoint->getLocation());
-        $this->assertSame(0, $checkpoint->getMetricsFromStart()->elevationGain);
-        $this->assertSame(0, $checkpoint->getMetricsFromStart()->elevationLoss);
-        $this->assertSame(0, $checkpoint->getMetricsFromStart()->distance);
-        $this->assertSame(0, $checkpoint->getMetricsFromStart()->estimatedTimeInMinutes);
+        $this->assertSame(0, $checkpoint->getMetricsFromStart()->ascent->value);
+        $this->assertSame(0, $checkpoint->getMetricsFromStart()->descent->value);
+        $this->assertSame(0, $checkpoint->getMetricsFromStart()->distance->value);
+        $this->assertSame(0, $checkpoint->getMetricsFromStart()->estimatedTimeInMinutes->minutes);
     }
 
     public function testWillMetricsChange(): void
@@ -75,7 +75,7 @@ final class StartCheckpointTest extends TestCase
             'id',
             new \DateTimeImmutable(),
             'name',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('city', '74xxx'),
             'runnerId',
             'startId',
@@ -89,6 +89,6 @@ final class StartCheckpointTest extends TestCase
             $race
         );
 
-        $this->assertFalse($checkpoint->willMetricsChange(new MetricsFromStart(1, 1, 1, 1)));
+        $this->assertFalse($checkpoint->willMetricsChange(MetricsFromStart::create(1, 1, 1, 1)));
     }
 }

@@ -20,7 +20,7 @@ final class RaceTest extends TestCase
             'raceId',
             new \DateTimeImmutable(),
             'Le Bélier',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',
@@ -30,15 +30,15 @@ final class RaceTest extends TestCase
         $this->assertCount(2, $race->getCheckpoints());
         $this->assertInstanceOf(StartCheckpoint::class, $race->getCheckpoints()[0]);
         $this->assertInstanceOf(FinishCheckpoint::class, $race->getCheckpoints()[1]);
-        $this->assertSame(0, $race->getCheckpoints()[0]->getMetricsFromStart()->distance);
-        $this->assertSame(0, $race->getCheckpoints()[0]->getMetricsFromStart()->elevationGain);
-        $this->assertSame(0, $race->getCheckpoints()[0]->getMetricsFromStart()->elevationLoss);
-        $this->assertSame(0, $race->getCheckpoints()[0]->getMetricsFromStart()->estimatedTimeInMinutes);
+        $this->assertSame(0, $race->getCheckpoints()[0]->getMetricsFromStart()->distance->value);
+        $this->assertSame(0, $race->getCheckpoints()[0]->getMetricsFromStart()->ascent->value);
+        $this->assertSame(0, $race->getCheckpoints()[0]->getMetricsFromStart()->descent->value);
+        $this->assertSame(0, $race->getCheckpoints()[0]->getMetricsFromStart()->estimatedTimeInMinutes->minutes);
 
-        $this->assertSame($race->profile->distance, $race->getCheckpoints()[1]->getMetricsFromStart()->distance);
-        $this->assertSame($race->profile->elevationGain, $race->getCheckpoints()[1]->getMetricsFromStart()->elevationGain);
-        $this->assertSame($race->profile->elevationLoss, $race->getCheckpoints()[1]->getMetricsFromStart()->elevationLoss);
-        $this->assertSame(360, $race->getCheckpoints()[1]->getMetricsFromStart()->estimatedTimeInMinutes);
+        $this->assertSame($race->profile->distance->value, $race->getCheckpoints()[1]->getMetricsFromStart()->distance->value);
+        $this->assertSame($race->profile->ascent->value, $race->getCheckpoints()[1]->getMetricsFromStart()->ascent->value);
+        $this->assertSame($race->profile->descent->value, $race->getCheckpoints()[1]->getMetricsFromStart()->descent->value);
+        $this->assertSame(360, $race->getCheckpoints()[1]->getMetricsFromStart()->estimatedTimeInMinutes->minutes);
     }
 
     public function testGetStartCheckpoint(): void
@@ -47,7 +47,7 @@ final class RaceTest extends TestCase
             'raceId',
             new \DateTimeImmutable(),
             'Le Bélier',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',
@@ -55,9 +55,9 @@ final class RaceTest extends TestCase
         );
 
         $this->assertInstanceOf(StartCheckpoint::class, $race->getStartCheckpoint());
-        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->distance);
-        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->elevationGain);
-        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->elevationLoss);
+        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->distance->value);
+        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->ascent->value);
+        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->descent->value);
     }
 
     public function testGetFinishCheckpoint(): void
@@ -66,7 +66,7 @@ final class RaceTest extends TestCase
             'raceId',
             new \DateTimeImmutable(),
             'Le Bélier',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',
@@ -75,8 +75,8 @@ final class RaceTest extends TestCase
 
         $this->assertInstanceOf(FinishCheckpoint::class, $race->getFinishCheckpoint());
         $this->assertSame($race->profile->distance, $race->getFinishCheckpoint()->getMetricsFromStart()->distance);
-        $this->assertSame($race->profile->elevationGain, $race->getFinishCheckpoint()->getMetricsFromStart()->elevationGain);
-        $this->assertSame($race->profile->elevationLoss, $race->getFinishCheckpoint()->getMetricsFromStart()->elevationLoss);
+        $this->assertSame($race->profile->ascent, $race->getFinishCheckpoint()->getMetricsFromStart()->ascent);
+        $this->assertSame($race->profile->descent, $race->getFinishCheckpoint()->getMetricsFromStart()->descent);
     }
 
     public function testUpdate(): void
@@ -85,7 +85,7 @@ final class RaceTest extends TestCase
             'raceId',
             new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',
@@ -104,14 +104,14 @@ final class RaceTest extends TestCase
 
         $this->assertSame('raceId', $race->id);
         $this->assertSame('2025-01-02', $race->date->format('Y-m-d'));
-        $this->assertSame(43, $race->profile->distance);
-        $this->assertSame(2001, $race->profile->elevationGain);
-        $this->assertSame(2001, $race->profile->elevationLoss);
+        $this->assertSame(43, $race->profile->distance->value);
+        $this->assertSame(2001, $race->profile->ascent->value);
+        $this->assertSame(2001, $race->profile->descent->value);
         $this->assertSame('La Clusaze', $race->address->city);
         $this->assertSame('74xx1', $race->address->postalCode);
-        $this->assertSame(43, $race->getFinishCheckpoint()->getMetricsFromStart()->distance);
-        $this->assertSame(2001, $race->getFinishCheckpoint()->getMetricsFromStart()->elevationGain);
-        $this->assertSame(2001, $race->getFinishCheckpoint()->getMetricsFromStart()->elevationLoss);
+        $this->assertSame(43, $race->getFinishCheckpoint()->getMetricsFromStart()->distance->value);
+        $this->assertSame(2001, $race->getFinishCheckpoint()->getMetricsFromStart()->ascent->value);
+        $this->assertSame(2001, $race->getFinishCheckpoint()->getMetricsFromStart()->descent->value);
     }
 
     public function testAddCheckpoint(): void
@@ -120,7 +120,7 @@ final class RaceTest extends TestCase
             'raceId',
             new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',
@@ -131,7 +131,7 @@ final class RaceTest extends TestCase
             'cpId',
             'name',
             'location',
-            new MetricsFromStart(120, 10, 1000, 1000),
+            MetricsFromStart::create(120, 10, 1000, 1000),
             $race
         );
 
@@ -147,7 +147,7 @@ final class RaceTest extends TestCase
             'raceId',
             new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',
@@ -158,7 +158,7 @@ final class RaceTest extends TestCase
             'cpId',
             'name',
             'location',
-            new MetricsFromStart(120, 10, 1000, 1000),
+            MetricsFromStart::create(120, 10, 1000, 1000),
             $race
         );
 
@@ -166,7 +166,7 @@ final class RaceTest extends TestCase
             'cpId2',
             'name2',
             'location2',
-            new MetricsFromStart(120, 10, 1000, 1000),
+            MetricsFromStart::create(120, 10, 1000, 1000),
             $race
         );
 
@@ -183,7 +183,7 @@ final class RaceTest extends TestCase
             'raceId',
             new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',
@@ -194,7 +194,7 @@ final class RaceTest extends TestCase
             'cpId',
             'name',
             'location',
-            new MetricsFromStart(120, 10, 1000, 1000),
+            MetricsFromStart::create(120, 10, 1000, 1000),
             $race
         );
 
@@ -211,7 +211,7 @@ final class RaceTest extends TestCase
             'raceId',
             new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',
@@ -222,7 +222,7 @@ final class RaceTest extends TestCase
             'cpId',
             'name',
             'location',
-            new MetricsFromStart(120, 10, 1000, 1000),
+            MetricsFromStart::create(120, 10, 1000, 1000),
             $race
         );
 
@@ -230,9 +230,9 @@ final class RaceTest extends TestCase
 
         $race->sortCheckpointByDistance();
 
-        $this->assertSame(0, $race->getCheckpoints()->get(0)->getMetricsFromStart()->distance);
-        $this->assertSame(10, $race->getCheckpoints()->get(1)->getMetricsFromStart()->distance);
-        $this->assertSame(42, $race->getCheckpoints()->get(2)->getMetricsFromStart()->distance);
+        $this->assertSame(0, $race->getCheckpoints()->get(0)->getMetricsFromStart()->distance->value);
+        $this->assertSame(10, $race->getCheckpoints()->get(1)->getMetricsFromStart()->distance->value);
+        $this->assertSame(42, $race->getCheckpoints()->get(2)->getMetricsFromStart()->distance->value);
     }
 
     public function testRemoveCheckpointStartThrowsException(): void
@@ -241,7 +241,7 @@ final class RaceTest extends TestCase
             'raceId',
             new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',
@@ -262,7 +262,7 @@ final class RaceTest extends TestCase
             'raceId',
             new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',
@@ -283,7 +283,7 @@ final class RaceTest extends TestCase
             'raceId',
             new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',
@@ -294,7 +294,7 @@ final class RaceTest extends TestCase
             'cpId',
             'name',
             'location',
-            new MetricsFromStart(120, 10, 1000, 1000),
+            MetricsFromStart::create(120, 10, 1000, 1000),
             $race
         );
 

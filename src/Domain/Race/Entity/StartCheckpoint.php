@@ -12,7 +12,7 @@ final class StartCheckpoint extends Checkpoint
         string $location,
         Race $race,
     ) {
-        $metricsFromStart = new MetricsFromStart(0, 0, 0, 0);
+        $metricsFromStart = MetricsFromStart::create(0, 0, 0, 0);
         parent::__construct(
             $id,
             $name,
@@ -31,10 +31,10 @@ final class StartCheckpoint extends Checkpoint
 
     public function validate(): void
     {
-        if (0 !== $this->getMetricsFromStart()->distance
-            || 0 !== $this->getMetricsFromStart()->elevationGain
-            || 0 !== $this->getMetricsFromStart()->elevationLoss
-            || 0 !== $this->getMetricsFromStart()->estimatedTimeInMinutes
+        if (0 !== $this->getMetricsFromStart()->distance->value
+            || 0 !== $this->getMetricsFromStart()->ascent->value
+            || 0 !== $this->getMetricsFromStart()->descent->value
+            || 0 !== $this->getMetricsFromStart()->estimatedTimeInMinutes->minutes
         ) {
             throw new \DomainException('Invalid Start Checkpoint Metrics');
         }

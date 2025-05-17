@@ -39,7 +39,7 @@ final class AddCheckpointCommandHandlerTest extends TestCase
             'raceId',
             new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',
@@ -50,7 +50,7 @@ final class AddCheckpointCommandHandlerTest extends TestCase
             'cpId',
             'name',
             'location',
-            new MetricsFromStart(120, 10, 1000, 1000),
+            MetricsFromStart::create(120, 10, 1000, 1000),
             $race
         );
 
@@ -94,7 +94,7 @@ final class AddCheckpointCommandHandlerTest extends TestCase
             'raceId',
             new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',
@@ -139,7 +139,7 @@ final class AddCheckpointCommandHandlerTest extends TestCase
             'raceId',
             new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',

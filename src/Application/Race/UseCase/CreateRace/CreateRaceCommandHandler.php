@@ -26,7 +26,7 @@ final readonly class CreateRaceCommandHandler implements CommandHandlerInterface
             id: $command->id,
             date: $command->date,
             name: $command->name,
-            profile: new Profile($command->distance, $command->elevationGain, $command->elevationLoss),
+            profile: Profile::create($command->distance, $command->elevationGain, $command->elevationLoss),
             address: new Address($command->city, $command->postalCode),
             runnerId: $command->runnerId,
             startCheckpointId: $this->idGenerator->generate(),

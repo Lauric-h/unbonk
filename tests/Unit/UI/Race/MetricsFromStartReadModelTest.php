@@ -10,7 +10,7 @@ final class MetricsFromStartReadModelTest extends TestCase
 {
     public function testFromDomain(): void
     {
-        $metrics = new MetricsFromStart(120, 10, 1000, 1000);
+        $metrics = MetricsFromStart::create(120, 10, 1000, 1000);
         $expected = new MetricsFromStartReadModel(120, 10, 1000, 1000);
 
         $actual = MetricsFromStartReadModel::fromDomain($metrics);

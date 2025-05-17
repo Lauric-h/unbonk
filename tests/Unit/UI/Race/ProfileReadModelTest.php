@@ -10,7 +10,7 @@ final class ProfileReadModelTest extends TestCase
 {
     public function testFromDomain(): void
     {
-        $domain = new Profile(42, 2000, 2500);
+        $domain = Profile::create(42, 2000, 2500);
 
         $expected = new ProfileReadModel(42, 2000, 2500);
 

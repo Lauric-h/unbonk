@@ -24,7 +24,7 @@ final class GetRaceCommandHandlerTest extends TestCase
             'raceId',
             $date,
             'Le Bélier',
-            new Profile(42, 2000, 2000),
+            Profile::create(42, 2000, 2000),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',
@@ -42,9 +42,9 @@ final class GetRaceCommandHandlerTest extends TestCase
         $this->assertSame($race->id, $actual->id);
         $this->assertSame($race->date->format('Y-m-d'), $actual->date);
         $this->assertSame($race->name, $actual->name);
-        $this->assertSame($race->profile->distance, $actual->profile->distance);
-        $this->assertSame($race->profile->elevationGain, $actual->profile->elevationGain);
-        $this->assertSame($race->profile->elevationLoss, $actual->profile->elevationLoss);
+        $this->assertSame($race->profile->distance->value, $actual->profile->distance);
+        $this->assertSame($race->profile->ascent->value, $actual->profile->elevationGain);
+        $this->assertSame($race->profile->descent->value, $actual->profile->elevationLoss);
         $this->assertSame($race->address->city, $actual->address->city);
         $this->assertSame($race->address->postalCode, $actual->address->postalCode);
         $this->assertSame($race->runnerId, $actual->runnerId);

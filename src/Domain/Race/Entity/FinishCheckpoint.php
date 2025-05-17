@@ -2,6 +2,8 @@
 
 namespace App\Domain\Race\Entity;
 
+use App\Domain\Shared\Entity\Duration;
+
 final class FinishCheckpoint extends Checkpoint
 {
     public const DEFAULT_NAME = 'finish';
@@ -14,10 +16,10 @@ final class FinishCheckpoint extends Checkpoint
         Race $race,
     ) {
         $metricsFromStart = new MetricsFromStart(
-            estimatedTimeInMinutes: $estimatedTimeInMinutes,
+            estimatedTimeInMinutes: new Duration($estimatedTimeInMinutes),
             distance: $race->profile->distance,
-            elevationGain: $race->profile->elevationGain,
-            elevationLoss: $race->profile->elevationLoss,
+            ascent: $race->profile->ascent,
+            descent: $race->profile->descent,
         );
 
         parent::__construct(
@@ -36,8 +38,8 @@ final class FinishCheckpoint extends Checkpoint
         $metrics = new MetricsFromStart(
             $this->getMetricsFromStart()->estimatedTimeInMinutes,
             $profile->distance,
-            $profile->elevationGain,
-            $profile->elevationLoss,
+            $profile->ascent,
+            $profile->descent,
         );
         $this->setMetricsFromStart($metrics);
     }
@@ -50,9 +52,9 @@ final class FinishCheckpoint extends Checkpoint
 
     public function validate(): void
     {
-        if ($this->getMetricsFromStart()->distance !== $this->getRace()->profile->distance
-            || $this->getMetricsFromStart()->elevationGain !== $this->getRace()->profile->elevationGain
-            || $this->getMetricsFromStart()->elevationLoss !== $this->getRace()->profile->elevationLoss
+        if ($this->getMetricsFromStart()->distance->value !== $this->getRace()->profile->distance->value
+            || $this->getMetricsFromStart()->ascent->value !== $this->getRace()->profile->ascent->value
+            || $this->getMetricsFromStart()->descent->value !== $this->getRace()->profile->descent->value
         ) {
             throw new \DomainException('Invalid Finish Checkpoint Metrics');
         }
@@ -61,7 +63,7 @@ final class FinishCheckpoint extends Checkpoint
             throw new \DomainException('Invalid Checkpoint Type');
         }
 
-        if (0 === $this->getMetricsFromStart()->estimatedTimeInMinutes) {
+        if (0 === $this->getMetricsFromStart()->estimatedTimeInMinutes->minutes) {
             throw new \DomainException('Cannot have FinishCheckpoint with 0 minute');
         }
     }

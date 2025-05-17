@@ -17,10 +17,10 @@ final readonly class MetricsFromStartReadModel
     public static function fromDomain(MetricsFromStart $metricsFromStart): self
     {
         return new self(
-            $metricsFromStart->estimatedTimeInMinutes,
-            $metricsFromStart->distance,
-            $metricsFromStart->elevationGain,
-            $metricsFromStart->elevationLoss,
+            $metricsFromStart->estimatedTimeInMinutes->minutes,
+            $metricsFromStart->distance->value,
+            $metricsFromStart->ascent->value,
+            $metricsFromStart->descent->value,
         );
     }
 }
