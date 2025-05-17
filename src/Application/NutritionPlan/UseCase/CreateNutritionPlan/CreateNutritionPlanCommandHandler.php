@@ -8,8 +8,9 @@ use App\Domain\Shared\Bus\CommandHandlerInterface;
 
 final readonly class CreateNutritionPlanCommandHandler implements CommandHandlerInterface
 {
-    public function __construct(private NutritionPlansCatalog $nutritionPlansCatalog)
-    {
+    public function __construct(
+        private NutritionPlansCatalog $nutritionPlansCatalog,
+    ) {
     }
 
     public function __invoke(CreateNutritionPlanCommand $command): void

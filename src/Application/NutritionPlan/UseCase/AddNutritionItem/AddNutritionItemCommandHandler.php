@@ -10,7 +10,6 @@ use App\Domain\NutritionPlan\Repository\SegmentsCatalog;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
 use App\Domain\Shared\Entity\Calories;
 use App\Domain\Shared\Entity\Carbs;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 final readonly class AddNutritionItemCommandHandler implements CommandHandlerInterface
 {
@@ -25,9 +24,6 @@ final readonly class AddNutritionItemCommandHandler implements CommandHandlerInt
     {
         $externalFood = $this->externalFoodPort->getById($command->externalFoodId);
         $segment = $this->segmentsCatalog->get($command->segmentId);
-        if ($command->getUserId() !== $segment->nutritionPlan->runnerId) {
-            throw new AccessDeniedException();
-        }
 
         $nutritionItem = new NutritionItem(
             $this->idGenerator->generate(),

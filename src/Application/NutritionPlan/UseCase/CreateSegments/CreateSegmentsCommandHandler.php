@@ -12,13 +12,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 final readonly class CreateSegmentsCommandHandler implements CommandHandlerInterface
 {
-    public function __construct(private NutritionPlansCatalog $nutritionPlansCatalog, private SegmentFactoryInterface $segmentFactory)
-    {
+    public function __construct(
+        private NutritionPlansCatalog $nutritionPlansCatalog,
+        private SegmentFactoryInterface $segmentFactory,
+    ) {
     }
 
     public function __invoke(CreateSegmentsCommand $command): void
     {
-        $nutritionPlan = $this->nutritionPlansCatalog->getForUser($command->nutritionPlanId, $command->getUserId());
+        $nutritionPlan = $this->nutritionPlansCatalog->get($command->nutritionPlanId);
 
         $points = $command->points;
         usort($points, static fn (PointDTO $a, PointDTO $b) => $a->distance <=> $b->distance);

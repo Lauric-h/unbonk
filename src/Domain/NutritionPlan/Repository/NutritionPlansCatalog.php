@@ -13,6 +13,4 @@ interface NutritionPlansCatalog
     public function get(string $id): NutritionPlan;
 
     public function getByRaceId(string $raceId): NutritionPlan;
-
-    public function getForUser(string $id, string $userId): NutritionPlan;
 }

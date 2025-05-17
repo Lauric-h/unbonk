@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Application\NutritionPlan\UseCase\GetNutritionPlan;
 
 use App\Application\NutritionPlan\ReadModel\NutritionPlanReadModel;
@@ -15,7 +14,7 @@ final readonly class GetNutritionPlanQueryHandler implements QueryHandlerInterfa
 
     public function __invoke(GetNutritionPlanQuery $query): NutritionPlanReadModel
     {
-        $nutritionPlan = $this->nutritionPlansCatalog->getForUser($query->id, $query->getUserId());
+        $nutritionPlan = $this->nutritionPlansCatalog->get($query->id);
 
         return NutritionPlanReadModel::fromNutritionPlan($nutritionPlan);
     }
