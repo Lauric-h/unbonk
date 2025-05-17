@@ -3,6 +3,7 @@
 namespace App\UI\Http\Rest\NutritionPlan\Controller;
 
 use App\Application\NutritionPlan\UseCase\AddNutritionItem\AddNutritionItemCommand;
+use App\Domain\NutritionPlan\Service\NutritionPlanAccessService;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\UI\Http\Rest\NutritionPlan\Request\AddNutritionItemRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,11 +21,15 @@ final class AddNutritionItemController extends AbstractController
         private readonly SerializerInterface $serializer,
         private readonly CommandBus $commandBus,
         private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly NutritionPlanAccessService $nutritionPlanAccessService,
     ) {
     }
 
     public function __invoke(string $nutritionPlanId, string $segmentId, Request $request): JsonResponse
     {
+        /* @phpstan-ignore-next-line */
+        $this->nutritionPlanAccessService->checkAccess($nutritionPlanId, $this->getUser()->getUser()->id);
+
         $addNutritionItemRequest = $this->serializer->deserialize($request->getContent(), AddNutritionItemRequest::class, 'json');
 
         $this->commandBus->dispatch(new AddNutritionItemCommand($addNutritionItemRequest->id, $nutritionPlanId, $segmentId, $addNutritionItemRequest->quantity));
