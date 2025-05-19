@@ -2,3 +2,7 @@ api_controllers:
     resource: '../src/UI/Http/Rest/'
     type: attribute
     prefix: /api
+
+web_controllers:
+    resource: '../src/UI/Http/Web/'
+    type: attribute

@@ -18,6 +18,16 @@ security:
         main:
             lazy: true
             provider: app_user_provider
+            form_login:
+                # "app_login" is the name of the route created previously
+                login_path: app.user.login
+                check_path: app.user.login
+                enable_csrf: true
+                username_parameter: login[email]
+                password_parameter: login[password]
+                default_target_path: app.race.list
+            logout:
+                path: /logout
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

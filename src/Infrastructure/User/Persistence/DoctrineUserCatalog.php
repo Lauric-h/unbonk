@@ -40,4 +40,24 @@ class DoctrineUserCatalog implements UserCatalog
 
         return $user;
     }
+
+    public function add(User $user): void
+    {
+        $this->entityManager->persist($user);
+    }
+
+    public function userExists(string $username, string $email): bool
+    {
+        $count = $this->entityManager->createQueryBuilder()
+            ->select('COUNT(user.id)')
+            ->from(User::class, 'user')
+            ->where('user.username = :username')
+            ->orWhere('user.email = :email')
+            ->setParameter('username', $username)
+            ->setParameter('email', $email)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $count > 0;
+    }
 }
