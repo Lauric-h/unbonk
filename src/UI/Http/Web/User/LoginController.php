@@ -2,7 +2,6 @@
 
 namespace App\UI\Http\Web\User;
 
-use App\UI\Http\Web\User\Form\Login\LoginModel;
 use App\UI\Http\Web\User\Form\Login\LoginType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
