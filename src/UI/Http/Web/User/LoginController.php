@@ -30,8 +30,7 @@ final class LoginController extends AbstractController
             'title' => 'Login',
             'error' => $error,
             'last_username' => $lastUsername,
-            'form' => $form
+            'form' => $form,
         ]);
     }
-
 }

@@ -3,7 +3,6 @@
 namespace App\Application\User\RegisterUser;
 
 use App\Domain\Shared\Bus\CommandInterface;
-
 use Symfony\Component\Validator\Constraints as Assert;
 
 final readonly class RegisterUserCommand implements CommandInterface

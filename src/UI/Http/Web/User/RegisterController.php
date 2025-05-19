@@ -8,7 +8,6 @@ use App\Infrastructure\Shared\Bus\CommandBus;
 use App\UI\Http\Web\User\Form\Register\RegisterModel;
 use App\UI\Http\Web\User\Form\Register\RegisterType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

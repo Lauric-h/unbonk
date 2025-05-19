@@ -2,7 +2,6 @@
 
 namespace App\Infrastructure\User\Security;
 
-use App\Domain\User\Entity\User;
 use App\Domain\User\Port\PasswordServicePort;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -17,7 +16,7 @@ final class PasswordServiceAdapter implements PasswordServicePort
     {
         $passwordContainer = new class($password) implements PasswordAuthenticatedUserInterface {
             public function __construct(
-                private string $password
+                private string $password, // @phpstan-ignore-line
             ) {
             }
 
