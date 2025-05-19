@@ -43,7 +43,7 @@ class DoctrineUserCatalog implements UserCatalog
 
     public function add(User $user): void
     {
-        // TODO: Implement add() method.
+        $this->entityManager->persist($user);
     }
 
     public function userExists(string $username, string $email): bool

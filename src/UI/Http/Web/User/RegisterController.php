@@ -3,10 +3,12 @@
 namespace App\UI\Http\Web\User;
 
 use App\Application\User\RegisterUser\RegisterUserCommand;
+use App\Domain\User\Exception\UserAlreadyExistsException;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\UI\Http\Web\User\Form\Register\RegisterModel;
 use App\UI\Http\Web\User\Form\Register\RegisterType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -25,17 +27,25 @@ final class RegisterController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->commandBus->dispatch(new RegisterUserCommand(
-                $registerModel->username,
-                $registerModel->email,
-                $registerModel->password,
-            ));
+            try {
+                $this->commandBus->dispatch(new RegisterUserCommand(
+                    $registerModel->username,
+                    $registerModel->email,
+                    $registerModel->password,
+                ));
+            } catch (UserAlreadyExistsException $e) {
+                return $this->render('User/register.html.twig', [
+                    'form' => $form,
+                    'hasError' => true,
+                ]);
+            }
 
             return $this->redirectToRoute('app.user.login');
         }
 
         return $this->render('User/register.html.twig', [
             'form' => $form,
+            'hasError' => false,
         ]);
     }
 }

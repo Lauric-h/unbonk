@@ -5,6 +5,7 @@ namespace App\Application\User\RegisterUser;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
 use App\Domain\User\Entity\User;
 use App\Domain\User\Exception\UserAlreadyExistsException;
+use App\Domain\User\Port\PasswordServicePort;
 use App\Domain\User\Repository\UserCatalog;
 use App\SharedKernel\IdGenerator;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -16,7 +17,7 @@ final readonly class RegisterUserCommandHandler implements CommandHandlerInterfa
     public function __construct(
         private UserCatalog $userCatalog,
         private IdGenerator $idGenerator,
-        private UserPasswordHasherInterface $passwordHasher,
+        private PasswordServicePort $passwordService,
     ) {
     }
 
@@ -26,13 +27,11 @@ final readonly class RegisterUserCommandHandler implements CommandHandlerInterfa
             throw new UserAlreadyExistsException();
         }
 
-        $hashedPassword = $this->passwordHasher->hashPassword();
-
         $user = new User(
             id: $this->idGenerator->generate(),
             username: $command->username,
             email: $command->email,
-            password: $hashedPassword,
+            password: $this->passwordService->hash($command->password),
         );
 
         $this->userCatalog->add($user);

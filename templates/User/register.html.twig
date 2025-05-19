@@ -2,6 +2,10 @@
 
 
 {% block body %}
+    {% if hasError == true %}
+        Un utilisateur avec ces identifiants existe déjà.
+    {% endif %}
+
     {{ form_start(form) }}
     {{ form_row(form.username) }}
     {{ form_row(form.email) }}
