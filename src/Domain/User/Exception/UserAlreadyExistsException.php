@@ -2,6 +2,8 @@
 
 namespace App\Domain\User\Exception;
 
-final class UserAlreadyExistsException extends \DomainException
+use App\Domain\Shared\Exception\AlreadyExistsException;
+
+final class UserAlreadyExistsException extends AlreadyExistsException
 {
 }

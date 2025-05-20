@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>BRAND {{ brand.name }}</h1>
+
+    <ul>
+    {% for food in foods.foods %}
+        <li><a href="{{ url('app.food.get', {'id': food.id}) }}">{{ food.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock %}
+
