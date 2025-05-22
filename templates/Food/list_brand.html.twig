@@ -6,7 +6,9 @@
 
     <ul>
         {% for brand in list.brands %}
-            <li>{{ brand.name }}</li>
+            <li>
+                <a href="{{ url('app.brand.get', {id: brand.id}) }}">{{ brand.name }}</a>
+            </li>
         {% endfor %}
     </ul>
 {% endblock %}

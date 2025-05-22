@@ -16,4 +16,6 @@ interface BrandsCatalog
      * @return Brand[]
      */
     public function getAll(): array;
+
+    public function exists(string $name): bool;
 }
