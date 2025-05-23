@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/brands/{id}', name: 'app.brand.delete', methods: ['DELETE'])]
+#[Route('/brands/{id}', name: 'api.brand.delete', methods: ['DELETE'])]
 final class DeleteBrandController extends AbstractController
 {
     public function __construct(private readonly CommandBus $messageBus)

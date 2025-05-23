@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
-#[Route('/brands', name: 'app.brand.create', methods: ['POST'])]
+#[Route('/brands', name: 'api.brand.create', methods: ['POST'])]
 final class CreateBrandController extends AbstractController
 {
     public function __construct(
@@ -40,7 +40,7 @@ final class CreateBrandController extends AbstractController
         return new JsonResponse(
             [],
             Response::HTTP_NO_CONTENT,
-            ['Location' => $this->urlGenerator->generate('app.brand.get', ['id' => $id])]
+            ['Location' => $this->urlGenerator->generate('api.brand.get', ['id' => $id])]
         );
     }
 }

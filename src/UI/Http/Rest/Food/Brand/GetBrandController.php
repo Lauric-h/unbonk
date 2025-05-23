@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/brands/{id}', name: 'app.brand.get', methods: ['GET'])]
+#[Route('/brands/{id}', name: 'api.brand.get', methods: ['GET'])]
 final class GetBrandController extends AbstractController
 {
     public function __construct(private readonly QueryBus $queryBus)

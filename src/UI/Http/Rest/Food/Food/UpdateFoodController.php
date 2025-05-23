@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
-#[Route('/foods/{id}', name: 'app.food.update', methods: ['PUT'])]
+#[Route('/foods/{id}', name: 'api.food.update', methods: ['PUT'])]
 final class UpdateFoodController extends AbstractController
 {
     public function __construct(
@@ -30,7 +30,7 @@ final class UpdateFoodController extends AbstractController
         return new JsonResponse(
             [],
             Response::HTTP_NO_CONTENT,
-            ['Location' => $this->urlGenerator->generate('app.food.get', ['id' => $command->id])]
+            ['Location' => $this->urlGenerator->generate('api.food.get', ['id' => $command->id])]
         );
     }
 }
