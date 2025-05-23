@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <h1>update {{ food.name }}</h1>
+
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.carbs) }}
+    {{ form_row(form.ingestionType) }}
+    {{ form_row(form.calories) }}
+
+    <button type="submit">enregistrer</button>
+    {{ form_end(form) }}
+
+
+{% endblock %}
+

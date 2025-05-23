@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/brands/{brandId}/foods', name: 'app.food.list', methods: ['GET'])]
+#[Route('/brands/{brandId}/foods', name: 'api.food.list', methods: ['GET'])]
 final class ListFoodController extends AbstractController
 {
     public function __construct(private readonly QueryBus $queryBus)
