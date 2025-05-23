@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UI\Http\Web\Food;
+namespace App\UI\Http\Web\Food\Brand;
 
 use App\Application\Food\UseCase\ListBrand\ListBrandQuery;
 use App\Infrastructure\Shared\Bus\QueryBus;
