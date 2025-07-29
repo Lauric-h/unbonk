@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/foods/{id}', name: 'app.food.get', methods: ['GET'])]
+#[Route('/foods/{id}', name: 'api.food.get', methods: ['GET'])]
 final class GetFoodController extends AbstractController
 {
     public function __construct(private readonly QueryBus $queryBus)

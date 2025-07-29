@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Foods</h1>
+    <ul>
+        {% for food in list.foods %}
+            <li>
+                {{ food.brandName ~ ' - ' ~ food.name }}
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
