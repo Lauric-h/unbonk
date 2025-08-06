@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
-#[Route('/races/{raceId}/checkpoints', name: 'app.race.checkpoint.add', methods: ['POST'])]
+#[Route('/races/{raceId}/checkpoints', name: 'api.race.checkpoint.add', methods: ['POST'])]
 final class AddCheckpointController extends AbstractController
 {
     public function __construct(
@@ -37,8 +37,8 @@ final class AddCheckpointController extends AbstractController
             checkpointType: $addCheckpointRequest->checkpointType,
             estimatedTimeInMinutes: $addCheckpointRequest->estimatedTimeInMinutes,
             distance: $addCheckpointRequest->distance,
-            elevationGain: $addCheckpointRequest->elevationGain,
-            elevationLoss: $addCheckpointRequest->elevationLoss,
+            ascent: $addCheckpointRequest->ascent,
+            descent: $addCheckpointRequest->descent,
             raceId: $raceId,
             /* @phpstan-ignore-next-line */
             runnerId: $this->getUser()->getUser()->id,

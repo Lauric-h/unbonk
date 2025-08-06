@@ -12,5 +12,11 @@
         <li>{{ race.address.postalCode }}</li>
     </ul>
 
+    <ul>
+    {% for checkpoint in race.checkpoints %}
+        <li>{{ checkpoint.metricsFromStart.distance }}</li>
+    {% endfor %}
+    </ul>
+
 {% endblock %}
 

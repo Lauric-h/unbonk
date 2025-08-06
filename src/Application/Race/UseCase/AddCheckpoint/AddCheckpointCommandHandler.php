@@ -33,8 +33,8 @@ final readonly class AddCheckpointCommandHandler implements CommandHandlerInterf
                 metricsFromStart: MetricsFromStart::create(
                     new Duration($command->estimatedTimeInMinutes),
                     new Distance($command->distance),
-                    new Ascent($command->elevationGain),
-                    new Descent($command->elevationLoss)
+                    new Ascent($command->ascent),
+                    new Descent($command->descent)
                 ),
                 race: $race
             ),
@@ -45,8 +45,8 @@ final readonly class AddCheckpointCommandHandler implements CommandHandlerInterf
                 metricsFromStart: MetricsFromStart::create(
                     new Duration($command->estimatedTimeInMinutes),
                     new Distance($command->distance),
-                    new Ascent($command->elevationGain),
-                    new Descent($command->elevationLoss)
+                    new Ascent($command->ascent),
+                    new Descent($command->descent)
                 ),
                 race: $race
             ),
