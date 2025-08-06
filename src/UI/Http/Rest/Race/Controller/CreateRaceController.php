@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
-#[Route('/races', name: 'app.race.create', methods: ['POST'])]
+#[Route('/races', name: 'api.race.create', methods: ['POST'])]
 final class CreateRaceController extends AbstractController
 {
     public function __construct(

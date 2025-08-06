@@ -89,11 +89,11 @@ class Race
 
     public function addCheckpoint(AidStationCheckpoint|IntermediateCheckpoint $checkpoint): void
     {
-        if ($this->getCheckpointAtDistance($checkpoint->getMetricsFromStart()->distance->value)) {
-            throw new CheckpointWithSameDistanceException($checkpoint->getMetricsFromStart()->distance->value);
+        if ($this->getCheckpointAtDistance($checkpoint->getMetricsFromStart()->distance)) {
+            throw new CheckpointWithSameDistanceException($checkpoint->getMetricsFromStart()->distance);
         }
 
-        if ($checkpoint->getMetricsFromStart()->distance >= $this->profile->distance) {
+        if ($checkpoint->getMetricsFromStart()->distance >= $this->profile->distance->value) {
             throw new \DomainException('New Checkpoint cannot exceed Race distance');
         }
 
@@ -104,7 +104,7 @@ class Race
 
     public function getCheckpointAtDistance(int $distance): ?Checkpoint
     {
-        $existingCheckpoints = $this->checkpoints->filter(static fn (Checkpoint $checkpoint) => $checkpoint->getMetricsFromStart()->distance->value === $distance);
+        $existingCheckpoints = $this->checkpoints->filter(static fn (Checkpoint $checkpoint) => $checkpoint->getMetricsFromStart()->distance === $distance);
 
         if (\count($existingCheckpoints) > 1) {
             throw new \DomainException(\sprintf('Multiple checkpoint for same distance: %d', $distance));
@@ -116,7 +116,7 @@ class Race
     public function sortCheckpointByDistance(): void
     {
         $checkpoints = $this->checkpoints->toArray();
-        usort($checkpoints, static fn (Checkpoint $a, Checkpoint $b) => $a->getMetricsFromStart()->distance->value <=> $b->getMetricsFromStart()->distance->value);
+        usort($checkpoints, static fn (Checkpoint $a, Checkpoint $b) => $a->getMetricsFromStart()->distance <=> $b->getMetricsFromStart()->distance);
 
         $this->checkpoints->clear();
         foreach ($checkpoints as $checkpoint) {

@@ -2,6 +2,11 @@
 
 namespace App\Domain\Race\Entity;
 
+use App\Domain\Shared\Entity\Ascent;
+use App\Domain\Shared\Entity\Descent;
+use App\Domain\Shared\Entity\Distance;
+use App\Domain\Shared\Entity\Duration;
+
 final class StartCheckpoint extends Checkpoint
 {
     public const DEFAULT_NAME = 'start';
@@ -12,7 +17,7 @@ final class StartCheckpoint extends Checkpoint
         string $location,
         Race $race,
     ) {
-        $metricsFromStart = MetricsFromStart::create(0, 0, 0, 0);
+        $metricsFromStart = MetricsFromStart::create(new Duration(0), new Distance(0), new Ascent(0), new Descent(0));
         parent::__construct(
             $id,
             $name,
@@ -31,10 +36,10 @@ final class StartCheckpoint extends Checkpoint
 
     public function validate(): void
     {
-        if (0 !== $this->getMetricsFromStart()->distance->value
-            || 0 !== $this->getMetricsFromStart()->ascent->value
-            || 0 !== $this->getMetricsFromStart()->descent->value
-            || 0 !== $this->getMetricsFromStart()->estimatedTimeInMinutes->minutes
+        if (0 !== $this->getMetricsFromStart()->distance
+            || 0 !== $this->getMetricsFromStart()->ascent
+            || 0 !== $this->getMetricsFromStart()->descent
+            || 0 !== $this->getMetricsFromStart()->estimatedTimeInMinutes
         ) {
             throw new \DomainException('Invalid Start Checkpoint Metrics');
         }

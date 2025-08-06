@@ -10,6 +10,10 @@ use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
 use App\Domain\Race\Entity\StartCheckpoint;
 use App\Domain\Race\Exception\CheckpointWithSameDistanceException;
+use App\Domain\Shared\Entity\Ascent;
+use App\Domain\Shared\Entity\Descent;
+use App\Domain\Shared\Entity\Distance;
+use App\Domain\Shared\Entity\Duration;
 use PHPUnit\Framework\TestCase;
 
 final class RaceTest extends TestCase
@@ -30,15 +34,15 @@ final class RaceTest extends TestCase
         $this->assertCount(2, $race->getCheckpoints());
         $this->assertInstanceOf(StartCheckpoint::class, $race->getCheckpoints()[0]);
         $this->assertInstanceOf(FinishCheckpoint::class, $race->getCheckpoints()[1]);
-        $this->assertSame(0, $race->getCheckpoints()[0]->getMetricsFromStart()->distance->value);
-        $this->assertSame(0, $race->getCheckpoints()[0]->getMetricsFromStart()->ascent->value);
-        $this->assertSame(0, $race->getCheckpoints()[0]->getMetricsFromStart()->descent->value);
-        $this->assertSame(0, $race->getCheckpoints()[0]->getMetricsFromStart()->estimatedTimeInMinutes->minutes);
+        $this->assertSame(0, $race->getCheckpoints()[0]->getMetricsFromStart()->distance);
+        $this->assertSame(0, $race->getCheckpoints()[0]->getMetricsFromStart()->ascent);
+        $this->assertSame(0, $race->getCheckpoints()[0]->getMetricsFromStart()->descent);
+        $this->assertSame(0, $race->getCheckpoints()[0]->getMetricsFromStart()->estimatedTimeInMinutes);
 
-        $this->assertSame($race->profile->distance->value, $race->getCheckpoints()[1]->getMetricsFromStart()->distance->value);
-        $this->assertSame($race->profile->ascent->value, $race->getCheckpoints()[1]->getMetricsFromStart()->ascent->value);
-        $this->assertSame($race->profile->descent->value, $race->getCheckpoints()[1]->getMetricsFromStart()->descent->value);
-        $this->assertSame(360, $race->getCheckpoints()[1]->getMetricsFromStart()->estimatedTimeInMinutes->minutes);
+        $this->assertSame($race->profile->distance->value, $race->getCheckpoints()[1]->getMetricsFromStart()->distance);
+        $this->assertSame($race->profile->ascent->value, $race->getCheckpoints()[1]->getMetricsFromStart()->ascent);
+        $this->assertSame($race->profile->descent->value, $race->getCheckpoints()[1]->getMetricsFromStart()->descent);
+        $this->assertSame(360, $race->getCheckpoints()[1]->getMetricsFromStart()->estimatedTimeInMinutes);
     }
 
     public function testGetStartCheckpoint(): void
@@ -55,9 +59,9 @@ final class RaceTest extends TestCase
         );
 
         $this->assertInstanceOf(StartCheckpoint::class, $race->getStartCheckpoint());
-        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->distance->value);
-        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->ascent->value);
-        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->descent->value);
+        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->distance);
+        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->ascent);
+        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->descent);
     }
 
     public function testGetFinishCheckpoint(): void
@@ -74,9 +78,9 @@ final class RaceTest extends TestCase
         );
 
         $this->assertInstanceOf(FinishCheckpoint::class, $race->getFinishCheckpoint());
-        $this->assertSame($race->profile->distance, $race->getFinishCheckpoint()->getMetricsFromStart()->distance);
-        $this->assertSame($race->profile->ascent, $race->getFinishCheckpoint()->getMetricsFromStart()->ascent);
-        $this->assertSame($race->profile->descent, $race->getFinishCheckpoint()->getMetricsFromStart()->descent);
+        $this->assertSame($race->profile->distance->value, $race->getFinishCheckpoint()->getMetricsFromStart()->distance);
+        $this->assertSame($race->profile->ascent->value, $race->getFinishCheckpoint()->getMetricsFromStart()->ascent);
+        $this->assertSame($race->profile->descent->value, $race->getFinishCheckpoint()->getMetricsFromStart()->descent);
     }
 
     public function testUpdate(): void
@@ -109,9 +113,9 @@ final class RaceTest extends TestCase
         $this->assertSame(2001, $race->profile->descent->value);
         $this->assertSame('La Clusaze', $race->address->city);
         $this->assertSame('74xx1', $race->address->postalCode);
-        $this->assertSame(43, $race->getFinishCheckpoint()->getMetricsFromStart()->distance->value);
-        $this->assertSame(2001, $race->getFinishCheckpoint()->getMetricsFromStart()->ascent->value);
-        $this->assertSame(2001, $race->getFinishCheckpoint()->getMetricsFromStart()->descent->value);
+        $this->assertSame(43, $race->getFinishCheckpoint()->getMetricsFromStart()->distance);
+        $this->assertSame(2001, $race->getFinishCheckpoint()->getMetricsFromStart()->ascent);
+        $this->assertSame(2001, $race->getFinishCheckpoint()->getMetricsFromStart()->descent);
     }
 
     public function testAddCheckpoint(): void
@@ -131,7 +135,7 @@ final class RaceTest extends TestCase
             'cpId',
             'name',
             'location',
-            MetricsFromStart::create(120, 10, 1000, 1000),
+            MetricsFromStart::create(new Duration(120), new Distance(10), new Ascent(1000), new Descent(1000)),
             $race
         );
 
@@ -158,7 +162,7 @@ final class RaceTest extends TestCase
             'cpId',
             'name',
             'location',
-            MetricsFromStart::create(120, 10, 1000, 1000),
+            MetricsFromStart::create(new Duration(120), new Distance(10), new Ascent(1000), new Descent(1000)),
             $race
         );
 
@@ -166,7 +170,7 @@ final class RaceTest extends TestCase
             'cpId2',
             'name2',
             'location2',
-            MetricsFromStart::create(120, 10, 1000, 1000),
+            MetricsFromStart::create(new Duration(120), new Distance(10), new Ascent(1000), new Descent(1000)),
             $race
         );
 
@@ -194,7 +198,7 @@ final class RaceTest extends TestCase
             'cpId',
             'name',
             'location',
-            MetricsFromStart::create(120, 10, 1000, 1000),
+            MetricsFromStart::create(new Duration(120), new Distance(10), new Ascent(1000), new Descent(1000)),
             $race
         );
 
@@ -222,7 +226,7 @@ final class RaceTest extends TestCase
             'cpId',
             'name',
             'location',
-            MetricsFromStart::create(120, 10, 1000, 1000),
+            MetricsFromStart::create(new Duration(120), new Distance(10), new Ascent(1000), new Descent(1000)),
             $race
         );
 
@@ -230,9 +234,9 @@ final class RaceTest extends TestCase
 
         $race->sortCheckpointByDistance();
 
-        $this->assertSame(0, $race->getCheckpoints()->get(0)->getMetricsFromStart()->distance->value);
-        $this->assertSame(10, $race->getCheckpoints()->get(1)->getMetricsFromStart()->distance->value);
-        $this->assertSame(42, $race->getCheckpoints()->get(2)->getMetricsFromStart()->distance->value);
+        $this->assertSame(0, $race->getCheckpoints()->get(0)->getMetricsFromStart()->distance);
+        $this->assertSame(10, $race->getCheckpoints()->get(1)->getMetricsFromStart()->distance);
+        $this->assertSame(42, $race->getCheckpoints()->get(2)->getMetricsFromStart()->distance);
     }
 
     public function testRemoveCheckpointStartThrowsException(): void
@@ -294,7 +298,7 @@ final class RaceTest extends TestCase
             'cpId',
             'name',
             'location',
-            MetricsFromStart::create(120, 10, 1000, 1000),
+            MetricsFromStart::create(new Duration(120), new Distance(10), new Ascent(1000), new Descent(1000)),
             $race
         );
 

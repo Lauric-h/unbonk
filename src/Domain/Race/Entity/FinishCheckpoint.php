@@ -15,8 +15,8 @@ final class FinishCheckpoint extends Checkpoint
         int $estimatedTimeInMinutes,
         Race $race,
     ) {
-        $metricsFromStart = new MetricsFromStart(
-            estimatedTimeInMinutes: new Duration($estimatedTimeInMinutes),
+        $metricsFromStart = MetricsFromStart::create(
+            duration: new Duration($estimatedTimeInMinutes),
             distance: $race->profile->distance,
             ascent: $race->profile->ascent,
             descent: $race->profile->descent,
@@ -35,8 +35,8 @@ final class FinishCheckpoint extends Checkpoint
 
     public function updateProfileMetrics(Profile $profile): void
     {
-        $metrics = new MetricsFromStart(
-            $this->getMetricsFromStart()->estimatedTimeInMinutes,
+        $metrics = MetricsFromStart::create(
+            new Duration($this->getMetricsFromStart()->estimatedTimeInMinutes),
             $profile->distance,
             $profile->ascent,
             $profile->descent,
@@ -52,9 +52,9 @@ final class FinishCheckpoint extends Checkpoint
 
     public function validate(): void
     {
-        if ($this->getMetricsFromStart()->distance->value !== $this->getRace()->profile->distance->value
-            || $this->getMetricsFromStart()->ascent->value !== $this->getRace()->profile->ascent->value
-            || $this->getMetricsFromStart()->descent->value !== $this->getRace()->profile->descent->value
+        if ($this->getMetricsFromStart()->distance !== $this->getRace()->profile->distance->value
+            || $this->getMetricsFromStart()->ascent !== $this->getRace()->profile->ascent->value
+            || $this->getMetricsFromStart()->descent !== $this->getRace()->profile->descent->value
         ) {
             throw new \DomainException('Invalid Finish Checkpoint Metrics');
         }
@@ -63,7 +63,7 @@ final class FinishCheckpoint extends Checkpoint
             throw new \DomainException('Invalid Checkpoint Type');
         }
 
-        if (0 === $this->getMetricsFromStart()->estimatedTimeInMinutes->minutes) {
+        if (0 === $this->getMetricsFromStart()->estimatedTimeInMinutes) {
             throw new \DomainException('Cannot have FinishCheckpoint with 0 minute');
         }
     }

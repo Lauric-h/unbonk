@@ -10,6 +10,10 @@ use App\Domain\Race\Entity\Race;
 use App\Domain\Race\Event\RaceCheckpointsChanged;
 use App\Domain\Race\Repository\RacesCatalog;
 use App\Domain\Shared\Bus\EventBusInterface;
+use App\Domain\Shared\Entity\Ascent;
+use App\Domain\Shared\Entity\Descent;
+use App\Domain\Shared\Entity\Distance;
+use App\Domain\Shared\Entity\Duration;
 use App\Infrastructure\Race\DTO\CheckpointDTO;
 use App\Infrastructure\Race\EventSubscriber\PublishRaceCheckpointsChangedListener;
 use App\Infrastructure\Shared\Event\RaceCheckpointsChangedIntegrationEvent;
@@ -43,7 +47,7 @@ final class PublishCheckpointAddedListenerTest extends TestCase
             'cpId',
             'name',
             'location',
-            MetricsFromStart::create(120, 10, 1000, 1000),
+            MetricsFromStart::create(new Duration(120), new Distance(10), new Ascent(1000), new Descent(1000)),
             $race
         );
         $race->addCheckpoint($checkpoint);

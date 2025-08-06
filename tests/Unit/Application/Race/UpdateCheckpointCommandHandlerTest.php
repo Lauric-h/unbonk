@@ -12,6 +12,10 @@ use App\Domain\Race\Entity\MetricsFromStart;
 use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
 use App\Domain\Race\Event\RaceCheckpointsChanged;
+use App\Domain\Shared\Entity\Ascent;
+use App\Domain\Shared\Entity\Descent;
+use App\Domain\Shared\Entity\Distance;
+use App\Domain\Shared\Entity\Duration;
 use App\Infrastructure\Race\Persistence\DoctrineCheckpointsCatalog;
 use App\Infrastructure\Race\Persistence\DoctrineRacesCatalog;
 use App\Infrastructure\Shared\Bus\EventBus;
@@ -42,7 +46,7 @@ final class UpdateCheckpointCommandHandlerTest extends TestCase
             'cpId',
             'name',
             'location',
-            MetricsFromStart::create(120, 10, 1000, 1000),
+            MetricsFromStart::create(new Duration(120), new Distance(10), new Ascent(1000), new Descent(1000)),
             $race
         );
 
@@ -104,7 +108,7 @@ final class UpdateCheckpointCommandHandlerTest extends TestCase
             'cpId',
             'name',
             'location',
-            MetricsFromStart::create(120, 10, 1000, 1000),
+            MetricsFromStart::create(new Duration(120), new Distance(10), new Ascent(1000), new Descent(1000)),
             $race
         );
 
@@ -193,10 +197,10 @@ final class UpdateCheckpointCommandHandlerTest extends TestCase
 
         $this->assertSame('updated', $race->getStartCheckpoint()->getName());
         $this->assertSame('updated', $race->getStartCheckpoint()->getLocation());
-        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->distance->value);
-        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->ascent->value);
-        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->descent->value);
-        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->estimatedTimeInMinutes->minutes);
+        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->distance);
+        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->ascent);
+        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->descent);
+        $this->assertSame(0, $race->getStartCheckpoint()->getMetricsFromStart()->estimatedTimeInMinutes);
     }
 
     public function testUpdateFinishCheckpointUpdatesNameAndLocationOnly(): void
@@ -249,9 +253,9 @@ final class UpdateCheckpointCommandHandlerTest extends TestCase
 
         $this->assertSame('updated', $race->getFinishCheckpoint()->getName());
         $this->assertSame('updated', $race->getFinishCheckpoint()->getLocation());
-        $this->assertSame(42, $race->getFinishCheckpoint()->getMetricsFromStart()->distance->value);
-        $this->assertSame(2000, $race->getFinishCheckpoint()->getMetricsFromStart()->ascent->value);
-        $this->assertSame(2000, $race->getFinishCheckpoint()->getMetricsFromStart()->descent->value);
-        $this->assertSame(360, $race->getFinishCheckpoint()->getMetricsFromStart()->estimatedTimeInMinutes->minutes);
+        $this->assertSame(42, $race->getFinishCheckpoint()->getMetricsFromStart()->distance);
+        $this->assertSame(2000, $race->getFinishCheckpoint()->getMetricsFromStart()->ascent);
+        $this->assertSame(2000, $race->getFinishCheckpoint()->getMetricsFromStart()->descent);
+        $this->assertSame(360, $race->getFinishCheckpoint()->getMetricsFromStart()->estimatedTimeInMinutes);
     }
 }

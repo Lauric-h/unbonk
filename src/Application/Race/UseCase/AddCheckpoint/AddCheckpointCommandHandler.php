@@ -9,6 +9,10 @@ use App\Domain\Race\Entity\MetricsFromStart;
 use App\Domain\Race\Event\RaceCheckpointsChanged;
 use App\Domain\Race\Repository\RacesCatalog;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
+use App\Domain\Shared\Entity\Ascent;
+use App\Domain\Shared\Entity\Descent;
+use App\Domain\Shared\Entity\Distance;
+use App\Domain\Shared\Entity\Duration;
 use App\Infrastructure\Shared\Bus\EventBus;
 
 final readonly class AddCheckpointCommandHandler implements CommandHandlerInterface
@@ -26,14 +30,24 @@ final readonly class AddCheckpointCommandHandler implements CommandHandlerInterf
                 id: $command->id,
                 name: $command->name,
                 location: $command->location,
-                metricsFromStart: MetricsFromStart::create($command->estimatedTimeInMinutes, $command->distance, $command->elevationGain, $command->elevationLoss),
+                metricsFromStart: MetricsFromStart::create(
+                    new Duration($command->estimatedTimeInMinutes),
+                    new Distance($command->distance),
+                    new Ascent($command->elevationGain),
+                    new Descent($command->elevationLoss)
+                ),
                 race: $race
             ),
             CheckpointType::Intermediate => new IntermediateCheckpoint(
                 id: $command->id,
                 name: $command->name,
                 location: $command->location,
-                metricsFromStart: MetricsFromStart::create($command->estimatedTimeInMinutes, $command->distance, $command->elevationGain, $command->elevationLoss),
+                metricsFromStart: MetricsFromStart::create(
+                    new Duration($command->estimatedTimeInMinutes),
+                    new Distance($command->distance),
+                    new Ascent($command->elevationGain),
+                    new Descent($command->elevationLoss)
+                ),
                 race: $race
             ),
             default => throw new \DomainException('You can only add Intermediate or AidStation checkpoints'),

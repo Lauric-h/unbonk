@@ -8,6 +8,10 @@ use App\Domain\Race\Entity\MetricsFromStart;
 use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
 use App\Domain\Race\Entity\StartCheckpoint;
+use App\Domain\Shared\Entity\Ascent;
+use App\Domain\Shared\Entity\Descent;
+use App\Domain\Shared\Entity\Distance;
+use App\Domain\Shared\Entity\Duration;
 use PHPUnit\Framework\TestCase;
 
 final class StartCheckpointTest extends TestCase
@@ -33,10 +37,10 @@ final class StartCheckpointTest extends TestCase
         );
 
         $this->assertSame(CheckpointType::Start, $checkpoint->getCheckpointType());
-        $this->assertSame(0, $checkpoint->getMetricsFromStart()->ascent->value);
-        $this->assertSame(0, $checkpoint->getMetricsFromStart()->descent->value);
-        $this->assertSame(0, $checkpoint->getMetricsFromStart()->distance->value);
-        $this->assertSame(0, $checkpoint->getMetricsFromStart()->estimatedTimeInMinutes->minutes);
+        $this->assertSame(0, $checkpoint->getMetricsFromStart()->ascent);
+        $this->assertSame(0, $checkpoint->getMetricsFromStart()->descent);
+        $this->assertSame(0, $checkpoint->getMetricsFromStart()->distance);
+        $this->assertSame(0, $checkpoint->getMetricsFromStart()->estimatedTimeInMinutes);
     }
 
     public function testStartCheckpointUpdate(): void
@@ -63,10 +67,10 @@ final class StartCheckpointTest extends TestCase
 
         $this->assertSame('updated', $checkpoint->getName());
         $this->assertSame('updatedLocation', $checkpoint->getLocation());
-        $this->assertSame(0, $checkpoint->getMetricsFromStart()->ascent->value);
-        $this->assertSame(0, $checkpoint->getMetricsFromStart()->descent->value);
-        $this->assertSame(0, $checkpoint->getMetricsFromStart()->distance->value);
-        $this->assertSame(0, $checkpoint->getMetricsFromStart()->estimatedTimeInMinutes->minutes);
+        $this->assertSame(0, $checkpoint->getMetricsFromStart()->ascent);
+        $this->assertSame(0, $checkpoint->getMetricsFromStart()->descent);
+        $this->assertSame(0, $checkpoint->getMetricsFromStart()->distance);
+        $this->assertSame(0, $checkpoint->getMetricsFromStart()->estimatedTimeInMinutes);
     }
 
     public function testWillMetricsChange(): void
@@ -89,6 +93,6 @@ final class StartCheckpointTest extends TestCase
             $race
         );
 
-        $this->assertFalse($checkpoint->willMetricsChange(MetricsFromStart::create(1, 1, 1, 1)));
+        $this->assertFalse($checkpoint->willMetricsChange(MetricsFromStart::create(new Duration(1), new Distance(1), new Ascent(1), new Descent(1))));
     }
 }

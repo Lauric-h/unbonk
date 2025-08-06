@@ -7,6 +7,10 @@ use App\Domain\Race\Entity\IntermediateCheckpoint;
 use App\Domain\Race\Entity\MetricsFromStart;
 use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
+use App\Domain\Shared\Entity\Ascent;
+use App\Domain\Shared\Entity\Descent;
+use App\Domain\Shared\Entity\Distance;
+use App\Domain\Shared\Entity\Duration;
 use App\Infrastructure\Race\DTO\CheckpointDTO;
 use PHPUnit\Framework\TestCase;
 
@@ -29,7 +33,7 @@ final class CheckpointDTOTest extends TestCase
             'cpId',
             'name',
             'location',
-            MetricsFromStart::create(120, 10, 1000, 1000),
+            MetricsFromStart::create(new Duration(120), new Distance(10), new Ascent(1000), new Descent(1000)),
             $race
         );
         $race->addCheckpoint($checkpoint);

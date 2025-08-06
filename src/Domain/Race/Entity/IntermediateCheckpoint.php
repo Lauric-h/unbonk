@@ -40,22 +40,22 @@ final class IntermediateCheckpoint extends Checkpoint
             throw new \DomainException('Invalid Checkpoint Type');
         }
 
-        if ($this->getMetricsFromStart()->distance->value >= $this->getRace()->profile->distance->value
-            || $this->getMetricsFromStart()->distance->value <= 0
+        if ($this->getMetricsFromStart()->distance >= $this->getRace()->profile->distance->value
+            || $this->getMetricsFromStart()->distance <= 0
         ) {
-            throw new \DomainException(\sprintf('Invalid Checkpoint Distance: %d', $this->getMetricsFromStart()->distance->value));
+            throw new \DomainException(\sprintf('Invalid Checkpoint Distance: %d', $this->getMetricsFromStart()->distance));
         }
 
-        if ($this->getMetricsFromStart()->ascent->value > $this->getRace()->profile->ascent->value
-            || $this->getMetricsFromStart()->ascent->value < 0
+        if ($this->getMetricsFromStart()->ascent > $this->getRace()->profile->ascent->value
+            || $this->getMetricsFromStart()->ascent < 0
         ) {
-            throw new \DomainException(\sprintf('Invalid Checkpoint elevation gain: %d', $this->getMetricsFromStart()->ascent->value));
+            throw new \DomainException(\sprintf('Invalid Checkpoint elevation gain: %d', $this->getMetricsFromStart()->ascent));
         }
 
-        if ($this->getMetricsFromStart()->descent->value > $this->getRace()->profile->descent->value
-            || $this->getMetricsFromStart()->descent->value < 0
+        if ($this->getMetricsFromStart()->descent > $this->getRace()->profile->descent->value
+            || $this->getMetricsFromStart()->descent < 0
         ) {
-            throw new \DomainException(\sprintf('Invalid Checkpoint elevation loss: %d', $this->getMetricsFromStart()->descent->value));
+            throw new \DomainException(\sprintf('Invalid Checkpoint elevation loss: %d', $this->getMetricsFromStart()->descent));
         }
     }
 
