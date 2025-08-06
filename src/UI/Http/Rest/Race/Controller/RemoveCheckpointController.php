@@ -31,7 +31,7 @@ final class RemoveCheckpointController extends AbstractController
         return new JsonResponse(
             [],
             Response::HTTP_NO_CONTENT,
-            ['Location' => $this->urlGenerator->generate('app.race.get', ['id' => $raceId])]
+            ['Location' => $this->urlGenerator->generate('api.race.get', ['id' => $raceId])]
         );
     }
 }

@@ -7,8 +7,7 @@
     <ul>
         {% for race in list.races %}
             <li>
-                {{ race.name }}
-{#                <a href="{{ url('app.brand.get', {id: brand.id}) }}">{{ brand.name }}</a>#}
+                <a href="{{ url('app.race.get', {id: race.id}) }}">{{ race.name }}</a>
             </li>
         {% endfor %}
     </ul>

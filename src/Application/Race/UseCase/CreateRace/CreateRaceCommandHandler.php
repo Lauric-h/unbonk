@@ -9,6 +9,9 @@ use App\Domain\Race\Entity\Race;
 use App\Domain\Race\Event\RaceCreated;
 use App\Domain\Race\Repository\RacesCatalog;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
+use App\Domain\Shared\Entity\Ascent;
+use App\Domain\Shared\Entity\Descent;
+use App\Domain\Shared\Entity\Distance;
 use App\Infrastructure\Shared\Bus\EventBus;
 
 final readonly class CreateRaceCommandHandler implements CommandHandlerInterface
@@ -26,7 +29,11 @@ final readonly class CreateRaceCommandHandler implements CommandHandlerInterface
             id: $command->id,
             date: $command->date,
             name: $command->name,
-            profile: Profile::create($command->distance, $command->elevationGain, $command->elevationLoss),
+            profile: Profile::create(
+                new Distance($command->distance),
+                new Ascent($command->ascent),
+                new Descent($command->descent)
+            ),
             address: new Address($command->city, $command->postalCode),
             runnerId: $command->runnerId,
             startCheckpointId: $this->idGenerator->generate(),

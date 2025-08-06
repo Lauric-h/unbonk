@@ -47,7 +47,7 @@ final class AddCheckpointController extends AbstractController
         return new JsonResponse(
             [],
             Response::HTTP_CREATED,
-            ['Location' => $this->urlGenerator->generate('app.race.get', ['id' => $raceId])]
+            ['Location' => $this->urlGenerator->generate('api.race.get', ['id' => $raceId])]
         );
     }
 }

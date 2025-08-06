@@ -3,6 +3,9 @@
 namespace App\Domain\Race\Entity;
 
 use App\Domain\Race\Exception\CheckpointWithSameDistanceException;
+use App\Domain\Shared\Entity\Ascent;
+use App\Domain\Shared\Entity\Descent;
+use App\Domain\Shared\Entity\Distance;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -79,7 +82,11 @@ class Race
         $this->name = $name;
         $this->date = $date;
 
-        $profile = Profile::create($distance, $elevationGain, $elevationLoss);
+        $profile = Profile::create(
+            new Distance($distance),
+            new Ascent($elevationGain),
+            new Descent($elevationLoss)
+        );
         $this->profile = $profile;
         $this->getFinishCheckpoint()->updateProfileMetrics($this->profile);
 
@@ -93,7 +100,7 @@ class Race
             throw new CheckpointWithSameDistanceException($checkpoint->getMetricsFromStart()->distance);
         }
 
-        if ($checkpoint->getMetricsFromStart()->distance >= $this->profile->distance->value) {
+        if ($checkpoint->getMetricsFromStart()->distance >= $this->profile->distance) {
             throw new \DomainException('New Checkpoint cannot exceed Race distance');
         }
 
@@ -186,8 +193,8 @@ class Race
 
     private function setDefaultEstimatedFinishDurationTime(): int
     {
-        $distance = $this->profile->distance->value;
-        $ascentInKmEffort = $this->profile->ascent->value / 100 >= 1 ? $this->profile->ascent->value / 100 : 0;
+        $distance = $this->profile->distance;
+        $ascentInKmEffort = $this->profile->ascent / 100 >= 1 ? $this->profile->ascent / 100 : 0;
         $defaultInHours = ($distance + $ascentInKmEffort) / self::DEFAULT_PACE;
 
         return (int) $defaultInHours * 60;

@@ -46,7 +46,7 @@ final class UpdateRaceController extends AbstractController
         return new JsonResponse(
             [],
             Response::HTTP_NO_CONTENT,
-            ['Location' => $this->urlGenerator->generate('app.race.get', ['id' => $id])]
+            ['Location' => $this->urlGenerator->generate('api.race.get', ['id' => $id])]
         );
     }
 }

@@ -22,7 +22,7 @@ final class FinishCheckpointTest extends TestCase
             'id',
             new \DateTimeImmutable(),
             'name',
-            Profile::create(42, 2000, 2000),
+            Profile::create(new Distance(42), new Ascent(2000), new Descent(2000)),
             new Address('city', '74xxx'),
             'runnerId',
             'startId',
@@ -46,7 +46,7 @@ final class FinishCheckpointTest extends TestCase
             'id',
             new \DateTimeImmutable(),
             'name',
-            Profile::create(42, 2000, 2000),
+            Profile::create(new Distance(42), new Ascent(2000), new Descent(2000)),
             new Address('city', '74xxx'),
             'runnerId',
             'startId',
@@ -77,7 +77,7 @@ final class FinishCheckpointTest extends TestCase
             'id',
             new \DateTimeImmutable(),
             'name',
-            Profile::create(42, 2000, 2000),
+            Profile::create(new Distance(42), new Ascent(2000), new Descent(2000)),
             new Address('city', '74xxx'),
             'runnerId',
             'startId',
@@ -92,7 +92,7 @@ final class FinishCheckpointTest extends TestCase
             $race
         );
 
-        $profile = Profile::create(50, 3000, 3000);
+        $profile = Profile::create(new Distance(50), new Ascent(3000), new Descent(3000));
 
         $checkpoint->updateProfileMetrics($profile);
 
@@ -108,7 +108,7 @@ final class FinishCheckpointTest extends TestCase
             'id',
             new \DateTimeImmutable(),
             'name',
-            Profile::create(42, 2000, 2000),
+            Profile::create(new Distance(42), new Ascent(2000), new Descent(2000)),
             new Address('city', '74xxx'),
             'runnerId',
             'startId',

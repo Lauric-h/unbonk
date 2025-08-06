@@ -15,12 +15,12 @@ final class CreateRaceCommand implements CommandInterface
         public \DateTimeImmutable $date,
         #[Assert\NotBlank]
         public string $name,
-        #[Assert\GreaterThan(0)]
+        #[Assert\Positive]
         public int $distance,
         #[Assert\PositiveOrZero]
-        public int $elevationGain,
+        public int $ascent,
         #[Assert\PositiveOrZero]
-        public int $elevationLoss,
+        public int $descent,
         #[Assert\NotBlank]
         public string $city,
         public string $postalCode,

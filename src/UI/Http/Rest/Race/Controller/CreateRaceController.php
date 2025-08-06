@@ -38,8 +38,8 @@ final class CreateRaceController extends AbstractController
             date: new \DateTimeImmutable($createRaceRequest->date),
             name: $createRaceRequest->name,
             distance: $createRaceRequest->distance,
-            elevationGain: $createRaceRequest->elevationGain,
-            elevationLoss: $createRaceRequest->elevationLoss,
+            ascent: $createRaceRequest->elevationGain,
+            descent: $createRaceRequest->elevationLoss,
             city: $createRaceRequest->city,
             postalCode: $createRaceRequest->postalCode,
         );
@@ -49,7 +49,7 @@ final class CreateRaceController extends AbstractController
         return new JsonResponse(
             [],
             Response::HTTP_CREATED,
-            ['Location' => $this->urlGenerator->generate('app.race.get', ['id' => $id])]
+            ['Location' => $this->urlGenerator->generate('api.race.get', ['id' => $id])]
         );
     }
 }

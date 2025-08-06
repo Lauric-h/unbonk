@@ -22,7 +22,7 @@ final class CheckpointDTOTest extends TestCase
             'raceId',
             new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
-            Profile::create(42, 2000, 2000),
+            Profile::create(new Distance(42), new Ascent(2000), new Descent(2000)),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',

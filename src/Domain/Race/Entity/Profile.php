@@ -8,19 +8,19 @@ use App\Domain\Shared\Entity\Distance;
 
 final readonly class Profile
 {
-    public function __construct(
-        public Distance $distance,
-        public Ascent $ascent,
-        public Descent $descent,
+    private function __construct(
+        public int $distance,
+        public int $ascent,
+        public int $descent,
     ) {
     }
 
-    public static function create(int $distance, int $ascent, int $descent): self
+    public static function create(Distance $distance, Ascent $ascent, Descent $descent): self
     {
         return new self(
-            new Distance($distance),
-            new Ascent($ascent),
-            new Descent($descent),
+            $distance->value,
+            $ascent->value,
+            $descent->value,
         );
     }
 }
