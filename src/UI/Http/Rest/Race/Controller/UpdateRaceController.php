@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
-#[Route('/races/{id}', name: 'app.race.update', methods: ['PUT'])]
+#[Route('/races/{id}', name: 'api.race.update', methods: ['PUT'])]
 final class UpdateRaceController extends AbstractController
 {
     public function __construct(
