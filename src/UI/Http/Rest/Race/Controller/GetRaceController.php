@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/races/{id}', name: 'app.race.get', methods: ['GET'])]
+#[Route('/races/{id}', name: 'api.race.get', methods: ['GET'])]
 final class GetRaceController extends AbstractController
 {
     public function __construct(private readonly QueryBus $queryBus)

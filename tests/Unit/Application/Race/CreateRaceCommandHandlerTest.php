@@ -8,6 +8,9 @@ use App\Domain\Race\Entity\Address;
 use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
 use App\Domain\Race\Event\RaceCreated;
+use App\Domain\Shared\Entity\Ascent;
+use App\Domain\Shared\Entity\Descent;
+use App\Domain\Shared\Entity\Distance;
 use App\Infrastructure\Race\Persistence\DoctrineRacesCatalog;
 use App\Infrastructure\Shared\Bus\EventBus;
 use App\Tests\Unit\MockIdGenerator;
@@ -28,8 +31,8 @@ final class CreateRaceCommandHandlerTest extends TestCase
             date: $date,
             name: 'Le Bélier',
             distance: 42,
-            elevationGain: 2000,
-            elevationLoss: 2000,
+            ascent: 2000,
+            descent: 2000,
             city: 'La Clusaz',
             postalCode: '74xxx'
         );
@@ -38,7 +41,7 @@ final class CreateRaceCommandHandlerTest extends TestCase
             'id',
             $date,
             'Le Bélier',
-            Profile::create(42, 2000, 2000),
+            Profile::create(new Distance(42), new Ascent(2000), new Descent(2000)),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'id',

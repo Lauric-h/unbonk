@@ -8,17 +8,17 @@ final class ProfileReadModel
 {
     public function __construct(
         public int $distance,
-        public int $elevationGain,
-        public int $elevationLoss,
+        public int $ascent,
+        public int $descent,
     ) {
     }
 
     public static function fromDomain(Profile $profile): self
     {
         return new self(
-            distance: $profile->distance->value,
-            elevationGain: $profile->ascent->value,
-            elevationLoss: $profile->descent->value,
+            distance: $profile->distance,
+            ascent: $profile->ascent,
+            descent: $profile->descent,
         );
     }
 }

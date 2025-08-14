@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-#[Route('/races/{raceId}/checkpoints/{id}', name: 'app.race.checkpoint.remove', methods: ['DELETE'])]
+#[Route('/races/{raceId}/checkpoints/{id}', name: 'api.race.checkpoint.remove', methods: ['DELETE'])]
 final class RemoveCheckpointController extends AbstractController
 {
     public function __construct(
@@ -31,7 +31,7 @@ final class RemoveCheckpointController extends AbstractController
         return new JsonResponse(
             [],
             Response::HTTP_NO_CONTENT,
-            ['Location' => $this->urlGenerator->generate('app.race.get', ['id' => $raceId])]
+            ['Location' => $this->urlGenerator->generate('api.race.get', ['id' => $raceId])]
         );
     }
 }

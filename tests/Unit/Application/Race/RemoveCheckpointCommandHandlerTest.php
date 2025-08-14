@@ -12,6 +12,10 @@ use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
 use App\Domain\Race\Entity\StartCheckpoint;
 use App\Domain\Race\Event\RaceCheckpointsChanged;
+use App\Domain\Shared\Entity\Ascent;
+use App\Domain\Shared\Entity\Descent;
+use App\Domain\Shared\Entity\Distance;
+use App\Domain\Shared\Entity\Duration;
 use App\Infrastructure\Race\Persistence\DoctrineCheckpointsCatalog;
 use App\Infrastructure\Race\Persistence\DoctrineRacesCatalog;
 use App\Infrastructure\Shared\Bus\EventBus;
@@ -36,7 +40,7 @@ final class RemoveCheckpointCommandHandlerTest extends TestCase
             'raceId',
             new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
-            Profile::create(42, 2000, 2000),
+            Profile::create(new Distance(42), new Ascent(2000), new Descent(2000)),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',
@@ -47,7 +51,7 @@ final class RemoveCheckpointCommandHandlerTest extends TestCase
             'cpId',
             'name',
             'location',
-            MetricsFromStart::create(120, 10, 1000, 1000),
+            MetricsFromStart::create(new Duration(120), new Distance(10), new Ascent(1000), new Descent(1000)),
             $race
         );
 
@@ -94,7 +98,7 @@ final class RemoveCheckpointCommandHandlerTest extends TestCase
             'raceId',
             new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
-            Profile::create(42, 2000, 2000),
+            Profile::create(new Distance(42), new Ascent(2000), new Descent(2000)),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',
@@ -144,7 +148,7 @@ final class RemoveCheckpointCommandHandlerTest extends TestCase
             'raceId',
             new \DateTimeImmutable('2025-01-01'),
             'Le Bélier',
-            Profile::create(42, 2000, 2000),
+            Profile::create(new Distance(42), new Ascent(2000), new Descent(2000)),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',

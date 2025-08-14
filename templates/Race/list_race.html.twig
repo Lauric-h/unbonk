@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <h1>LIST Races</h1>
+
+    <ul>
+        {% for race in list.races %}
+            <li>
+                <a href="{{ url('app.race.get', {id: race.id}) }}">{{ race.name }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

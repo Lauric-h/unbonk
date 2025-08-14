@@ -4,12 +4,11 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-
     <embeddable name="App\Domain\Race\Entity\MetricsFromStart">
-        <embedded name="estimatedTimeInMinutes" class="App\Domain\Shared\Entity\Duration" />
-        <embedded name="distance" class="App\Domain\Shared\Entity\Distance" />
-        <embedded name="ascent" class="App\Domain\Shared\Entity\Ascent" />
-        <embedded name="descent" class="App\Domain\Shared\Entity\Descent" />
+        <field name="estimatedTimeInMinutes" type="integer" />
+        <field name="distance" type="integer" />
+        <field name="ascent" type="integer" />
+        <field name="descent" type="integer" />
     </embeddable>
 
 </doctrine-mapping>

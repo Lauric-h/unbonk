@@ -9,28 +9,28 @@ use App\Domain\Shared\Entity\Duration;
 
 final readonly class MetricsFromStart
 {
-    public function __construct(
-        public Duration $estimatedTimeInMinutes,
-        public Distance $distance,
-        public Ascent $ascent,
-        public Descent $descent,
+    private function __construct(
+        public int $estimatedTimeInMinutes,
+        public int $distance,
+        public int $ascent,
+        public int $descent,
     ) {
     }
 
-    public static function create(int $duration, int $distance, int $ascent, int $descent): self
+    public static function create(Duration $duration, Distance $distance, Ascent $ascent, Descent $descent): self
     {
         return new self(
-            new Duration($duration),
-            new Distance($distance),
-            new Ascent($ascent),
-            new Descent($descent),
+            $duration->minutes,
+            $distance->value,
+            $ascent->value,
+            $descent->value
         );
     }
 
     public function equals(MetricsFromStart $metrics): bool
     {
-        return $this->distance->value === $metrics->distance->value
-            && $this->ascent->value === $metrics->ascent->value
-            && $this->descent->value === $metrics->descent->value;
+        return $this->distance === $metrics->distance
+            && $this->ascent === $metrics->ascent
+            && $this->descent === $metrics->descent;
     }
 }

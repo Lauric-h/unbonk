@@ -22,9 +22,9 @@ final class AddCheckpointCommand implements CommandInterface
         #[Assert\PositiveOrZero]
         public int $distance,
         #[Assert\PositiveOrZero]
-        public int $elevationGain,
+        public int $ascent,
         #[Assert\PositiveOrZero]
-        public int $elevationLoss,
+        public int $descent,
         #[Assert\Uuid]
         public string $raceId,
         #[Assert\Uuid]

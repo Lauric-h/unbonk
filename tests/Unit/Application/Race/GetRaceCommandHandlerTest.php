@@ -8,6 +8,9 @@ use App\Application\Race\UseCase\GetRace\GetRaceQueryHandler;
 use App\Domain\Race\Entity\Address;
 use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
+use App\Domain\Shared\Entity\Ascent;
+use App\Domain\Shared\Entity\Descent;
+use App\Domain\Shared\Entity\Distance;
 use App\Infrastructure\Race\Persistence\DoctrineRacesCatalog;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Clock\DatePoint;
@@ -24,7 +27,7 @@ final class GetRaceCommandHandlerTest extends TestCase
             'raceId',
             $date,
             'Le Bélier',
-            Profile::create(42, 2000, 2000),
+            Profile::create(new Distance(42), new Ascent(2000), new Descent(2000)),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',
@@ -42,9 +45,9 @@ final class GetRaceCommandHandlerTest extends TestCase
         $this->assertSame($race->id, $actual->id);
         $this->assertSame($race->date->format('Y-m-d'), $actual->date);
         $this->assertSame($race->name, $actual->name);
-        $this->assertSame($race->profile->distance->value, $actual->profile->distance);
-        $this->assertSame($race->profile->ascent->value, $actual->profile->elevationGain);
-        $this->assertSame($race->profile->descent->value, $actual->profile->elevationLoss);
+        $this->assertSame($race->profile->distance, $actual->profile->distance);
+        $this->assertSame($race->profile->ascent, $actual->profile->ascent);
+        $this->assertSame($race->profile->descent, $actual->profile->descent);
         $this->assertSame($race->address->city, $actual->address->city);
         $this->assertSame($race->address->postalCode, $actual->address->postalCode);
         $this->assertSame($race->runnerId, $actual->runnerId);

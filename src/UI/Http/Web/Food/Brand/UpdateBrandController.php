@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/brands/{id}/update', name: 'app.brand.update')]
+#[Route('/brands/{id}/edit', name: 'app.brand.update')]
 final class UpdateBrandController extends AbstractController
 {
     public function __construct(

@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Race {{ race.name }}</h1>
+
+    <ul>
+        <li>{{ race.date|date('d/m/Y') }}</li>
+        <li>{{ race.profile.distance }}</li>
+        <li>{{ race.profile.ascent }}</li>
+        <li>{{ race.profile.descent }}</li>
+        <li>{{ race.address.city }}</li>
+        <li>{{ race.address.postalCode }}</li>
+    </ul>
+
+    <ul>
+    {% for checkpoint in race.checkpoints %}
+        <li>{{ checkpoint.metricsFromStart.distance }}</li>
+    {% endfor %}
+    </ul>
+
+{% endblock %}
+

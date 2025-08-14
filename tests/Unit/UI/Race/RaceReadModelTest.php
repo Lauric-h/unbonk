@@ -9,6 +9,9 @@ use App\Application\Race\ReadModel\RaceReadModel;
 use App\Domain\Race\Entity\Address;
 use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
+use App\Domain\Shared\Entity\Ascent;
+use App\Domain\Shared\Entity\Descent;
+use App\Domain\Shared\Entity\Distance;
 use PHPUnit\Framework\TestCase;
 
 final class RaceReadModelTest extends TestCase
@@ -20,7 +23,7 @@ final class RaceReadModelTest extends TestCase
             'raceId',
             $date,
             'Le Bélier',
-            Profile::create(42, 2000, 2000),
+            Profile::create(new Distance(42), new Ascent(2000), new Descent(2000)),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',
@@ -52,7 +55,7 @@ final class RaceReadModelTest extends TestCase
             'raceId',
             $date,
             'Le Bélier',
-            Profile::create(42, 2000, 2000),
+            Profile::create(new Distance(42), new Ascent(2000), new Descent(2000)),
             new Address('La Clusaz', '74xxx'),
             'runner-id',
             'startId',

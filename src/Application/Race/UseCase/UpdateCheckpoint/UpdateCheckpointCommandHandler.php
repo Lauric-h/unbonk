@@ -11,6 +11,10 @@ use App\Domain\Race\Event\RaceCheckpointsChanged;
 use App\Domain\Race\Repository\CheckpointsCatalog;
 use App\Domain\Race\Repository\RacesCatalog;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
+use App\Domain\Shared\Entity\Ascent;
+use App\Domain\Shared\Entity\Descent;
+use App\Domain\Shared\Entity\Distance;
+use App\Domain\Shared\Entity\Duration;
 use App\Infrastructure\Shared\Bus\EventBus;
 
 final readonly class UpdateCheckpointCommandHandler implements CommandHandlerInterface
@@ -37,7 +41,12 @@ final readonly class UpdateCheckpointCommandHandler implements CommandHandlerInt
         if ($checkpoint instanceof AidStationCheckpoint
             || $checkpoint instanceof IntermediateCheckpoint
         ) {
-            $metrics = MetricsFromStart::create($command->estimatedTimeInMinutes, $command->distance, $command->elevationGain, $command->elevationLoss);
+            $metrics = MetricsFromStart::create(
+                new Duration($command->estimatedTimeInMinutes),
+                new Distance($command->distance),
+                new Ascent($command->elevationGain),
+                new Descent($command->elevationLoss)
+            );
             $metricsWillChange = $checkpoint->willMetricsChange($metrics);
 
             $checkpoint->update(

@@ -3,6 +3,9 @@
 namespace App\Domain\Race\Entity;
 
 use App\Domain\Race\Exception\CheckpointWithSameDistanceException;
+use App\Domain\Shared\Entity\Ascent;
+use App\Domain\Shared\Entity\Descent;
+use App\Domain\Shared\Entity\Distance;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -79,7 +82,11 @@ class Race
         $this->name = $name;
         $this->date = $date;
 
-        $profile = Profile::create($distance, $elevationGain, $elevationLoss);
+        $profile = Profile::create(
+            new Distance($distance),
+            new Ascent($elevationGain),
+            new Descent($elevationLoss)
+        );
         $this->profile = $profile;
         $this->getFinishCheckpoint()->updateProfileMetrics($this->profile);
 
@@ -89,8 +96,8 @@ class Race
 
     public function addCheckpoint(AidStationCheckpoint|IntermediateCheckpoint $checkpoint): void
     {
-        if ($this->getCheckpointAtDistance($checkpoint->getMetricsFromStart()->distance->value)) {
-            throw new CheckpointWithSameDistanceException($checkpoint->getMetricsFromStart()->distance->value);
+        if ($this->getCheckpointAtDistance($checkpoint->getMetricsFromStart()->distance)) {
+            throw new CheckpointWithSameDistanceException($checkpoint->getMetricsFromStart()->distance);
         }
 
         if ($checkpoint->getMetricsFromStart()->distance >= $this->profile->distance) {
@@ -104,7 +111,7 @@ class Race
 
     public function getCheckpointAtDistance(int $distance): ?Checkpoint
     {
-        $existingCheckpoints = $this->checkpoints->filter(static fn (Checkpoint $checkpoint) => $checkpoint->getMetricsFromStart()->distance->value === $distance);
+        $existingCheckpoints = $this->checkpoints->filter(static fn (Checkpoint $checkpoint) => $checkpoint->getMetricsFromStart()->distance === $distance);
 
         if (\count($existingCheckpoints) > 1) {
             throw new \DomainException(\sprintf('Multiple checkpoint for same distance: %d', $distance));
@@ -116,7 +123,7 @@ class Race
     public function sortCheckpointByDistance(): void
     {
         $checkpoints = $this->checkpoints->toArray();
-        usort($checkpoints, static fn (Checkpoint $a, Checkpoint $b) => $a->getMetricsFromStart()->distance->value <=> $b->getMetricsFromStart()->distance->value);
+        usort($checkpoints, static fn (Checkpoint $a, Checkpoint $b) => $a->getMetricsFromStart()->distance <=> $b->getMetricsFromStart()->distance);
 
         $this->checkpoints->clear();
         foreach ($checkpoints as $checkpoint) {
@@ -186,8 +193,8 @@ class Race
 
     private function setDefaultEstimatedFinishDurationTime(): int
     {
-        $distance = $this->profile->distance->value;
-        $ascentInKmEffort = $this->profile->ascent->value / 100 >= 1 ? $this->profile->ascent->value / 100 : 0;
+        $distance = $this->profile->distance;
+        $ascentInKmEffort = $this->profile->ascent / 100 >= 1 ? $this->profile->ascent / 100 : 0;
         $defaultInHours = ($distance + $ascentInKmEffort) / self::DEFAULT_PACE;
 
         return (int) $defaultInHours * 60;
