@@ -6,9 +6,9 @@ use App\Application\Race\ReadModel\RaceReadModel;
 use App\Domain\Race\Repository\RacesCatalog;
 use App\Domain\Shared\Bus\QueryHandlerInterface;
 
-final class GetRaceQueryHandler implements QueryHandlerInterface
+final readonly class GetRaceQueryHandler implements QueryHandlerInterface
 {
-    public function __construct(private readonly RacesCatalog $racesCatalog)
+    public function __construct(private RacesCatalog $racesCatalog)
     {
     }
 

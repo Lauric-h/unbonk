@@ -9,8 +9,8 @@ final readonly class MetricsFromStartReadModel
     public function __construct(
         public int $estimatedTimeInMinutes,
         public int $distance,
-        public int $elevationGain,
-        public int $elevationLoss,
+        public int $ascent,
+        public int $descent,
     ) {
     }
 

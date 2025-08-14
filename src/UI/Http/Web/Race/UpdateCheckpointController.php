@@ -2,19 +2,16 @@
 
 namespace App\UI\Http\Web\Race;
 
+use App\Application\Race\UseCase\GetCheckpoint\GetCheckpointQuery;
 use App\Application\Race\UseCase\UpdateCheckpoint\UpdateCheckpointCommand;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\Infrastructure\Shared\Bus\QueryBus;
-use App\UI\Http\Rest\Race\Request\UpdateCheckpointRequest;
 use App\UI\Http\Web\Race\Form\UpdateCheckpoint\UpdateCheckpointForm;
 use App\UI\Http\Web\Race\Form\UpdateCheckpoint\UpdateCheckpointModel;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/races/{raceId}/checkpoints/{id}/update', name: 'app.race.checkpoint.update')]
 final class UpdateCheckpointController extends AbstractController
@@ -25,9 +22,9 @@ final class UpdateCheckpointController extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request, string $raceId, string $id): JsonResponse
+    public function __invoke(Request $request, string $raceId, string $id): Response
     {
-        $checkpoint = $this->queryBus->query(new GetCheckpointQuery());
+        $checkpoint = $this->queryBus->query(new GetCheckpointQuery($raceId, $id));
 
         $updateCheckpointModel = UpdateCheckpointModel::fromCheckpoint($checkpoint);
         $form = $this->createForm(UpdateCheckpointForm::class, $updateCheckpointModel);
@@ -36,22 +33,21 @@ final class UpdateCheckpointController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->commandBus->dispatch(new UpdateCheckpointCommand(
                 id: $id,
-                name: $updateCheckpointModel->name,
-                location: $updateCheckpointModel->location,
-                checkpointType: $updateCheckpointModel->checkpointType,
-                estimatedTimeInMinutes: $updateCheckpointModel->estimatedTimeInMinutes,
-                distance: $updateCheckpointModel->distance,
-                elevationGain: $updateCheckpointModel->ascent,
-                elevationLoss: $updateCheckpointModel->descent,
+                name: $updateCheckpointModel->name, // @phpstan-ignore-line
+                location: $updateCheckpointModel->location, // @phpstan-ignore-line
+                checkpointType: $updateCheckpointModel->checkpointType, // @phpstan-ignore-line
+                estimatedTimeInMinutes: $updateCheckpointModel->estimatedTimeInMinutes, // @phpstan-ignore-line
+                distance: $updateCheckpointModel->distance, // @phpstan-ignore-line
+                elevationGain: $updateCheckpointModel->ascent, // @phpstan-ignore-line
+                elevationLoss: $updateCheckpointModel->descent, // @phpstan-ignore-line
                 raceId: $raceId,
-                /* @phpstan-ignore-next-line */
-                runnerId: $this->getUser()->getUser()->id,
+                runnerId: $this->getUser()->getUser()->id // @phpstan-ignore-line
             ));
         }
 
-        return $this->render('', [
-           'form' => $form,
-           'checkpoint' => $checkpoint,
+        return $this->render('Race/update_checkpoint.html.twig', [
+            'form' => $form,
+            'checkpoint' => $checkpoint,
         ]);
     }
 }

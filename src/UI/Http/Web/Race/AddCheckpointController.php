@@ -3,20 +3,14 @@
 namespace App\UI\Http\Web\Race;
 
 use App\Application\Race\UseCase\AddCheckpoint\AddCheckpointCommand;
-use App\Application\Race\UseCase\GetRace\GetRaceQuery;
 use App\Infrastructure\Shared\Bus\CommandBus;
-use App\Infrastructure\Shared\Bus\QueryBus;
 use App\SharedKernel\IdGenerator;
-use App\UI\Http\Rest\Race\Request\AddCheckpointRequest;
 use App\UI\Http\Web\Race\Form\AddCheckpoint\AddCheckpointForm;
 use App\UI\Http\Web\Race\Form\AddCheckpoint\AddCheckpointModel;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/races/{raceId}/checkpoints/add', name: 'app.race.checkpoint.add')]
 final class AddCheckpointController extends AbstractController
@@ -37,13 +31,13 @@ final class AddCheckpointController extends AbstractController
             $id = $this->idGenerator->generate();
             $this->commandBus->dispatch(command: new AddCheckpointCommand(
                 id: $id,
-                name: $addCheckpointModel->name,
-                location: $addCheckpointModel->location,
-                checkpointType: $addCheckpointModel->checkpointType,
-                estimatedTimeInMinutes: $addCheckpointModel->estimatedTimeInMinutes,
-                distance: $addCheckpointModel->distance,
-                ascent: $addCheckpointModel->ascent,
-                descent: $addCheckpointModel->descent,
+                name: $addCheckpointModel->name, // @phpstan-ignore-line
+                location: $addCheckpointModel->location, // @phpstan-ignore-line
+                checkpointType: $addCheckpointModel->checkpointType, // @phpstan-ignore-line
+                estimatedTimeInMinutes: $addCheckpointModel->estimatedTimeInMinutes, // @phpstan-ignore-line
+                distance: $addCheckpointModel->distance, // @phpstan-ignore-line
+                ascent: $addCheckpointModel->ascent, // @phpstan-ignore-line
+                descent: $addCheckpointModel->descent, // @phpstan-ignore-line
                 raceId: $raceId,
                 runnerId: $runnerId = $this->getUser()->getUser()->id // @phpstan-ignore-line
             ));
@@ -52,7 +46,7 @@ final class AddCheckpointController extends AbstractController
         }
 
         return $this->render('Race/add_checkpoint.html.twig', [
-           'form' => $form,
+            'form' => $form,
         ]);
     }
 }

@@ -5,10 +5,8 @@ namespace App\UI\Http\Web\Race;
 use App\Application\Race\UseCase\RemoveCheckpoint\RemoveCheckpointCommand;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[Route('/races/{raceId}/checkpoints/{id}/remove', name: 'app.race.checkpoint.remove')]
 final class RemoveCheckpointController extends AbstractController

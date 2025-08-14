@@ -3,11 +3,7 @@
 namespace App\UI\Http\Web\Race\Form\UpdateCheckpoint;
 
 use App\Domain\Race\Entity\CheckpointType;
-use App\UI\Http\Web\Race\Form\AddCheckpoint\AddCheckpointModel;
-use App\UI\Http\Web\Race\Form\CreateRace\CreateRaceModel;
-use SebastianBergmann\CodeCoverage\Report\Text;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\EnumType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
