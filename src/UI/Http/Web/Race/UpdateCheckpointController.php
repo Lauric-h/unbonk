@@ -43,6 +43,8 @@ final class UpdateCheckpointController extends AbstractController
                 raceId: $raceId,
                 runnerId: $this->getUser()->getUser()->id // @phpstan-ignore-line
             ));
+
+            return $this->redirectToRoute('app.race.get', ['id' => $raceId]);
         }
 
         return $this->render('Race/update_checkpoint.html.twig', [
