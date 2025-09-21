@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\NutritionPlan\DTO;
+namespace App\Domain\Race\DTO;
 
 readonly class ExternalNutritionItemDTO
 {

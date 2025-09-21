@@ -2,8 +2,8 @@
 
 namespace App\Application\NutritionPlan\ReadModel;
 
-use App\Domain\NutritionPlan\Entity\NutritionPlan;
-use App\Domain\NutritionPlan\Entity\Segment;
+use App\Domain\Race\Entity\NutritionPlan;
+use App\Domain\Race\Entity\Segment;
 
 final readonly class NutritionPlanReadModel
 {

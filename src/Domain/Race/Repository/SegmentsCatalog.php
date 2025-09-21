@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domain\NutritionPlan\Repository;
+namespace App\Domain\Race\Repository;
 
-use App\Domain\NutritionPlan\Entity\Segment;
+use App\Domain\Race\Entity\Segment;
 
 interface SegmentsCatalog
 {

@@ -16,8 +16,8 @@ use App\Domain\Shared\Entity\Ascent;
 use App\Domain\Shared\Entity\Descent;
 use App\Domain\Shared\Entity\Distance;
 use App\Domain\Shared\Entity\Duration;
-use App\Infrastructure\Race\Persistence\DoctrineCheckpointsCatalog;
-use App\Infrastructure\Race\Persistence\DoctrineRacesCatalog;
+use App\Infrastructure\Race\Persistence\Repository\DoctrineCheckpointsCatalog;
+use App\Infrastructure\Race\Persistence\Repository\DoctrineRacesCatalog;
 use App\Infrastructure\Shared\Bus\EventBus;
 use PHPUnit\Framework\TestCase;
 

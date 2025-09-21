@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\NutritionPlan\Entity;
+namespace App\Domain\Race\Entity;
 
 use App\Domain\Shared\Entity\Calories;
 use App\Domain\Shared\Entity\Carbs;

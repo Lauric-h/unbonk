@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domain\NutritionPlan\Repository;
+namespace App\Domain\Race\Repository;
 
-use App\Domain\NutritionPlan\Entity\NutritionPlan;
+use App\Domain\Race\Entity\NutritionPlan;
 
 interface NutritionPlansCatalog
 {

@@ -5,7 +5,7 @@
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
 
-    <embeddable name="App\Domain\NutritionPlan\Entity\Quantity">
+    <embeddable name="App\Domain\Race\Entity\Quantity">
         <field name="value" type="integer" />
     </embeddable>
 

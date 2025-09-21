@@ -18,6 +18,8 @@ class Race
      */
     private Collection $checkpoints;
 
+    private ?NutritionPlan $nutritionPlan = null;
+
     private function __construct(
         public string $id,
         public \DateTimeImmutable $date,
@@ -198,5 +200,16 @@ class Race
         $defaultInHours = ($distance + $ascentInKmEffort) / self::DEFAULT_PACE;
 
         return (int) $defaultInHours * 60;
+    }
+
+    public function getNutritionPlan(): ?NutritionPlan
+    {
+        return $this->nutritionPlan;
+    }
+
+    public function setNutritionPlan(NutritionPlan $nutritionPlan): void
+    {
+        $this->nutritionPlan = $nutritionPlan;
+        $nutritionPlan->race = $this;
     }
 }

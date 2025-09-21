@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Infrastructure\NutritionPlan\Persistence;
+namespace App\Infrastructure\Race\Persistence\Repository;
 
-use App\Domain\NutritionPlan\Entity\Segment;
-use App\Domain\NutritionPlan\Exception\SegmentNotFoundException;
-use App\Domain\NutritionPlan\Repository\SegmentsCatalog;
+use App\Domain\Race\Entity\Segment;
+use App\Domain\Race\Exception\SegmentNotFoundException;
+use App\Domain\Race\Repository\SegmentsCatalog;
 use Doctrine\ORM\EntityManagerInterface;
 
 class DoctrineSegmentsCatalog implements SegmentsCatalog

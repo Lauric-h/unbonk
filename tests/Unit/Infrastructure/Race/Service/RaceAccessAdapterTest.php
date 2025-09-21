@@ -3,7 +3,7 @@
 namespace App\Tests\Unit\Infrastructure\Race\Service;
 
 use App\Domain\Race\Exception\RaceNotFoundException;
-use App\Infrastructure\Race\Persistence\DoctrineRacesCatalog;
+use App\Infrastructure\Race\Persistence\Repository\DoctrineRacesCatalog;
 use App\Infrastructure\Race\Service\RaceAccessAdapter;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

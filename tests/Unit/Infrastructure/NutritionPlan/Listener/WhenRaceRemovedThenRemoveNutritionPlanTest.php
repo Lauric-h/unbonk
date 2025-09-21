@@ -3,8 +3,8 @@
 namespace App\Tests\Unit\Infrastructure\NutritionPlan\Listener;
 
 use App\Application\NutritionPlan\UseCase\DeleteNutritionPlan\DeleteNutritionPlanCommand;
-use App\Domain\NutritionPlan\Entity\NutritionPlan;
-use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
+use App\Domain\Race\Entity\NutritionPlan;
+use App\Domain\Race\Repository\NutritionPlansCatalog;
 use App\Infrastructure\NutritionPlan\EventSubscriber\WhenRaceRemovedThenRemoveNutritionPlan;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\Infrastructure\Shared\Event\RaceDeletedIntegrationEvent;

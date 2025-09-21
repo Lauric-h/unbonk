@@ -2,11 +2,11 @@
 
 namespace App\Tests\Unit\Domain\NutritionPlan\Service;
 
-use App\Domain\NutritionPlan\Entity\NutritionPlan;
-use App\Domain\NutritionPlan\Exception\ForbiddenRaceForRunnerException;
-use App\Domain\NutritionPlan\Port\RaceOwnershipPort;
 use App\Domain\NutritionPlan\Service\NutritionPlanAccessService;
-use App\Infrastructure\NutritionPlan\Persistence\DoctrineNutritionPlansCatalog;
+use App\Domain\Race\Entity\NutritionPlan;
+use App\Domain\Race\Exception\ForbiddenRaceForRunnerException;
+use App\Domain\Race\Port\RaceOwnershipPort;
+use App\Infrastructure\Race\Persistence\Repository\DoctrineNutritionPlansCatalog;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;

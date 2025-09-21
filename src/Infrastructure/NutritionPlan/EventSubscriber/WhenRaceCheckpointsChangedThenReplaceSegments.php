@@ -4,7 +4,7 @@ namespace App\Infrastructure\NutritionPlan\EventSubscriber;
 
 use App\Application\NutritionPlan\DTO\PointDTO;
 use App\Application\NutritionPlan\UseCase\CreateSegments\CreateSegmentsCommand;
-use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
+use App\Domain\Race\Repository\NutritionPlansCatalog;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\Infrastructure\Shared\Event\RaceCheckpointsChangedIntegrationEvent;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

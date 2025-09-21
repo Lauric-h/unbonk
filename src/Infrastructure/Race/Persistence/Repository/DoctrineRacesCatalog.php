@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Infrastructure\Race\Persistence;
+namespace App\Infrastructure\Race\Persistence\Repository;
 
 use App\Domain\Race\Entity\Race;
 use App\Domain\Race\Exception\RaceNotFoundException;

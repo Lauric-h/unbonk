@@ -5,9 +5,9 @@ namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 use App\Application\NutritionPlan\DTO\PointDTO;
 use App\Application\NutritionPlan\UseCase\CreateSegments\CreateSegmentsCommand;
 use App\Application\NutritionPlan\UseCase\CreateSegments\CreateSegmentsCommandHandler;
-use App\Domain\NutritionPlan\Entity\NutritionPlan;
-use App\Domain\NutritionPlan\Factory\SegmentFactoryInterface;
-use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
+use App\Domain\Race\Entity\NutritionPlan;
+use App\Domain\Race\Factory\SegmentFactoryInterface;
+use App\Domain\Race\Repository\NutritionPlansCatalog;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 

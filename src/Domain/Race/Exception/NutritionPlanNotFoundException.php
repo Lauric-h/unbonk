@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\NutritionPlan\Exception;
+namespace App\Domain\Race\Exception;
 
 use App\Domain\Shared\Exception\NotFoundException;
 

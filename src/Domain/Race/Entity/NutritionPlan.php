@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\NutritionPlan\Entity;
+namespace App\Domain\Race\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -13,6 +13,7 @@ class NutritionPlan
     public function __construct(
         public string $id,
         public string $raceId,
+        public Race $race,
         public string $runnerId,
         public Collection $segments = new ArrayCollection(),
     ) {

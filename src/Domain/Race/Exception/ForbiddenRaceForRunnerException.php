@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\NutritionPlan\Exception;
+namespace App\Domain\Race\Exception;
 
 final class ForbiddenRaceForRunnerException extends \Exception
 {

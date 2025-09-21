@@ -10,7 +10,7 @@ use App\Domain\Race\Entity\Race;
 use App\Domain\Shared\Entity\Ascent;
 use App\Domain\Shared\Entity\Descent;
 use App\Domain\Shared\Entity\Distance;
-use App\Infrastructure\Race\Persistence\DoctrineRacesCatalog;
+use App\Infrastructure\Race\Persistence\Repository\DoctrineRacesCatalog;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Clock\DatePoint;
 

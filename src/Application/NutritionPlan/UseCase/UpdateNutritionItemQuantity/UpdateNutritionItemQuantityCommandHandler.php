@@ -2,8 +2,8 @@
 
 namespace App\Application\NutritionPlan\UseCase\UpdateNutritionItemQuantity;
 
-use App\Domain\NutritionPlan\Entity\Quantity;
-use App\Domain\NutritionPlan\Repository\SegmentsCatalog;
+use App\Domain\Race\Entity\Quantity;
+use App\Domain\Race\Repository\SegmentsCatalog;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
 
 final readonly class UpdateNutritionItemQuantityCommandHandler implements CommandHandlerInterface

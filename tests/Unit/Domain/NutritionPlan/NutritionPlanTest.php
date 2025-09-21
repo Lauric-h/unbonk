@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\Domain\NutritionPlan;
 
-use App\Domain\NutritionPlan\Entity\NutritionPlan;
-use App\Domain\NutritionPlan\Entity\Segment;
+use App\Domain\Race\Entity\NutritionPlan;
+use App\Domain\Race\Entity\Segment;
 use App\Domain\Shared\Entity\Ascent;
 use App\Domain\Shared\Entity\Carbs;
 use App\Domain\Shared\Entity\Descent;

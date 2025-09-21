@@ -2,8 +2,8 @@
 
 namespace App\Application\NutritionPlan\ReadModel;
 
-use App\Domain\NutritionPlan\Entity\NutritionItem;
-use App\Domain\NutritionPlan\Entity\Segment;
+use App\Domain\Race\Entity\NutritionItem;
+use App\Domain\Race\Entity\Segment;
 
 final class SegmentReadModel
 {

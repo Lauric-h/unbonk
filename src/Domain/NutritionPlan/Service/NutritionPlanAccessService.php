@@ -2,9 +2,9 @@
 
 namespace App\Domain\NutritionPlan\Service;
 
-use App\Domain\NutritionPlan\Exception\ForbiddenRaceForRunnerException;
-use App\Domain\NutritionPlan\Port\RaceOwnershipPort;
-use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
+use App\Domain\Race\Exception\ForbiddenRaceForRunnerException;
+use App\Domain\Race\Port\RaceOwnershipPort;
+use App\Domain\Race\Repository\NutritionPlansCatalog;
 
 final readonly class NutritionPlanAccessService
 {

@@ -3,10 +3,10 @@
 namespace App\Application\NutritionPlan\UseCase\CreateSegments;
 
 use App\Application\NutritionPlan\DTO\PointDTO;
-use App\Domain\NutritionPlan\Entity\Segment;
 use App\Domain\NutritionPlan\Entity\SegmentPoint;
-use App\Domain\NutritionPlan\Factory\SegmentFactoryInterface;
-use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
+use App\Domain\Race\Entity\Segment;
+use App\Domain\Race\Factory\SegmentFactoryInterface;
+use App\Domain\Race\Repository\NutritionPlansCatalog;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 

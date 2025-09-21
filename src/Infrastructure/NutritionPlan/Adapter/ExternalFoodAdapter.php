@@ -2,8 +2,8 @@
 
 namespace App\Infrastructure\NutritionPlan\Adapter;
 
-use App\Domain\NutritionPlan\DTO\ExternalNutritionItemDTO;
-use App\Domain\NutritionPlan\Port\ExternalFoodPort;
+use App\Domain\Race\DTO\ExternalNutritionItemDTO;
+use App\Domain\Race\Port\ExternalFoodPort;
 use App\Infrastructure\Food\Service\FoodAdapter;
 
 final readonly class ExternalFoodAdapter implements ExternalFoodPort

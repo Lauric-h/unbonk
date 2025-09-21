@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\NutritionPlan\Port;
+namespace App\Domain\Race\Port;
 
 interface RaceOwnershipPort
 {

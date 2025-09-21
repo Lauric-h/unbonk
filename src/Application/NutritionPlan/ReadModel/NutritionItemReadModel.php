@@ -2,7 +2,7 @@
 
 namespace App\Application\NutritionPlan\ReadModel;
 
-use App\Domain\NutritionPlan\Entity\NutritionItem;
+use App\Domain\Race\Entity\NutritionItem;
 
 final class NutritionItemReadModel
 {

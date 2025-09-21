@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\NutritionPlan\Entity;
+namespace App\Domain\Race\Entity;
 
 final readonly class Quantity
 {

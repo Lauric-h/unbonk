@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Infrastructure\NutritionPlan\Persistence;
+namespace App\Infrastructure\Race\Persistence\Repository;
 
-use App\Domain\NutritionPlan\Entity\NutritionPlan;
-use App\Domain\NutritionPlan\Exception\NutritionPlanNotFoundException;
-use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
+use App\Domain\Race\Entity\NutritionPlan;
+use App\Domain\Race\Exception\NutritionPlanNotFoundException;
+use App\Domain\Race\Repository\NutritionPlansCatalog;
 use Doctrine\ORM\EntityManagerInterface;
 
 readonly class DoctrineNutritionPlansCatalog implements NutritionPlansCatalog

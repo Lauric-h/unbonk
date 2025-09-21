@@ -3,10 +3,10 @@
 namespace App\Tests\Unit\UI\NutritionPlan;
 
 use App\Application\NutritionPlan\ReadModel\NutritionItemReadModel;
-use App\Domain\NutritionPlan\Entity\NutritionItem;
-use App\Domain\NutritionPlan\Entity\NutritionPlan;
-use App\Domain\NutritionPlan\Entity\Quantity;
-use App\Domain\NutritionPlan\Entity\Segment;
+use App\Domain\Race\Entity\NutritionItem;
+use App\Domain\Race\Entity\NutritionPlan;
+use App\Domain\Race\Entity\Quantity;
+use App\Domain\Race\Entity\Segment;
 use App\Domain\Shared\Entity\Ascent;
 use App\Domain\Shared\Entity\Calories;
 use App\Domain\Shared\Entity\Carbs;

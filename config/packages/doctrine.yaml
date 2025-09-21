@@ -31,15 +31,9 @@ doctrine:
             Race:
                 type: xml
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Infrastructure/Race/Persistence'
+                dir: '%kernel.project_dir%/src/Infrastructure/Race/Persistence/Mapping'
                 prefix: 'App\Domain\Race\Entity'
                 alias: Race
-            NutritionPlan:
-                type: xml
-                is_bundle: false
-                dir: '%kernel.project_dir%/src/Infrastructure/NutritionPlan/Persistence'
-                prefix: 'App\Domain\NutritionPlan\Entity'
-                alias: NutritionPlan
             Shared:
                 type: xml
                 is_bundle: false

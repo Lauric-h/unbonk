@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Domain\NutritionPlan\Factory;
+namespace App\Domain\Race\Factory;
 
-use App\Domain\NutritionPlan\Entity\NutritionItem;
-use App\Domain\NutritionPlan\Entity\NutritionPlan;
-use App\Domain\NutritionPlan\Entity\Segment;
 use App\Domain\NutritionPlan\Entity\SegmentPoint;
+use App\Domain\Race\Entity\NutritionItem;
+use App\Domain\Race\Entity\NutritionPlan;
+use App\Domain\Race\Entity\Segment;
 use App\Domain\Shared\Entity\Carbs;
 use Doctrine\Common\Collections\Collection;
 

@@ -3,7 +3,7 @@
 namespace App\Infrastructure\NutritionPlan\Adapter;
 
 use App\Application\Race\Service\RaceAccessPort;
-use App\Domain\NutritionPlan\Port\RaceOwnershipPort;
+use App\Domain\Race\Port\RaceOwnershipPort;
 
 final readonly class RaceOwnershipAdapter implements RaceOwnershipPort
 {

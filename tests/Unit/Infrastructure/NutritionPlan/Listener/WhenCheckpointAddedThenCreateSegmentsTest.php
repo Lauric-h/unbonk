@@ -4,10 +4,10 @@ namespace App\Tests\Unit\Infrastructure\NutritionPlan\Listener;
 
 use App\Application\NutritionPlan\DTO\PointDTO;
 use App\Application\NutritionPlan\UseCase\CreateSegments\CreateSegmentsCommand;
-use App\Domain\NutritionPlan\Entity\NutritionPlan;
+use App\Domain\Race\Entity\NutritionPlan;
 use App\Infrastructure\NutritionPlan\EventSubscriber\WhenRaceCheckpointsChangedThenReplaceSegments;
-use App\Infrastructure\NutritionPlan\Persistence\DoctrineNutritionPlansCatalog;
 use App\Infrastructure\Race\DTO\CheckpointDTO;
+use App\Infrastructure\Race\Persistence\Repository\DoctrineNutritionPlansCatalog;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\Infrastructure\Shared\Event\RaceCheckpointsChangedIntegrationEvent;
 use PHPUnit\Framework\TestCase;

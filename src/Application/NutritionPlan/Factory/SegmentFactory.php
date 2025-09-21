@@ -3,11 +3,11 @@
 namespace App\Application\NutritionPlan\Factory;
 
 use App\Application\Shared\IdGeneratorInterface;
-use App\Domain\NutritionPlan\Entity\NutritionItem;
-use App\Domain\NutritionPlan\Entity\NutritionPlan;
-use App\Domain\NutritionPlan\Entity\Segment;
 use App\Domain\NutritionPlan\Entity\SegmentPoint;
-use App\Domain\NutritionPlan\Factory\SegmentFactoryInterface;
+use App\Domain\Race\Entity\NutritionItem;
+use App\Domain\Race\Entity\NutritionPlan;
+use App\Domain\Race\Entity\Segment;
+use App\Domain\Race\Factory\SegmentFactoryInterface;
 use App\Domain\Shared\Entity\Ascent;
 use App\Domain\Shared\Entity\Carbs;
 use App\Domain\Shared\Entity\Descent;

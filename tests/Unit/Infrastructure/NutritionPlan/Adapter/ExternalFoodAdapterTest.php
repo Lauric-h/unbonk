@@ -3,7 +3,7 @@
 namespace App\Tests\Unit\Infrastructure\NutritionPlan\Adapter;
 
 use App\Domain\Food\DTO\FoodDTO;
-use App\Domain\NutritionPlan\DTO\ExternalNutritionItemDTO;
+use App\Domain\Race\DTO\ExternalNutritionItemDTO;
 use App\Infrastructure\Food\Service\FoodAdapter;
 use App\Infrastructure\NutritionPlan\Adapter\ExternalFoodAdapter;
 use PHPUnit\Framework\TestCase;

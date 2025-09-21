@@ -2,8 +2,8 @@
 
 namespace App\Application\NutritionPlan\UseCase\CreateNutritionPlan;
 
-use App\Domain\NutritionPlan\Entity\NutritionPlan;
-use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
+use App\Domain\Race\Entity\NutritionPlan;
+use App\Domain\Race\Repository\NutritionPlansCatalog;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
 
 final readonly class CreateNutritionPlanCommandHandler implements CommandHandlerInterface

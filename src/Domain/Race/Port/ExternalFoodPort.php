@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Domain\NutritionPlan\Port;
+namespace App\Domain\Race\Port;
 
-use App\Domain\NutritionPlan\DTO\ExternalNutritionItemDTO;
+use App\Domain\Race\DTO\ExternalNutritionItemDTO;
 
 interface ExternalFoodPort
 {

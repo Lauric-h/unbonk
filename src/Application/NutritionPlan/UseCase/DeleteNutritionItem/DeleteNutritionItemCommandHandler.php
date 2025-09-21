@@ -2,7 +2,7 @@
 
 namespace App\Application\NutritionPlan\UseCase\DeleteNutritionItem;
 
-use App\Domain\NutritionPlan\Repository\SegmentsCatalog;
+use App\Domain\Race\Repository\SegmentsCatalog;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
 
 final readonly class DeleteNutritionItemCommandHandler implements CommandHandlerInterface

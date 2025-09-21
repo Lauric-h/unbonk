@@ -2,7 +2,7 @@
 
 namespace App\Tests\Unit\Domain\NutritionPlan;
 
-use App\Domain\NutritionPlan\Entity\Quantity;
+use App\Domain\Race\Entity\Quantity;
 use PHPUnit\Framework\TestCase;
 
 final class QuantityTest extends TestCase

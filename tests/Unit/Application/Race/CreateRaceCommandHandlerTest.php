@@ -11,7 +11,7 @@ use App\Domain\Race\Event\RaceCreated;
 use App\Domain\Shared\Entity\Ascent;
 use App\Domain\Shared\Entity\Descent;
 use App\Domain\Shared\Entity\Distance;
-use App\Infrastructure\Race\Persistence\DoctrineRacesCatalog;
+use App\Infrastructure\Race\Persistence\Repository\DoctrineRacesCatalog;
 use App\Infrastructure\Shared\Bus\EventBus;
 use App\Tests\Unit\MockIdGenerator;
 use PHPUnit\Framework\TestCase;

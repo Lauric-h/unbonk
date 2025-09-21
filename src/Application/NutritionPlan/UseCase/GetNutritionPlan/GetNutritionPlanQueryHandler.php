@@ -3,7 +3,7 @@
 namespace App\Application\NutritionPlan\UseCase\GetNutritionPlan;
 
 use App\Application\NutritionPlan\ReadModel\NutritionPlanReadModel;
-use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
+use App\Domain\Race\Repository\NutritionPlansCatalog;
 use App\Domain\Shared\Bus\QueryHandlerInterface;
 
 final readonly class GetNutritionPlanQueryHandler implements QueryHandlerInterface
