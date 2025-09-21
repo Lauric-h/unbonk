@@ -3,7 +3,7 @@
 namespace App\UI\Http\Rest\Food\Brand;
 
 use App\Application\Food\UseCase\CreateBrand\CreateBrandCommand;
-use App\Application\Shared\IdGeneratorInterface;
+use App\Domain\Shared\IdGeneratorInterface;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\UI\Http\Rest\Food\Request\CreateBrandRequest;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

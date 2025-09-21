@@ -2,8 +2,8 @@
 
 namespace App\Application\User\RegisterUser;
 
-use App\Application\Shared\IdGeneratorInterface;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
+use App\Domain\Shared\IdGeneratorInterface;
 use App\Domain\User\Entity\User;
 use App\Domain\User\Exception\UserAlreadyExistsException;
 use App\Domain\User\Port\PasswordServicePort;

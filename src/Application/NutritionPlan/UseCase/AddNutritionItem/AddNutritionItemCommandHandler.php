@@ -2,7 +2,6 @@
 
 namespace App\Application\NutritionPlan\UseCase\AddNutritionItem;
 
-use App\Application\Shared\IdGeneratorInterface;
 use App\Domain\Race\Entity\NutritionItem;
 use App\Domain\Race\Entity\Quantity;
 use App\Domain\Race\Port\ExternalFoodPort;
@@ -10,6 +9,7 @@ use App\Domain\Race\Repository\SegmentsCatalog;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
 use App\Domain\Shared\Entity\Calories;
 use App\Domain\Shared\Entity\Carbs;
+use App\Domain\Shared\IdGeneratorInterface;
 
 final readonly class AddNutritionItemCommandHandler implements CommandHandlerInterface
 {

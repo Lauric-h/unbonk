@@ -2,7 +2,6 @@
 
 namespace App\Application\Race\UseCase\CreateRace;
 
-use App\Application\Shared\IdGeneratorInterface;
 use App\Domain\Race\Entity\Address;
 use App\Domain\Race\Entity\Profile;
 use App\Domain\Race\Entity\Race;
@@ -12,6 +11,7 @@ use App\Domain\Shared\Bus\CommandHandlerInterface;
 use App\Domain\Shared\Entity\Ascent;
 use App\Domain\Shared\Entity\Descent;
 use App\Domain\Shared\Entity\Distance;
+use App\Domain\Shared\IdGeneratorInterface;
 use App\Infrastructure\Shared\Bus\EventBus;
 
 final readonly class CreateRaceCommandHandler implements CommandHandlerInterface

@@ -3,8 +3,8 @@
 namespace App\UI\Http\Web\Food\Brand;
 
 use App\Application\Food\UseCase\CreateFood\CreateFoodCommand;
-use App\Application\Shared\IdGeneratorInterface;
 use App\Domain\Food\Entity\Brand;
+use App\Domain\Shared\IdGeneratorInterface;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\UI\Http\Web\Food\Form\AddFood\CreateFoodForm;
 use App\UI\Http\Web\Food\Form\AddFood\CreateFoodModel;

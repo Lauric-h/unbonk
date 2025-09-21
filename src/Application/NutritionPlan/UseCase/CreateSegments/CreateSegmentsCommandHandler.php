@@ -20,40 +20,40 @@ final readonly class CreateSegmentsCommandHandler implements CommandHandlerInter
 
     public function __invoke(CreateSegmentsCommand $command): void
     {
-        $nutritionPlan = $this->nutritionPlansCatalog->get($command->nutritionPlanId);
-
-        $points = $command->points;
-        usort($points, static fn (PointDTO $a, PointDTO $b) => $a->distance <=> $b->distance);
-
-        $segmentPoints = array_map(
-            static fn (PointDTO $point): SegmentPoint => $point->toSegmentPoint(),
-            $points
-        );
-
-        $segments = new ArrayCollection([]);
-        for ($i = 0; $i < (count($segmentPoints) - 1); ++$i) {
-            $start = $segmentPoints[$i];
-            $finish = $segmentPoints[$i + 1];
-
-            /** @var ?Segment $existingSegment */
-            $existingSegment = $nutritionPlan->getSegmentByStartId($start->externalReference);
-            if (null !== $existingSegment) {
-                $segment = $this->segmentFactory->createWithNutritionData(
-                    startPoint: $start,
-                    finishPoint: $finish,
-                    carbs: $existingSegment->carbsTarget,
-                    nutritionPlan: $nutritionPlan,
-                    nutritionItems: $existingSegment->nutritionItems
-                );
-            } else {
-                $segment = $this->segmentFactory->createFromPoints($start, $finish, $nutritionPlan);
-            }
-
-            $segments->add($segment);
-        }
-
-        $nutritionPlan->replaceAllSegments($segments);
-
-        $this->nutritionPlansCatalog->add($nutritionPlan);
+//        $nutritionPlan = $this->nutritionPlansCatalog->get($command->nutritionPlanId);
+//
+//        $points = $command->points;
+//        usort($points, static fn (PointDTO $a, PointDTO $b) => $a->distance <=> $b->distance);
+//
+//        $segmentPoints = array_map(
+//            static fn (PointDTO $point): SegmentPoint => $point->toSegmentPoint(),
+//            $points
+//        );
+//
+//        $segments = new ArrayCollection([]);
+//        for ($i = 0; $i < (count($segmentPoints) - 1); ++$i) {
+//            $start = $segmentPoints[$i];
+//            $finish = $segmentPoints[$i + 1];
+//
+//            /** @var ?Segment $existingSegment */
+//            $existingSegment = $nutritionPlan->getNutritionSegmentBySegmentId($start->externalReference);
+//            if (null !== $existingSegment) {
+//                $segment = $this->segmentFactory->createWithNutritionData(
+//                    startPoint: $start,
+//                    finishPoint: $finish,
+//                    carbs: $existingSegment->carbsTarget,
+//                    nutritionPlan: $nutritionPlan,
+//                    nutritionItems: $existingSegment->nutritionItems
+//                );
+//            } else {
+//                $segment = $this->segmentFactory->createFromCheckpoints($start, $finish, $nutritionPlan);
+//            }
+//
+//            $segments->add($segment);
+//        }
+//
+//        $nutritionPlan->replaceAllSegments($segments);
+//
+//        $this->nutritionPlansCatalog->add($nutritionPlan);
     }
 }

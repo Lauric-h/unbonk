@@ -8,13 +8,13 @@ use App\Domain\Shared\Entity\Carbs;
 final class NutritionItem
 {
     public function __construct(
-        public string $id,
-        public string $externalReference,
-        public string $name,
-        public Carbs $carbs,
-        public Quantity $quantity,
-        public Segment $segment,
-        public ?Calories $calories = null,
+        public string           $id,
+        public string           $externalReference,
+        public string           $name,
+        public Carbs            $carbs,
+        public Quantity         $quantity,
+        public NutritionSegment $nutritionSegment,
+        public ?Calories        $calories = null,
     ) {
     }
 }

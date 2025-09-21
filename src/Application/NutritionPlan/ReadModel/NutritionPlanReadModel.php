@@ -24,7 +24,7 @@ final readonly class NutritionPlanReadModel
             $nutritionPlan->id,
             $nutritionPlan->raceId,
             $nutritionPlan->runnerId,
-            array_map(static fn (Segment $segment) => SegmentReadModel::fromSegment($segment), $nutritionPlan->segments->toArray()),
+            array_map(static fn (Segment $segment) => SegmentReadModel::fromSegment($segment), $nutritionPlan->nutritionSegments->toArray()),
         );
     }
 }

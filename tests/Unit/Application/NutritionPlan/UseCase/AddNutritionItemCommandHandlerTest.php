@@ -72,7 +72,7 @@ final class AddNutritionItemCommandHandlerTest extends TestCase
             name: 'name',
             carbs: new Carbs(40),
             quantity: new Quantity(2),
-            segment: $expectedSegment,
+            nutritionSegment: $expectedSegment,
             calories: new Calories(0),
         );
         $expectedSegment->nutritionItems->add($nutritionItem);

@@ -53,7 +53,7 @@ final class DeleteNutritionCommandHandlerTest extends TestCase
             name: 'name',
             carbs: new Carbs(40),
             quantity: new Quantity(2),
-            segment: $segment,
+            nutritionSegment: $segment,
             calories: null
         );
         $segment->nutritionItems->add($nutritionItem);
@@ -64,7 +64,7 @@ final class DeleteNutritionCommandHandlerTest extends TestCase
             name: 'name',
             carbs: new Carbs(40),
             quantity: new Quantity(2),
-            segment: $segment,
+            nutritionSegment: $segment,
             calories: null
         );
         $segment->nutritionItems->add($nutritionItem2);

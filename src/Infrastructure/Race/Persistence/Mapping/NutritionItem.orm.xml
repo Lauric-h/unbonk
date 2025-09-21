@@ -13,8 +13,8 @@
         <embedded name="quantity" class="Quantity" />
         <embedded name="calories" class="App\Domain\Shared\Entity\Calories" />
 
-        <many-to-one field="segment" target-entity="App\Domain\Race\Entity\Segment" inversed-by="nutritionItems" >
-            <join-column name="segment_id" referenced-column-name="id" nullable="false" on-delete="CASCADE" />
+        <many-to-one field="nutritionSegment" target-entity="App\Domain\Race\Entity\NutritionSegment" inversed-by="nutritionItems" >
+            <join-column name="nutrition_segment_id" referenced-column-name="id" nullable="false" on-delete="CASCADE" />
         </many-to-one>
     </entity>
 

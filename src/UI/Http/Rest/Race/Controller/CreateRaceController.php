@@ -38,8 +38,8 @@ final class CreateRaceController extends AbstractController
             date: new \DateTimeImmutable($createRaceRequest->date),
             name: $createRaceRequest->name,
             distance: $createRaceRequest->distance,
-            ascent: $createRaceRequest->elevationGain,
-            descent: $createRaceRequest->elevationLoss,
+            ascent: $createRaceRequest->ascent,
+            descent: $createRaceRequest->descent,
             city: $createRaceRequest->city,
             postalCode: $createRaceRequest->postalCode,
         );

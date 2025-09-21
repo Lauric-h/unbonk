@@ -8,35 +8,26 @@ use Doctrine\Common\Collections\Collection;
 class NutritionPlan
 {
     /**
-     * @param Collection<int, Segment> $segments
+     * @param Collection<int, NutritionSegment> $nutritionSegments
      */
     public function __construct(
-        public string $id,
-        public string $raceId,
-        public Race $race,
-        public string $runnerId,
-        public Collection $segments = new ArrayCollection(),
+        public string     $id,
+        public string     $raceId,
+        public Race       $race,
+        public string     $runnerId,
+        public Collection $nutritionSegments = new ArrayCollection(),
     ) {
-    }
-
-    public function getSegmentByStartId(string $startId): ?Segment
-    {
-        return $this->segments->findFirst(static fn (int $key, Segment $segment) => $segment->startId === $startId);
-    }
-
-    public function getSegmentByFinishId(string $finishId): ?Segment
-    {
-        return $this->segments->findFirst(static fn (int $key, Segment $segment) => $segment->finishId === $finishId);
     }
 
     /**
      * @param Collection<int, Segment> $segments
+     * @TODO
      */
     public function replaceAllSegments(Collection $segments): void
     {
-        $this->segments->clear();
-        foreach ($segments as $segment) {
-            $this->segments->add($segment);
-        }
+//        $this->nutritionSegments->clear();
+//        foreach ($segments as $segment) {
+//            $this->nutritionSegments->add($segment);
+//        }
     }
 }

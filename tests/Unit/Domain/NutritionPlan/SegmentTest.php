@@ -44,7 +44,7 @@ final class SegmentTest extends TestCase
             name: 'name',
             carbs: new Carbs(40),
             quantity: new Quantity(2),
-            segment: $segment,
+            nutritionSegment: $segment,
             calories: null
         );
 
@@ -81,7 +81,7 @@ final class SegmentTest extends TestCase
             name: 'name',
             carbs: new Carbs(40),
             quantity: new Quantity(2),
-            segment: $segment,
+            nutritionSegment: $segment,
             calories: null
         );
         $segment->nutritionItems->add($nutritionItem);
@@ -96,7 +96,7 @@ final class SegmentTest extends TestCase
             name: 'name2',
             carbs: $carbs,
             quantity: $quantity,
-            segment: $segment,
+            nutritionSegment: $segment,
             calories: $calories
         );
 
@@ -138,7 +138,7 @@ final class SegmentTest extends TestCase
             name: 'name',
             carbs: new Carbs(40),
             quantity: new Quantity(2),
-            segment: $segment,
+            nutritionSegment: $segment,
             calories: null
         );
         $segment->nutritionItems->add($nutritionItem);
@@ -223,7 +223,7 @@ final class SegmentTest extends TestCase
             name: 'name',
             carbs: new Carbs(40),
             quantity: new Quantity(2),
-            segment: $segment,
+            nutritionSegment: $segment,
             calories: null
         );
         $segment->nutritionItems->add($nutritionItem);
@@ -234,7 +234,7 @@ final class SegmentTest extends TestCase
             name: 'name',
             carbs: new Carbs(40),
             quantity: new Quantity(2),
-            segment: $segment,
+            nutritionSegment: $segment,
             calories: null
         );
         $segment->nutritionItems->add($nutritionItem2);
@@ -272,7 +272,7 @@ final class SegmentTest extends TestCase
             name: 'name',
             carbs: new Carbs(40),
             quantity: new Quantity(2),
-            segment: $segment,
+            nutritionSegment: $segment,
             calories: null
         );
         $segment->nutritionItems->add($nutritionItem);

@@ -2,7 +2,7 @@
 
 namespace App\Tests\Unit;
 
-use App\Application\Shared\IdGeneratorInterface;
+use App\Domain\Shared\IdGeneratorInterface;
 
 final class MockIdGenerator implements IdGeneratorInterface
 {

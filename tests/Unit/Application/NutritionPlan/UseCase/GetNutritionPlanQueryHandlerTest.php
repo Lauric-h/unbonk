@@ -48,7 +48,7 @@ final class GetNutritionPlanQueryHandlerTest extends TestCase
             carbsTarget: new Carbs(0),
             nutritionPlan: $nutritionPlan
         );
-        $nutritionPlan->segments->add($segment);
+        $nutritionPlan->nutritionSegments->add($segment);
 
         $nutritionItem = new NutritionItem(
             'id',

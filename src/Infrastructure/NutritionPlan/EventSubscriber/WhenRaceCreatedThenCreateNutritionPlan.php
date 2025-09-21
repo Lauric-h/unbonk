@@ -3,7 +3,7 @@
 namespace App\Infrastructure\NutritionPlan\EventSubscriber;
 
 use App\Application\NutritionPlan\UseCase\CreateNutritionPlan\CreateNutritionPlanCommand;
-use App\Application\Shared\IdGeneratorInterface;
+use App\Domain\Shared\IdGeneratorInterface;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\Infrastructure\Shared\Event\RaceCreatedIntegrationEvent;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

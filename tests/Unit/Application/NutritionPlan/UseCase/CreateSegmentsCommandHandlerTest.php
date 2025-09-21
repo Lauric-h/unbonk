@@ -46,7 +46,7 @@ final class CreateSegmentsCommandHandlerTest extends TestCase
         );
 
         $factory->expects(self::exactly(1))
-            ->method('createFromPoints');
+            ->method('createFromCheckpoints');
 
         $command = new CreateSegmentsCommand($npId, $points);
 

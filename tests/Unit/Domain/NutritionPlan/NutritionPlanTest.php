@@ -46,8 +46,8 @@ final class NutritionPlanTest extends TestCase
             $nutritionPlan,
         );
 
-        $nutritionPlan->segments->add($segment1);
-        $nutritionPlan->segments->add($segment2);
+        $nutritionPlan->nutritionSegments->add($segment1);
+        $nutritionPlan->nutritionSegments->add($segment2);
 
         $actual = $nutritionPlan->getSegmentByStartId('startId2');
 
@@ -75,7 +75,7 @@ final class NutritionPlanTest extends TestCase
             $nutritionPlan,
         );
 
-        $nutritionPlan->segments->add($segment1);
+        $nutritionPlan->nutritionSegments->add($segment1);
 
         $actual = $nutritionPlan->getSegmentByStartId('startId2');
 
@@ -114,8 +114,8 @@ final class NutritionPlanTest extends TestCase
             $nutritionPlan,
         );
 
-        $nutritionPlan->segments->add($segment1);
-        $nutritionPlan->segments->add($segment2);
+        $nutritionPlan->nutritionSegments->add($segment1);
+        $nutritionPlan->nutritionSegments->add($segment2);
 
         $segment3 = new Segment(
             'id',
@@ -144,7 +144,7 @@ final class NutritionPlanTest extends TestCase
 
         $nutritionPlan->replaceAllSegments($replacingSegments);
 
-        $this->assertCount(2, $nutritionPlan->segments);
-        $this->assertEquals($replacingSegments, $nutritionPlan->segments);
+        $this->assertCount(2, $nutritionPlan->nutritionSegments);
+        $this->assertEquals($replacingSegments, $nutritionPlan->nutritionSegments);
     }
 }

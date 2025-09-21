@@ -2,7 +2,7 @@
 
 namespace App\Tests\Unit\Application\NutritionPlan\Factory;
 
-use App\Application\NutritionPlan\Factory\SegmentFactory;
+use App\Application\Race\Service\Factory\SegmentFactory;
 use App\Domain\NutritionPlan\Entity\SegmentPoint;
 use App\Domain\Race\Entity\NutritionPlan;
 use App\Domain\Race\Entity\Segment;
@@ -50,7 +50,7 @@ final class SegmentFactoryTest extends TestCase
             $nutritionPlan,
         );
 
-        $actual = $factory->createFromPoints($startPoint, $finishPoint, $nutritionPlan);
+        $actual = $factory->createFromCheckpoints($startPoint, $finishPoint, $nutritionPlan);
 
         $this->assertEquals($expected, $actual);
     }

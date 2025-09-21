@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Shared;
+namespace App\Domain\Shared;
 
 interface IdGeneratorInterface
 {

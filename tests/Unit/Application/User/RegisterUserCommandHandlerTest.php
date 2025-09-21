@@ -2,9 +2,9 @@
 
 namespace App\Tests\Unit\Application\User;
 
-use App\Application\Shared\IdGeneratorInterface;
 use App\Application\User\RegisterUser\RegisterUserCommand;
 use App\Application\User\RegisterUser\RegisterUserCommandHandler;
+use App\Domain\Shared\IdGeneratorInterface;
 use App\Domain\User\Entity\User;
 use App\Domain\User\Exception\UserAlreadyExistsException;
 use App\Domain\User\Port\PasswordServicePort;

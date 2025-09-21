@@ -22,6 +22,10 @@
         <one-to-one field="nutritionPlan" target-entity="App\Domain\Race\Entity\NutritionPlan" inversed-by="race" orphan-removal="true">
             <join-column name="nutrition_plan_id" referenced-column-name="id" nullable="true"/>
         </one-to-one>
+        <one-to-many field="segments" target-entity="App\Domain\Race\Entity\Segment" mapped-by="race" orphan-removal="true">
+            <cascade><cascade-persist/><cascade-remove/></cascade>
+            <order-by><order-by-field name="start.distance.value" direction="ASC"/></order-by>
+        </one-to-many>
     </entity>
     
 </doctrine-mapping>
