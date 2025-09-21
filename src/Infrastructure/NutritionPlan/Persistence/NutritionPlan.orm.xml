@@ -3,7 +3,7 @@
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
-    <entity name="App\Domain\NutritionPlan\Entity\NutritionPlan" table="nutrition_plan" repository-class="App\Infrastructure\NutritionPlan\Persistence\DoctrineNutritionPlansCatalog">
+    <entity name="App\Domain\NutritionPlan\Entity\NutritionPlan" table="old_nutrition_plan" repository-class="App\Infrastructure\NutritionPlan\Persistence\DoctrineNutritionPlansCatalog">
         <id name="id" type="string" />
         <field name="raceId" type="string" column="race_id" />
         <field name="runnerId" type="string" column="runner_id"/>

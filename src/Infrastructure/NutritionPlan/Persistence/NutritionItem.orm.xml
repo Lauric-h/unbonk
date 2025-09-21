@@ -4,7 +4,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="App\Domain\NutritionPlan\Entity\NutritionItem">
+    <entity name="App\Domain\NutritionPlan\Entity\NutritionItem" table="old_nutrition_item">
         <id name="id" type="string" />
         <field name="externalReference" type="string" />
         <field name="name" type="string" />
