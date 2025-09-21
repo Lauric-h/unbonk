@@ -18,6 +18,7 @@ class Race
      * Modif des UseCase
      * Modif des events
      * Modif des services
+     * Modif des ReadModel
      */
     private const DEFAULT_PACE = 10;
 

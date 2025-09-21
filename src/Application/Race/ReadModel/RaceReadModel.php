@@ -2,8 +2,10 @@
 
 namespace App\Application\Race\ReadModel;
 
+use App\Application\NutritionPlan\ReadModel\SegmentReadModel;
 use App\Domain\Race\Entity\Checkpoint;
 use App\Domain\Race\Entity\Race;
+use App\Domain\Race\Entity\Segment;
 
 final class RaceReadModel
 {
@@ -18,6 +20,7 @@ final class RaceReadModel
         public AddressReadModel $address,
         public string $runnerId,
         public array $checkpoints = [],
+        public array $segments = []
     ) {
     }
 
@@ -33,6 +36,10 @@ final class RaceReadModel
             array_map(
                 static fn (Checkpoint $checkpoint) => CheckpointReadModel::fromCheckpoint($checkpoint),
                 $race->getCheckpoints()->toArray(),
+            ),
+            array_map(
+                static fn (Segment $segment) => SegmentReadModel::fromSegment($segment),
+                $race->getSegments()->toArray(),
             )
         );
     }

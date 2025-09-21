@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Application\NutritionPlan\ReadModel;
+namespace App\Application\Race\ReadModel;
 
+use App\Application\NutritionPlan\ReadModel\NutritionItemReadModel;
 use App\Domain\Race\Entity\NutritionItem;
 use App\Domain\Race\Entity\Segment;
 
@@ -26,8 +27,8 @@ final class SegmentReadModel
     public static function fromSegment(Segment $segment): self
     {
         return new self(
-            $segment->id,
-            $segment->startId,
+            $segment->getId(),
+            $segment->,
             $segment->finishId,
             $segment->distance->value,
             $segment->ascent->value,

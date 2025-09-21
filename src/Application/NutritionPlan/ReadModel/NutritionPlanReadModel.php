@@ -7,9 +7,6 @@ use App\Domain\Race\Entity\Segment;
 
 final readonly class NutritionPlanReadModel
 {
-    /**
-     * @param SegmentReadModel[] $segments
-     */
     public function __construct(
         public string $id,
         public string $raceId,
@@ -24,7 +21,7 @@ final readonly class NutritionPlanReadModel
             $nutritionPlan->id,
             $nutritionPlan->raceId,
             $nutritionPlan->runnerId,
-            array_map(static fn (Segment $segment) => SegmentReadModel::fromSegment($segment), $nutritionPlan->nutritionSegments->toArray()),
+            []
         );
     }
 }
