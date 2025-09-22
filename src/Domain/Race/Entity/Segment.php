@@ -19,6 +19,7 @@ class Segment
         public Ascent $ascent,
         public Descent $descent,
         public Duration $estimatedTimeInMinutes,
+        public Race $race,
     ) {
     }
 
@@ -32,6 +33,7 @@ class Segment
             ascent: self::computeAscent($start->getMetricsFromStart()->ascent, $finish->getMetricsFromStart()->ascent),
             descent: self::computeDescent($start->getMetricsFromStart()->descent, $finish->getMetricsFromStart()->descent),
             estimatedTimeInMinutes: self::computeDuration($start->getMetricsFromStart()->estimatedTimeInMinutes, $finish->getMetricsFromStart()->estimatedTimeInMinutes),
+            race: $start->getRace()
         );
     }
 
@@ -71,6 +73,6 @@ class Segment
 
     public function getRace(): Race
     {
-        return $this->start->getRace();
+        return $this->race;
     }
 }

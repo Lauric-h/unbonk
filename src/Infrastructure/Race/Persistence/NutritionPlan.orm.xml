@@ -12,7 +12,7 @@
                 <cascade-remove/>
             </cascade>
             <order-by>
-                <order-by-field name="segment.start.distance.value" direction="ASC" />
+                <order-by-field name="segmentPosition" direction="ASC" />
             </order-by>
         </one-to-many>
         <one-to-one field="race" target-entity="App\Domain\Race\Entity\Race" mapped-by="nutritionPlan">
