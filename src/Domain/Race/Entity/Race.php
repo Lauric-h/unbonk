@@ -11,15 +11,6 @@ use Doctrine\Common\Collections\Collection;
 
 class Race
 {
-    /**
-     * @TODO
-     * Ajout d'une méthode pour générer automatiquement les segments à la création d'une Race + ajout/modif de CP
-     * Migration
-     * Modif des UseCase
-     * Modif des events
-     * Modif des services
-     * Modif des ReadModel
-     */
     private const DEFAULT_PACE = 10;
 
     /**

@@ -12,7 +12,6 @@ class NutritionPlan
      */
     public function __construct(
         public string $id,
-        public string $raceId,
         public Race $race,
         public string $runnerId,
         public Collection $nutritionSegments = new ArrayCollection(),
