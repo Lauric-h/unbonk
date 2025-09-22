@@ -18,6 +18,13 @@ class Race
      */
     private Collection $checkpoints;
 
+    /**
+     * @var Collection<int, Segment>
+     */
+    private Collection $segments;
+
+    private ?NutritionPlan $nutritionPlan = null;
+
     private function __construct(
         public string $id,
         public \DateTimeImmutable $date,
@@ -27,6 +34,7 @@ class Race
         public string $runnerId,
     ) {
         $this->checkpoints = new ArrayCollection();
+        $this->segments = new ArrayCollection();
     }
 
     public static function create(
@@ -67,6 +75,8 @@ class Race
         $race->checkpoints->add($finishCheckpoint);
         $race->sortCheckpointByDistance();
 
+        $race->rebuildSegments();
+
         return $race;
     }
 
@@ -92,6 +102,8 @@ class Race
 
         $address = new Address($city, $postalCode);
         $this->address = $address;
+
+        $this->rebuildSegments();
     }
 
     public function addCheckpoint(AidStationCheckpoint|IntermediateCheckpoint $checkpoint): void
@@ -107,6 +119,7 @@ class Race
         $this->checkpoints->add($checkpoint);
         $checkpoint->setRace($this);
         $this->sortCheckpointByDistance();
+        $this->rebuildSegments();
     }
 
     public function getCheckpointAtDistance(int $distance): ?Checkpoint
@@ -181,6 +194,7 @@ class Race
 
         $this->checkpoints->removeElement($checkpoint);
         $this->sortCheckpointByDistance();
+        $this->rebuildSegments();
     }
 
     /**
@@ -198,5 +212,49 @@ class Race
         $defaultInHours = ($distance + $ascentInKmEffort) / self::DEFAULT_PACE;
 
         return (int) $defaultInHours * 60;
+    }
+
+    public function getNutritionPlan(): ?NutritionPlan
+    {
+        return $this->nutritionPlan;
+    }
+
+    public function setNutritionPlan(NutritionPlan $nutritionPlan): void
+    {
+        $this->nutritionPlan = $nutritionPlan;
+        $nutritionPlan->race = $this;
+    }
+
+    /**
+     * @return Collection<int, Segment>
+     */
+    public function getSegments(): Collection
+    {
+        return $this->segments;
+    }
+
+    public function addSegment(Segment $segment): void
+    {
+        if (!$this->segments->contains($segment)) {
+            $this->segments->add($segment);
+        }
+    }
+
+    public function rebuildSegments(): void
+    {
+        $this->segments->clear();
+        for ($i = 0; $i < $this->checkpoints->count() - 1; ++$i) {
+            $start = $this->checkpoints->get($i);
+            $finish = $this->checkpoints->get($i + 1);
+
+            // @phpstan-ignore-next-line let error be thrown if cp are null
+            $segment = Segment::createFromCheckpoints($start, $finish, $i + 1);
+            $this->addSegment($segment);
+        }
+    }
+
+    public function getSegmentByPosition(int $position): ?Segment
+    {
+        return $this->segments->findFirst(static fn (int $key, Segment $segment) => $segment->position === $position);
     }
 }
