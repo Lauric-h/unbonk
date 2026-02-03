@@ -4,16 +4,16 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="App\Domain\NutritionPlan\Entity\NutritionItem" table="old_nutrition_item">
+    <entity name="App\Domain\NutritionPlan\Entity\NutritionItem" table="nutrition_item">
         <id name="id" type="string" />
-        <field name="externalReference" type="string" />
+        <field name="externalReference" type="string" column="external_reference"/>
         <field name="name" type="string" />
 
-        <embedded name="carbs" class="App\Domain\Shared\Entity\Carbs" />
-        <embedded name="quantity" class="Quantity" />
-        <embedded name="calories" class="App\Domain\Shared\Entity\Calories" />
+        <embedded name="carbs" class="App\Domain\Shared\Entity\Carbs" column-prefix="carbs_"/>
+        <embedded name="quantity" class="App\Domain\NutritionPlan\Entity\Quantity" column-prefix="quantity_"/>
+        <embedded name="calories" class="App\Domain\Shared\Entity\Calories" column-prefix="calories_"/>
 
-        <many-to-one field="segment" target-entity="App\Domain\NutritionPlan\Entity\Segment" inversed-by="nutritionItems" >
+        <many-to-one field="segment" target-entity="App\Domain\NutritionPlan\Entity\Segment" inversed-by="nutritionItems">
             <join-column name="segment_id" referenced-column-name="id" nullable="false" on-delete="CASCADE" />
         </many-to-one>
     </entity>

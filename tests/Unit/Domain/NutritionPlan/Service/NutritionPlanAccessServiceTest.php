@@ -2,34 +2,31 @@
 
 namespace App\Tests\Unit\Domain\NutritionPlan\Service;
 
-use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Domain\NutritionPlan\Exception\ForbiddenNutritionPlanAccessException;
+use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
 use App\Domain\NutritionPlan\Service\NutritionPlanAccessService;
-use App\Infrastructure\NutritionPlan\Persistence\DoctrineNutritionPlansCatalog;
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Tests\Unit\Fixture\NutritionPlanTestFixture;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 final class NutritionPlanAccessServiceTest extends TestCase
 {
-    private MockObject&DoctrineNutritionPlansCatalog $repository;
+    private MockObject&NutritionPlansCatalog $repository;
     private NutritionPlanAccessService $service;
 
     public function setUp(): void
     {
         $this->service = new NutritionPlanAccessService(
-            $this->repository = $this->createMock(DoctrineNutritionPlansCatalog::class),
+            $this->repository = $this->createMock(NutritionPlansCatalog::class),
         );
     }
 
     public function testCanAccess(): void
     {
-        $nutritionPlan = new NutritionPlan(
-            'np-id',
-            'raceId',
-            'runnerId',
-            new ArrayCollection([])
-        );
+        $nutritionPlan = (new NutritionPlanTestFixture())
+            ->withId('np-id')
+            ->withRunnerId('runnerId')
+            ->build();
 
         $this->repository->expects($this->once())
             ->method('get')
@@ -41,12 +38,10 @@ final class NutritionPlanAccessServiceTest extends TestCase
 
     public function testCannotAccess(): void
     {
-        $nutritionPlan = new NutritionPlan(
-            'np-id',
-            'raceId',
-            'runnerId',
-            new ArrayCollection([])
-        );
+        $nutritionPlan = (new NutritionPlanTestFixture())
+            ->withId('np-id')
+            ->withRunnerId('runnerId')
+            ->build();
 
         $this->repository->expects($this->once())
             ->method('get')

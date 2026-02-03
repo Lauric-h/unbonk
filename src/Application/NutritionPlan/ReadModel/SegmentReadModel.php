@@ -12,13 +12,12 @@ final class SegmentReadModel
      */
     public function __construct(
         public string $id,
-        public string $startId,
-        public string $finishId,
+        public int $position,
+        public CheckpointReadModel $startCheckpoint,
+        public CheckpointReadModel $endCheckpoint,
         public int $distance,
         public int $ascent,
         public int $descent,
-        public int $estimatedTimeInMinutes,
-        public int $carbsTarget,
         public array $nutritionItems = [],
     ) {
     }
@@ -27,14 +26,13 @@ final class SegmentReadModel
     {
         return new self(
             $segment->id,
-            $segment->startId,
-            $segment->finishId,
-            $segment->distance->value,
-            $segment->ascent->value,
-            $segment->descent->value,
-            $segment->estimatedTimeInMinutes->minutes,
-            $segment->carbsTarget->value,
-            array_map(static fn (NutritionItem $nutritionItem) => NutritionItemReadModel::fromNutritionItem($nutritionItem), $segment->nutritionItems->toArray()),
+            $segment->position,
+            CheckpointReadModel::fromCheckpoint($segment->startCheckpoint),
+            CheckpointReadModel::fromCheckpoint($segment->endCheckpoint),
+            $segment->getDistance()->value,
+            $segment->getAscent()->value,
+            $segment->getDescent()->value,
+            array_map(static fn (NutritionItem $nutritionItem) => NutritionItemReadModel::fromNutritionItem($nutritionItem), $segment->getNutritionItems()->toArray()),
         );
     }
 }

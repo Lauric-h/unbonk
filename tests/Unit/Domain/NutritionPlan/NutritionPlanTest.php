@@ -2,149 +2,222 @@
 
 namespace App\Tests\Unit\Domain\NutritionPlan;
 
-use App\Domain\NutritionPlan\Entity\NutritionPlan;
+use App\Domain\NutritionPlan\Entity\Checkpoint;
 use App\Domain\NutritionPlan\Entity\Segment;
-use App\Domain\Shared\Entity\Ascent;
-use App\Domain\Shared\Entity\Carbs;
-use App\Domain\Shared\Entity\Descent;
-use App\Domain\Shared\Entity\Distance;
-use App\Domain\Shared\Entity\Duration;
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Tests\Unit\Fixture\NutritionPlanTestFixture;
 use PHPUnit\Framework\TestCase;
 
 final class NutritionPlanTest extends TestCase
 {
-    public function testGetSegmentByStartId(): void
+    public function testCreateFromImportedRaceCreatesSegments(): void
     {
-        $nutritionPlan = new NutritionPlan(
-            'id',
-            'raceId',
-            'runnerId',
-            new ArrayCollection([])
-        );
+        $nutritionPlan = (new NutritionPlanTestFixture())->build();
 
-        $segment1 = new Segment(
-            'id',
-            'startId',
-            'finishId',
-            new Distance(1),
-            new Ascent(1),
-            new Descent(1),
-            new Duration(1),
-            new Carbs(1),
-            $nutritionPlan,
-        );
-        $segment2 = new Segment(
-            'id2',
-            'startId2',
-            'finishId2',
-            new Distance(2),
-            new Ascent(2),
-            new Descent(2),
-            new Duration(2),
-            new Carbs(2),
-            $nutritionPlan,
-        );
-
-        $nutritionPlan->segments->add($segment1);
-        $nutritionPlan->segments->add($segment2);
-
-        $actual = $nutritionPlan->getSegmentByStartId('startId2');
-
-        $this->assertSame($segment2, $actual);
+        // Default imported race has 3 checkpoints (Start, Aid Station, Finish)
+        // So we should have 2 segments
+        $this->assertCount(2, $nutritionPlan->getSegments());
     }
 
-    public function testGetSegmentByStartIdReturnsNull(): void
+    public function testGetSegmentById(): void
     {
-        $nutritionPlan = new NutritionPlan(
-            'id',
-            'raceId',
-            'runnerId',
-            new ArrayCollection([])
-        );
+        $nutritionPlan = (new NutritionPlanTestFixture())->build();
 
-        $segment1 = new Segment(
-            'id',
-            'startId',
-            'finishId',
-            new Distance(1),
-            new Ascent(1),
-            new Descent(1),
-            new Duration(1),
-            new Carbs(1),
-            $nutritionPlan,
-        );
+        // Fixture generates segment IDs like 'segment-id-1', 'segment-id-2', etc.
+        $segment = $nutritionPlan->getSegmentById('segment-id-1');
 
-        $nutritionPlan->segments->add($segment1);
-
-        $actual = $nutritionPlan->getSegmentByStartId('startId2');
-
-        $this->assertNotInstanceOf(Segment::class, $actual);
+        $this->assertInstanceOf(Segment::class, $segment);
     }
 
-    public function testReplaceAllSegments(): void
+    public function testGetSegmentByIdReturnsNull(): void
     {
-        $nutritionPlan = new NutritionPlan(
-            'id',
-            'raceId',
-            'runnerId',
-            new ArrayCollection([])
+        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+
+        $segment = $nutritionPlan->getSegmentById('non-existent-id');
+
+        $this->assertNotInstanceOf(Segment::class, $segment);
+    }
+
+    public function testGetSegmentByPosition(): void
+    {
+        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+
+        $segment = $nutritionPlan->getSegmentByPosition(1);
+
+        $this->assertInstanceOf(Segment::class, $segment);
+        $this->assertSame(1, $segment->position);
+    }
+
+    public function testGetSegmentByPositionReturnsNull(): void
+    {
+        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+
+        $segment = $nutritionPlan->getSegmentByPosition(99);
+
+        $this->assertNotInstanceOf(Segment::class, $segment);
+    }
+
+    public function testAddCustomCheckpointCreatesNewSegment(): void
+    {
+        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+
+        $initialSegmentCount = $nutritionPlan->getSegments()->count();
+
+        $customCheckpoint = new Checkpoint(
+            'custom-checkpoint-id',
+            null, // Custom checkpoints have null externalId
+            'Custom Point',
+            'Custom Location',
+            10000, // Somewhere between start (0) and aid station (25000)
+            500,
+            400,
+            null,
+            true,
+            $nutritionPlan->importedRace,
         );
 
-        $segment1 = new Segment(
-            'id',
-            'startId',
-            'finishId',
-            new Distance(1),
-            new Ascent(1),
-            new Descent(1),
-            new Duration(1),
-            new Carbs(1),
-            $nutritionPlan,
-        );
-        $segment2 = new Segment(
-            'id2',
-            'startId2',
-            'finishId2',
-            new Distance(2),
-            new Ascent(2),
-            new Descent(2),
-            new Duration(2),
-            new Carbs(2),
-            $nutritionPlan,
-        );
+        // After adding checkpoint, we'll have 4 checkpoints = 3 segments
+        $nutritionPlan->addCustomCheckpoint($customCheckpoint, ['seg-1', 'seg-2', 'seg-3']);
 
-        $nutritionPlan->segments->add($segment1);
-        $nutritionPlan->segments->add($segment2);
+        $this->assertCount($initialSegmentCount + 1, $nutritionPlan->getSegments());
+    }
 
-        $segment3 = new Segment(
-            'id',
-            'startId',
-            'finishId',
-            new Distance(3),
-            new Ascent(3),
-            new Descent(3),
-            new Duration(3),
-            new Carbs(3),
-            $nutritionPlan,
-        );
-        $segment4 = new Segment(
-            'id4',
-            'startId4',
-            'finishId4',
-            new Distance(4),
-            new Ascent(4),
-            new Descent(4),
-            new Duration(4),
-            new Carbs(4),
-            $nutritionPlan,
+    public function testAddCustomCheckpointThrowsExceptionForNonCustomCheckpoint(): void
+    {
+        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+
+        $nonCustomCheckpoint = new Checkpoint(
+            'checkpoint-id',
+            'external-id', // Non-null = not custom
+            'Point',
+            'Location',
+            10000,
+            500,
+            400,
+            null,
+            true,
+            $nutritionPlan->importedRace,
         );
 
-        $replacingSegments = new ArrayCollection([$segment3, $segment4]);
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('Checkpoint must be custom');
 
-        $nutritionPlan->replaceAllSegments($replacingSegments);
+        $nutritionPlan->addCustomCheckpoint($nonCustomCheckpoint, ['seg-1', 'seg-2', 'seg-3']);
+    }
 
-        $this->assertCount(2, $nutritionPlan->segments);
-        $this->assertEquals($replacingSegments, $nutritionPlan->segments);
+    public function testAddCustomCheckpointThrowsExceptionForDuplicateDistance(): void
+    {
+        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+
+        $customCheckpoint = new Checkpoint(
+            'custom-checkpoint-id',
+            null,
+            'Custom Point',
+            'Custom Location',
+            25000, // Same distance as existing aid station
+            1000,
+            750,
+            null,
+            true,
+            $nutritionPlan->importedRace,
+        );
+
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('A checkpoint already exists at distance');
+
+        $nutritionPlan->addCustomCheckpoint($customCheckpoint, ['seg-1', 'seg-2', 'seg-3']);
+    }
+
+    public function testRemoveCustomCheckpointRemovesSegment(): void
+    {
+        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+
+        // First add a custom checkpoint
+        $customCheckpoint = new Checkpoint(
+            'custom-checkpoint-id',
+            null,
+            'Custom Point',
+            'Custom Location',
+            10000,
+            500,
+            400,
+            null,
+            true,
+            $nutritionPlan->importedRace,
+        );
+        $nutritionPlan->addCustomCheckpoint($customCheckpoint, ['seg-1', 'seg-2', 'seg-3']);
+
+        $segmentCountAfterAdd = $nutritionPlan->getSegments()->count();
+
+        // Now remove it - back to 3 checkpoints = 2 segments
+        $nutritionPlan->removeCustomCheckpoint('custom-checkpoint-id', ['seg-a', 'seg-b']);
+
+        $this->assertCount($segmentCountAfterAdd - 1, $nutritionPlan->getSegments());
+    }
+
+    public function testRemoveCustomCheckpointThrowsExceptionForNonExistentCheckpoint(): void
+    {
+        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('Checkpoint with id non-existent not found');
+
+        $nutritionPlan->removeCustomCheckpoint('non-existent', ['seg-1', 'seg-2']);
+    }
+
+    public function testRemoveCustomCheckpointThrowsExceptionForImportedCheckpoint(): void
+    {
+        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('Cannot remove imported checkpoint');
+
+        // Try to remove an imported checkpoint (start)
+        $nutritionPlan->removeCustomCheckpoint('start-checkpoint-id', ['seg-1', 'seg-2']);
+    }
+
+    public function testRebuildSegmentsPreservesNutritionItems(): void
+    {
+        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+
+        // Add nutrition item to first segment
+        $segment = $nutritionPlan->getSegmentByPosition(1);
+        $this->assertInstanceOf(Segment::class, $segment);
+
+        $nutritionItem = new \App\Domain\NutritionPlan\Entity\NutritionItem(
+            'item-id',
+            'external-ref',
+            'Gel',
+            new \App\Domain\Shared\Entity\Carbs(25),
+            new \App\Domain\NutritionPlan\Entity\Quantity(2),
+            null,
+        );
+        $segment->addNutritionItem($nutritionItem);
+
+        $startCheckpointId = $segment->startCheckpoint->id;
+        $endCheckpointId = $segment->endCheckpoint->id;
+
+        // Add a custom checkpoint somewhere else (should not affect first segment)
+        $customCheckpoint = new Checkpoint(
+            'custom-id',
+            null,
+            'Custom',
+            'Location',
+            30000, // After aid station (25000) but before finish (50000)
+            1200,
+            900,
+            null,
+            true,
+            $nutritionPlan->importedRace,
+        );
+        $nutritionPlan->addCustomCheckpoint($customCheckpoint, ['seg-1', 'seg-2', 'seg-3']);
+
+        // Find the segment with same checkpoints
+        $segments = $nutritionPlan->getSegments()->filter(
+            static fn (Segment $s) => $s->startCheckpoint->id === $startCheckpointId && $s->endCheckpoint->id === $endCheckpointId
+        );
+
+        $this->assertCount(1, $segments);
+        $preservedSegment = $segments->first();
+        $this->assertCount(1, $preservedSegment->getNutritionItems());
     }
 }

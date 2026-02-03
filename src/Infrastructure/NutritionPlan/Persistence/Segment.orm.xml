@@ -4,29 +4,27 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="App\Domain\NutritionPlan\Entity\Segment" repository-class="App\Infrastructure\NutritionPlan\Persistence\DoctrineSegmentsCatalog" table="old_segment">
+    <entity name="App\Domain\NutritionPlan\Entity\Segment" repository-class="App\Infrastructure\NutritionPlan\Persistence\DoctrineSegmentsCatalog" table="segment">
         <id name="id" type="string" />
-        <field name="startId" type="string" />
-        <field name="finishId" type="string" />
+        <field name="position" type="integer"/>
 
-        <embedded name="distance" class="App\Domain\Shared\Entity\Distance" />
-        <embedded name="ascent" class="App\Domain\Shared\Entity\Ascent" />
-        <embedded name="descent" class="App\Domain\Shared\Entity\Descent" />
-        <embedded name="estimatedTimeInMinutes" class="App\Domain\Shared\Entity\Duration" />
-        <embedded name="carbsTarget" class="App\Domain\Shared\Entity\Carbs" />
+        <many-to-one field="startCheckpoint" target-entity="App\Domain\NutritionPlan\Entity\Checkpoint">
+            <join-column name="start_checkpoint_id" referenced-column-name="id" nullable="false" on-delete="CASCADE" />
+        </many-to-one>
 
-        <many-to-one field="nutritionPlan" target-entity="App\Domain\NutritionPlan\Entity\NutritionPlan" inversed-by="segments" >
+        <many-to-one field="endCheckpoint" target-entity="App\Domain\NutritionPlan\Entity\Checkpoint">
+            <join-column name="end_checkpoint_id" referenced-column-name="id" nullable="false" on-delete="CASCADE" />
+        </many-to-one>
+
+        <many-to-one field="nutritionPlan" target-entity="App\Domain\NutritionPlan\Entity\NutritionPlan" inversed-by="segments">
             <join-column name="nutrition_plan_id" referenced-column-name="id" nullable="false" on-delete="CASCADE" />
         </many-to-one>
 
-        <one-to-many field="nutritionItems" target-entity="App\Domain\NutritionPlan\Entity\NutritionItem" orphan-removal="true" mapped-by="segment">
+        <one-to-many field="nutritionItems" target-entity="App\Domain\NutritionPlan\Entity\NutritionItem" mapped-by="segment" orphan-removal="true">
             <cascade>
                 <cascade-persist/>
                 <cascade-remove/>
             </cascade>
-            <order-by>
-                <order-by-field name="carbs.value" direction="ASC" />
-            </order-by>
         </one-to-many>
     </entity>
 

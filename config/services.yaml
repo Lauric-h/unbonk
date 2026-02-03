@@ -55,3 +55,7 @@ services:
     App\Infrastructure\Shared\Bus\CommandBus:
         arguments:
             $messageBus: '@command.bus'
+
+    # External Race API - Mock implementation for now
+    App\Domain\NutritionPlan\Port\ExternalRaceApiPort:
+        class: App\Infrastructure\NutritionPlan\Adapter\MockExternalRaceApiAdapter
