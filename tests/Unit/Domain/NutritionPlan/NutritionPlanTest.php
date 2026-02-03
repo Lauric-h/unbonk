@@ -3,7 +3,10 @@
 namespace App\Tests\Unit\Domain\NutritionPlan;
 
 use App\Domain\NutritionPlan\Entity\Checkpoint;
+use App\Domain\NutritionPlan\Entity\NutritionItem;
+use App\Domain\NutritionPlan\Entity\Quantity;
 use App\Domain\NutritionPlan\Entity\Segment;
+use App\Domain\Shared\Entity\Carbs;
 use App\Tests\Unit\Fixture\NutritionPlanTestFixture;
 use PHPUnit\Framework\TestCase;
 
@@ -183,12 +186,12 @@ final class NutritionPlanTest extends TestCase
         $segment = $nutritionPlan->getSegmentByPosition(1);
         $this->assertInstanceOf(Segment::class, $segment);
 
-        $nutritionItem = new \App\Domain\NutritionPlan\Entity\NutritionItem(
+        $nutritionItem = new NutritionItem(
             'item-id',
             'external-ref',
             'Gel',
-            new \App\Domain\Shared\Entity\Carbs(25),
-            new \App\Domain\NutritionPlan\Entity\Quantity(2),
+            new Carbs(25),
+            new Quantity(2),
             null,
         );
         $segment->addNutritionItem($nutritionItem);

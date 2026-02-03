@@ -5,6 +5,7 @@ namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 use App\Application\NutritionPlan\UseCase\AddNutritionItem\AddNutritionItemCommand;
 use App\Application\NutritionPlan\UseCase\AddNutritionItem\AddNutritionItemCommandHandler;
 use App\Domain\NutritionPlan\DTO\ExternalNutritionItemDTO;
+use App\Domain\NutritionPlan\Entity\Segment;
 use App\Domain\NutritionPlan\Port\ExternalFoodPort;
 use App\Domain\NutritionPlan\Repository\SegmentsCatalog;
 use App\Tests\Unit\Fixture\NutritionPlanTestFixture;
@@ -22,7 +23,7 @@ final class AddNutritionItemCommandHandlerTest extends TestCase
 
         $nutritionPlan = (new NutritionPlanTestFixture())->build();
         $segment = $nutritionPlan->getSegmentByPosition(1);
-        $this->assertInstanceOf(\App\Domain\NutritionPlan\Entity\Segment::class, $segment);
+        $this->assertInstanceOf(Segment::class, $segment);
 
         $segmentId = $segment->id;
         $nutritionPlanId = $nutritionPlan->id;

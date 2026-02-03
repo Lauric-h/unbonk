@@ -6,6 +6,7 @@ use App\Application\NutritionPlan\UseCase\UpdateNutritionItemQuantity\UpdateNutr
 use App\Application\NutritionPlan\UseCase\UpdateNutritionItemQuantity\UpdateNutritionItemQuantityCommandHandler;
 use App\Domain\NutritionPlan\Entity\NutritionItem;
 use App\Domain\NutritionPlan\Entity\Quantity;
+use App\Domain\NutritionPlan\Entity\Segment;
 use App\Domain\NutritionPlan\Repository\SegmentsCatalog;
 use App\Domain\Shared\Entity\Calories;
 use App\Domain\Shared\Entity\Carbs;
@@ -21,7 +22,7 @@ final class UpdateNutritionItemQuantityCommandHandlerTest extends TestCase
 
         $nutritionPlan = (new NutritionPlanTestFixture())->build();
         $segment = $nutritionPlan->getSegmentByPosition(1);
-        $this->assertInstanceOf(\App\Domain\NutritionPlan\Entity\Segment::class, $segment);
+        $this->assertInstanceOf(Segment::class, $segment);
 
         $nutritionItem = new NutritionItem(
             id: 'abcde',
@@ -53,7 +54,7 @@ final class UpdateNutritionItemQuantityCommandHandlerTest extends TestCase
 
         $nutritionPlan = (new NutritionPlanTestFixture())->build();
         $segment = $nutritionPlan->getSegmentByPosition(1);
-        $this->assertInstanceOf(\App\Domain\NutritionPlan\Entity\Segment::class, $segment);
+        $this->assertInstanceOf(Segment::class, $segment);
 
         $nutritionItem = new NutritionItem(
             id: 'abcde',
@@ -85,7 +86,7 @@ final class UpdateNutritionItemQuantityCommandHandlerTest extends TestCase
 
         $nutritionPlan = (new NutritionPlanTestFixture())->build();
         $segment = $nutritionPlan->getSegmentByPosition(1);
-        $this->assertInstanceOf(\App\Domain\NutritionPlan\Entity\Segment::class, $segment);
+        $this->assertInstanceOf(Segment::class, $segment);
 
         $repository->expects($this->once())
             ->method('get')

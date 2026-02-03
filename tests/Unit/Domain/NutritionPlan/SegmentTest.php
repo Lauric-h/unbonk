@@ -16,7 +16,7 @@ final class SegmentTest extends TestCase
     {
         $nutritionPlan = (new NutritionPlanTestFixture())->build();
         $segment = $nutritionPlan->getSegmentByPosition(1);
-        $this->assertInstanceOf(\App\Domain\NutritionPlan\Entity\Segment::class, $segment);
+        $this->assertInstanceOf(Segment::class, $segment);
 
         return $segment;
     }

@@ -11,6 +11,7 @@ use App\Application\NutritionPlan\UseCase\GetNutritionPlan\GetNutritionPlanQuery
 use App\Application\NutritionPlan\UseCase\GetNutritionPlan\GetNutritionPlanQueryHandler;
 use App\Domain\NutritionPlan\Entity\NutritionItem;
 use App\Domain\NutritionPlan\Entity\Quantity;
+use App\Domain\NutritionPlan\Entity\Segment;
 use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
 use App\Domain\Shared\Entity\Calories;
 use App\Domain\Shared\Entity\Carbs;
@@ -30,7 +31,7 @@ final class GetNutritionPlanQueryHandlerTest extends TestCase
 
         // Add a nutrition item to the first segment
         $segment = $nutritionPlan->getSegmentByPosition(1);
-        $this->assertInstanceOf(\App\Domain\NutritionPlan\Entity\Segment::class, $segment);
+        $this->assertInstanceOf(Segment::class, $segment);
 
         $nutritionItem = new NutritionItem(
             'item-id',

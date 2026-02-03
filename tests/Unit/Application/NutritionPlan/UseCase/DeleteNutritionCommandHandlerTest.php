@@ -6,6 +6,7 @@ use App\Application\NutritionPlan\UseCase\DeleteNutritionItem\DeleteNutritionIte
 use App\Application\NutritionPlan\UseCase\DeleteNutritionItem\DeleteNutritionItemCommandHandler;
 use App\Domain\NutritionPlan\Entity\NutritionItem;
 use App\Domain\NutritionPlan\Entity\Quantity;
+use App\Domain\NutritionPlan\Entity\Segment;
 use App\Domain\NutritionPlan\Repository\SegmentsCatalog;
 use App\Domain\Shared\Entity\Carbs;
 use App\Tests\Unit\Fixture\NutritionPlanTestFixture;
@@ -20,7 +21,7 @@ final class DeleteNutritionCommandHandlerTest extends TestCase
 
         $nutritionPlan = (new NutritionPlanTestFixture())->build();
         $segment = $nutritionPlan->getSegmentByPosition(1);
-        $this->assertInstanceOf(\App\Domain\NutritionPlan\Entity\Segment::class, $segment);
+        $this->assertInstanceOf(Segment::class, $segment);
 
         $nutritionPlanId = $nutritionPlan->id;
         $segmentId = $segment->id;
