@@ -72,7 +72,7 @@ final class MockExternalRaceAdapter implements ExternalRacePort
     /**
      * @phpstan-ignore-next-line
      */
-    public function getRaceDetails(string $raceId): ?ExternalRaceDTO
+    public function getRaceDetails(string $eventId, string $raceId): ?ExternalRaceDTO
     {
         $aidStations = [];
         for ($i = 0; $i < 5; ++$i) {

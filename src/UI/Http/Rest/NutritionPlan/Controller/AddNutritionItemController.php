@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
-#[Route('/nutrition-plans/{nutritionPlanId}/segments/{segmentId}/nutrition-items', name: 'app.nutrition_plan.segment.add_nutrition_item', methods: ['POST'])]
+#[Route('/nutrition-plans/{nutritionPlanId}/segments/{segmentId}/nutrition-items', name: 'api.nutrition_plan.segment.add_nutrition_item', methods: ['POST'])]
 final class AddNutritionItemController extends AbstractController
 {
     public function __construct(
@@ -37,7 +37,7 @@ final class AddNutritionItemController extends AbstractController
         return new JsonResponse(
             [],
             Response::HTTP_CREATED,
-            ['Location' => $this->urlGenerator->generate('app.nutrition_plan.get', ['nutritionPlanId' => $nutritionPlanId])]
+            ['Location' => $this->urlGenerator->generate('api.nutrition_plan.get', ['nutritionPlanId' => $nutritionPlanId])]
         );
     }
 }

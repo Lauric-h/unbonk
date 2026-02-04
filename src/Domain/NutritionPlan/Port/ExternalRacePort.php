@@ -14,5 +14,5 @@ interface ExternalRacePort
 
     public function getEvent(string $eventId): ExternalEventDTO;
 
-    public function getRaceDetails(string $raceId): ?ExternalRaceDTO;
+    public function getRaceDetails(string $eventId, string $raceId): ?ExternalRaceDTO;
 }

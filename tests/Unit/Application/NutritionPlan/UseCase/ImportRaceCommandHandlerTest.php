@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 
 use App\Application\NutritionPlan\Factory\ImportedRaceFactory;
-use App\Application\NutritionPlan\UseCase\CreateNutritionPlan\CreateNutritionPlanCommand;
-use App\Application\NutritionPlan\UseCase\CreateNutritionPlan\CreateNutritionPlanCommandHandler;
+use App\Application\NutritionPlan\UseCase\ImportRace\ImportRaceCommand;
+use App\Application\NutritionPlan\UseCase\ImportRace\ImportRaceCommandHandler;
 use App\Application\Shared\IdGeneratorInterface;
 use App\Domain\NutritionPlan\DTO\ExternalRaceDTO;
 use App\Domain\NutritionPlan\Port\ExternalRacePort;
@@ -14,15 +14,16 @@ use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
 use App\Tests\Unit\MockIdGenerator;
 use PHPUnit\Framework\TestCase;
 
-final class CreateNutritionPlanCommandHandlerTest extends TestCase
+final class ImportRaceCommandHandlerTest extends TestCase
 {
     public function testHandle(): void
     {
-        $id = 'nutrition-plan-id';
+        $nutritionPlanId = 'nutrition-plan-id';
+        $externalEventId = 'external-event-id';
         $externalRaceId = 'external-race-id';
         $runnerId = 'runner-id';
 
-        $command = new CreateNutritionPlanCommand($id, $externalRaceId, $runnerId);
+        $command = new ImportRaceCommand($nutritionPlanId, $externalEventId, $externalRaceId, $runnerId);
 
         $externalRace = new ExternalRaceDTO(
             id: 'external-race-id',
@@ -38,17 +39,17 @@ final class CreateNutritionPlanCommandHandlerTest extends TestCase
             aidStations: [],
         );
 
-        $externalRaceApi = $this->createMock(ExternalRacePort::class);
-        $externalRaceApi->expects($this->once())
+        $externalRacePort = $this->createMock(ExternalRacePort::class);
+        $externalRacePort->expects($this->once())
             ->method('getRaceDetails')
-            ->with($externalRaceId)
+            ->with($externalEventId, $externalRaceId)
             ->willReturn($externalRace);
 
         $repository = $this->createMock(NutritionPlansCatalog::class);
         $repository->expects($this->once())
             ->method('add')
-            ->with($this->callback(function ($nutritionPlan) use ($id, $runnerId): bool {
-                $this->assertSame($id, $nutritionPlan->id);
+            ->with($this->callback(function ($nutritionPlan) use ($nutritionPlanId, $runnerId): bool {
+                $this->assertSame($nutritionPlanId, $nutritionPlan->id);
                 $this->assertSame($runnerId, $nutritionPlan->runnerId);
                 $this->assertSame('Test Race', $nutritionPlan->importedRace->name);
 
@@ -66,9 +67,9 @@ final class CreateNutritionPlanCommandHandlerTest extends TestCase
 
         $importedRaceFactory = new ImportedRaceFactory($idGenerator);
 
-        $handler = new CreateNutritionPlanCommandHandler(
+        $handler = new ImportRaceCommandHandler(
             $repository,
-            $externalRaceApi,
+            $externalRacePort,
             $importedRaceFactory,
             $idGenerator,
         );
@@ -78,12 +79,15 @@ final class CreateNutritionPlanCommandHandlerTest extends TestCase
 
     public function testHandleThrowsExceptionWhenRaceNotFound(): void
     {
-        $command = new CreateNutritionPlanCommand('id', 'non-existent-race-id', 'runner-id');
+        $externalEventId = 'external-event-id';
+        $externalRaceId = 'non-existent-race-id';
 
-        $externalRaceApi = $this->createMock(ExternalRacePort::class);
-        $externalRaceApi->expects($this->once())
+        $command = new ImportRaceCommand('id', $externalEventId, $externalRaceId, 'runner-id');
+
+        $externalRacePort = $this->createMock(ExternalRacePort::class);
+        $externalRacePort->expects($this->once())
             ->method('getRaceDetails')
-            ->with('non-existent-race-id')
+            ->with($externalEventId, $externalRaceId)
             ->willReturn(null);
 
         $repository = $this->createMock(NutritionPlansCatalog::class);
@@ -92,9 +96,9 @@ final class CreateNutritionPlanCommandHandlerTest extends TestCase
         $idGenerator = new MockIdGenerator('id');
         $importedRaceFactory = new ImportedRaceFactory($idGenerator);
 
-        $handler = new CreateNutritionPlanCommandHandler(
+        $handler = new ImportRaceCommandHandler(
             $repository,
-            $externalRaceApi,
+            $externalRacePort,
             $importedRaceFactory,
             $idGenerator,
         );

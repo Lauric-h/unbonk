@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/nutrition-plans/{nutritionPlanId}', name: 'app.nutrition_plan.get', methods: ['GET'])]
+#[Route('/nutrition-plans/{nutritionPlanId}', name: 'api.nutrition_plan.get', methods: ['GET'])]
 final class GetNutritionPlanController extends AbstractController
 {
     public function __construct(
