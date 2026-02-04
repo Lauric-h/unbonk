@@ -9,7 +9,7 @@ use App\Application\NutritionPlan\UseCase\CreateNutritionPlan\CreateNutritionPla
 use App\Application\NutritionPlan\UseCase\CreateNutritionPlan\CreateNutritionPlanCommandHandler;
 use App\Application\Shared\IdGeneratorInterface;
 use App\Domain\NutritionPlan\DTO\ExternalRaceDTO;
-use App\Domain\NutritionPlan\Port\ExternalRaceApiPort;
+use App\Domain\NutritionPlan\Port\ExternalRacePort;
 use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
 use App\Tests\Unit\MockIdGenerator;
 use PHPUnit\Framework\TestCase;
@@ -33,13 +33,12 @@ final class CreateNutritionPlanCommandHandlerTest extends TestCase
             descent: 1500,
             startDateTime: new \DateTimeImmutable('2024-06-01 06:00:00'),
             url: null,
-            slug: 'test-race',
             startLocation: 'Start City',
             finishLocation: 'Finish City',
             aidStations: [],
         );
 
-        $externalRaceApi = $this->createMock(ExternalRaceApiPort::class);
+        $externalRaceApi = $this->createMock(ExternalRacePort::class);
         $externalRaceApi->expects($this->once())
             ->method('getRaceDetails')
             ->with($externalRaceId)
@@ -81,7 +80,7 @@ final class CreateNutritionPlanCommandHandlerTest extends TestCase
     {
         $command = new CreateNutritionPlanCommand('id', 'non-existent-race-id', 'runner-id');
 
-        $externalRaceApi = $this->createMock(ExternalRaceApiPort::class);
+        $externalRaceApi = $this->createMock(ExternalRacePort::class);
         $externalRaceApi->expects($this->once())
             ->method('getRaceDetails')
             ->with('non-existent-race-id')

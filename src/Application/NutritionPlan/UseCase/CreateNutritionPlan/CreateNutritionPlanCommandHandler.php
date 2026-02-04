@@ -5,7 +5,7 @@ namespace App\Application\NutritionPlan\UseCase\CreateNutritionPlan;
 use App\Application\NutritionPlan\Factory\ImportedRaceFactory;
 use App\Application\Shared\IdGeneratorInterface;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
-use App\Domain\NutritionPlan\Port\ExternalRaceApiPort;
+use App\Domain\NutritionPlan\Port\ExternalRacePort;
 use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
 
@@ -13,7 +13,7 @@ final readonly class CreateNutritionPlanCommandHandler implements CommandHandler
 {
     public function __construct(
         private NutritionPlansCatalog $nutritionPlansCatalog,
-        private ExternalRaceApiPort $externalRaceApi,
+        private ExternalRacePort $externalRaceApi,
         private ImportedRaceFactory $importedRaceFactory,
         private IdGeneratorInterface $idGenerator,
     ) {

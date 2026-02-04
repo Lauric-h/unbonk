@@ -16,7 +16,6 @@ final readonly class ExternalRaceDTO
         public int $descent,
         public \DateTimeImmutable $startDateTime,
         public ?string $url,
-        public string $slug,
         public string $startLocation,
         public string $finishLocation,
         public array $aidStations = [],
