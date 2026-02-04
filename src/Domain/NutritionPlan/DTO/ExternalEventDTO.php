@@ -13,7 +13,6 @@ final readonly class ExternalEventDTO
         public string $location,
         public \DateTimeImmutable $date,
         public ?string $url,
-        public string $slug,
         public array $races = [],
     ) {
     }
