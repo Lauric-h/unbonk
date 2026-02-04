@@ -4,7 +4,7 @@ namespace App\Domain\Shared\Entity;
 
 final readonly class Carbs
 {
-    public const DEFAULT_PER_HOUR = 60;
+    public const int DEFAULT_PER_HOUR = 60;
 
     public readonly int $value;
 

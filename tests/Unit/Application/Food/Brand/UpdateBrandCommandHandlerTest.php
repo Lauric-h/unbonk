@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Application\Food\Brand;
 
 use App\Application\Food\UseCase\UpdateBrand\UpdateBrandCommand;
@@ -8,7 +10,7 @@ use App\Domain\Food\Entity\Brand;
 use App\Infrastructure\Food\Persistence\DoctrineBrandsCatalog;
 use PHPUnit\Framework\TestCase;
 
-class UpdateBrandCommandHandlerTest extends TestCase
+final class UpdateBrandCommandHandlerTest extends TestCase
 {
     public function testUpdateBrand(): void
     {

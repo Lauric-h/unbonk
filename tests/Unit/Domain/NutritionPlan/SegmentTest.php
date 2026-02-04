@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Domain\NutritionPlan;
 
 use App\Domain\NutritionPlan\Entity\NutritionItem;
@@ -14,7 +16,7 @@ final class SegmentTest extends TestCase
 {
     private function getTestSegment(): Segment
     {
-        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
         $segment = $nutritionPlan->getSegmentByPosition(1);
         $this->assertInstanceOf(Segment::class, $segment);
 

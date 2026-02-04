@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Domain\NutritionPlan;
 
 use App\Domain\NutritionPlan\Entity\Checkpoint;
@@ -14,7 +16,7 @@ final class NutritionPlanTest extends TestCase
 {
     public function testCreateFromImportedRaceCreatesSegments(): void
     {
-        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
 
         // Default imported race has 3 checkpoints (Start, Aid Station, Finish)
         // So we should have 2 segments
@@ -23,7 +25,7 @@ final class NutritionPlanTest extends TestCase
 
     public function testGetSegmentById(): void
     {
-        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
 
         // Fixture generates segment IDs like 'segment-id-1', 'segment-id-2', etc.
         $segment = $nutritionPlan->getSegmentById('segment-id-1');
@@ -33,7 +35,7 @@ final class NutritionPlanTest extends TestCase
 
     public function testGetSegmentByIdReturnsNull(): void
     {
-        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
 
         $segment = $nutritionPlan->getSegmentById('non-existent-id');
 
@@ -42,7 +44,7 @@ final class NutritionPlanTest extends TestCase
 
     public function testGetSegmentByPosition(): void
     {
-        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
 
         $segment = $nutritionPlan->getSegmentByPosition(1);
 
@@ -52,7 +54,7 @@ final class NutritionPlanTest extends TestCase
 
     public function testGetSegmentByPositionReturnsNull(): void
     {
-        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
 
         $segment = $nutritionPlan->getSegmentByPosition(99);
 
@@ -61,7 +63,7 @@ final class NutritionPlanTest extends TestCase
 
     public function testAddCustomCheckpointCreatesNewSegment(): void
     {
-        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
 
         $initialSegmentCount = $nutritionPlan->getSegments()->count();
 
@@ -86,7 +88,7 @@ final class NutritionPlanTest extends TestCase
 
     public function testAddCustomCheckpointThrowsExceptionForNonCustomCheckpoint(): void
     {
-        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
 
         $nonCustomCheckpoint = new Checkpoint(
             'checkpoint-id',
@@ -109,7 +111,7 @@ final class NutritionPlanTest extends TestCase
 
     public function testAddCustomCheckpointThrowsExceptionForDuplicateDistance(): void
     {
-        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
 
         $customCheckpoint = new Checkpoint(
             'custom-checkpoint-id',
@@ -132,7 +134,7 @@ final class NutritionPlanTest extends TestCase
 
     public function testRemoveCustomCheckpointRemovesSegment(): void
     {
-        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
 
         // First add a custom checkpoint
         $customCheckpoint = new Checkpoint(
@@ -159,7 +161,7 @@ final class NutritionPlanTest extends TestCase
 
     public function testRemoveCustomCheckpointThrowsExceptionForNonExistentCheckpoint(): void
     {
-        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
 
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Checkpoint with id non-existent not found');
@@ -169,7 +171,7 @@ final class NutritionPlanTest extends TestCase
 
     public function testRemoveCustomCheckpointThrowsExceptionForImportedCheckpoint(): void
     {
-        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
 
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Cannot remove imported checkpoint');
@@ -180,7 +182,7 @@ final class NutritionPlanTest extends TestCase
 
     public function testRebuildSegmentsPreservesNutritionItems(): void
     {
-        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
 
         // Add nutrition item to first segment
         $segment = $nutritionPlan->getSegmentByPosition(1);

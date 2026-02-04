@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\UI\NutritionPlan;
 
 use App\Application\NutritionPlan\ReadModel\NutritionPlanReadModel;
@@ -10,7 +12,7 @@ final class NutritionPlanReadModelTest extends TestCase
 {
     public function testFromNutritionPlan(): void
     {
-        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
 
         $actual = NutritionPlanReadModel::fromNutritionPlan($nutritionPlan);
 

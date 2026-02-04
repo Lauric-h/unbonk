@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\UI\Food;
 
 use App\Application\Food\ReadModel\BrandReadModel;
 use App\Domain\Food\Entity\Brand;
 use PHPUnit\Framework\TestCase;
 
-class BrandReadModelTest extends TestCase
+final class BrandReadModelTest extends TestCase
 {
     public function testFromBrand(): void
     {

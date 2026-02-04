@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 
 use App\Application\NutritionPlan\UseCase\UpdateNutritionItemQuantity\UpdateNutritionItemQuantityCommand;
@@ -20,7 +22,7 @@ final class UpdateNutritionItemQuantityCommandHandlerTest extends TestCase
         $repository = $this->createMock(SegmentsCatalog::class);
         $handler = new UpdateNutritionItemQuantityCommandHandler($repository);
 
-        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
         $segment = $nutritionPlan->getSegmentByPosition(1);
         $this->assertInstanceOf(Segment::class, $segment);
 
@@ -52,7 +54,7 @@ final class UpdateNutritionItemQuantityCommandHandlerTest extends TestCase
         $repository = $this->createMock(SegmentsCatalog::class);
         $handler = new UpdateNutritionItemQuantityCommandHandler($repository);
 
-        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
         $segment = $nutritionPlan->getSegmentByPosition(1);
         $this->assertInstanceOf(Segment::class, $segment);
 
@@ -84,7 +86,7 @@ final class UpdateNutritionItemQuantityCommandHandlerTest extends TestCase
         $repository = $this->createMock(SegmentsCatalog::class);
         $handler = new UpdateNutritionItemQuantityCommandHandler($repository);
 
-        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
         $segment = $nutritionPlan->getSegmentByPosition(1);
         $this->assertInstanceOf(Segment::class, $segment);
 

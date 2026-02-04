@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Application\Food\Food;
 
 use App\Application\Food\UseCase\CreateFood\CreateFoodCommand;
@@ -13,8 +15,8 @@ final class CreateFoodCommandHandlerTest extends TestCase
     public function testCreateFood(): void
     {
         $command = new CreateFoodCommand(
-            id: 1,
-            brandId: 1,
+            id: '1',
+            brandId: '1',
             name: 'Food name',
             carbs: 10,
             ingestionType: 'solid',
@@ -27,7 +29,7 @@ final class CreateFoodCommandHandlerTest extends TestCase
         $repository->expects($this->once())
             ->method('get')
             ->with($command->brandId)
-            ->willReturn(new Brand(1, 'Brand name'))
+            ->willReturn(new Brand('1', 'Brand name'))
         ;
 
         $repository->expects($this->once())

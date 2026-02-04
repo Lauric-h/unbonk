@@ -22,6 +22,7 @@ final readonly class ListFoodReadModel
             foods: array_map(
                 static fn ($food) => FoodReadModel::fromFood($food),
                 $foods
-            ));
+            )
+        );
     }
 }

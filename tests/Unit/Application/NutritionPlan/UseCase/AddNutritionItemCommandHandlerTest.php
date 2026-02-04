@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 
 use App\Application\NutritionPlan\UseCase\AddNutritionItem\AddNutritionItemCommand;
@@ -21,7 +23,7 @@ final class AddNutritionItemCommandHandlerTest extends TestCase
         $foodPort = $this->createMock(ExternalFoodPort::class);
         $handler = new AddNutritionItemCommandHandler($repository, $idGenerator, $foodPort);
 
-        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
         $segment = $nutritionPlan->getSegmentByPosition(1);
         $this->assertInstanceOf(Segment::class, $segment);
 

@@ -20,8 +20,10 @@ final class ListFoodController extends AbstractController
 
     public function __invoke(
         string $brandId,
-        #[MapQueryParameter] ?string $name,
-        #[MapQueryParameter] ?IngestionType $ingestionType,
+        #[MapQueryParameter]
+        ?string $name,
+        #[MapQueryParameter]
+        ?IngestionType $ingestionType,
     ): JsonResponse {
         return new JsonResponse(
             $this->queryBus->query(new ListFoodQuery($brandId, $name, $ingestionType)),

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Infrastructure\NutritionPlan\Adapter;
 
 use App\Domain\Food\DTO\FoodDTO;
