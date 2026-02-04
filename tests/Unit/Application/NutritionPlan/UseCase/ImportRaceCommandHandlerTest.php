@@ -11,6 +11,7 @@ use App\Application\Shared\IdGeneratorInterface;
 use App\Domain\NutritionPlan\DTO\ExternalRaceDTO;
 use App\Domain\NutritionPlan\Port\ExternalRacePort;
 use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
+use App\Domain\NutritionPlan\Repository\RacesCatalog;
 use App\Tests\Unit\MockIdGenerator;
 use PHPUnit\Framework\TestCase;
 
@@ -50,8 +51,8 @@ final class ImportRaceCommandHandlerTest extends TestCase
             ->method('add')
             ->with($this->callback(function ($nutritionPlan) use ($nutritionPlanId, $runnerId): bool {
                 $this->assertSame($nutritionPlanId, $nutritionPlan->id);
-                $this->assertSame($runnerId, $nutritionPlan->runnerId);
-                $this->assertSame('Test Race', $nutritionPlan->importedRace->name);
+                $this->assertSame($runnerId, $nutritionPlan->race->runnerId);
+                $this->assertSame('Test Race', $nutritionPlan->race->name);
 
                 return true;
             }));
@@ -67,8 +68,13 @@ final class ImportRaceCommandHandlerTest extends TestCase
 
         $importedRaceFactory = new ImportedRaceFactory($idGenerator);
 
+        $racesCatalog = $this->createMock(RacesCatalog::class);
+        $racesCatalog->expects($this->once())
+            ->method('add');
+
         $handler = new ImportRaceCommandHandler(
             $repository,
+            $racesCatalog,
             $externalRacePort,
             $importedRaceFactory,
             $idGenerator,
@@ -96,8 +102,12 @@ final class ImportRaceCommandHandlerTest extends TestCase
         $idGenerator = new MockIdGenerator('id');
         $importedRaceFactory = new ImportedRaceFactory($idGenerator);
 
+        $racesCatalog = $this->createMock(RacesCatalog::class);
+        $racesCatalog->expects($this->never())->method('add');
+
         $handler = new ImportRaceCommandHandler(
             $repository,
+            $racesCatalog,
             $externalRacePort,
             $importedRaceFactory,
             $idGenerator,

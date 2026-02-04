@@ -10,11 +10,15 @@ class ImportedRace
     /** @var Collection<int, Checkpoint> */
     private Collection $checkpoints;
 
+    /** @var Collection<int, NutritionPlan> */
+    private Collection $nutritionPlans;
+
     /**
      * @param Collection<int, Checkpoint>|null $checkpoints
      */
     public function __construct(
         public string $id,
+        public string $runnerId,
         public string $externalRaceId,
         public string $externalEventId,
         public string $name,
@@ -26,6 +30,7 @@ class ImportedRace
         ?Collection $checkpoints = null,
     ) {
         $this->checkpoints = $checkpoints ?? new ArrayCollection();
+        $this->nutritionPlans = new ArrayCollection();
     }
 
     public function addCheckpoint(Checkpoint $checkpoint): void
@@ -92,6 +97,21 @@ class ImportedRace
         $this->checkpoints->clear();
         foreach ($checkpoints as $checkpoint) {
             $this->checkpoints->add($checkpoint);
+        }
+    }
+
+    /**
+     * @return Collection<int, NutritionPlan>
+     */
+    public function getNutritionPlans(): Collection
+    {
+        return $this->nutritionPlans;
+    }
+
+    public function addNutritionPlan(NutritionPlan $nutritionPlan): void
+    {
+        if (!$this->nutritionPlans->contains($nutritionPlan)) {
+            $this->nutritionPlans->add($nutritionPlan);
         }
     }
 }

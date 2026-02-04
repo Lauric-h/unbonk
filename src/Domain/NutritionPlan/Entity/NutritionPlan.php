@@ -15,8 +15,8 @@ class NutritionPlan
      */
     private function __construct(
         public string $id,
-        public string $runnerId,
-        public ImportedRace $importedRace,
+        public ImportedRace $race,
+        public ?string $name,
         public \DateTimeImmutable $createdAt,
         ?Collection $segments = null,
     ) {
@@ -26,20 +26,23 @@ class NutritionPlan
     /**
      * @param string[] $segmentIds IDs for the segments to be created (one per checkpoint pair)
      */
-    public static function createFromImportedRace(
+    public static function createFromRace(
         string $id,
-        string $runnerId,
-        ImportedRace $importedRace,
+        ImportedRace $race,
         array $segmentIds,
+        ?string $name = null,
     ): self {
         $nutritionPlan = new self(
             $id,
-            $runnerId,
-            $importedRace,
+            $race,
+            $name,
             new \DateTimeImmutable(),
         );
 
         $nutritionPlan->rebuildSegments($segmentIds);
+
+        // Maintain bidirectional relationship
+        $race->addNutritionPlan($nutritionPlan);
 
         return $nutritionPlan;
     }
@@ -53,12 +56,12 @@ class NutritionPlan
             throw new \DomainException('Checkpoint must be custom (externalId must be null)');
         }
 
-        $existingCheckpoint = $this->importedRace->getCheckpointAtDistance($checkpoint->distanceFromStart);
+        $existingCheckpoint = $this->race->getCheckpointAtDistance($checkpoint->distanceFromStart);
         if (null !== $existingCheckpoint) {
             throw new \DomainException(\sprintf('A checkpoint already exists at distance %d', $checkpoint->distanceFromStart));
         }
 
-        $this->importedRace->addCheckpoint($checkpoint);
+        $this->race->addCheckpoint($checkpoint);
         $this->rebuildSegments($segmentIds);
     }
 
@@ -67,7 +70,7 @@ class NutritionPlan
      */
     public function removeCustomCheckpoint(string $checkpointId, array $segmentIds): void
     {
-        $checkpoint = $this->importedRace->getCheckpointById($checkpointId);
+        $checkpoint = $this->race->getCheckpointById($checkpointId);
 
         if (null === $checkpoint) {
             throw new \DomainException(\sprintf('Checkpoint with id %s not found', $checkpointId));
@@ -77,7 +80,7 @@ class NutritionPlan
             throw new \DomainException('Cannot remove imported checkpoint, only custom checkpoints can be removed');
         }
 
-        $this->importedRace->removeCheckpoint($checkpoint);
+        $this->race->removeCheckpoint($checkpoint);
         $this->rebuildSegments($segmentIds);
     }
 
@@ -108,7 +111,7 @@ class NutritionPlan
      */
     public function rebuildSegments(array $segmentIds): void
     {
-        $checkpoints = array_values($this->importedRace->getCheckpoints()->toArray());
+        $checkpoints = array_values($this->race->getCheckpoints()->toArray());
         $checkpointCount = \count($checkpoints);
 
         if ($checkpointCount < 2) {

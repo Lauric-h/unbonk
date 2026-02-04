@@ -54,12 +54,12 @@ final class GetNutritionPlanQueryHandlerTest extends TestCase
 
         $this->assertInstanceOf(NutritionPlanReadModel::class, $result);
         $this->assertSame($nutritionPlan->id, $result->id);
-        $this->assertSame($nutritionPlan->runnerId, $result->runnerId);
+        $this->assertSame($nutritionPlan->race->runnerId, $result->runnerId);
 
         // Check imported race
-        $this->assertInstanceOf(ImportedRaceReadModel::class, $result->importedRace);
-        $this->assertSame('Test Race', $result->importedRace->name);
-        $this->assertCount(3, $result->importedRace->checkpoints);
+        $this->assertInstanceOf(ImportedRaceReadModel::class, $result->race);
+        $this->assertSame('Test Race', $result->race->name);
+        $this->assertCount(3, $result->race->checkpoints);
 
         // Check segments
         $this->assertCount(2, $result->segments);

@@ -7,12 +7,14 @@ use App\Application\Shared\IdGeneratorInterface;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Domain\NutritionPlan\Port\ExternalRacePort;
 use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
+use App\Domain\NutritionPlan\Repository\RacesCatalog;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
 
 final readonly class ImportRaceCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private NutritionPlansCatalog $nutritionPlansCatalog,
+        private RacesCatalog $racesCatalog,
         private ExternalRacePort $client,
         private ImportedRaceFactory $importedRaceFactory,
         private IdGeneratorInterface $idGenerator,
@@ -27,7 +29,9 @@ final readonly class ImportRaceCommandHandler implements CommandHandlerInterface
             throw new \DomainException(\sprintf('Race with id %s not found', $command->externalRaceId));
         }
 
-        $importedRace = $this->importedRaceFactory->createFromExternalRace($externalRace);
+        $importedRace = $this->importedRaceFactory->createFromExternalRace($externalRace, $command->runnerId);
+
+        $this->racesCatalog->add($importedRace);
 
         $checkpointCount = \count($importedRace->getCheckpoints());
         $segmentIds = [];
@@ -35,10 +39,9 @@ final readonly class ImportRaceCommandHandler implements CommandHandlerInterface
             $segmentIds[] = $this->idGenerator->generate();
         }
 
-        $nutritionPlan = NutritionPlan::createFromImportedRace(
+        $nutritionPlan = NutritionPlan::createFromRace(
             id: $command->nutritionPlanId,
-            runnerId: $command->runnerId,
-            importedRace: $importedRace,
+            race: $importedRace,
             segmentIds: $segmentIds,
         );
 

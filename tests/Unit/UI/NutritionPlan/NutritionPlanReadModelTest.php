@@ -17,9 +17,9 @@ final class NutritionPlanReadModelTest extends TestCase
         $actual = NutritionPlanReadModel::fromNutritionPlan($nutritionPlan);
 
         $this->assertSame($nutritionPlan->id, $actual->id);
-        $this->assertSame($nutritionPlan->runnerId, $actual->runnerId);
-        $this->assertSame($nutritionPlan->importedRace->name, $actual->importedRace->name);
+        $this->assertSame($nutritionPlan->race->runnerId, $actual->runnerId);
+        $this->assertSame($nutritionPlan->race->name, $actual->race->name);
         $this->assertCount(2, $actual->segments); // Default fixture has 3 checkpoints = 2 segments
-        $this->assertCount(3, $actual->importedRace->checkpoints);
+        $this->assertCount(3, $actual->race->checkpoints);
     }
 }

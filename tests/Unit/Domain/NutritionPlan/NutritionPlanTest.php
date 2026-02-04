@@ -77,7 +77,7 @@ final class NutritionPlanTest extends TestCase
             400,
             null,
             true,
-            $nutritionPlan->importedRace,
+            $nutritionPlan->race,
         );
 
         // After adding checkpoint, we'll have 4 checkpoints = 3 segments
@@ -100,7 +100,7 @@ final class NutritionPlanTest extends TestCase
             400,
             null,
             true,
-            $nutritionPlan->importedRace,
+            $nutritionPlan->race,
         );
 
         $this->expectException(\DomainException::class);
@@ -123,7 +123,7 @@ final class NutritionPlanTest extends TestCase
             750,
             null,
             true,
-            $nutritionPlan->importedRace,
+            $nutritionPlan->race,
         );
 
         $this->expectException(\DomainException::class);
@@ -147,7 +147,7 @@ final class NutritionPlanTest extends TestCase
             400,
             null,
             true,
-            $nutritionPlan->importedRace,
+            $nutritionPlan->race,
         );
         $nutritionPlan->addCustomCheckpoint($customCheckpoint, ['seg-1', 'seg-2', 'seg-3']);
 
@@ -212,7 +212,7 @@ final class NutritionPlanTest extends TestCase
             900,
             null,
             true,
-            $nutritionPlan->importedRace,
+            $nutritionPlan->race,
         );
         $nutritionPlan->addCustomCheckpoint($customCheckpoint, ['seg-1', 'seg-2', 'seg-3']);
 

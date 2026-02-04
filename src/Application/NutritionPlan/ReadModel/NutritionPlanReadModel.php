@@ -12,8 +12,9 @@ final readonly class NutritionPlanReadModel
      */
     public function __construct(
         public string $id,
+        public ?string $name,
         public string $runnerId,
-        public ImportedRaceReadModel $importedRace,
+        public ImportedRaceReadModel $race,
         public array $segments = [],
     ) {
     }
@@ -22,8 +23,9 @@ final readonly class NutritionPlanReadModel
     {
         return new self(
             $nutritionPlan->id,
-            $nutritionPlan->runnerId,
-            ImportedRaceReadModel::fromImportedRace($nutritionPlan->importedRace),
+            $nutritionPlan->name,
+            $nutritionPlan->race->runnerId,
+            ImportedRaceReadModel::fromImportedRace($nutritionPlan->race),
             array_map(static fn (Segment $segment) => SegmentReadModel::fromSegment($segment), $nutritionPlan->getSegments()->toArray()),
         );
     }
