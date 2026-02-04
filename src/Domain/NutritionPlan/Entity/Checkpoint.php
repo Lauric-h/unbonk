@@ -41,11 +41,8 @@ class Checkpoint
     public function getCutoffInMinutes(): ?int
     {
         $cutoff = $this->getCutoff();
-        if (null === $cutoff) {
-            return null;
-        }
 
-        return $cutoff->getInMinutes($this->importedRace->startDateTime);
+        return $cutoff?->getInMinutes($this->importedRace->startDateTime);
     }
 
     private function validate(): void

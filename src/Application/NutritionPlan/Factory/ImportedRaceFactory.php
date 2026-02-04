@@ -6,8 +6,8 @@ use App\Application\Shared\IdGeneratorInterface;
 use App\Domain\NutritionPlan\DTO\ExternalAidStationDTO;
 use App\Domain\NutritionPlan\DTO\ExternalRaceDTO;
 use App\Domain\NutritionPlan\Entity\Checkpoint;
-use App\Domain\NutritionPlan\ValueObject\Cutoff;
 use App\Domain\NutritionPlan\Entity\ImportedRace;
+use App\Domain\NutritionPlan\ValueObject\Cutoff;
 
 final readonly class ImportedRaceFactory
 {

@@ -46,7 +46,7 @@ final class CreateNutritionPlanCommandHandlerTest extends TestCase
         $repository = $this->createMock(NutritionPlansCatalog::class);
         $repository->expects($this->once())
             ->method('add')
-            ->with($this->callback(static fn($nutritionPlan) => $nutritionPlan->id === $id
+            ->with($this->callback(static fn ($nutritionPlan) => $nutritionPlan->id === $id
                 && $nutritionPlan->runnerId === $runnerId
                 && 'Test Race' === $nutritionPlan->importedRace->name));
 

@@ -119,11 +119,7 @@ class NutritionPlan
 
         $requiredSegmentCount = $checkpointCount - 1;
         if (\count($segmentIds) < $requiredSegmentCount) {
-            throw new \DomainException(\sprintf(
-                'Not enough segment IDs provided. Expected %d, got %d',
-                $requiredSegmentCount,
-                \count($segmentIds)
-            ));
+            throw new \DomainException(\sprintf('Not enough segment IDs provided. Expected %d, got %d', $requiredSegmentCount, \count($segmentIds)));
         }
 
         // Keep track of existing nutrition items by checkpoint pair
