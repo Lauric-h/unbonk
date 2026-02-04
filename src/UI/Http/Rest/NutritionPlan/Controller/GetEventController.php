@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/events/{eventId}', name: 'app.events.get', methods: ['GET'])]
+#[Route('/events/{eventId}', name: 'api.events.get', methods: ['GET'])]
 final class GetEventController extends AbstractController
 {
     public function __construct(private readonly QueryBus $queryBus)

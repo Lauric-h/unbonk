@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/nutrition-plans/{nutritionPlanId}/segments/{segmentId}/nutrition-items/{nutritionItemId}', name: 'app.nutrition_plan.segment.delete_nutrition_item', methods: ['DELETE'])]
+#[Route('/nutrition-plans/{nutritionPlanId}/segments/{segmentId}/nutrition-items/{nutritionItemId}', name: 'api.nutrition_plan.segment.delete_nutrition_item', methods: ['DELETE'])]
 final class DeleteNutritionItemController extends AbstractController
 {
     public function __construct(private CommandBus $commandBus, private readonly NutritionPlanAccessService $nutritionPlanAccessService)

@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 
-#[Route('/nutrition-plans/{nutritionPlanId}/segments/{segmentId}/nutrition-items/{itemId}', name: 'app.nutrition_plan.segment.update_quantity', methods: ['POST'])]
+#[Route('/nutrition-plans/{nutritionPlanId}/segments/{segmentId}/nutrition-items/{itemId}', name: 'api.nutrition_plan.segment.update_quantity', methods: ['POST'])]
 final class UpdateNutritionItemQuantityController extends AbstractController
 {
     public function __construct(
