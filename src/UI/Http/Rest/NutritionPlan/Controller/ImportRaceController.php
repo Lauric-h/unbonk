@@ -29,7 +29,6 @@ final class ImportRaceController extends AbstractController
         string $eventId,
         string $raceId,
     ): JsonResponse {
-
         $nutritionPlanId = $this->idGenerator->generate();
         $this->commandBus->dispatch(new ImportRaceCommand(
             nutritionPlanId: $nutritionPlanId,
