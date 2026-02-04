@@ -4,23 +4,19 @@ namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 
 use App\Application\NutritionPlan\UseCase\DeleteNutritionPlan\DeleteNutritionPlanCommand;
 use App\Application\NutritionPlan\UseCase\DeleteNutritionPlan\DeleteNutritionPlanCommandHandler;
-use App\Domain\NutritionPlan\Entity\NutritionPlan;
-use App\Infrastructure\NutritionPlan\Persistence\DoctrineNutritionPlansCatalog;
+use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
+use App\Tests\Unit\Fixture\NutritionPlanTestFixture;
 use PHPUnit\Framework\TestCase;
 
 final class DeleteNutritionPlanCommandHandlerTest extends TestCase
 {
     public function testDeleteNutritionPlan(): void
     {
-        $repository = $this->createMock(DoctrineNutritionPlansCatalog::class);
+        $repository = $this->createMock(NutritionPlansCatalog::class);
         $handler = new DeleteNutritionPlanCommandHandler($repository);
-        $id = 'npId';
 
-        $nutritionPlan = new NutritionPlan(
-            $id,
-            'raceId',
-            'runnerId',
-        );
+        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+        $id = $nutritionPlan->id;
 
         $repository->expects($this->once())
             ->method('get')

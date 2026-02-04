@@ -3,40 +3,51 @@
 namespace App\Tests\Unit\Domain\NutritionPlan;
 
 use App\Domain\NutritionPlan\Entity\NutritionItem;
-use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Domain\NutritionPlan\Entity\Quantity;
 use App\Domain\NutritionPlan\Entity\Segment;
-use App\Domain\Shared\Entity\Ascent;
 use App\Domain\Shared\Entity\Calories;
 use App\Domain\Shared\Entity\Carbs;
-use App\Domain\Shared\Entity\Descent;
-use App\Domain\Shared\Entity\Distance;
-use App\Domain\Shared\Entity\Duration;
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Tests\Unit\Fixture\NutritionPlanTestFixture;
 use PHPUnit\Framework\TestCase;
 
 final class SegmentTest extends TestCase
 {
+    private function getTestSegment(): Segment
+    {
+        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+        $segment = $nutritionPlan->getSegmentByPosition(1);
+        $this->assertInstanceOf(Segment::class, $segment);
+
+        return $segment;
+    }
+
+    public function testGetDistanceCalculatesFromCheckpoints(): void
+    {
+        $segment = $this->getTestSegment();
+
+        // Start checkpoint is at 0, aid station is at 25000
+        $this->assertSame(25000, $segment->getDistance()->value);
+    }
+
+    public function testGetAscentCalculatesFromCheckpoints(): void
+    {
+        $segment = $this->getTestSegment();
+
+        // Start checkpoint is at 0, aid station is at 1000
+        $this->assertSame(1000, $segment->getAscent()->value);
+    }
+
+    public function testGetDescentCalculatesFromCheckpoints(): void
+    {
+        $segment = $this->getTestSegment();
+
+        // Start checkpoint is at 0, aid station is at 750
+        $this->assertSame(750, $segment->getDescent()->value);
+    }
+
     public function testAddNutritionItem(): void
     {
-        $nutritionPlan = new NutritionPlan(
-            'id',
-            'raceId',
-            'runnerId',
-            new ArrayCollection([])
-        );
-
-        $segment = new Segment(
-            id: 'segmentId',
-            startId: 'startId',
-            finishId: 'finishId',
-            distance: new Distance(1),
-            ascent: new Ascent(1),
-            descent: new Descent(1),
-            estimatedTimeInMinutes: new Duration(120),
-            carbsTarget: new Carbs(0),
-            nutritionPlan: $nutritionPlan
-        );
+        $segment = $this->getTestSegment();
 
         $nutritionItem = new NutritionItem(
             id: 'itemId',
@@ -44,36 +55,18 @@ final class SegmentTest extends TestCase
             name: 'name',
             carbs: new Carbs(40),
             quantity: new Quantity(2),
-            segment: $segment,
             calories: null
         );
 
         $segment->addNutritionItem($nutritionItem);
 
-        $this->assertCount(1, $segment->nutritionItems);
-        $this->assertSame($nutritionItem, $segment->nutritionItems->first());
+        $this->assertCount(1, $segment->getNutritionItems());
+        $this->assertSame($nutritionItem, $segment->getNutritionItems()->first());
     }
 
     public function testAddNutritionItemWithExistingItemRemovesAndReplace(): void
     {
-        $nutritionPlan = new NutritionPlan(
-            'id',
-            'raceId',
-            'runnerId',
-            new ArrayCollection([])
-        );
-
-        $segment = new Segment(
-            id: 'segmentId',
-            startId: 'startId',
-            finishId: 'finishId',
-            distance: new Distance(1),
-            ascent: new Ascent(1),
-            descent: new Descent(1),
-            estimatedTimeInMinutes: new Duration(120),
-            carbsTarget: new Carbs(0),
-            nutritionPlan: $nutritionPlan
-        );
+        $segment = $this->getTestSegment();
 
         $nutritionItem = new NutritionItem(
             id: 'itemId',
@@ -81,10 +74,9 @@ final class SegmentTest extends TestCase
             name: 'name',
             carbs: new Carbs(40),
             quantity: new Quantity(2),
-            segment: $segment,
             calories: null
         );
-        $segment->nutritionItems->add($nutritionItem);
+        $segment->addNutritionItem($nutritionItem);
 
         $carbs = new Carbs(60);
         $quantity = new Quantity(4);
@@ -96,41 +88,23 @@ final class SegmentTest extends TestCase
             name: 'name2',
             carbs: $carbs,
             quantity: $quantity,
-            segment: $segment,
             calories: $calories
         );
 
         $segment->addNutritionItem($newNutritionItem);
 
-        $this->assertCount(1, $segment->nutritionItems);
-        $this->assertSame('itemId2', $segment->nutritionItems->first()->id);
-        $this->assertSame('externalReference', $segment->nutritionItems->first()->externalReference);
-        $this->assertSame('name2', $segment->nutritionItems->first()->name);
-        $this->assertSame($carbs, $segment->nutritionItems->first()->carbs);
-        $this->assertSame($quantity, $segment->nutritionItems->first()->quantity);
-        $this->assertSame($calories, $segment->nutritionItems->first()->calories);
+        $this->assertCount(1, $segment->getNutritionItems());
+        $this->assertSame('itemId2', $segment->getNutritionItems()->first()->id);
+        $this->assertSame('externalReference', $segment->getNutritionItems()->first()->externalReference);
+        $this->assertSame('name2', $segment->getNutritionItems()->first()->name);
+        $this->assertSame($carbs, $segment->getNutritionItems()->first()->carbs);
+        $this->assertSame($quantity, $segment->getNutritionItems()->first()->quantity);
+        $this->assertSame($calories, $segment->getNutritionItems()->first()->calories);
     }
 
     public function testGetNutritionItemByExternalReference(): void
     {
-        $nutritionPlan = new NutritionPlan(
-            'id',
-            'raceId',
-            'runnerId',
-            new ArrayCollection([])
-        );
-
-        $segment = new Segment(
-            id: 'segmentId',
-            startId: 'startId',
-            finishId: 'finishId',
-            distance: new Distance(1),
-            ascent: new Ascent(1),
-            descent: new Descent(1),
-            estimatedTimeInMinutes: new Duration(120),
-            carbsTarget: new Carbs(0),
-            nutritionPlan: $nutritionPlan
-        );
+        $segment = $this->getTestSegment();
 
         $nutritionItem = new NutritionItem(
             id: 'itemId',
@@ -138,58 +112,23 @@ final class SegmentTest extends TestCase
             name: 'name',
             carbs: new Carbs(40),
             quantity: new Quantity(2),
-            segment: $segment,
             calories: null
         );
-        $segment->nutritionItems->add($nutritionItem);
+        $segment->addNutritionItem($nutritionItem);
 
         $this->assertSame($nutritionItem, $segment->getNutritionItemByExternalReference('externalReference'));
     }
 
     public function testGetNutritionItemByExternalReferenceReturnsNull(): void
     {
-        $nutritionPlan = new NutritionPlan(
-            'id',
-            'raceId',
-            'runnerId',
-            new ArrayCollection([])
-        );
-
-        $segment = new Segment(
-            id: 'segmentId',
-            startId: 'startId',
-            finishId: 'finishId',
-            distance: new Distance(1),
-            ascent: new Ascent(1),
-            descent: new Descent(1),
-            estimatedTimeInMinutes: new Duration(120),
-            carbsTarget: new Carbs(0),
-            nutritionPlan: $nutritionPlan
-        );
+        $segment = $this->getTestSegment();
 
         $this->assertNotInstanceOf(NutritionItem::class, $segment->getNutritionItemByExternalReference('abcde'));
     }
 
     public function testRemoveNutritionItemNotFoundThrowsException(): void
     {
-        $nutritionPlan = new NutritionPlan(
-            'id',
-            'raceId',
-            'runnerId',
-            new ArrayCollection([])
-        );
-
-        $segment = new Segment(
-            id: 'segmentId',
-            startId: 'startId',
-            finishId: 'finishId',
-            distance: new Distance(1),
-            ascent: new Ascent(1),
-            descent: new Descent(1),
-            estimatedTimeInMinutes: new Duration(120),
-            carbsTarget: new Carbs(0),
-            nutritionPlan: $nutritionPlan
-        );
+        $segment = $this->getTestSegment();
 
         $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Segment does not have NutritionItem with id abcde');
@@ -198,24 +137,7 @@ final class SegmentTest extends TestCase
 
     public function testRemoveNutritionItem(): void
     {
-        $nutritionPlan = new NutritionPlan(
-            'id',
-            'raceId',
-            'runnerId',
-            new ArrayCollection([])
-        );
-
-        $segment = new Segment(
-            id: 'segmentId',
-            startId: 'startId',
-            finishId: 'finishId',
-            distance: new Distance(1),
-            ascent: new Ascent(1),
-            descent: new Descent(1),
-            estimatedTimeInMinutes: new Duration(120),
-            carbsTarget: new Carbs(0),
-            nutritionPlan: $nutritionPlan
-        );
+        $segment = $this->getTestSegment();
 
         $nutritionItem = new NutritionItem(
             id: 'abcde',
@@ -223,48 +145,29 @@ final class SegmentTest extends TestCase
             name: 'name',
             carbs: new Carbs(40),
             quantity: new Quantity(2),
-            segment: $segment,
             calories: null
         );
-        $segment->nutritionItems->add($nutritionItem);
+        $segment->addNutritionItem($nutritionItem);
 
         $nutritionItem2 = new NutritionItem(
             id: 'fghij',
-            externalReference: 'externalReference',
+            externalReference: 'externalReference2',
             name: 'name',
             carbs: new Carbs(40),
             quantity: new Quantity(2),
-            segment: $segment,
             calories: null
         );
-        $segment->nutritionItems->add($nutritionItem2);
+        $segment->addNutritionItem($nutritionItem2);
 
         $segment->removeNutritionItem('abcde');
 
-        $this->assertCount(1, $segment->nutritionItems);
-        $this->assertSame('fghij', $segment->nutritionItems->first()->id);
+        $this->assertCount(1, $segment->getNutritionItems());
+        $this->assertSame('fghij', $segment->getNutritionItems()->first()->id);
     }
 
     public function testGetNutritionItemById(): void
     {
-        $nutritionPlan = new NutritionPlan(
-            'id',
-            'raceId',
-            'runnerId',
-            new ArrayCollection([])
-        );
-
-        $segment = new Segment(
-            id: 'segmentId',
-            startId: 'startId',
-            finishId: 'finishId',
-            distance: new Distance(1),
-            ascent: new Ascent(1),
-            descent: new Descent(1),
-            estimatedTimeInMinutes: new Duration(120),
-            carbsTarget: new Carbs(0),
-            nutritionPlan: $nutritionPlan
-        );
+        $segment = $this->getTestSegment();
 
         $nutritionItem = new NutritionItem(
             id: 'itemId',
@@ -272,34 +175,16 @@ final class SegmentTest extends TestCase
             name: 'name',
             carbs: new Carbs(40),
             quantity: new Quantity(2),
-            segment: $segment,
             calories: null
         );
-        $segment->nutritionItems->add($nutritionItem);
+        $segment->addNutritionItem($nutritionItem);
 
         $this->assertSame($nutritionItem, $segment->getNutritionItemById('itemId'));
     }
 
     public function testGetNutritionItemByIdReturnsNull(): void
     {
-        $nutritionPlan = new NutritionPlan(
-            'id',
-            'raceId',
-            'runnerId',
-            new ArrayCollection([])
-        );
-
-        $segment = new Segment(
-            id: 'segmentId',
-            startId: 'startId',
-            finishId: 'finishId',
-            distance: new Distance(1),
-            ascent: new Ascent(1),
-            descent: new Descent(1),
-            estimatedTimeInMinutes: new Duration(120),
-            carbsTarget: new Carbs(0),
-            nutritionPlan: $nutritionPlan
-        );
+        $segment = $this->getTestSegment();
 
         $this->assertNotInstanceOf(NutritionItem::class, $segment->getNutritionItemById('abcde'));
     }

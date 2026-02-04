@@ -31,7 +31,6 @@ final readonly class AddNutritionItemCommandHandler implements CommandHandlerInt
             $externalFood->name,
             new Carbs($externalFood->carbs),
             new Quantity($command->quantity),
-            $segment,
             new Calories($externalFood->calories ?? 0),
         );
 

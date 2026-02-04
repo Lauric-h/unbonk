@@ -12,9 +12,10 @@
 /.php-cs-fixer.cache
 ###< friendsofphp/php-cs-fixer ###
 
-.idea
+/.idea/
 
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
+.idea

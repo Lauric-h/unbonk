@@ -2,33 +2,100 @@
 
 namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 
+use App\Application\NutritionPlan\Factory\ImportedRaceFactory;
 use App\Application\NutritionPlan\UseCase\CreateNutritionPlan\CreateNutritionPlanCommand;
 use App\Application\NutritionPlan\UseCase\CreateNutritionPlan\CreateNutritionPlanCommandHandler;
-use App\Domain\NutritionPlan\Entity\NutritionPlan;
-use App\Infrastructure\NutritionPlan\Persistence\DoctrineNutritionPlansCatalog;
+use App\Application\Shared\IdGeneratorInterface;
+use App\Domain\NutritionPlan\DTO\ExternalRaceDTO;
+use App\Domain\NutritionPlan\Port\ExternalRaceApiPort;
+use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
+use App\Tests\Unit\MockIdGenerator;
 use PHPUnit\Framework\TestCase;
 
 final class CreateNutritionPlanCommandHandlerTest extends TestCase
 {
     public function testHandle(): void
     {
-        $id = 'id';
-        $raceId = 'raceId';
-        $runnerId = 'runnerId';
+        $id = 'nutrition-plan-id';
+        $externalRaceId = 'external-race-id';
+        $runnerId = 'runner-id';
 
-        $command = new CreateNutritionPlanCommand($id, $raceId, $runnerId);
-        $repository = $this->createMock(DoctrineNutritionPlansCatalog::class);
-        $handler = new CreateNutritionPlanCommandHandler($repository);
+        $command = new CreateNutritionPlanCommand($id, $externalRaceId, $runnerId);
 
-        $nutritionPlan = new NutritionPlan(
-            $id,
-            $raceId,
-            $runnerId
+        $externalRace = new ExternalRaceDTO(
+            id: 'external-race-id',
+            eventId: 'external-event-id',
+            name: 'Test Race',
+            distance: 50000,
+            ascent: 2000,
+            descent: 1500,
+            startDateTime: new \DateTimeImmutable('2024-06-01 06:00:00'),
+            url: null,
+            slug: 'test-race',
+            startLocation: 'Start City',
+            finishLocation: 'Finish City',
+            aidStations: [],
         );
 
+        $externalRaceApi = $this->createMock(ExternalRaceApiPort::class);
+        $externalRaceApi->expects($this->once())
+            ->method('getRaceDetails')
+            ->with($externalRaceId)
+            ->willReturn($externalRace);
+
+        $repository = $this->createMock(NutritionPlansCatalog::class);
         $repository->expects($this->once())
             ->method('add')
-            ->with($nutritionPlan);
+            ->with($this->callback(static fn ($nutritionPlan) => $nutritionPlan->id === $id
+                && $nutritionPlan->runnerId === $runnerId
+                && 'Test Race' === $nutritionPlan->importedRace->name));
+
+        $idGenerator = new class implements IdGeneratorInterface {
+            private int $counter = 0;
+
+            public function generate(): string
+            {
+                return 'generated-id-'.++$this->counter;
+            }
+        };
+
+        $importedRaceFactory = new ImportedRaceFactory($idGenerator);
+
+        $handler = new CreateNutritionPlanCommandHandler(
+            $repository,
+            $externalRaceApi,
+            $importedRaceFactory,
+            $idGenerator,
+        );
+
+        ($handler)($command);
+    }
+
+    public function testHandleThrowsExceptionWhenRaceNotFound(): void
+    {
+        $command = new CreateNutritionPlanCommand('id', 'non-existent-race-id', 'runner-id');
+
+        $externalRaceApi = $this->createMock(ExternalRaceApiPort::class);
+        $externalRaceApi->expects($this->once())
+            ->method('getRaceDetails')
+            ->with('non-existent-race-id')
+            ->willReturn(null);
+
+        $repository = $this->createMock(NutritionPlansCatalog::class);
+        $repository->expects($this->never())->method('add');
+
+        $idGenerator = new MockIdGenerator('id');
+        $importedRaceFactory = new ImportedRaceFactory($idGenerator);
+
+        $handler = new CreateNutritionPlanCommandHandler(
+            $repository,
+            $externalRaceApi,
+            $importedRaceFactory,
+            $idGenerator,
+        );
+
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('Race with id non-existent-race-id not found');
 
         ($handler)($command);
     }

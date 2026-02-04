@@ -25,7 +25,7 @@ security:
                 enable_csrf: true
                 username_parameter: login[email]
                 password_parameter: login[password]
-                default_target_path: app.race.list
+                default_target_path: app.food.brand.list
             logout:
                 path: /logout
 

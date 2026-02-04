@@ -10,8 +10,8 @@ final readonly class CreateNutritionPlanCommand implements CommandInterface
     public function __construct(
         #[Assert\Uuid]
         public string $id,
-        #[Assert\Uuid]
-        public string $raceId,
+        #[Assert\NotBlank]
+        public string $externalRaceId,
         #[Assert\Uuid]
         public string $runnerId,
     ) {
