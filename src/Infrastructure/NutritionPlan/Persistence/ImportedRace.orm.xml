@@ -6,6 +6,7 @@
 
     <entity name="App\Domain\NutritionPlan\Entity\ImportedRace" table="imported_race">
         <id name="id" type="string" />
+        <field name="runnerId" type="string" column="runner_id"/>
         <field name="externalRaceId" type="string" column="external_race_id"/>
         <field name="externalEventId" type="string" column="external_event_id"/>
         <field name="name" type="string"/>
@@ -23,6 +24,12 @@
             <order-by>
                 <order-by-field name="distanceFromStart" direction="ASC" />
             </order-by>
+        </one-to-many>
+
+        <one-to-many field="nutritionPlans" target-entity="App\Domain\NutritionPlan\Entity\NutritionPlan" mapped-by="race">
+            <cascade>
+                <cascade-remove/>
+            </cascade>
         </one-to-many>
     </entity>
 

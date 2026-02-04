@@ -34,20 +34,17 @@ readonly class DoctrineNutritionPlansCatalog implements NutritionPlansCatalog
         return $nutritionPlan;
     }
 
-    public function getByRaceId(string $raceId): NutritionPlan
+    /**
+     * @return NutritionPlan[]
+     */
+    public function findByRaceId(string $raceId): array
     {
-        $nutritionPlan = $this->entityManager->createQueryBuilder()
+        return $this->entityManager->createQueryBuilder()
             ->select('nutritionPlan')
             ->from(NutritionPlan::class, 'nutritionPlan')
-            ->where('nutritionPlan.raceId = :raceId')
+            ->where('nutritionPlan.race = :raceId')
             ->setParameter('raceId', $raceId)
             ->getQuery()
-            ->getOneOrNullResult();
-
-        if (null === $nutritionPlan) {
-            throw new NutritionPlanNotFoundException($raceId);
-        }
-
-        return $nutritionPlan;
+            ->getResult();
     }
 }

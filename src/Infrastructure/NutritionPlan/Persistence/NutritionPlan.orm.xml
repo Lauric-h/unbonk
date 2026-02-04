@@ -6,16 +6,12 @@
 
     <entity name="App\Domain\NutritionPlan\Entity\NutritionPlan" table="nutrition_plan" repository-class="App\Infrastructure\NutritionPlan\Persistence\DoctrineNutritionPlansCatalog">
         <id name="id" type="string" />
-        <field name="runnerId" type="string" column="runner_id"/>
+        <field name="name" type="string" nullable="true"/>
         <field name="createdAt" type="datetime_immutable" column="created_at"/>
 
-        <one-to-one field="importedRace" target-entity="App\Domain\NutritionPlan\Entity\ImportedRace" orphan-removal="true">
-            <cascade>
-                <cascade-persist/>
-                <cascade-remove/>
-            </cascade>
-            <join-column name="imported_race_id" referenced-column-name="id" nullable="false" on-delete="CASCADE" />
-        </one-to-one>
+        <many-to-one field="race" target-entity="App\Domain\NutritionPlan\Entity\ImportedRace" inversed-by="nutritionPlans">
+            <join-column name="race_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
+        </many-to-one>
 
         <one-to-many field="segments" target-entity="App\Domain\NutritionPlan\Entity\Segment" orphan-removal="true" mapped-by="nutritionPlan">
             <cascade>
