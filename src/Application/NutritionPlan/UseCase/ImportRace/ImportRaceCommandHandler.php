@@ -27,7 +27,7 @@ final readonly class ImportRaceCommandHandler implements CommandHandlerInterface
             throw new \DomainException(\sprintf('Race with id %s not found', $command->externalRaceId));
         }
 
-        $importedRace = $this->importedRaceFactory->createFromExternalRace($externalRace);
+        $importedRace = $this->importedRaceFactory->createFromExternalRace($externalRace, $command->runnerId);
 
         $checkpointCount = \count($importedRace->getCheckpoints());
         $segmentIds = [];
@@ -35,10 +35,9 @@ final readonly class ImportRaceCommandHandler implements CommandHandlerInterface
             $segmentIds[] = $this->idGenerator->generate();
         }
 
-        $nutritionPlan = NutritionPlan::createFromImportedRace(
+        $nutritionPlan = NutritionPlan::createFromRace(
             id: $command->nutritionPlanId,
-            runnerId: $command->runnerId,
-            importedRace: $importedRace,
+            race: $importedRace,
             segmentIds: $segmentIds,
         );
 

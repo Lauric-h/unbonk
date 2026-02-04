@@ -40,7 +40,7 @@ final class NutritionPlanTestFixture
 
     public function build(): NutritionPlan
     {
-        $importedRace = $this->importedRace ?? self::createDefaultImportedRace();
+        $importedRace = $this->importedRace ?? self::createDefaultImportedRaceWithRunnerId($this->runnerId);
 
         // Generate segment IDs based on checkpoint count
         $checkpointCount = \count($importedRace->getCheckpoints());
@@ -49,9 +49,8 @@ final class NutritionPlanTestFixture
             $segmentIds[] = 'segment-id-'.$this->segmentIdCounter++;
         }
 
-        return NutritionPlan::createFromImportedRace(
+        return NutritionPlan::createFromRace(
             $this->id,
-            $this->runnerId,
             $importedRace,
             $segmentIds,
         );
@@ -61,6 +60,67 @@ final class NutritionPlanTestFixture
     {
         $importedRace = new ImportedRace(
             'imported-race-id',
+            'runner-id',
+            'external-race-id',
+            'external-event-id',
+            'Test Race',
+            50000,
+            2000,
+            1500,
+            new \DateTimeImmutable('2024-06-01 06:00:00'),
+            'Mountain Town',
+        );
+
+        $startCheckpoint = new Checkpoint(
+            'start-checkpoint-id',
+            'start',
+            'Start',
+            'Mountain Town',
+            0,
+            0,
+            0,
+            null,
+            false,
+            $importedRace,
+        );
+        $importedRace->addCheckpoint($startCheckpoint);
+
+        $aidStation = new Checkpoint(
+            'aid-station-id',
+            'aid-1',
+            'Aid Station 1',
+            'Valley',
+            25000,
+            1000,
+            750,
+            new Cutoff(new \DateTimeImmutable('2024-06-01 12:00:00')),
+            true,
+            $importedRace,
+        );
+        $importedRace->addCheckpoint($aidStation);
+
+        $finishCheckpoint = new Checkpoint(
+            'finish-checkpoint-id',
+            'finish',
+            'Finish',
+            'Mountain Town',
+            50000,
+            2000,
+            1500,
+            null,
+            false,
+            $importedRace,
+        );
+        $importedRace->addCheckpoint($finishCheckpoint);
+
+        return $importedRace;
+    }
+
+    public static function createDefaultImportedRaceWithRunnerId(string $runnerId): ImportedRace
+    {
+        $importedRace = new ImportedRace(
+            'imported-race-id',
+            $runnerId,
             'external-race-id',
             'external-event-id',
             'Test Race',
@@ -121,6 +181,7 @@ final class NutritionPlanTestFixture
         $distance = 100000;
         $importedRace = new ImportedRace(
             'imported-race-id',
+            'runner-id',
             'external-race-id',
             'external-event-id',
             'Test Race',

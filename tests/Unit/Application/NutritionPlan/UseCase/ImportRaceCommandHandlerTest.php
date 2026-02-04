@@ -50,8 +50,8 @@ final class ImportRaceCommandHandlerTest extends TestCase
             ->method('add')
             ->with($this->callback(function ($nutritionPlan) use ($nutritionPlanId, $runnerId): bool {
                 $this->assertSame($nutritionPlanId, $nutritionPlan->id);
-                $this->assertSame($runnerId, $nutritionPlan->runnerId);
-                $this->assertSame('Test Race', $nutritionPlan->importedRace->name);
+                $this->assertSame($runnerId, $nutritionPlan->race->runnerId);
+                $this->assertSame('Test Race', $nutritionPlan->race->name);
 
                 return true;
             }));
