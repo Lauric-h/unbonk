@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\UI\Food;
 
 use App\Application\Food\ReadModel\FoodReadModel;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Application\Food\Brand;
 
 use App\Application\Food\UseCase\DeleteBrand\DeleteBrandCommand;
@@ -8,7 +10,7 @@ use App\Domain\Food\Entity\Brand;
 use App\Infrastructure\Food\Persistence\DoctrineBrandsCatalog;
 use PHPUnit\Framework\TestCase;
 
-class DeleteBrandCommandHandlerTest extends TestCase
+final class DeleteBrandCommandHandlerTest extends TestCase
 {
     public function testDeleteBrand(): void
     {

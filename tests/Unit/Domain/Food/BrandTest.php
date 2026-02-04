@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Domain\Food;
 
 use App\Domain\Food\Entity\Brand;
@@ -8,7 +10,7 @@ use App\Domain\Food\Entity\IngestionType;
 use App\Domain\Food\Event\BrandCreated;
 use PHPUnit\Framework\TestCase;
 
-class BrandTest extends TestCase
+final class BrandTest extends TestCase
 {
     public function testRecordAndPullEvents(): void
     {

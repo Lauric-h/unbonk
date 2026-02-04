@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Application\Food\Brand;
 
 use App\Application\Food\UseCase\CreateBrand\CreateBrandCommand;
@@ -9,7 +11,7 @@ use App\Domain\Food\Exception\BrandAlreadyExistsException;
 use App\Infrastructure\Food\Persistence\DoctrineBrandsCatalog;
 use PHPUnit\Framework\TestCase;
 
-class CreateBrandCommandHandlerTest extends TestCase
+final class CreateBrandCommandHandlerTest extends TestCase
 {
     public function testCreateBrand(): void
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\UI\NutritionPlan;
 
 use App\Application\NutritionPlan\ReadModel\CheckpointReadModel;
@@ -16,7 +18,7 @@ final class SegmentReadModelTest extends TestCase
 {
     public function testFromSegment(): void
     {
-        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
         $segment = $nutritionPlan->getSegmentByPosition(1);
         $this->assertInstanceOf(Segment::class, $segment);
 

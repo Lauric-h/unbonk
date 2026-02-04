@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Infrastructure\User;
 
 use App\Domain\User\Entity\User;
@@ -30,8 +32,7 @@ final class UserProviderTest extends TestCase
     public function testSupportsClass(): void
     {
         $class = UserAdapter::class;
-        $repository = $this->createMock(DoctrineUserCatalog::class);
-        $provider = new UserProvider($repository);
+        $provider = new UserProvider($this->createMock(DoctrineUserCatalog::class));
 
         $this->assertTrue($provider->supportsClass($class));
     }
@@ -39,8 +40,7 @@ final class UserProviderTest extends TestCase
     public function testDoesNotSupportsClass(): void
     {
         $class = User::class;
-        $repository = $this->createMock(DoctrineUserCatalog::class);
-        $provider = new UserProvider($repository);
+        $provider = new UserProvider($this->createMock(DoctrineUserCatalog::class));
 
         $this->assertFalse($provider->supportsClass($class));
     }

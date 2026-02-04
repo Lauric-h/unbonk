@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 
 use App\Application\NutritionPlan\Factory\ImportedRaceFactory;
@@ -46,9 +48,13 @@ final class CreateNutritionPlanCommandHandlerTest extends TestCase
         $repository = $this->createMock(NutritionPlansCatalog::class);
         $repository->expects($this->once())
             ->method('add')
-            ->with($this->callback(static fn ($nutritionPlan) => $nutritionPlan->id === $id
-                && $nutritionPlan->runnerId === $runnerId
-                && 'Test Race' === $nutritionPlan->importedRace->name));
+            ->with($this->callback(function ($nutritionPlan) use ($id, $runnerId): bool {
+                $this->assertSame($id, $nutritionPlan->id);
+                $this->assertSame($runnerId, $nutritionPlan->runnerId);
+                $this->assertSame('Test Race', $nutritionPlan->importedRace->name);
+
+                return true;
+            }));
 
         $idGenerator = new class implements IdGeneratorInterface {
             private int $counter = 0;

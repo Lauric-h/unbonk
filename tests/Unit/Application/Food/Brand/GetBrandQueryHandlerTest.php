@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Application\Food\Brand;
 
 use App\Application\Food\UseCase\GetBrand\GetBrandQuery;
@@ -8,7 +10,7 @@ use App\Domain\Food\Entity\Brand;
 use App\Domain\Food\Repository\BrandsCatalog;
 use PHPUnit\Framework\TestCase;
 
-class GetBrandQueryHandlerTest extends TestCase
+final class GetBrandQueryHandlerTest extends TestCase
 {
     public function testGetBrand(): void
     {

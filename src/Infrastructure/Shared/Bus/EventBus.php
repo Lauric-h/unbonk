@@ -27,7 +27,8 @@ readonly class EventBus implements EventBusInterface
     public function dispatchAfterCurrentBusHasFinished(Event $event): void
     {
         $this->messageBus->dispatch(
-            new Envelope($event))
+            new Envelope($event)
+        )
             ->with(new DispatchAfterCurrentBusStamp());
     }
 }

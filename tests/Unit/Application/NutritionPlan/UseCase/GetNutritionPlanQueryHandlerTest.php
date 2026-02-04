@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 
 use App\Application\NutritionPlan\ReadModel\CheckpointReadModel;
@@ -25,7 +27,7 @@ final class GetNutritionPlanQueryHandlerTest extends TestCase
         $repository = $this->createMock(NutritionPlansCatalog::class);
         $handler = new GetNutritionPlanQueryHandler($repository);
 
-        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
         $id = $nutritionPlan->id;
         $query = new GetNutritionPlanQuery($id);
 

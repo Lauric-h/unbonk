@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 
 use App\Application\NutritionPlan\UseCase\DeleteNutritionPlan\DeleteNutritionPlanCommand;
@@ -15,7 +17,7 @@ final class DeleteNutritionPlanCommandHandlerTest extends TestCase
         $repository = $this->createMock(NutritionPlansCatalog::class);
         $handler = new DeleteNutritionPlanCommandHandler($repository);
 
-        $nutritionPlan = (new NutritionPlanTestFixture())->build();
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
         $id = $nutritionPlan->id;
 
         $repository->expects($this->once())

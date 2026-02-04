@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Infrastructure\Food\Service;
 
 use App\Application\Food\UseCase\GetFood\GetFoodQuery;

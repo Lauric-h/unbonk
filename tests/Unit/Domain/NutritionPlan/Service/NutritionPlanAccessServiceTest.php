@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Domain\NutritionPlan\Service;
 
 use App\Domain\NutritionPlan\Exception\ForbiddenNutritionPlanAccessException;
@@ -23,7 +25,7 @@ final class NutritionPlanAccessServiceTest extends TestCase
 
     public function testCanAccess(): void
     {
-        $nutritionPlan = (new NutritionPlanTestFixture())
+        $nutritionPlan = new NutritionPlanTestFixture()
             ->withId('np-id')
             ->withRunnerId('runnerId')
             ->build();
@@ -38,7 +40,7 @@ final class NutritionPlanAccessServiceTest extends TestCase
 
     public function testCannotAccess(): void
     {
-        $nutritionPlan = (new NutritionPlanTestFixture())
+        $nutritionPlan = new NutritionPlanTestFixture()
             ->withId('np-id')
             ->withRunnerId('runnerId')
             ->build();
