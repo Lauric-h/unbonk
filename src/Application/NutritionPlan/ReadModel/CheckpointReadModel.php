@@ -16,21 +16,23 @@ final readonly class CheckpointReadModel
         public int $descentFromStart,
         public ?int $cutoffInMinutes,
         public bool $assistanceAllowed,
+        public string $type,
     ) {
     }
 
     public static function fromCheckpoint(Checkpoint $checkpoint): self
     {
         return new self(
-            $checkpoint->id,
-            $checkpoint->externalId,
-            $checkpoint->name,
-            $checkpoint->location,
-            $checkpoint->distanceFromStart,
-            $checkpoint->ascentFromStart,
-            $checkpoint->descentFromStart,
-            $checkpoint->getCutoffInMinutes(),
-            $checkpoint->assistanceAllowed,
+            id: $checkpoint->id,
+            externalId: $checkpoint->externalId,
+            name: $checkpoint->name,
+            location: $checkpoint->location,
+            distanceFromStart: $checkpoint->distanceFromStart,
+            ascentFromStart: $checkpoint->ascentFromStart,
+            descentFromStart: $checkpoint->descentFromStart,
+            cutoffInMinutes: $checkpoint->getCutoffInMinutes(),
+            assistanceAllowed: $checkpoint->assistanceAllowed,
+            type: $checkpoint->type->value,
         );
     }
 }

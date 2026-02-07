@@ -14,6 +14,7 @@
         <field name="descentFromStart" type="integer" column="descent_from_start"/>
         <field name="assistanceAllowed" type="boolean" column="assistance_allowed"/>
         <field name="cutoffTime" type="datetime_immutable" column="cutoff_time" nullable="true"/>
+        <field name="type" type="string" enum-type="App\Domain\NutritionPlan\Entity\CheckpointType"/>
 
         <many-to-one field="importedRace" target-entity="App\Domain\NutritionPlan\Entity\ImportedRace" inversed-by="checkpoints">
             <join-column name="imported_race_id" referenced-column-name="id" nullable="false" on-delete="CASCADE" />

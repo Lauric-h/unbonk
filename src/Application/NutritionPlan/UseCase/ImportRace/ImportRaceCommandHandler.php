@@ -39,7 +39,7 @@ final readonly class ImportRaceCommandHandler implements CommandHandlerInterface
             $segmentIds[] = $this->idGenerator->generate();
         }
 
-        $nutritionPlan = NutritionPlan::createFromRace(
+        $nutritionPlan = NutritionPlan::createFromImportedRace(
             id: $command->nutritionPlanId,
             race: $importedRace,
             segmentIds: $segmentIds,

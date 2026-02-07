@@ -19,6 +19,7 @@ class Checkpoint
         ?Cutoff $cutoff,
         public bool $assistanceAllowed,
         public ImportedRace $importedRace,
+        public CheckpointType $type = CheckpointType::AidStation,
     ) {
         $this->cutoffTime = $cutoff?->dateTime;
         $this->validate();
@@ -33,9 +34,33 @@ class Checkpoint
         return new Cutoff($this->cutoffTime);
     }
 
-    public function isCustom(): bool
+    public function isEditable(): bool
     {
-        return null === $this->externalId;
+        return $this->type->isEditable();
+    }
+
+    public function update(
+        string $name,
+        string $location,
+        int $distanceFromStart,
+        int $ascentFromStart,
+        int $descentFromStart,
+        ?Cutoff $cutoff,
+        bool $assistanceAllowed,
+    ): void {
+        if (!$this->isEditable()) {
+            throw new \DomainException('Cannot update a non-editable checkpoint (AID_STATION type)');
+        }
+
+        $this->name = $name;
+        $this->location = $location;
+        $this->distanceFromStart = $distanceFromStart;
+        $this->ascentFromStart = $ascentFromStart;
+        $this->descentFromStart = $descentFromStart;
+        $this->cutoffTime = $cutoff?->dateTime;
+        $this->assistanceAllowed = $assistanceAllowed;
+
+        $this->validate();
     }
 
     public function getCutoffInMinutes(): ?int

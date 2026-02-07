@@ -49,7 +49,7 @@ final class NutritionPlanTestFixture
             $segmentIds[] = 'segment-id-'.$this->segmentIdCounter++;
         }
 
-        return NutritionPlan::createFromRace(
+        return NutritionPlan::createFromImportedRace(
             $this->id,
             $importedRace,
             $segmentIds,

@@ -16,17 +16,30 @@ final readonly class NutritionPlanReadModel
         public string $runnerId,
         public ImportedRaceReadModel $race,
         public array $segments = [],
+        public int $totalCarbs = 0,
     ) {
     }
 
     public static function fromNutritionPlan(NutritionPlan $nutritionPlan): self
     {
+        $segments = array_map(
+            static fn (Segment $segment) => SegmentReadModel::fromSegment($segment),
+            $nutritionPlan->getSegments()->toArray()
+        );
+
+        $totalCarbs = array_reduce(
+            $segments,
+            static fn (int $carry, SegmentReadModel $segment) => $carry + $segment->totalCarbs,
+            0
+        );
+
         return new self(
-            $nutritionPlan->id,
-            $nutritionPlan->name,
-            $nutritionPlan->race->runnerId,
-            ImportedRaceReadModel::fromImportedRace($nutritionPlan->race),
-            array_map(static fn (Segment $segment) => SegmentReadModel::fromSegment($segment), $nutritionPlan->getSegments()->toArray()),
+            id: $nutritionPlan->id,
+            name: $nutritionPlan->name,
+            runnerId: $nutritionPlan->race->runnerId,
+            race: ImportedRaceReadModel::fromImportedRace($nutritionPlan->race),
+            segments: $segments,
+            totalCarbs: $totalCarbs,
         );
     }
 }

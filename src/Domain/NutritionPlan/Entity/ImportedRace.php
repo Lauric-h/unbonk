@@ -43,11 +43,12 @@ class ImportedRace
 
     public function removeCheckpoint(Checkpoint $checkpoint): void
     {
-        if (!$checkpoint->isCustom()) {
+        if (!$checkpoint->isEditable()) {
             throw new \DomainException('Cannot remove imported checkpoint, only custom checkpoints can be removed');
         }
 
         $this->checkpoints->removeElement($checkpoint);
+        $this->sortCheckpointsByDistance();
     }
 
     /**
@@ -89,7 +90,7 @@ class ImportedRace
         return $checkpoints[\count($checkpoints) - 1];
     }
 
-    private function sortCheckpointsByDistance(): void
+    public function sortCheckpointsByDistance(): void
     {
         $checkpoints = $this->checkpoints->toArray();
         usort($checkpoints, static fn (Checkpoint $a, Checkpoint $b) => $a->distanceFromStart <=> $b->distanceFromStart);

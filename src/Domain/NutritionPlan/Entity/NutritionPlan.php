@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\NutritionPlan\Entity;
 
+use App\Domain\NutritionPlan\ValueObject\Cutoff;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -26,22 +29,21 @@ class NutritionPlan
     /**
      * @param string[] $segmentIds IDs for the segments to be created (one per checkpoint pair)
      */
-    public static function createFromRace(
+    public static function createFromImportedRace(
         string $id,
         ImportedRace $race,
         array $segmentIds,
         ?string $name = null,
     ): self {
         $nutritionPlan = new self(
-            $id,
-            $race,
-            $name,
-            new \DateTimeImmutable(),
+            id: $id,
+            race: $race,
+            name: $name,
+            createdAt: new \DateTimeImmutable(),
         );
 
         $nutritionPlan->rebuildSegments($segmentIds);
 
-        // Maintain bidirectional relationship
         $race->addNutritionPlan($nutritionPlan);
 
         return $nutritionPlan;
@@ -52,7 +54,7 @@ class NutritionPlan
      */
     public function addCustomCheckpoint(Checkpoint $checkpoint, array $segmentIds): void
     {
-        if (!$checkpoint->isCustom()) {
+        if (!$checkpoint->isEditable()) {
             throw new \DomainException('Checkpoint must be custom (externalId must be null)');
         }
 
@@ -68,7 +70,7 @@ class NutritionPlan
     /**
      * @param string[] $segmentIds IDs for the new segments to be created
      */
-    public function removeCustomCheckpoint(string $checkpointId, array $segmentIds): void
+    public function removeCheckpoint(string $checkpointId, array $segmentIds): void
     {
         $checkpoint = $this->race->getCheckpointById($checkpointId);
 
@@ -76,12 +78,53 @@ class NutritionPlan
             throw new \DomainException(\sprintf('Checkpoint with id %s not found', $checkpointId));
         }
 
-        if (!$checkpoint->isCustom()) {
-            throw new \DomainException('Cannot remove imported checkpoint, only custom checkpoints can be removed');
+        if (!$checkpoint->isEditable()) {
+            throw new \DomainException('Cannot remove a non-editable checkpoint (AID_STATION type)');
         }
 
         $this->race->removeCheckpoint($checkpoint);
         $this->rebuildSegments($segmentIds);
+    }
+
+    /**
+     * Updates an existing checkpoint (only INTERMEDIATE type checkpoints can be updated).
+     *
+     * @param string[] $segmentIds IDs for the new segments to be created (needed if distance changes)
+     */
+    public function updateCheckpoint(
+        string $checkpointId,
+        string $name,
+        string $location,
+        int $distanceFromStart,
+        int $ascentFromStart,
+        int $descentFromStart,
+        ?Cutoff $cutoff,
+        bool $assistanceAllowed,
+        array $segmentIds,
+    ): void {
+        $checkpoint = $this->race->getCheckpointById($checkpointId);
+
+        if (null === $checkpoint) {
+            throw new \DomainException(\sprintf('Checkpoint with id %s not found', $checkpointId));
+        }
+
+        $oldDistance = $checkpoint->distanceFromStart;
+
+        $checkpoint->update(
+            $name,
+            $location,
+            $distanceFromStart,
+            $ascentFromStart,
+            $descentFromStart,
+            $cutoff,
+            $assistanceAllowed,
+        );
+
+        // If distance changed, we need to resort checkpoints and rebuild segments
+        if ($oldDistance !== $distanceFromStart) {
+            $this->race->sortCheckpointsByDistance();
+            $this->rebuildSegments($segmentIds);
+        }
     }
 
     /**
@@ -125,11 +168,20 @@ class NutritionPlan
             throw new \DomainException(\sprintf('Not enough segment IDs provided. Expected %d, got %d', $requiredSegmentCount, \count($segmentIds)));
         }
 
-        // Keep track of existing nutrition items by checkpoint pair
-        $existingNutritionItems = [];
+        // Keep track of existing nutrition items by START checkpoint only
+        // This ensures items are redistributed to the segment starting from the same checkpoint
+        // Example: CP1 -> SEG1(items) -> CP2 -> SEG2 -> CP3
+        // If we add CP_NEW between CP1 and CP2: CP1 -> SEG1(items) -> CP_NEW -> SEG_NEW -> CP2 -> SEG2 -> CP3
+        // Items stay on SEG1 because it still starts from CP1
+        $nutritionItemsByStartCheckpoint = [];
         foreach ($this->segments as $segment) {
-            $key = \sprintf('%s-%s', $segment->startCheckpoint->id, $segment->endCheckpoint->id);
-            $existingNutritionItems[$key] = $segment->getNutritionItems()->toArray();
+            $startCheckpointId = $segment->startCheckpoint->id;
+            if (!isset($nutritionItemsByStartCheckpoint[$startCheckpointId])) {
+                $nutritionItemsByStartCheckpoint[$startCheckpointId] = [];
+            }
+            foreach ($segment->getNutritionItems()->toArray() as $nutritionItem) {
+                $nutritionItemsByStartCheckpoint[$startCheckpointId][] = $nutritionItem;
+            }
         }
 
         $this->segments->clear();
@@ -139,17 +191,16 @@ class NutritionPlan
             $endCheckpoint = $checkpoints[$i + 1];
 
             $segment = Segment::createFromCheckpoints(
-                $segmentIds[$i],
-                $i + 1,
-                $startCheckpoint,
-                $endCheckpoint,
-                $this,
+                id: $segmentIds[$i],
+                position: $i + 1,
+                startCheckpoint: $startCheckpoint,
+                endCheckpoint: $endCheckpoint,
+                nutritionPlan: $this,
             );
 
-            // Restore nutrition items if this segment existed before
-            $key = $startCheckpoint->id.'-'.$endCheckpoint->id;
-            if (isset($existingNutritionItems[$key])) {
-                foreach ($existingNutritionItems[$key] as $nutritionItem) {
+            // Restore nutrition items for this start checkpoint
+            if (isset($nutritionItemsByStartCheckpoint[$startCheckpoint->id])) {
+                foreach ($nutritionItemsByStartCheckpoint[$startCheckpoint->id] as $nutritionItem) {
                     $segment->addNutritionItem($nutritionItem);
                 }
             }
