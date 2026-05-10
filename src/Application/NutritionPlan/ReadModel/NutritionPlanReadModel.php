@@ -26,6 +26,7 @@ final readonly class NutritionPlanReadModel
             static fn (Segment $segment) => SegmentReadModel::fromSegment($segment),
             $nutritionPlan->getSegments()->toArray()
         );
+        dd('la');
 
         $totalCarbs = array_reduce(
             $segments,

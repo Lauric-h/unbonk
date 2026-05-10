@@ -43,7 +43,7 @@ class Segment
         );
     }
 
-    public function getDistance(): Distance
+    public function getDistance(): int
     {
         return new Distance($this->endCheckpoint->distanceFromStart - $this->startCheckpoint->distanceFromStart);
     }

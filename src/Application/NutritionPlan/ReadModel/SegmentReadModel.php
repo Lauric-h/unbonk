@@ -41,7 +41,7 @@ final class SegmentReadModel
             position: $segment->position,
             startCheckpoint: CheckpointReadModel::fromCheckpoint($segment->startCheckpoint),
             endCheckpoint: CheckpointReadModel::fromCheckpoint($segment->endCheckpoint),
-            distance: $segment->getDistance()->value,
+            distance: $segment->getDistance(),
             ascent: $segment->getAscent()->value,
             descent: $segment->getDescent()->value,
             nutritionItems: $nutritionItems,

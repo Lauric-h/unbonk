@@ -28,17 +28,17 @@ final readonly class AddCheckpointCommandHandler implements CommandHandlerInterf
             : null;
 
         $checkpoint = new Checkpoint(
-            $this->idGenerator->generate(),
-            null,
-            $command->name,
-            $command->location,
-            $command->distanceFromStart,
-            $command->ascentFromStart,
-            $command->descentFromStart,
-            $cutoff,
-            $command->assistanceAllowed,
-            $nutritionPlan->race,
-            CheckpointType::Intermediate,
+            id: $this->idGenerator->generate(),
+            externalId: null,
+            name: $command->name,
+            location: $command->location,
+            distanceFromStart: $command->distanceFromStart,
+            ascentFromStart: $command->ascentFromStart,
+            descentFromStart: $command->descentFromStart,
+            cutoff: $cutoff,
+            assistanceAllowed: $command->assistanceAllowed,
+            importedRace: $nutritionPlan->race,
+            type: CheckpointType::Intermediate,
         );
 
         $checkpointCount = $nutritionPlan->race->getCheckpoints()->count() + 1;

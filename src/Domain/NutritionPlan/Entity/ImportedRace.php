@@ -37,7 +37,6 @@ class ImportedRace
     {
         if (!$this->checkpoints->contains($checkpoint)) {
             $this->checkpoints->add($checkpoint);
-            $this->sortCheckpointsByDistance();
         }
     }
 
