@@ -49,7 +49,7 @@ final readonly class AddCheckpointCommandHandler implements CommandHandlerInterf
 
     /**
      * Generate segment IDs based on checkpoint count.
-     * Formula: segmentCount = checkpointCount - 1
+     * Formula: segmentCount = checkpointCount - 1.
      *
      * @return string[]
      */

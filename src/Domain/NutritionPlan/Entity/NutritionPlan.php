@@ -17,7 +17,7 @@ class NutritionPlan
     private Collection $customCheckpoints;
 
     /**
-     * @param Collection<int, Segment>|null $segments
+     * @param Collection<int, Segment>|null          $segments
      * @param Collection<int, CustomCheckpoint>|null $customCheckpoints
      */
     private function __construct(
@@ -98,6 +98,91 @@ class NutritionPlan
     }
 
     /**
+     * Validate that a checkpoint's distance and elevation are consistent with existing checkpoints.
+     *
+     * Rules:
+     * - Distance must be within race bounds (0 to race total distance)
+     * - Distance must maintain increasing order with surrounding checkpoints
+     * - Ascent must be >= previous checkpoint's ascent
+     * - Descent must be >= previous checkpoint's descent
+     *
+     * @param int         $distance            Distance from start in meters
+     * @param int         $ascent              Cumulative ascent in meters
+     * @param int         $descent             Cumulative descent in meters
+     * @param string|null $excludeCheckpointId Checkpoint ID to exclude from validation (when updating)
+     *
+     * @throws \DomainException if validation fails
+     */
+    private function validateCheckpointConsistency(
+        int $distance,
+        int $ascent,
+        int $descent,
+        ?string $excludeCheckpointId = null
+    ): void {
+        // 1. Validate distance is within race bounds
+        if ($distance <= 0) {
+            throw new \DomainException(\sprintf('Checkpoint distance (%d m) must be greater than 0 (start)', $distance));
+        }
+
+        if ($distance >= $this->race->distance) {
+            throw new \DomainException(\sprintf('Checkpoint distance (%d m) cannot be greater than or equal to race distance (%d m)', $distance, $this->race->distance));
+        }
+
+        // 2. Get all checkpoints except the one being updated
+        $allCheckpoints = array_filter(
+            $this->getAllCheckpoints(),
+            static fn (AbstractCheckpoint $cp) => $cp->getId() !== $excludeCheckpointId
+        );
+
+        // 3. Find previous and next checkpoints by distance
+        $previousCheckpoint = null;
+        $nextCheckpoint = null;
+
+        foreach ($allCheckpoints as $checkpoint) {
+            $checkpointDistance = $checkpoint->getDistanceFromStart();
+
+            if ($checkpointDistance < $distance) {
+                // This is a potential previous checkpoint
+                if (null === $previousCheckpoint || $checkpointDistance > $previousCheckpoint->getDistanceFromStart()) {
+                    $previousCheckpoint = $checkpoint;
+                }
+            } elseif ($checkpointDistance > $distance) {
+                // This is a potential next checkpoint
+                if (null === $nextCheckpoint || $checkpointDistance < $nextCheckpoint->getDistanceFromStart()) {
+                    $nextCheckpoint = $checkpoint;
+                }
+            }
+        }
+
+        // 4. Validate ascending distance order
+        if (null !== $previousCheckpoint && $distance <= $previousCheckpoint->getDistanceFromStart()) {
+            throw new \DomainException(\sprintf('Checkpoint distance (%d m) must be greater than previous checkpoint "%s" at %d m', $distance, $previousCheckpoint->getName(), $previousCheckpoint->getDistanceFromStart()));
+        }
+
+        if (null !== $nextCheckpoint && $distance >= $nextCheckpoint->getDistanceFromStart()) {
+            throw new \DomainException(\sprintf('Checkpoint distance (%d m) must be less than next checkpoint "%s" at %d m', $distance, $nextCheckpoint->getName(), $nextCheckpoint->getDistanceFromStart()));
+        }
+
+        // 5. Validate cumulative ascent is increasing
+        if (null !== $previousCheckpoint && $ascent < $previousCheckpoint->getAscentFromStart()) {
+            throw new \DomainException(\sprintf('Checkpoint cumulative ascent (%d m) cannot be less than previous checkpoint "%s" ascent (%d m). Cumulative elevation must increase.', $ascent, $previousCheckpoint->getName(), $previousCheckpoint->getAscentFromStart()));
+        }
+
+        if (null !== $nextCheckpoint && $ascent > $nextCheckpoint->getAscentFromStart()) {
+            throw new \DomainException(\sprintf('Checkpoint cumulative ascent (%d m) cannot be greater than next checkpoint "%s" ascent (%d m). Cumulative elevation must increase.', $ascent, $nextCheckpoint->getName(), $nextCheckpoint->getAscentFromStart()));
+        }
+
+        // 6. Validate cumulative descent is increasing
+        if (null !== $previousCheckpoint && $descent < $previousCheckpoint->getDescentFromStart()) {
+            throw new \DomainException(\sprintf('Checkpoint cumulative descent (%d m) cannot be less than previous checkpoint "%s" descent (%d m). Cumulative elevation must increase.', $descent, $previousCheckpoint->getName(), $previousCheckpoint->getDescentFromStart()));
+        }
+
+        if (null !== $nextCheckpoint && $descent > $nextCheckpoint->getDescentFromStart()) {
+            throw new \DomainException(\sprintf('Checkpoint cumulative descent (%d m) cannot be greater than next checkpoint "%s" descent (%d m). Cumulative elevation must increase.', $descent, $nextCheckpoint->getName(), $nextCheckpoint->getDescentFromStart()));
+        }
+    }
+
+    /**
      * Check if a checkpoint exists at a given distance.
      */
     private function hasCheckpointAtDistance(int $distance): bool
@@ -118,6 +203,15 @@ class NutritionPlan
      */
     public function addCustomCheckpoint(CustomCheckpoint $checkpoint, array $segmentIds): void
     {
+        // Validate business rules first (distance bounds, elevation consistency)
+        $this->validateCheckpointConsistency(
+            $checkpoint->distanceFromStart,
+            $checkpoint->ascentFromStart,
+            $checkpoint->descentFromStart,
+            null // No checkpoint to exclude when adding
+        );
+
+        // Then check for duplicates
         if ($this->hasCheckpointAtDistance($checkpoint->distanceFromStart)) {
             throw new \DomainException(\sprintf('A checkpoint already exists at distance %d', $checkpoint->distanceFromStart));
         }
@@ -174,6 +268,14 @@ class NutritionPlan
         if (!$checkpoint->isEditable()) {
             throw new \DomainException('Cannot update imported checkpoints, only custom checkpoints can be updated');
         }
+
+        // Validate consistency (excluding the checkpoint being updated)
+        $this->validateCheckpointConsistency(
+            $distanceFromStart,
+            $ascentFromStart,
+            $descentFromStart,
+            $checkpointId
+        );
 
         // It's a CustomCheckpoint, we can safely cast
         /** @var CustomCheckpoint $checkpoint */

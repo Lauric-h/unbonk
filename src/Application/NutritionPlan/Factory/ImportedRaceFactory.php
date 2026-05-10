@@ -5,8 +5,8 @@ namespace App\Application\NutritionPlan\Factory;
 use App\Application\Shared\IdGeneratorInterface;
 use App\Domain\NutritionPlan\DTO\ExternalAidStationDTO;
 use App\Domain\NutritionPlan\DTO\ExternalRaceDTO;
-use App\Domain\NutritionPlan\Entity\ImportedCheckpoint;
 use App\Domain\NutritionPlan\Entity\CheckpointType;
+use App\Domain\NutritionPlan\Entity\ImportedCheckpoint;
 use App\Domain\NutritionPlan\Entity\ImportedRace;
 use App\Domain\NutritionPlan\ValueObject\Cutoff;
 

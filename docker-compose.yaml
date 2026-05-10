@@ -1,20 +1,21 @@
-1 │ services:
-   2 │   postgres:
-   3 │     image: postgres:16-alpine
-   4 │     container_name: unbonk-postgres
-   5 │     environment:
-   6 │       POSTGRES_USER: unbonk_user
-   7 │       POSTGRES_PASSWORD: unbonk_pass
-   8 │       POSTGRES_DB: unbonk-dev
-   9 │     ports:
-  10 │       - "5432:5432"
-  11 │     volumes:
-  12 │       - postgres_data:/var/lib/postgre
-     │ sql/data
-  13 │     healthcheck:
-  14 │       test: ["CMD-SHELL", "pg_isready
-     │ -U unbonk_user -d unbonk-dev"]
-  15 │       interval: 10s
-  16 │       timeout: 5s
-  17 │       retries: 5
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: unbonk-postgres
+    environment:
+      POSTGRES_USER: unbonk_user
+      POSTGRES_PASSWORD: unbonk_pass
+      POSTGRES_DB: unbonk-dev
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U unbonk_user -d unbonk-dev"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
+volumes:
+  postgres_data:
+    driver: local

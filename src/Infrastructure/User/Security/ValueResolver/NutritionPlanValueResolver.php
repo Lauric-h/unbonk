@@ -12,9 +12,9 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 /**
  * Automatically resolves NutritionPlan entities from route parameters.
- * 
+ *
  * This allows using NutritionPlan directly as controller parameters:
- * 
+ *
  * #[Route('/nutrition-plans/{nutritionPlanId}')]
  * #[IsGranted('VIEW', subject: 'nutritionPlan')]
  * public function __invoke(NutritionPlan $nutritionPlan) { ... }
@@ -32,7 +32,7 @@ final readonly class NutritionPlanValueResolver implements ValueResolverInterfac
     public function resolve(Request $request, ArgumentMetadata $argument): iterable
     {
         // Only resolve if the argument type is NutritionPlan
-        if ($argument->getType() !== NutritionPlan::class) {
+        if (NutritionPlan::class !== $argument->getType()) {
             return [];
         }
 

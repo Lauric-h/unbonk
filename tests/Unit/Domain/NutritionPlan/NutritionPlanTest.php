@@ -198,4 +198,177 @@ final class NutritionPlanTest extends TestCase
         $preservedSegment = $segments->first();
         $this->assertCount(1, $preservedSegment->getNutritionItems());
     }
+
+    public function testAddCustomCheckpointThrowsExceptionForDistanceAtStart(): void
+    {
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
+
+        $customCheckpoint = new CustomCheckpoint(
+            id: 'custom-checkpoint-id',
+            name: 'Invalid Start Point',
+            location: 'Start',
+            distanceFromStart: 0, // Cannot be at start (0)
+            ascentFromStart: 0,
+            descentFromStart: 0,
+            cutoff: null,
+            assistanceAllowed: true,
+            nutritionPlan: $nutritionPlan,
+        );
+
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('must be greater than 0');
+
+        $nutritionPlan->addCustomCheckpoint($customCheckpoint, ['seg-1', 'seg-2', 'seg-3']);
+    }
+
+    public function testAddCustomCheckpointThrowsExceptionForDistanceBeyondRace(): void
+    {
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
+
+        $customCheckpoint = new CustomCheckpoint(
+            id: 'custom-checkpoint-id',
+            name: 'Beyond Finish',
+            location: 'Too Far',
+            distanceFromStart: 60000, // Race is 50000m
+            ascentFromStart: 2500,
+            descentFromStart: 2000,
+            cutoff: null,
+            assistanceAllowed: true,
+            nutritionPlan: $nutritionPlan,
+        );
+
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('cannot be greater than or equal to race distance');
+
+        $nutritionPlan->addCustomCheckpoint($customCheckpoint, ['seg-1', 'seg-2', 'seg-3']);
+    }
+
+    public function testAddCustomCheckpointThrowsExceptionForDecreasingAscent(): void
+    {
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
+
+        // Imported race has: Start (0m, 0D+), Aid Station (25000m, 1000D+), Finish (50000m, 2000D+)
+        $customCheckpoint = new CustomCheckpoint(
+            id: 'custom-checkpoint-id',
+            name: 'Invalid Ascent',
+            location: 'Location',
+            distanceFromStart: 30000, // After aid station (25000m)
+            ascentFromStart: 800, // Less than aid station's 1000m - INVALID
+            descentFromStart: 800,
+            cutoff: null,
+            assistanceAllowed: true,
+            nutritionPlan: $nutritionPlan,
+        );
+
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('cumulative ascent');
+        $this->expectExceptionMessage('cannot be less than previous checkpoint');
+
+        $nutritionPlan->addCustomCheckpoint($customCheckpoint, ['seg-1', 'seg-2', 'seg-3']);
+    }
+
+    public function testAddCustomCheckpointThrowsExceptionForDecreasingDescent(): void
+    {
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
+
+        // Imported race has: Start (0m, 0D-), Aid Station (25000m, 750D-), Finish (50000m, 1500D-)
+        $customCheckpoint = new CustomCheckpoint(
+            id: 'custom-checkpoint-id',
+            name: 'Invalid Descent',
+            location: 'Location',
+            distanceFromStart: 30000, // After aid station (25000m)
+            ascentFromStart: 1200, // OK: between 1000 and 2000
+            descentFromStart: 500, // Less than aid station's 750m - INVALID
+            cutoff: null,
+            assistanceAllowed: true,
+            nutritionPlan: $nutritionPlan,
+        );
+
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('cumulative descent');
+        $this->expectExceptionMessage('cannot be less than previous checkpoint');
+
+        $nutritionPlan->addCustomCheckpoint($customCheckpoint, ['seg-1', 'seg-2', 'seg-3']);
+    }
+
+    public function testAddCustomCheckpointThrowsExceptionForAscentExceedingNextCheckpoint(): void
+    {
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
+
+        // Add checkpoint BEFORE aid station with ascent > aid station's ascent
+        $customCheckpoint = new CustomCheckpoint(
+            id: 'custom-checkpoint-id',
+            name: 'Too Much Ascent',
+            location: 'Location',
+            distanceFromStart: 10000, // Before aid station (25000m)
+            ascentFromStart: 1500, // More than aid station's 1000m - INVALID
+            descentFromStart: 300,
+            cutoff: null,
+            assistanceAllowed: true,
+            nutritionPlan: $nutritionPlan,
+        );
+
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('cumulative ascent');
+        $this->expectExceptionMessage('cannot be greater than next checkpoint');
+
+        $nutritionPlan->addCustomCheckpoint($customCheckpoint, ['seg-1', 'seg-2', 'seg-3']);
+    }
+
+    public function testUpdateCheckpointValidatesConsistency(): void
+    {
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
+
+        // First add a valid custom checkpoint
+        $customCheckpoint = new CustomCheckpoint(
+            id: 'custom-checkpoint-id',
+            name: 'Custom Point',
+            location: 'Custom Location',
+            distanceFromStart: 10000,
+            ascentFromStart: 500,
+            descentFromStart: 400,
+            cutoff: null,
+            assistanceAllowed: true,
+            nutritionPlan: $nutritionPlan,
+        );
+        $nutritionPlan->addCustomCheckpoint($customCheckpoint, ['seg-1', 'seg-2', 'seg-3']);
+
+        // Try to update with invalid ascent (less than start's 0, which is impossible, but let's try > next checkpoint)
+        $this->expectException(\DomainException::class);
+        $this->expectExceptionMessage('cumulative ascent');
+
+        $nutritionPlan->updateCheckpoint(
+            checkpointId: 'custom-checkpoint-id',
+            name: 'Updated Name',
+            location: 'Updated Location',
+            distanceFromStart: 10000,
+            ascentFromStart: 1500, // More than aid station's 1000m - INVALID
+            descentFromStart: 400,
+            cutoff: null,
+            assistanceAllowed: true,
+            segmentIds: ['seg-1', 'seg-2', 'seg-3'],
+        );
+    }
+
+    public function testAddCustomCheckpointSucceedsWithValidElevation(): void
+    {
+        $nutritionPlan = new NutritionPlanTestFixture()->build();
+
+        // Add checkpoint with valid progressive elevation
+        $customCheckpoint = new CustomCheckpoint(
+            id: 'custom-checkpoint-id',
+            name: 'Valid Point',
+            location: 'Location',
+            distanceFromStart: 30000, // Between aid station (25000) and finish (50000)
+            ascentFromStart: 1500, // Between 1000 and 2000 - VALID
+            descentFromStart: 1100, // Between 750 and 1500 - VALID
+            cutoff: null,
+            assistanceAllowed: true,
+            nutritionPlan: $nutritionPlan,
+        );
+
+        $nutritionPlan->addCustomCheckpoint($customCheckpoint, ['seg-1', 'seg-2', 'seg-3']);
+
+        $this->assertCount(3, $nutritionPlan->getSegments());
+    }
 }

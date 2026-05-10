@@ -2,8 +2,8 @@
 
 namespace App\Tests\Unit\Fixture;
 
-use App\Domain\NutritionPlan\Entity\ImportedCheckpoint;
 use App\Domain\NutritionPlan\Entity\CheckpointType;
+use App\Domain\NutritionPlan\Entity\ImportedCheckpoint;
 use App\Domain\NutritionPlan\Entity\ImportedRace;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Domain\NutritionPlan\ValueObject\Cutoff;
@@ -201,14 +201,14 @@ final class NutritionPlanTestFixture
 
         for ($i = 0; $i < $checkpointCount; ++$i) {
             $distanceFromStart = (int) (($distance / ($checkpointCount - 1)) * $i);
-            
+
             $type = CheckpointType::AidStation;
             if (0 === $i) {
                 $type = CheckpointType::StartCheckpoint;
             } elseif ($i === $checkpointCount - 1) {
                 $type = CheckpointType::FinishCheckpoint;
             }
-            
+
             $checkpoint = new ImportedCheckpoint(
                 'checkpoint-'.$i,
                 0 === $i ? 'start' : ($i === $checkpointCount - 1 ? 'finish' : 'cp-'.$i),

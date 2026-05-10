@@ -8,7 +8,7 @@ use App\Domain\NutritionPlan\Entity\Segment;
 final readonly class NutritionPlanReadModel
 {
     /**
-     * @param SegmentReadModel[] $segments
+     * @param SegmentReadModel[]    $segments
      * @param CheckpointReadModel[] $checkpoints
      */
     public function __construct(
