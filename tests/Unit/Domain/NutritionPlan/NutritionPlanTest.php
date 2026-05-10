@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Domain\NutritionPlan;
 
-use App\Domain\NutritionPlan\Entity\Checkpoint;
-use App\Domain\NutritionPlan\Entity\CheckpointType;
+use App\Domain\NutritionPlan\Entity\CustomCheckpoint;
 use App\Domain\NutritionPlan\Entity\NutritionItem;
 use App\Domain\NutritionPlan\Entity\Quantity;
 use App\Domain\NutritionPlan\Entity\Segment;
@@ -68,9 +67,8 @@ final class NutritionPlanTest extends TestCase
 
         $initialSegmentCount = $nutritionPlan->getSegments()->count();
 
-        $customCheckpoint = new Checkpoint(
+        $customCheckpoint = new CustomCheckpoint(
             id: 'custom-checkpoint-id',
-            externalId: null, // Custom checkpoints have null externalId
             name: 'Custom Point',
             location: 'Custom Location',
             distanceFromStart: 10000, // Somewhere between start (0) and aid station (25000)
@@ -78,8 +76,7 @@ final class NutritionPlanTest extends TestCase
             descentFromStart: 400,
             cutoff: null,
             assistanceAllowed: true,
-            importedRace: $nutritionPlan->race,
-            type: CheckpointType::Intermediate
+            nutritionPlan: $nutritionPlan,
         );
 
         // After adding checkpoint, we'll have 4 checkpoints = 3 segments
@@ -88,36 +85,12 @@ final class NutritionPlanTest extends TestCase
         $this->assertCount($initialSegmentCount + 1, $nutritionPlan->getSegments());
     }
 
-    public function testAddCustomCheckpointThrowsExceptionForNonCustomCheckpoint(): void
-    {
-        $nutritionPlan = new NutritionPlanTestFixture()->build();
-
-        $nonCustomCheckpoint = new Checkpoint(
-            'checkpoint-id',
-            'external-id', // Non-null = not custom
-            'Point',
-            'Location',
-            10000,
-            500,
-            400,
-            null,
-            true,
-            $nutritionPlan->race,
-        );
-
-        $this->expectException(\DomainException::class);
-        $this->expectExceptionMessage('Checkpoint must be custom');
-
-        $nutritionPlan->addCustomCheckpoint($nonCustomCheckpoint, ['seg-1', 'seg-2', 'seg-3']);
-    }
-
     public function testAddCustomCheckpointThrowsExceptionForDuplicateDistance(): void
     {
         $nutritionPlan = new NutritionPlanTestFixture()->build();
 
-        $customCheckpoint = new Checkpoint(
+        $customCheckpoint = new CustomCheckpoint(
             id: 'custom-checkpoint-id',
-            externalId: null,
             name: 'Custom Point',
             location: 'Custom Location',
             distanceFromStart: 25000, // Same distance as existing aid station
@@ -125,8 +98,7 @@ final class NutritionPlanTest extends TestCase
             descentFromStart: 750,
             cutoff: null,
             assistanceAllowed: true,
-            importedRace: $nutritionPlan->race,
-            type: CheckpointType::Intermediate
+            nutritionPlan: $nutritionPlan,
         );
 
         $this->expectException(\DomainException::class);
@@ -139,19 +111,17 @@ final class NutritionPlanTest extends TestCase
     {
         $nutritionPlan = new NutritionPlanTestFixture()->build();
 
-        // First add a custom checkpoint (INTERMEDIATE type)
-        $customCheckpoint = new Checkpoint(
-            'custom-checkpoint-id',
-            null,
-            'Custom Point',
-            'Custom Location',
-            10000,
-            500,
-            400,
-            null,
-            true,
-            $nutritionPlan->race,
-            CheckpointType::Intermediate,
+        // First add a custom checkpoint
+        $customCheckpoint = new CustomCheckpoint(
+            id: 'custom-checkpoint-id',
+            name: 'Custom Point',
+            location: 'Custom Location',
+            distanceFromStart: 10000,
+            ascentFromStart: 500,
+            descentFromStart: 400,
+            cutoff: null,
+            assistanceAllowed: true,
+            nutritionPlan: $nutritionPlan,
         );
         $nutritionPlan->addCustomCheckpoint($customCheckpoint, ['seg-1', 'seg-2', 'seg-3']);
 
@@ -178,7 +148,7 @@ final class NutritionPlanTest extends TestCase
         $nutritionPlan = new NutritionPlanTestFixture()->build();
 
         $this->expectException(\DomainException::class);
-        $this->expectExceptionMessage('Cannot remove a non-editable checkpoint');
+        $this->expectExceptionMessage('Cannot remove imported checkpoints');
 
         // Try to remove an imported checkpoint (start)
         $nutritionPlan->removeCheckpoint('start-checkpoint-id', ['seg-1', 'seg-2']);
@@ -202,13 +172,12 @@ final class NutritionPlanTest extends TestCase
         );
         $segment->addNutritionItem($nutritionItem);
 
-        $startCheckpointId = $segment->startCheckpoint->id;
-        $endCheckpointId = $segment->endCheckpoint->id;
+        $startCheckpointId = $segment->startCheckpoint->getId();
+        $endCheckpointId = $segment->endCheckpoint->getId();
 
         // Add a custom checkpoint somewhere else (should not affect first segment)
-        $customCheckpoint = new Checkpoint(
+        $customCheckpoint = new CustomCheckpoint(
             id: 'custom-id',
-            externalId: null,
             name: 'Custom',
             location: 'Location',
             distanceFromStart: 30000, // After aid station (25000) but before finish (50000)
@@ -216,14 +185,13 @@ final class NutritionPlanTest extends TestCase
             descentFromStart: 900,
             cutoff: null,
             assistanceAllowed: true,
-            importedRace: $nutritionPlan->race,
-            type: CheckpointType::Intermediate
+            nutritionPlan: $nutritionPlan,
         );
         $nutritionPlan->addCustomCheckpoint($customCheckpoint, ['seg-1', 'seg-2', 'seg-3']);
 
         // Find the segment with same checkpoints
         $segments = $nutritionPlan->getSegments()->filter(
-            static fn (Segment $s) => $s->startCheckpoint->id === $startCheckpointId && $s->endCheckpoint->id === $endCheckpointId
+            static fn (Segment $s) => $s->startCheckpoint->getId() === $startCheckpointId && $s->endCheckpoint->getId() === $endCheckpointId
         );
 
         $this->assertCount(1, $segments);

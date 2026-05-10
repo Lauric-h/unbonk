@@ -5,7 +5,7 @@ namespace App\Application\NutritionPlan\Factory;
 use App\Application\Shared\IdGeneratorInterface;
 use App\Domain\NutritionPlan\DTO\ExternalAidStationDTO;
 use App\Domain\NutritionPlan\DTO\ExternalRaceDTO;
-use App\Domain\NutritionPlan\Entity\Checkpoint;
+use App\Domain\NutritionPlan\Entity\ImportedCheckpoint;
 use App\Domain\NutritionPlan\Entity\CheckpointType;
 use App\Domain\NutritionPlan\Entity\ImportedRace;
 use App\Domain\NutritionPlan\ValueObject\Cutoff;
@@ -32,7 +32,7 @@ final readonly class ImportedRaceFactory
             $externalRace->startLocation,
         );
 
-        $startCheckpoint = new Checkpoint(
+        $startCheckpoint = new ImportedCheckpoint(
             $this->idGenerator->generate(),
             'start',
             'Start',
@@ -52,7 +52,7 @@ final readonly class ImportedRaceFactory
             $importedRace->addCheckpoint($checkpoint);
         }
 
-        $finishCheckpoint = new Checkpoint(
+        $finishCheckpoint = new ImportedCheckpoint(
             $this->idGenerator->generate(),
             'finish',
             'Finish',
@@ -70,13 +70,13 @@ final readonly class ImportedRaceFactory
         return $importedRace;
     }
 
-    private function createCheckpointFromAidStation(ExternalAidStationDTO $aidStation, ImportedRace $importedRace): Checkpoint
+    private function createCheckpointFromAidStation(ExternalAidStationDTO $aidStation, ImportedRace $importedRace): ImportedCheckpoint
     {
         $cutoff = null !== $aidStation->cutoffTime
             ? new Cutoff($aidStation->cutoffTime)
             : null;
 
-        return new Checkpoint(
+        return new ImportedCheckpoint(
             $this->idGenerator->generate(),
             $aidStation->id,
             $aidStation->name,

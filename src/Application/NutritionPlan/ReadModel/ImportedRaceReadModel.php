@@ -2,7 +2,7 @@
 
 namespace App\Application\NutritionPlan\ReadModel;
 
-use App\Domain\NutritionPlan\Entity\Checkpoint;
+use App\Domain\NutritionPlan\Entity\CheckpointInterface;
 use App\Domain\NutritionPlan\Entity\ImportedRace;
 
 final readonly class ImportedRaceReadModel
@@ -37,7 +37,7 @@ final readonly class ImportedRaceReadModel
             startDateTime: $importedRace->startDateTime,
             location: $importedRace->location,
             checkpoints: array_map(
-                static fn (Checkpoint $checkpoint) => CheckpointReadModel::fromCheckpoint($checkpoint),
+                static fn (CheckpointInterface $checkpoint) => CheckpointReadModel::fromCheckpoint($checkpoint),
                 $importedRace->getCheckpoints()->toArray()
             ),
         );

@@ -1,20 +1,27 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\NutritionPlan\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
+/**
+ * ImportedRace represents race data imported from an external source.
+ * It contains only official/imported checkpoints and is quasi-immutable.
+ * Custom checkpoints belong to individual NutritionPlans.
+ */
 class ImportedRace
 {
-    /** @var Collection<int, Checkpoint> */
+    /** @var Collection<int, ImportedCheckpoint> */
     private Collection $checkpoints;
 
     /** @var Collection<int, NutritionPlan> */
     private Collection $nutritionPlans;
 
     /**
-     * @param Collection<int, Checkpoint>|null $checkpoints
+     * @param Collection<int, ImportedCheckpoint>|null $checkpoints
      */
     public function __construct(
         public string $id,
@@ -33,53 +40,51 @@ class ImportedRace
         $this->nutritionPlans = new ArrayCollection();
     }
 
-    public function addCheckpoint(Checkpoint $checkpoint): void
+    /**
+     * Add an imported checkpoint to the race.
+     * This should only be used during race import/creation.
+     */
+    public function addCheckpoint(ImportedCheckpoint $checkpoint): void
     {
         if (!$this->checkpoints->contains($checkpoint)) {
             $this->checkpoints->add($checkpoint);
         }
     }
 
-    public function removeCheckpoint(Checkpoint $checkpoint): void
-    {
-        if (!$checkpoint->isEditable()) {
-            throw new \DomainException('Cannot remove imported checkpoint, only custom checkpoints can be removed');
-        }
-
-        $this->checkpoints->removeElement($checkpoint);
-        $this->sortCheckpointsByDistance();
-    }
-
     /**
-     * @return Collection<int, Checkpoint>
+     * Get all imported checkpoints (official checkpoints from external source).
+     *
+     * @return Collection<int, ImportedCheckpoint>
      */
     public function getCheckpoints(): Collection
     {
         return $this->checkpoints;
     }
 
-    public function getCheckpointById(string $checkpointId): ?Checkpoint
+    /**
+     * Get an imported checkpoint by its ID.
+     */
+    public function getCheckpointById(string $checkpointId): ?ImportedCheckpoint
     {
         return $this->checkpoints->findFirst(
-            static fn (int $key, Checkpoint $checkpoint) => $checkpoint->id === $checkpointId
+            static fn (int $key, ImportedCheckpoint $checkpoint) => $checkpoint->id === $checkpointId
         );
     }
 
-    public function getCheckpointAtDistance(int $distance): ?Checkpoint
+    /**
+     * Get the start checkpoint (distance = 0).
+     */
+    public function getStartCheckpoint(): ?ImportedCheckpoint
     {
         return $this->checkpoints->findFirst(
-            static fn (int $key, Checkpoint $checkpoint) => $checkpoint->distanceFromStart === $distance
+            static fn (int $key, ImportedCheckpoint $checkpoint) => 0 === $checkpoint->distanceFromStart
         );
     }
 
-    public function getStartCheckpoint(): ?Checkpoint
-    {
-        return $this->checkpoints->findFirst(
-            static fn (int $key, Checkpoint $checkpoint) => 0 === $checkpoint->distanceFromStart
-        );
-    }
-
-    public function getFinishCheckpoint(): ?Checkpoint
+    /**
+     * Get the finish checkpoint (last one by distance).
+     */
+    public function getFinishCheckpoint(): ?ImportedCheckpoint
     {
         $checkpoints = $this->checkpoints->toArray();
         if (0 === \count($checkpoints)) {
@@ -87,17 +92,6 @@ class ImportedRace
         }
 
         return $checkpoints[\count($checkpoints) - 1];
-    }
-
-    public function sortCheckpointsByDistance(): void
-    {
-        $checkpoints = $this->checkpoints->toArray();
-        usort($checkpoints, static fn (Checkpoint $a, Checkpoint $b) => $a->distanceFromStart <=> $b->distanceFromStart);
-
-        $this->checkpoints->clear();
-        foreach ($checkpoints as $checkpoint) {
-            $this->checkpoints->add($checkpoint);
-        }
     }
 
     /**

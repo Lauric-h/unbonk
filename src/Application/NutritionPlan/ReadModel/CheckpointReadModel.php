@@ -2,7 +2,7 @@
 
 namespace App\Application\NutritionPlan\ReadModel;
 
-use App\Domain\NutritionPlan\Entity\Checkpoint;
+use App\Domain\NutritionPlan\Entity\CheckpointInterface;
 
 final readonly class CheckpointReadModel
 {
@@ -17,22 +17,37 @@ final readonly class CheckpointReadModel
         public ?int $cutoffInMinutes,
         public bool $assistanceAllowed,
         public string $type,
+        public bool $isEditable,
     ) {
     }
 
-    public static function fromCheckpoint(Checkpoint $checkpoint): self
+    public static function fromCheckpoint(CheckpointInterface $checkpoint): self
     {
+        // For imported checkpoints, externalId exists
+        // For custom checkpoints, it doesn't (they don't have an externalId property)
+        $externalId = null;
+        if (method_exists($checkpoint, 'externalId')) {
+            $externalId = $checkpoint->externalId;
+        }
+
+        // Get cutoff in minutes based on checkpoint type
+        $cutoffInMinutes = null;
+        if (method_exists($checkpoint, 'getCutoffInMinutes')) {
+            $cutoffInMinutes = $checkpoint->getCutoffInMinutes();
+        }
+
         return new self(
-            id: $checkpoint->id,
-            externalId: $checkpoint->externalId,
-            name: $checkpoint->name,
-            location: $checkpoint->location,
-            distanceFromStart: $checkpoint->distanceFromStart,
-            ascentFromStart: $checkpoint->ascentFromStart,
-            descentFromStart: $checkpoint->descentFromStart,
-            cutoffInMinutes: $checkpoint->getCutoffInMinutes(),
-            assistanceAllowed: $checkpoint->assistanceAllowed,
-            type: $checkpoint->type->value,
+            id: $checkpoint->getId(),
+            externalId: $externalId,
+            name: $checkpoint->getName(),
+            location: $checkpoint->getLocation(),
+            distanceFromStart: $checkpoint->getDistanceFromStart(),
+            ascentFromStart: $checkpoint->getAscentFromStart(),
+            descentFromStart: $checkpoint->getDescentFromStart(),
+            cutoffInMinutes: $cutoffInMinutes,
+            assistanceAllowed: $checkpoint->isAssistanceAllowed(),
+            type: $checkpoint->getType()->value,
+            isEditable: $checkpoint->isEditable(),
         );
     }
 }

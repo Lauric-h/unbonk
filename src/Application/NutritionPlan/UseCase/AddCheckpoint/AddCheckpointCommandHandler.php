@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace App\Application\NutritionPlan\UseCase\AddCheckpoint;
 
 use App\Application\Shared\IdGeneratorInterface;
-use App\Domain\NutritionPlan\Entity\Checkpoint;
-use App\Domain\NutritionPlan\Entity\CheckpointType;
+use App\Domain\NutritionPlan\Entity\CustomCheckpoint;
 use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
 use App\Domain\NutritionPlan\ValueObject\Cutoff;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
@@ -27,9 +26,8 @@ final readonly class AddCheckpointCommandHandler implements CommandHandlerInterf
             ? new Cutoff($command->cutoffTime)
             : null;
 
-        $checkpoint = new Checkpoint(
+        $checkpoint = new CustomCheckpoint(
             id: $this->idGenerator->generate(),
-            externalId: null,
             name: $command->name,
             location: $command->location,
             distanceFromStart: $command->distanceFromStart,
@@ -37,11 +35,11 @@ final readonly class AddCheckpointCommandHandler implements CommandHandlerInterf
             descentFromStart: $command->descentFromStart,
             cutoff: $cutoff,
             assistanceAllowed: $command->assistanceAllowed,
-            importedRace: $nutritionPlan->race,
-            type: CheckpointType::Intermediate,
+            nutritionPlan: $nutritionPlan,
         );
 
-        $checkpointCount = $nutritionPlan->race->getCheckpoints()->count() + 1;
+        // Calculate the number of segments needed after adding the checkpoint
+        $checkpointCount = \count($nutritionPlan->getAllCheckpoints()) + 1;
         $segmentIds = [];
         for ($i = 0; $i < $checkpointCount - 1; ++$i) {
             $segmentIds[] = $this->idGenerator->generate();

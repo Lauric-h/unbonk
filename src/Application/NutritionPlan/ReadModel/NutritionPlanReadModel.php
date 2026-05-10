@@ -9,6 +9,7 @@ final readonly class NutritionPlanReadModel
 {
     /**
      * @param SegmentReadModel[] $segments
+     * @param CheckpointReadModel[] $checkpoints
      */
     public function __construct(
         public string $id,
@@ -16,6 +17,7 @@ final readonly class NutritionPlanReadModel
         public string $runnerId,
         public ImportedRaceReadModel $race,
         public array $segments = [],
+        public array $checkpoints = [],
         public int $totalCarbs = 0,
     ) {
     }
@@ -26,7 +28,11 @@ final readonly class NutritionPlanReadModel
             static fn (Segment $segment) => SegmentReadModel::fromSegment($segment),
             $nutritionPlan->getSegments()->toArray()
         );
-        dd('la');
+
+        $checkpoints = array_map(
+            static fn ($checkpoint) => CheckpointReadModel::fromCheckpoint($checkpoint),
+            $nutritionPlan->getAllCheckpoints()
+        );
 
         $totalCarbs = array_reduce(
             $segments,
@@ -40,6 +46,7 @@ final readonly class NutritionPlanReadModel
             runnerId: $nutritionPlan->race->runnerId,
             race: ImportedRaceReadModel::fromImportedRace($nutritionPlan->race),
             segments: $segments,
+            checkpoints: $checkpoints,
             totalCarbs: $totalCarbs,
         );
     }
