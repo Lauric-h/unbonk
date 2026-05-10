@@ -2,7 +2,7 @@
 
 namespace App\Application\NutritionPlan\ReadModel;
 
-use App\Domain\NutritionPlan\Entity\Checkpoint;
+use App\Domain\NutritionPlan\Entity\CheckpointInterface;
 use App\Domain\NutritionPlan\Entity\ImportedRace;
 
 final readonly class ImportedRaceReadModel
@@ -27,17 +27,17 @@ final readonly class ImportedRaceReadModel
     public static function fromImportedRace(ImportedRace $importedRace): self
     {
         return new self(
-            $importedRace->id,
-            $importedRace->externalRaceId,
-            $importedRace->externalEventId,
-            $importedRace->name,
-            $importedRace->distance,
-            $importedRace->ascent,
-            $importedRace->descent,
-            $importedRace->startDateTime,
-            $importedRace->location,
-            array_map(
-                static fn (Checkpoint $checkpoint) => CheckpointReadModel::fromCheckpoint($checkpoint),
+            id: $importedRace->id,
+            externalRaceId: $importedRace->externalRaceId,
+            externalEventId: $importedRace->externalEventId,
+            name: $importedRace->name,
+            distance: $importedRace->distance,
+            ascent: $importedRace->ascent,
+            descent: $importedRace->descent,
+            startDateTime: $importedRace->startDateTime,
+            location: $importedRace->location,
+            checkpoints: array_map(
+                static fn (CheckpointInterface $checkpoint) => CheckpointReadModel::fromCheckpoint($checkpoint),
                 $importedRace->getCheckpoints()->toArray()
             ),
         );

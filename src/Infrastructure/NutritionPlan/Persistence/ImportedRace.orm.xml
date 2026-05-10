@@ -16,7 +16,7 @@
         <field name="startDateTime" type="datetime_immutable" column="start_date_time"/>
         <field name="location" type="string"/>
 
-        <one-to-many field="checkpoints" target-entity="App\Domain\NutritionPlan\Entity\Checkpoint" orphan-removal="true" mapped-by="importedRace">
+        <one-to-many field="checkpoints" target-entity="App\Domain\NutritionPlan\Entity\ImportedCheckpoint" orphan-removal="true" mapped-by="importedRace">
             <cascade>
                 <cascade-persist/>
                 <cascade-remove/>

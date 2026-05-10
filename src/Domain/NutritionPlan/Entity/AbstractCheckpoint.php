@@ -1,16 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\NutritionPlan\Entity;
 
 use App\Domain\NutritionPlan\ValueObject\Cutoff;
 
-class Checkpoint
+/**
+ * Base abstract class for all checkpoint types.
+ * This is needed for Doctrine ORM's Single Table Inheritance.
+ */
+abstract class AbstractCheckpoint implements CheckpointInterface
 {
-    private ?\DateTimeImmutable $cutoffTime;
+    protected ?\DateTimeImmutable $cutoffTime;
 
     public function __construct(
         public string $id,
-        public ?string $externalId,
         public string $name,
         public string $location,
         public int $distanceFromStart,
@@ -18,10 +23,39 @@ class Checkpoint
         public int $descentFromStart,
         ?Cutoff $cutoff,
         public bool $assistanceAllowed,
-        public ImportedRace $importedRace,
     ) {
         $this->cutoffTime = $cutoff?->dateTime;
         $this->validate();
+    }
+
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getLocation(): string
+    {
+        return $this->location;
+    }
+
+    public function getDistanceFromStart(): int
+    {
+        return $this->distanceFromStart;
+    }
+
+    public function getAscentFromStart(): int
+    {
+        return $this->ascentFromStart;
+    }
+
+    public function getDescentFromStart(): int
+    {
+        return $this->descentFromStart;
     }
 
     public function getCutoff(): ?Cutoff
@@ -33,19 +67,16 @@ class Checkpoint
         return new Cutoff($this->cutoffTime);
     }
 
-    public function isCustom(): bool
+    public function isAssistanceAllowed(): bool
     {
-        return null === $this->externalId;
+        return $this->assistanceAllowed;
     }
 
-    public function getCutoffInMinutes(): ?int
-    {
-        $cutoff = $this->getCutoff();
+    abstract public function getType(): CheckpointType;
 
-        return $cutoff?->getInMinutes($this->importedRace->startDateTime);
-    }
+    abstract public function isEditable(): bool;
 
-    private function validate(): void
+    protected function validate(): void
     {
         if ($this->distanceFromStart < 0) {
             throw new \DomainException(\sprintf('Distance from start cannot be negative: %d', $this->distanceFromStart));

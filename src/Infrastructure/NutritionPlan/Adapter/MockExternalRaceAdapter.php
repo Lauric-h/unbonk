@@ -6,6 +6,7 @@ use App\Domain\NutritionPlan\DTO\ExternalAidStationDTO;
 use App\Domain\NutritionPlan\DTO\ExternalEventDTO;
 use App\Domain\NutritionPlan\DTO\ExternalRaceDTO;
 use App\Domain\NutritionPlan\Port\ExternalRacePort;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * Mock implementation of ExternalRacePort for development/testing.
@@ -20,7 +21,7 @@ final class MockExternalRaceAdapter implements ExternalRacePort
     {
         $events = [];
         for ($i = 0; $i < 5; ++$i) {
-            $events[] = $this->getEvent('id'.$i);
+            $events[] = $this->getEvent(Uuid::v4()->toRfc4122());
         }
 
         return $events;
@@ -31,7 +32,7 @@ final class MockExternalRaceAdapter implements ExternalRacePort
         $aidStations = [];
         for ($i = 0; $i < 5; ++$i) {
             $aidStations[] = new ExternalAidStationDTO(
-                id: 'id'.$i,
+                id: Uuid::v4()->toRfc4122(),
                 name: 'CP'.$i,
                 location: 'Arnouvaz',
                 distanceFromStart: 10,
@@ -45,7 +46,7 @@ final class MockExternalRaceAdapter implements ExternalRacePort
         $races = [];
         for ($i = 0; $i < 3; ++$i) {
             $races[] = new ExternalRaceDTO(
-                id: 'id'.$i,
+                id: Uuid::v4()->toRfc4122(),
                 eventId: $eventId,
                 name: 'UTMB'.$i,
                 distance: 1000,
@@ -77,9 +78,9 @@ final class MockExternalRaceAdapter implements ExternalRacePort
         $aidStations = [];
         for ($i = 0; $i < 5; ++$i) {
             $aidStations[] = new ExternalAidStationDTO(
-                id: 'id'.$i,
+                id: Uuid::v4()->toRfc4122(),
                 name: 'CP'.$i,
-                location: 'Arnouvaz',
+                location: 'Col du Granon',
                 distanceFromStart: 10,
                 ascentFromStart: 100,
                 descentFromStart: 200,
@@ -91,14 +92,14 @@ final class MockExternalRaceAdapter implements ExternalRacePort
         return new ExternalRaceDTO(
             id: $raceId,
             eventId: 'eventid',
-            name: 'CCC',
-            distance: 100,
-            ascent: 6000,
-            descent: 6000,
+            name: 'Serre Che Trail',
+            distance: 60,
+            ascent: 4000,
+            descent: 4000,
             startDateTime: new \DateTimeImmutable(),
             url: null,
-            startLocation: 'Courmayeur',
-            finishLocation: 'Chamonix',
+            startLocation: 'Serre Chevalier',
+            finishLocation: 'Serre Chevalier',
             aidStations: $aidStations,
         );
     }

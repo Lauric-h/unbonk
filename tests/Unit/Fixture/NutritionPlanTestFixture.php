@@ -2,7 +2,8 @@
 
 namespace App\Tests\Unit\Fixture;
 
-use App\Domain\NutritionPlan\Entity\Checkpoint;
+use App\Domain\NutritionPlan\Entity\CheckpointType;
+use App\Domain\NutritionPlan\Entity\ImportedCheckpoint;
 use App\Domain\NutritionPlan\Entity\ImportedRace;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Domain\NutritionPlan\ValueObject\Cutoff;
@@ -49,7 +50,7 @@ final class NutritionPlanTestFixture
             $segmentIds[] = 'segment-id-'.$this->segmentIdCounter++;
         }
 
-        return NutritionPlan::createFromRace(
+        return NutritionPlan::createFromImportedRace(
             $this->id,
             $importedRace,
             $segmentIds,
@@ -71,7 +72,7 @@ final class NutritionPlanTestFixture
             'Mountain Town',
         );
 
-        $startCheckpoint = new Checkpoint(
+        $startCheckpoint = new ImportedCheckpoint(
             'start-checkpoint-id',
             'start',
             'Start',
@@ -82,10 +83,11 @@ final class NutritionPlanTestFixture
             null,
             false,
             $importedRace,
+            CheckpointType::StartCheckpoint,
         );
         $importedRace->addCheckpoint($startCheckpoint);
 
-        $aidStation = new Checkpoint(
+        $aidStation = new ImportedCheckpoint(
             'aid-station-id',
             'aid-1',
             'Aid Station 1',
@@ -96,10 +98,11 @@ final class NutritionPlanTestFixture
             new Cutoff(new \DateTimeImmutable('2024-06-01 12:00:00')),
             true,
             $importedRace,
+            CheckpointType::AidStation,
         );
         $importedRace->addCheckpoint($aidStation);
 
-        $finishCheckpoint = new Checkpoint(
+        $finishCheckpoint = new ImportedCheckpoint(
             'finish-checkpoint-id',
             'finish',
             'Finish',
@@ -110,6 +113,7 @@ final class NutritionPlanTestFixture
             null,
             false,
             $importedRace,
+            CheckpointType::FinishCheckpoint,
         );
         $importedRace->addCheckpoint($finishCheckpoint);
 
@@ -131,7 +135,7 @@ final class NutritionPlanTestFixture
             'Mountain Town',
         );
 
-        $startCheckpoint = new Checkpoint(
+        $startCheckpoint = new ImportedCheckpoint(
             'start-checkpoint-id',
             'start',
             'Start',
@@ -142,10 +146,11 @@ final class NutritionPlanTestFixture
             null,
             false,
             $importedRace,
+            CheckpointType::StartCheckpoint,
         );
         $importedRace->addCheckpoint($startCheckpoint);
 
-        $aidStation = new Checkpoint(
+        $aidStation = new ImportedCheckpoint(
             'aid-station-id',
             'aid-1',
             'Aid Station 1',
@@ -156,10 +161,11 @@ final class NutritionPlanTestFixture
             new Cutoff(new \DateTimeImmutable('2024-06-01 12:00:00')),
             true,
             $importedRace,
+            CheckpointType::AidStation,
         );
         $importedRace->addCheckpoint($aidStation);
 
-        $finishCheckpoint = new Checkpoint(
+        $finishCheckpoint = new ImportedCheckpoint(
             'finish-checkpoint-id',
             'finish',
             'Finish',
@@ -170,6 +176,7 @@ final class NutritionPlanTestFixture
             null,
             false,
             $importedRace,
+            CheckpointType::FinishCheckpoint,
         );
         $importedRace->addCheckpoint($finishCheckpoint);
 
@@ -194,7 +201,15 @@ final class NutritionPlanTestFixture
 
         for ($i = 0; $i < $checkpointCount; ++$i) {
             $distanceFromStart = (int) (($distance / ($checkpointCount - 1)) * $i);
-            $checkpoint = new Checkpoint(
+
+            $type = CheckpointType::AidStation;
+            if (0 === $i) {
+                $type = CheckpointType::StartCheckpoint;
+            } elseif ($i === $checkpointCount - 1) {
+                $type = CheckpointType::FinishCheckpoint;
+            }
+
+            $checkpoint = new ImportedCheckpoint(
                 'checkpoint-'.$i,
                 0 === $i ? 'start' : ($i === $checkpointCount - 1 ? 'finish' : 'cp-'.$i),
                 0 === $i ? 'Start' : ($i === $checkpointCount - 1 ? 'Finish' : 'Checkpoint '.$i),
@@ -205,6 +220,7 @@ final class NutritionPlanTestFixture
                 null,
                 $i > 0 && $i < $checkpointCount - 1,
                 $importedRace,
+                $type,
             );
             $importedRace->addCheckpoint($checkpoint);
         }

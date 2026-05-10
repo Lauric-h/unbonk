@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\UI\Http\Rest\NutritionPlan\Controller;
 
-use App\Application\NutritionPlan\UseCase\GetNutritionPlan\GetNutritionPlanQuery;
+use App\Application\NutritionPlan\UseCase\RemoveCheckpoint\RemoveCheckpointCommand;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
-use App\Infrastructure\Shared\Bus\QueryBus;
+use App\Infrastructure\Shared\Bus\CommandBus;
 use App\Infrastructure\User\Security\UserAdapter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -13,23 +15,23 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/nutrition-plans/{nutritionPlanId}', name: 'api.nutrition_plan.get', methods: ['GET'])]
-final class GetNutritionPlanController extends AbstractController
+#[Route('/nutrition-plans/{nutritionPlanId}/checkpoints/{checkpointId}', name: 'api.nutrition_plan.remove_checkpoint', methods: ['DELETE'])]
+final class RemoveCheckpointController extends AbstractController
 {
     public function __construct(
-        private readonly QueryBus $queryBus,
+        private readonly CommandBus $commandBus,
     ) {
     }
 
-    #[IsGranted('VIEW', subject: 'nutritionPlan')]
+    #[IsGranted('EDIT', subject: 'nutritionPlan')]
     public function __invoke(
         NutritionPlan $nutritionPlan,
+        string $checkpointId,
         #[CurrentUser]
         UserAdapter $userAdapter
     ): JsonResponse {
-        return new JsonResponse(
-            $this->queryBus->query(new GetNutritionPlanQuery($nutritionPlan->id)),
-            Response::HTTP_OK
-        );
+        $this->commandBus->dispatch(new RemoveCheckpointCommand($nutritionPlan->id, $checkpointId));
+
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 }

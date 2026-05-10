@@ -8,7 +8,8 @@ use App\Domain\NutritionPlan\Entity\Segment;
 final readonly class NutritionPlanReadModel
 {
     /**
-     * @param SegmentReadModel[] $segments
+     * @param SegmentReadModel[]    $segments
+     * @param CheckpointReadModel[] $checkpoints
      */
     public function __construct(
         public string $id,
@@ -16,17 +17,37 @@ final readonly class NutritionPlanReadModel
         public string $runnerId,
         public ImportedRaceReadModel $race,
         public array $segments = [],
+        public array $checkpoints = [],
+        public int $totalCarbs = 0,
     ) {
     }
 
     public static function fromNutritionPlan(NutritionPlan $nutritionPlan): self
     {
+        $segments = array_map(
+            static fn (Segment $segment) => SegmentReadModel::fromSegment($segment),
+            $nutritionPlan->getSegments()->toArray()
+        );
+
+        $checkpoints = array_map(
+            static fn ($checkpoint) => CheckpointReadModel::fromCheckpoint($checkpoint),
+            $nutritionPlan->getAllCheckpoints()
+        );
+
+        $totalCarbs = array_reduce(
+            $segments,
+            static fn (int $carry, SegmentReadModel $segment) => $carry + $segment->totalCarbs,
+            0
+        );
+
         return new self(
-            $nutritionPlan->id,
-            $nutritionPlan->name,
-            $nutritionPlan->race->runnerId,
-            ImportedRaceReadModel::fromImportedRace($nutritionPlan->race),
-            array_map(static fn (Segment $segment) => SegmentReadModel::fromSegment($segment), $nutritionPlan->getSegments()->toArray()),
+            id: $nutritionPlan->id,
+            name: $nutritionPlan->name,
+            runnerId: $nutritionPlan->race->runnerId,
+            race: ImportedRaceReadModel::fromImportedRace($nutritionPlan->race),
+            segments: $segments,
+            checkpoints: $checkpoints,
+            totalCarbs: $totalCarbs,
         );
     }
 }

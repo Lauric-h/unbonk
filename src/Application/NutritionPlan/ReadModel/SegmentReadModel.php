@@ -19,20 +19,33 @@ final class SegmentReadModel
         public int $ascent,
         public int $descent,
         public array $nutritionItems = [],
+        public int $totalCarbs = 0,
     ) {
     }
 
     public static function fromSegment(Segment $segment): self
     {
+        $nutritionItems = array_map(
+            static fn (NutritionItem $nutritionItem) => NutritionItemReadModel::fromNutritionItem($nutritionItem),
+            $segment->getNutritionItems()->toArray()
+        );
+
+        $totalCarbs = array_reduce(
+            $nutritionItems,
+            static fn (int $carry, NutritionItemReadModel $item) => $carry + ($item->carbs * $item->quantity),
+            0
+        );
+
         return new self(
-            $segment->id,
-            $segment->position,
-            CheckpointReadModel::fromCheckpoint($segment->startCheckpoint),
-            CheckpointReadModel::fromCheckpoint($segment->endCheckpoint),
-            $segment->getDistance()->value,
-            $segment->getAscent()->value,
-            $segment->getDescent()->value,
-            array_map(static fn (NutritionItem $nutritionItem) => NutritionItemReadModel::fromNutritionItem($nutritionItem), $segment->getNutritionItems()->toArray()),
+            id: $segment->id,
+            position: $segment->position,
+            startCheckpoint: CheckpointReadModel::fromCheckpoint($segment->startCheckpoint),
+            endCheckpoint: CheckpointReadModel::fromCheckpoint($segment->endCheckpoint),
+            distance: $segment->getDistance()->value,
+            ascent: $segment->getAscent()->value,
+            descent: $segment->getDescent()->value,
+            nutritionItems: $nutritionItems,
+            totalCarbs: $totalCarbs,
         );
     }
 }
