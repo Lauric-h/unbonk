@@ -20,6 +20,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/nutrition-plans/{nutritionPlanId}/checkpoints', name: 'api.nutrition_plan.add_checkpoint', methods: ['POST'])]
+#[IsGranted('EDIT', subject: 'nutritionPlan')]
 final class AddCheckpointController extends AbstractController
 {
     public function __construct(
@@ -29,7 +30,6 @@ final class AddCheckpointController extends AbstractController
     ) {
     }
 
-    #[IsGranted('EDIT', subject: 'nutritionPlan')]
     public function __invoke(
         NutritionPlan $nutritionPlan,
         Request $request,

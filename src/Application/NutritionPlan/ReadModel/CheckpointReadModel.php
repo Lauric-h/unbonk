@@ -27,7 +27,7 @@ final readonly class CheckpointReadModel
         // For custom checkpoints, it doesn't (they don't have an externalId property)
         $externalId = null;
         if (method_exists($checkpoint, 'externalId')) {
-            $externalId = $checkpoint->externalId;
+            $externalId = $checkpoint->getId();
         }
 
         // Get cutoff in minutes based on checkpoint type

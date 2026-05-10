@@ -19,8 +19,8 @@ class Segment
     public function __construct(
         public string $id,
         public int $position,
-        public CheckpointInterface $startCheckpoint,
-        public CheckpointInterface $endCheckpoint,
+        public AbstractCheckpoint $startCheckpoint,
+        public AbstractCheckpoint $endCheckpoint,
         public NutritionPlan $nutritionPlan,
         ?Collection $nutritionItems = null,
     ) {
@@ -30,20 +30,20 @@ class Segment
     public static function createFromCheckpoints(
         string $id,
         int $position,
-        CheckpointInterface $startCheckpoint,
-        CheckpointInterface $endCheckpoint,
+        AbstractCheckpoint $startCheckpoint,
+        AbstractCheckpoint $endCheckpoint,
         NutritionPlan $nutritionPlan,
     ): self {
         return new self(
-            $id,
-            $position,
-            $startCheckpoint,
-            $endCheckpoint,
-            $nutritionPlan,
+            id: $id,
+            position: $position,
+            startCheckpoint: $startCheckpoint,
+            endCheckpoint: $endCheckpoint,
+            nutritionPlan: $nutritionPlan,
         );
     }
 
-    public function getDistance(): int
+    public function getDistance(): Distance
     {
         return new Distance($this->endCheckpoint->getDistanceFromStart() - $this->startCheckpoint->getDistanceFromStart());
     }

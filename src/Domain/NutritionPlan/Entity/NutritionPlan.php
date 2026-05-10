@@ -58,7 +58,7 @@ class NutritionPlan
     /**
      * Get all checkpoints (imported + custom) sorted by distance.
      *
-     * @return CheckpointInterface[]
+     * @return AbstractCheckpoint[]
      */
     public function getAllCheckpoints(): array
     {
@@ -67,7 +67,7 @@ class NutritionPlan
 
         $allCheckpoints = array_merge($importedCheckpoints, $customCheckpoints);
 
-        usort($allCheckpoints, static fn (CheckpointInterface $a, CheckpointInterface $b) => $a->getDistanceFromStart() <=> $b->getDistanceFromStart());
+        usort($allCheckpoints, static fn (AbstractCheckpoint $a, AbstractCheckpoint $b) => $a->getDistanceFromStart() <=> $b->getDistanceFromStart());
 
         return $allCheckpoints;
     }
@@ -83,7 +83,7 @@ class NutritionPlan
     /**
      * Get a checkpoint by ID (searches both imported and custom checkpoints).
      */
-    public function getCheckpointById(string $checkpointId): ?CheckpointInterface
+    public function getCheckpointById(string $checkpointId): ?AbstractCheckpoint
     {
         // Search in imported checkpoints first
         $importedCheckpoint = $this->race->getCheckpointById($checkpointId);
@@ -144,7 +144,7 @@ class NutritionPlan
         }
 
         // It's a custom checkpoint, remove it
-        $this->customCheckpoints->removeElement($checkpoint);
+        $this->customCheckpoints->removeElement($checkpoint); // @phpstan-ignore-line at this point, CP is Custom
         $this->rebuildSegments($segmentIds);
     }
 
