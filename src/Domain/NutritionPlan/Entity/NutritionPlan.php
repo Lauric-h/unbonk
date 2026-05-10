@@ -73,6 +73,14 @@ class NutritionPlan
     }
 
     /**
+     * Get the total count of checkpoints (imported + custom).
+     */
+    public function getCheckpointCount(): int
+    {
+        return $this->race->getCheckpoints()->count() + $this->customCheckpoints->count();
+    }
+
+    /**
      * Get a checkpoint by ID (searches both imported and custom checkpoints).
      */
     public function getCheckpointById(string $checkpointId): ?CheckpointInterface
@@ -172,13 +180,13 @@ class NutritionPlan
         $oldDistance = $checkpoint->distanceFromStart;
 
         $checkpoint->update(
-            $name,
-            $location,
-            $distanceFromStart,
-            $ascentFromStart,
-            $descentFromStart,
-            $cutoff,
-            $assistanceAllowed,
+            name: $name,
+            location: $location,
+            distanceFromStart: $distanceFromStart,
+            ascentFromStart: $ascentFromStart,
+            descentFromStart: $descentFromStart,
+            cutoff: $cutoff,
+            assistanceAllowed: $assistanceAllowed,
         );
 
         // If distance changed, we need to rebuild segments

@@ -38,15 +38,33 @@ final readonly class AddCheckpointCommandHandler implements CommandHandlerInterf
             nutritionPlan: $nutritionPlan,
         );
 
-        // Calculate the number of segments needed after adding the checkpoint
-        $checkpointCount = \count($nutritionPlan->getAllCheckpoints()) + 1;
-        $segmentIds = [];
-        for ($i = 0; $i < $checkpointCount - 1; ++$i) {
-            $segmentIds[] = $this->idGenerator->generate();
-        }
+        // Generate segment IDs for the new configuration
+        $checkpointCount = $nutritionPlan->getCheckpointCount() + 1;
+        $segmentIds = $this->generateSegmentIds($checkpointCount);
 
         $nutritionPlan->addCustomCheckpoint($checkpoint, $segmentIds);
 
         $this->nutritionPlansCatalog->add($nutritionPlan);
+    }
+
+    /**
+     * Generate segment IDs based on checkpoint count.
+     * Formula: segmentCount = checkpointCount - 1
+     *
+     * @return string[]
+     */
+    private function generateSegmentIds(int $checkpointCount): array
+    {
+        $segmentCount = $checkpointCount - 1;
+        if ($segmentCount < 0) {
+            return [];
+        }
+
+        $segmentIds = [];
+        for ($i = 0; $i < $segmentCount; ++$i) {
+            $segmentIds[] = $this->idGenerator->generate();
+        }
+
+        return $segmentIds;
     }
 }

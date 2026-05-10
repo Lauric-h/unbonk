@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\UI\Http\Rest\NutritionPlan\Controller;
 
 use App\Application\NutritionPlan\UseCase\UpdateCheckpoint\UpdateCheckpointCommand;
-use App\Domain\NutritionPlan\Service\NutritionPlanAccessService;
+use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\Infrastructure\User\Security\UserAdapter;
 use App\UI\Http\Rest\NutritionPlan\Request\UpdateCheckpointRequest;
@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/nutrition-plans/{nutritionPlanId}/checkpoints/{checkpointId}', name: 'api.nutrition_plan.update_checkpoint', methods: ['PUT'])]
@@ -23,19 +24,17 @@ final class UpdateCheckpointController extends AbstractController
     public function __construct(
         private readonly SerializerInterface $serializer,
         private readonly CommandBus $commandBus,
-        private readonly NutritionPlanAccessService $nutritionPlanAccessService,
     ) {
     }
 
+    #[IsGranted('EDIT', subject: 'nutritionPlan')]
     public function __invoke(
-        string $nutritionPlanId,
+        NutritionPlan $nutritionPlan,
         string $checkpointId,
         Request $request,
         #[CurrentUser]
         UserAdapter $userAdapter
     ): JsonResponse {
-        $this->nutritionPlanAccessService->checkAccess($nutritionPlanId, $userAdapter->getUser()->id);
-
         $updateCheckpointRequest = $this->serializer->deserialize($request->getContent(), UpdateCheckpointRequest::class, 'json');
 
         $cutoffTime = null !== $updateCheckpointRequest->cutoffTime
@@ -43,7 +42,7 @@ final class UpdateCheckpointController extends AbstractController
             : null;
 
         $this->commandBus->dispatch(new UpdateCheckpointCommand(
-            nutritionPlanId: $nutritionPlanId,
+            nutritionPlanId: $nutritionPlan->id,
             checkpointId: $checkpointId,
             name: $updateCheckpointRequest->name,
             location: $updateCheckpointRequest->location,

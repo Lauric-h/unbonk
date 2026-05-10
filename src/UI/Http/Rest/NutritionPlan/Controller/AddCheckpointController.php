@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\UI\Http\Rest\NutritionPlan\Controller;
 
 use App\Application\NutritionPlan\UseCase\AddCheckpoint\AddCheckpointCommand;
-use App\Domain\NutritionPlan\Service\NutritionPlanAccessService;
+use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\Infrastructure\User\Security\UserAdapter;
 use App\UI\Http\Rest\NutritionPlan\Request\AddCheckpointRequest;
@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/nutrition-plans/{nutritionPlanId}/checkpoints', name: 'api.nutrition_plan.add_checkpoint', methods: ['POST'])]
@@ -25,18 +26,16 @@ final class AddCheckpointController extends AbstractController
         private readonly SerializerInterface $serializer,
         private readonly CommandBus $commandBus,
         private readonly UrlGeneratorInterface $urlGenerator,
-        private readonly NutritionPlanAccessService $nutritionPlanAccessService,
     ) {
     }
 
+    #[IsGranted('EDIT', subject: 'nutritionPlan')]
     public function __invoke(
-        string $nutritionPlanId,
+        NutritionPlan $nutritionPlan,
         Request $request,
         #[CurrentUser]
         UserAdapter $userAdapter
     ): JsonResponse {
-        $this->nutritionPlanAccessService->checkAccess($nutritionPlanId, $userAdapter->getUser()->id);
-
         $addCheckpointRequest = $this->serializer->deserialize($request->getContent(), AddCheckpointRequest::class, 'json');
 
         $cutoffTime = null !== $addCheckpointRequest->cutoffTime
@@ -44,7 +43,7 @@ final class AddCheckpointController extends AbstractController
             : null;
 
         $this->commandBus->dispatch(new AddCheckpointCommand(
-            nutritionPlanId: $nutritionPlanId,
+            nutritionPlanId: $nutritionPlan->id,
             name: $addCheckpointRequest->name,
             location: $addCheckpointRequest->location,
             distanceFromStart: $addCheckpointRequest->distanceFromStart,
@@ -57,7 +56,7 @@ final class AddCheckpointController extends AbstractController
         return new JsonResponse(
             [],
             Response::HTTP_CREATED,
-            ['Location' => $this->urlGenerator->generate('api.nutrition_plan.get', ['nutritionPlanId' => $nutritionPlanId])]
+            ['Location' => $this->urlGenerator->generate('api.nutrition_plan.get', ['nutritionPlanId' => $nutritionPlan->id])]
         );
     }
 }

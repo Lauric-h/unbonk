@@ -26,14 +26,14 @@ class ImportedCheckpoint extends AbstractCheckpoint
         public readonly CheckpointType $type = CheckpointType::AidStation,
     ) {
         parent::__construct(
-            $id,
-            $name,
-            $location,
-            $distanceFromStart,
-            $ascentFromStart,
-            $descentFromStart,
-            $cutoff,
-            $assistanceAllowed
+            id: $id,
+            name: $name,
+            location: $location,
+            distanceFromStart: $distanceFromStart,
+            ascentFromStart: $ascentFromStart,
+            descentFromStart: $descentFromStart,
+            cutoff: $cutoff,
+            assistanceAllowed: $assistanceAllowed
         );
     }
 

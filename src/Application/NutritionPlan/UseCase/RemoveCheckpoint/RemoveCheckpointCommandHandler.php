@@ -20,15 +20,33 @@ final readonly class RemoveCheckpointCommandHandler implements CommandHandlerInt
     {
         $nutritionPlan = $this->nutritionPlansCatalog->get($command->nutritionPlanId);
 
-        // After removing a checkpoint, we'll have one less segment
-        $checkpointCount = \count($nutritionPlan->getAllCheckpoints()) - 1;
-        $segmentIds = [];
-        for ($i = 0; $i < $checkpointCount - 1; ++$i) {
-            $segmentIds[] = $this->idGenerator->generate();
-        }
+        // Generate segment IDs for the configuration after removal
+        $checkpointCount = $nutritionPlan->getCheckpointCount() - 1;
+        $segmentIds = $this->generateSegmentIds($checkpointCount);
 
         $nutritionPlan->removeCheckpoint($command->checkpointId, $segmentIds);
 
         $this->nutritionPlansCatalog->add($nutritionPlan);
+    }
+
+    /**
+     * Generate segment IDs based on checkpoint count.
+     * Formula: segmentCount = checkpointCount - 1
+     *
+     * @return string[]
+     */
+    private function generateSegmentIds(int $checkpointCount): array
+    {
+        $segmentCount = $checkpointCount - 1;
+        if ($segmentCount < 0) {
+            return [];
+        }
+
+        $segmentIds = [];
+        for ($i = 0; $i < $segmentCount; ++$i) {
+            $segmentIds[] = $this->idGenerator->generate();
+        }
+
+        return $segmentIds;
     }
 }

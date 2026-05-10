@@ -33,11 +33,9 @@ final readonly class ImportRaceCommandHandler implements CommandHandlerInterface
 
         $this->racesCatalog->add($importedRace);
 
+        // Generate segment IDs based on imported checkpoint count
         $checkpointCount = \count($importedRace->getCheckpoints());
-        $segmentIds = [];
-        for ($i = 0; $i < $checkpointCount - 1; ++$i) {
-            $segmentIds[] = $this->idGenerator->generate();
-        }
+        $segmentIds = $this->generateSegmentIds($checkpointCount);
 
         $nutritionPlan = NutritionPlan::createFromImportedRace(
             id: $command->nutritionPlanId,
@@ -46,5 +44,26 @@ final readonly class ImportRaceCommandHandler implements CommandHandlerInterface
         );
 
         $this->nutritionPlansCatalog->add($nutritionPlan);
+    }
+
+    /**
+     * Generate segment IDs based on checkpoint count.
+     * Formula: segmentCount = checkpointCount - 1
+     *
+     * @return string[]
+     */
+    private function generateSegmentIds(int $checkpointCount): array
+    {
+        $segmentCount = $checkpointCount - 1;
+        if ($segmentCount < 0) {
+            return [];
+        }
+
+        $segmentIds = [];
+        for ($i = 0; $i < $segmentCount; ++$i) {
+            $segmentIds[] = $this->idGenerator->generate();
+        }
+
+        return $segmentIds;
     }
 }

@@ -25,12 +25,9 @@ final readonly class UpdateCheckpointCommandHandler implements CommandHandlerInt
             ? new Cutoff($command->cutoffTime)
             : null;
 
-        // Calculate the number of segments needed
-        $checkpointCount = \count($nutritionPlan->getAllCheckpoints());
-        $segmentIds = [];
-        for ($i = 0; $i < $checkpointCount - 1; ++$i) {
-            $segmentIds[] = $this->idGenerator->generate();
-        }
+        // Generate segment IDs (may be needed if distance changes)
+        $checkpointCount = $nutritionPlan->getCheckpointCount();
+        $segmentIds = $this->generateSegmentIds($checkpointCount);
 
         $nutritionPlan->updateCheckpoint(
             $command->checkpointId,
@@ -45,5 +42,26 @@ final readonly class UpdateCheckpointCommandHandler implements CommandHandlerInt
         );
 
         $this->nutritionPlansCatalog->add($nutritionPlan);
+    }
+
+    /**
+     * Generate segment IDs based on checkpoint count.
+     * Formula: segmentCount = checkpointCount - 1
+     *
+     * @return string[]
+     */
+    private function generateSegmentIds(int $checkpointCount): array
+    {
+        $segmentCount = $checkpointCount - 1;
+        if ($segmentCount < 0) {
+            return [];
+        }
+
+        $segmentIds = [];
+        for ($i = 0; $i < $segmentCount; ++$i) {
+            $segmentIds[] = $this->idGenerator->generate();
+        }
+
+        return $segmentIds;
     }
 }
