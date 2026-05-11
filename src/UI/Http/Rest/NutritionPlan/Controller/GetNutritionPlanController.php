@@ -6,6 +6,7 @@ use App\Application\NutritionPlan\UseCase\GetNutritionPlan\GetNutritionPlanQuery
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Infrastructure\Shared\Bus\QueryBus;
 use App\Infrastructure\User\Security\UserAdapter;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +24,7 @@ final class GetNutritionPlanController extends AbstractController
 
     #[IsGranted('VIEW', subject: 'nutritionPlan')]
     public function __invoke(
-        NutritionPlan $nutritionPlan,
+        #[MapEntity(id: 'nutritionPlanId')]NutritionPlan $nutritionPlan,
         #[CurrentUser]
         UserAdapter $userAdapter
     ): JsonResponse {

@@ -9,6 +9,7 @@ use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\Infrastructure\User\Security\UserAdapter;
 use App\UI\Http\Rest\NutritionPlan\Request\AddCheckpointRequest;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,6 +32,7 @@ final class AddCheckpointController extends AbstractController
     }
 
     public function __invoke(
+        #[MapEntity(id: 'nutritionPlanId')]
         NutritionPlan $nutritionPlan,
         Request $request,
         #[CurrentUser]

@@ -8,6 +8,7 @@ use App\Application\NutritionPlan\UseCase\RemoveCheckpoint\RemoveCheckpointComma
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\Infrastructure\User\Security\UserAdapter;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +26,7 @@ final class RemoveCheckpointController extends AbstractController
 
     #[IsGranted('EDIT', subject: 'nutritionPlan')]
     public function __invoke(
+        #[MapEntity(id: 'nutritionPlanId')]
         NutritionPlan $nutritionPlan,
         string $checkpointId,
         #[CurrentUser]

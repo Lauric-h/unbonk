@@ -6,6 +6,7 @@ use App\Application\NutritionPlan\UseCase\DeleteNutritionItem\DeleteNutritionIte
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\Infrastructure\User\Security\UserAdapter;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +24,7 @@ final class DeleteNutritionItemController extends AbstractController
 
     #[IsGranted('DELETE', subject: 'nutritionPlan')]
     public function __invoke(
+        #[MapEntity(id: 'nutritionPlanId')]
         NutritionPlan $nutritionPlan,
         string $segmentId,
         string $nutritionItemId,
