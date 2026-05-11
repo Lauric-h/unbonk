@@ -24,7 +24,8 @@ final class GetNutritionPlanController extends AbstractController
 
     #[IsGranted('VIEW', subject: 'nutritionPlan')]
     public function __invoke(
-        #[MapEntity(id: 'nutritionPlanId')]NutritionPlan $nutritionPlan,
+        #[MapEntity(id: 'nutritionPlanId')]
+        NutritionPlan $nutritionPlan,
         #[CurrentUser]
         UserAdapter $userAdapter
     ): JsonResponse {
