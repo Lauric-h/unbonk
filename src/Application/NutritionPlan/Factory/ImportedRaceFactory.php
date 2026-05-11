@@ -34,7 +34,7 @@ final readonly class ImportedRaceFactory
 
         $startCheckpoint = new ImportedCheckpoint(
             id: $this->idGenerator->generate(),
-            externalId: 'start',
+            externalId: $this->idGenerator->generate(),
             name: 'Start',
             location: $externalRace->startLocation,
             distanceFromStart: 0,
@@ -54,7 +54,7 @@ final readonly class ImportedRaceFactory
 
         $finishCheckpoint = new ImportedCheckpoint(
             id: $this->idGenerator->generate(),
-            externalId: 'finish',
+            externalId: $this->idGenerator->generate(),
             name: 'Finish',
             location: $externalRace->finishLocation,
             distanceFromStart: $externalRace->distance,
