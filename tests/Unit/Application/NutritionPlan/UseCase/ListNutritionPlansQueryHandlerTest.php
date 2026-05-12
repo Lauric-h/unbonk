@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 
-use App\Application\NutritionPlan\ReadModel\NutritionPlanReadModel;
+use App\Application\NutritionPlan\ReadModel\NutritionPlanListItemReadModel;
 use App\Application\NutritionPlan\UseCase\ListNutritionPlans\ListNutritionPlansQuery;
 use App\Application\NutritionPlan\UseCase\ListNutritionPlans\ListNutritionPlansQueryHandler;
 use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
@@ -40,13 +40,20 @@ final class ListNutritionPlansQueryHandlerTest extends TestCase
         $result = ($handler)(new ListNutritionPlansQuery($runnerId));
 
         $this->assertCount(2, $result);
-        $this->assertContainsOnlyInstancesOf(NutritionPlanReadModel::class, $result);
+        $this->assertContainsOnlyInstancesOf(NutritionPlanListItemReadModel::class, $result);
 
+        // Check first nutrition plan
         $this->assertSame('plan-1', $result[0]->id);
-        $this->assertSame('UTMB Nutrition Plan', $result[0]->name);
+        $this->assertSame('UTMB Nutrition Plan', $result[0]->nutritionPlanName);
+        $this->assertSame('Test Event', $result[0]->eventName);
+        $this->assertSame('Test Event', $result[0]->raceName);
+        $this->assertSame(50000, $result[0]->raceDistance);
+        $this->assertInstanceOf(\DateTimeImmutable::class, $result[0]->raceDate);
+        $this->assertSame(0, $result[0]->totalCarbs); // No nutrition items added
 
+        // Check second nutrition plan
         $this->assertSame('plan-2', $result[1]->id);
-        $this->assertSame('TDG Nutrition Plan', $result[1]->name);
+        $this->assertSame('TDG Nutrition Plan', $result[1]->nutritionPlanName);
     }
 
     public function testListNutritionPlansReturnsEmptyArrayWhenNoPlans(): void
