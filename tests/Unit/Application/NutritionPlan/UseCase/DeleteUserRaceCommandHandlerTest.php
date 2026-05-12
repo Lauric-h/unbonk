@@ -15,12 +15,11 @@ final class DeleteUserRaceCommandHandlerTest extends TestCase
 {
     public function testDeleteRaceSuccessfully(): void
     {
-        $runnerId = 'runner-123';
         $raceId = 'race-456';
 
         $race = new ImportedRace(
             id: $raceId,
-            runnerId: $runnerId,
+            runnerId: 'runner-123',
             externalRaceId: 'ext-race-1',
             externalEventId: 'ext-event-1',
             name: 'Test Event',
@@ -42,14 +41,13 @@ final class DeleteUserRaceCommandHandlerTest extends TestCase
             ->with($race);
 
         $handler = new DeleteUserRaceCommandHandler($racesCatalog);
-        $command = new DeleteUserRaceCommand($runnerId, $raceId);
+        $command = new DeleteUserRaceCommand($raceId);
 
         ($handler)($command);
     }
 
     public function testDeleteRaceThrowsExceptionWhenRaceNotFound(): void
     {
-        $runnerId = 'runner-123';
         $raceId = 'race-not-found';
 
         $racesCatalog = $this->createMock(RacesCatalog::class);
@@ -62,7 +60,7 @@ final class DeleteUserRaceCommandHandlerTest extends TestCase
             ->method('remove');
 
         $handler = new DeleteUserRaceCommandHandler($racesCatalog);
-        $command = new DeleteUserRaceCommand($runnerId, $raceId);
+        $command = new DeleteUserRaceCommand($raceId);
 
         $this->expectException(RaceNotFoundException::class);
 
