@@ -3,7 +3,6 @@
 namespace App\UI\Http\Rest\NutritionPlan\Controller\Race;
 
 use App\Application\NutritionPlan\UseCase\DeleteUserRace\DeleteUserRaceCommand;
-use App\Application\Shared\Security\CurrentUserIdProvider;
 use App\Domain\NutritionPlan\Entity\ImportedRace;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -19,7 +18,6 @@ final class DeleteUserRaceController extends AbstractController
 {
     public function __construct(
         private readonly CommandBus $commandBus,
-        private readonly CurrentUserIdProvider $currentUserIdProvider,
     ) {
     }
 
@@ -28,7 +26,7 @@ final class DeleteUserRaceController extends AbstractController
         #[MapEntity(id: 'raceId')]
         ImportedRace $race,
     ): JsonResponse {
-        $this->commandBus->dispatch(new DeleteUserRaceCommand($this->currentUserIdProvider->getCurrentUserId(), $race->id));
+        $this->commandBus->dispatch(new DeleteUserRaceCommand($race->id));
 
         return new JsonResponse(status: Response::HTTP_NO_CONTENT);
     }

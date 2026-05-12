@@ -12,6 +12,7 @@ final class NutritionPlanTestFixture
 {
     private string $id = 'nutrition-plan-id';
     private string $runnerId = 'runner-id';
+    private ?string $name = null;
     private ?ImportedRace $importedRace = null;
     private int $segmentIdCounter = 1;
 
@@ -27,6 +28,14 @@ final class NutritionPlanTestFixture
     {
         $clone = clone $this;
         $clone->runnerId = $runnerId;
+
+        return $clone;
+    }
+
+    public function withName(string $name): self
+    {
+        $clone = clone $this;
+        $clone->name = $name;
 
         return $clone;
     }
@@ -54,6 +63,7 @@ final class NutritionPlanTestFixture
             $this->id,
             $importedRace,
             $segmentIds,
+            $this->name,
         );
     }
 
