@@ -6,9 +6,9 @@ namespace App\UI\Http\Rest\NutritionPlan\Controller\NutritionPlan;
 
 use App\Application\NutritionPlan\UseCase\CreateNutritionPlan\CreateNutritionPlanCommand;
 use App\Application\Shared\IdGeneratorInterface;
+use App\Application\Shared\Security\CurrentUserIdProvider;
 use App\Domain\NutritionPlan\Entity\ImportedRace;
 use App\Infrastructure\Shared\Bus\CommandBus;
-use App\Infrastructure\User\Security\UserAdapter;
 use App\UI\Http\Rest\NutritionPlan\Request\CreateNutritionPlanRequest;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -17,7 +17,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -30,6 +29,7 @@ final class CreateNutritionPlanController extends AbstractController
         private readonly CommandBus $commandBus,
         private readonly IdGeneratorInterface $idGenerator,
         private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly CurrentUserIdProvider $currentUserIdProvider,
     ) {
     }
 
@@ -37,8 +37,6 @@ final class CreateNutritionPlanController extends AbstractController
         #[MapEntity(id: 'raceId')]
         ImportedRace $race,
         Request $request,
-        #[CurrentUser]
-        UserAdapter $userAdapter
     ): JsonResponse {
         $createRequest = $this->serializer->deserialize(
             $request->getContent(),
@@ -47,12 +45,11 @@ final class CreateNutritionPlanController extends AbstractController
         );
 
         $nutritionPlanId = $this->idGenerator->generate();
-        $user = $userAdapter->getUser();
 
         $this->commandBus->dispatch(new CreateNutritionPlanCommand(
             nutritionPlanId: $nutritionPlanId,
             importedRaceId: $race->id,
-            runnerId: $user->id,
+            runnerId: $this->currentUserIdProvider->getCurrentUserId(),
             name: $createRequest->name,
         ));
 

@@ -24,6 +24,7 @@ final readonly class ImportedRaceFactory
             runnerId: $runnerId,
             externalRaceId: $externalRace->id,
             externalEventId: $externalRace->eventId,
+            eventName: $externalRace->eventName,
             name: $externalRace->name,
             distance: $externalRace->distance,
             ascent: $externalRace->ascent,

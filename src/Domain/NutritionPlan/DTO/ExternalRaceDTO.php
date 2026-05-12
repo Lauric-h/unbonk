@@ -10,6 +10,7 @@ final readonly class ExternalRaceDTO
     public function __construct(
         public string $id,
         public string $eventId,
+        public string $eventName,
         public string $name,
         public int $distance,
         public int $ascent,

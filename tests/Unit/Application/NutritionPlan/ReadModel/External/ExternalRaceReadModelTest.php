@@ -30,6 +30,7 @@ final class ExternalRaceReadModelTest extends TestCase
         $dto = new ExternalRaceDTO(
             id: 'race-1',
             eventId: 'event-1',
+            eventName: 'UTMB',
             name: 'UTMB 100',
             distance: 171000,
             ascent: 10000,

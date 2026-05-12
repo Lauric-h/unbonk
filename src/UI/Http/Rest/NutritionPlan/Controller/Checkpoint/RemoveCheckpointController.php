@@ -7,13 +7,11 @@ namespace App\UI\Http\Rest\NutritionPlan\Controller\Checkpoint;
 use App\Application\NutritionPlan\UseCase\RemoveCheckpoint\RemoveCheckpointCommand;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Infrastructure\Shared\Bus\CommandBus;
-use App\Infrastructure\User\Security\UserAdapter;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/nutrition-plans/{nutritionPlanId}/checkpoints/{checkpointId}', name: 'api.nutrition_plan.remove_checkpoint', methods: ['DELETE'])]
@@ -28,9 +26,7 @@ final class RemoveCheckpointController extends AbstractController
     public function __invoke(
         #[MapEntity(id: 'nutritionPlanId')]
         NutritionPlan $nutritionPlan,
-        string $checkpointId,
-        #[CurrentUser]
-        UserAdapter $userAdapter
+        string $checkpointId
     ): JsonResponse {
         $this->commandBus->dispatch(new RemoveCheckpointCommand($nutritionPlan->id, $checkpointId));
 

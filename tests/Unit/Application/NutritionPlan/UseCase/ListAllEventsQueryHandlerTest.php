@@ -61,6 +61,7 @@ final class ListAllEventsQueryHandlerTest extends TestCase
         $race1 = new ExternalRaceDTO(
             id: 'race-1',
             eventId: 'event-1',
+            eventName: 'UTMB Mont-Blanc',
             name: 'UTMB 100',
             distance: 171000,
             ascent: 10000,

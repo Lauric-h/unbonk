@@ -29,6 +29,7 @@ final class ImportRaceCommandHandlerTest extends TestCase
         $externalRace = new ExternalRaceDTO(
             id: 'external-race-id',
             eventId: 'external-event-id',
+            eventName: 'Test Event',
             name: 'Test Event',
             distance: 50000,
             ascent: 2000,
@@ -52,6 +53,7 @@ final class ImportRaceCommandHandlerTest extends TestCase
             ->with($this->callback(function ($nutritionPlan) use ($nutritionPlanId, $runnerId): bool {
                 $this->assertSame($nutritionPlanId, $nutritionPlan->id);
                 $this->assertSame($runnerId, $nutritionPlan->race->runnerId);
+                $this->assertSame('Test Event', $nutritionPlan->race->eventName);
                 $this->assertSame('Test Event', $nutritionPlan->race->name);
 
                 return true;
@@ -114,7 +116,7 @@ final class ImportRaceCommandHandlerTest extends TestCase
         );
 
         $this->expectException(\DomainException::class);
-        $this->expectExceptionMessage('Event with id non-existent-race-id not found');
+        $this->expectExceptionMessage('Race with id non-existent-race-id not found');
 
         ($handler)($command);
     }

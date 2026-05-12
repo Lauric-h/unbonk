@@ -5,7 +5,6 @@ namespace App\UI\Http\Rest\NutritionPlan\Controller\NutritionPlan;
 use App\Application\NutritionPlan\UseCase\UpdateNutritionItemQuantity\UpdateNutritionItemQuantityCommand;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Infrastructure\Shared\Bus\CommandBus;
-use App\Infrastructure\User\Security\UserAdapter;
 use App\UI\Http\Rest\NutritionPlan\Request\UpdateNutritionItemRequest;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,7 +12,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -32,9 +30,7 @@ final class UpdateNutritionItemQuantityController extends AbstractController
         #[MapEntity(id: 'nutritionPlanId')]
         NutritionPlan $nutritionPlan,
         string $segmentId,
-        string $itemId,
-        #[CurrentUser]
-        UserAdapter $userAdapter
+        string $itemId
     ): JsonResponse {
         $updateRequest = $this->serializer->deserialize($request->getContent(), UpdateNutritionItemRequest::class, 'json');
         $this->commandBus->dispatch(new UpdateNutritionItemQuantityCommand($segmentId, $itemId, $updateRequest->quantity));
