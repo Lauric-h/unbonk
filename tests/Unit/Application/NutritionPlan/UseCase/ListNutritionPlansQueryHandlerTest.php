@@ -19,13 +19,13 @@ final class ListNutritionPlansQueryHandlerTest extends TestCase
         $handler = new ListNutritionPlansQueryHandler($nutritionPlansCatalog);
 
         $runnerId = 'runner-123';
-        
-        $nutritionPlan1 = (new NutritionPlanTestFixture())
+
+        $nutritionPlan1 = new NutritionPlanTestFixture()
             ->withId('plan-1')
             ->withName('UTMB Nutrition Plan')
             ->build();
-        
-        $nutritionPlan2 = (new NutritionPlanTestFixture())
+
+        $nutritionPlan2 = new NutritionPlanTestFixture()
             ->withId('plan-2')
             ->withName('TDG Nutrition Plan')
             ->build();
