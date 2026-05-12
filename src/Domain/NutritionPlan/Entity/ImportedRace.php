@@ -28,6 +28,7 @@ class ImportedRace
         public string $runnerId,
         public string $externalRaceId,
         public string $externalEventId,
+        public string $eventName,
         public string $name,
         public int $distance,
         public int $ascent,

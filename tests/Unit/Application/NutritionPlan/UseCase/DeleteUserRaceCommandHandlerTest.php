@@ -22,6 +22,7 @@ final class DeleteUserRaceCommandHandlerTest extends TestCase
             runnerId: 'runner-123',
             externalRaceId: 'ext-race-1',
             externalEventId: 'ext-event-1',
+            eventName: 'Test Event',
             name: 'Test Event',
             distance: 42195,
             ascent: 1000,

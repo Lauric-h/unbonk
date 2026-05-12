@@ -74,6 +74,7 @@ final class NutritionPlanTestFixture
             'runner-id',
             'external-race-id',
             'external-event-id',
+            'Test Event', // eventName
             'Test Event',
             50000,
             2000,
@@ -137,6 +138,7 @@ final class NutritionPlanTestFixture
             $runnerId,
             'external-race-id',
             'external-event-id',
+            'Test Event', // eventName
             'Test Event',
             50000,
             2000,
@@ -201,6 +203,7 @@ final class NutritionPlanTestFixture
             'runner-id',
             'external-race-id',
             'external-event-id',
+            'Test Event', // eventName
             'Test Event',
             $distance,
             5000,

@@ -40,7 +40,20 @@ final class ImportRaceCommandHandlerTest extends TestCase
             aidStations: [],
         );
 
+        $externalEvent = new \App\Domain\NutritionPlan\DTO\ExternalEventDTO(
+            id: 'external-event-id',
+            name: 'Test Event',
+            location: 'Test Location',
+            date: new \DateTimeImmutable('2024-06-01'),
+            url: null,
+            races: [],
+        );
+
         $externalRacePort = $this->createMock(ExternalRacePort::class);
+        $externalRacePort->expects($this->once())
+            ->method('getEvent')
+            ->with($externalEventId)
+            ->willReturn($externalEvent);
         $externalRacePort->expects($this->once())
             ->method('getRaceDetails')
             ->with($externalEventId, $externalRaceId)
@@ -91,6 +104,8 @@ final class ImportRaceCommandHandlerTest extends TestCase
         $command = new ImportRaceCommand('id', $externalEventId, $externalRaceId, 'runner-id');
 
         $externalRacePort = $this->createMock(ExternalRacePort::class);
+        $externalRacePort->expects($this->never())
+            ->method('getEvent');
         $externalRacePort->expects($this->once())
             ->method('getRaceDetails')
             ->with($externalEventId, $externalRaceId)
@@ -114,7 +129,7 @@ final class ImportRaceCommandHandlerTest extends TestCase
         );
 
         $this->expectException(\DomainException::class);
-        $this->expectExceptionMessage('Event with id non-existent-race-id not found');
+        $this->expectExceptionMessage('Race with id non-existent-race-id not found');
 
         ($handler)($command);
     }

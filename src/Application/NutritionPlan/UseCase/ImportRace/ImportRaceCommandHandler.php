@@ -26,10 +26,11 @@ final readonly class ImportRaceCommandHandler implements CommandHandlerInterface
         $externalRace = $this->client->getRaceDetails($command->externalEventId, $command->externalRaceId);
 
         if (null === $externalRace) {
-            throw new \DomainException(\sprintf('Event with id %s not found', $command->externalRaceId));
+            throw new \DomainException(\sprintf('Race with id %s not found', $command->externalRaceId));
         }
 
-        $importedRace = $this->importedRaceFactory->createFromExternalRace($externalRace, $command->runnerId);
+        $externalEvent = $this->client->getEvent($command->externalEventId);
+        $importedRace = $this->importedRaceFactory->createFromExternalRace($externalRace, $externalEvent->name, $command->runnerId);
 
         $this->racesCatalog->add($importedRace);
 

@@ -33,12 +33,10 @@ final readonly class NutritionPlanListItemReadModel
             }
         }
 
-        // For now, eventName and raceName are the same (race->name)
-        // TODO: Store event name in ImportedRace to differentiate event from race
         return new self(
             id: $nutritionPlan->id,
             nutritionPlanName: $nutritionPlan->name,
-            eventName: $nutritionPlan->race->name, // TODO: Use actual event name when available
+            eventName: $nutritionPlan->race->eventName,
             raceName: $nutritionPlan->race->name,
             raceDistance: $nutritionPlan->race->distance,
             raceDate: $nutritionPlan->race->startDateTime,

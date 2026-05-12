@@ -9,6 +9,7 @@
         <field name="runnerId" type="string" column="runner_id"/>
         <field name="externalRaceId" type="string" column="external_race_id"/>
         <field name="externalEventId" type="string" column="external_event_id"/>
+        <field name="eventName" type="string" column="event_name"/>
         <field name="name" type="string"/>
         <field name="distance" type="integer"/>
         <field name="ascent" type="integer"/>
