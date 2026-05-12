@@ -37,11 +37,11 @@
                         <td><strong>{{ plan.nutritionPlanName ?? '(Sans nom)' }}</strong></td>
                         <td>{{ plan.totalCarbs }} g</td>
                         <td>
-                            <a href="#">Voir</a>
+                            <a href="{{ path('app.nutrition_plan.get', {nutritionPlanId: plan.id}) }}">Voir</a>
                             |
-                            <a href="#">Éditer</a>
+                            <a href="{{ path('app.nutrition_plan.edit', {nutritionPlanId: plan.nutritionPlanId}) }}">Éditer</a>
                             |
-                            <form method="post" action="#" style="display: inline;" onsubmit="return confirm('Supprimer ce plan ?');">
+                            <form method="post" action="{{ path('app.nutrition_plan.delete', {nutritionPlanId: plan.nutritionPlanId}) }}" style="display: inline;" onsubmit="return confirm('Supprimer ce plan ?');">
                                 <button type="submit">Supprimer</button>
                             </form>
                         </td>
