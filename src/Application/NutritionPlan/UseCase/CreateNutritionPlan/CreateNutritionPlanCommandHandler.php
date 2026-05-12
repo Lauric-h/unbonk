@@ -23,9 +23,6 @@ final readonly class CreateNutritionPlanCommandHandler implements CommandHandler
     {
         $importedRace = $this->racesCatalog->get($command->importedRaceId);
 
-        // Note: Ownership is already verified by ImportedRaceVoter at the HTTP layer
-        // This handler focuses on business logic only
-
         $checkpointCount = \count($importedRace->getCheckpoints());
         $segmentIds = $this->generateSegmentIds($checkpointCount);
 

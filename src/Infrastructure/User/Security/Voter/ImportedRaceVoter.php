@@ -18,7 +18,7 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  */
 class ImportedRaceVoter extends Voter
 {
-    public const EDIT = 'EDIT';
+    public const string EDIT = 'EDIT';
 
     protected function supports(string $attribute, mixed $subject): bool
     {
@@ -26,7 +26,7 @@ class ImportedRaceVoter extends Voter
             return false;
         }
 
-        return $attribute === self::EDIT;
+        return self::EDIT === $attribute;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
@@ -39,10 +39,6 @@ class ImportedRaceVoter extends Voter
         }
 
         $user = $userInterface->getUser();
-
-        if (!$user instanceof User) {
-            return false;
-        }
 
         /** @var ImportedRace $race */
         $race = $subject;

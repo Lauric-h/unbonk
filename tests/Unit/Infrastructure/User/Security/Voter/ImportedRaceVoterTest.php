@@ -34,7 +34,7 @@ final class ImportedRaceVoterTest extends TestCase
             ascent: 10000,
             descent: 10000,
             startDateTime: new \DateTimeImmutable('2024-08-30 18:00:00'),
-            startLocation: 'Chamonix',
+            startLocation: 0,
             finishLocation: 'Chamonix',
             externalRaceId: 'external-race-123',
             externalEventId: 'external-event-456',
@@ -47,7 +47,7 @@ final class ImportedRaceVoterTest extends TestCase
         $result = $this->voter->vote($token, $race, ['VIEW']);
 
         // Then
-        $this->assertEquals(VoterInterface::ACCESS_GRANTED, $result);
+        $this->assertSame(VoterInterface::ACCESS_GRANTED, $result);
     }
 
     public function testOwnerCanCreatePlan(): void
@@ -63,7 +63,7 @@ final class ImportedRaceVoterTest extends TestCase
             ascent: 10000,
             descent: 10000,
             startDateTime: new \DateTimeImmutable('2024-08-30 18:00:00'),
-            startLocation: 'Chamonix',
+            startLocation: 0,
             finishLocation: 'Chamonix',
             externalRaceId: 'external-race-123',
             externalEventId: 'external-event-456',
@@ -76,7 +76,7 @@ final class ImportedRaceVoterTest extends TestCase
         $result = $this->voter->vote($token, $race, ['CREATE_PLAN']);
 
         // Then
-        $this->assertEquals(VoterInterface::ACCESS_GRANTED, $result);
+        $this->assertSame(VoterInterface::ACCESS_GRANTED, $result);
     }
 
     public function testOwnerCanDelete(): void
@@ -92,7 +92,7 @@ final class ImportedRaceVoterTest extends TestCase
             ascent: 10000,
             descent: 10000,
             startDateTime: new \DateTimeImmutable('2024-08-30 18:00:00'),
-            startLocation: 'Chamonix',
+            startLocation: 0,
             finishLocation: 'Chamonix',
             externalRaceId: 'external-race-123',
             externalEventId: 'external-event-456',
@@ -105,7 +105,7 @@ final class ImportedRaceVoterTest extends TestCase
         $result = $this->voter->vote($token, $race, ['DELETE']);
 
         // Then
-        $this->assertEquals(VoterInterface::ACCESS_GRANTED, $result);
+        $this->assertSame(VoterInterface::ACCESS_GRANTED, $result);
     }
 
     public function testNonOwnerCannotView(): void
@@ -121,7 +121,7 @@ final class ImportedRaceVoterTest extends TestCase
             ascent: 10000,
             descent: 10000,
             startDateTime: new \DateTimeImmutable('2024-08-30 18:00:00'),
-            startLocation: 'Chamonix',
+            startLocation: 0,
             finishLocation: 'Chamonix',
             externalRaceId: 'external-race-123',
             externalEventId: 'external-event-456',
@@ -134,7 +134,7 @@ final class ImportedRaceVoterTest extends TestCase
         $result = $this->voter->vote($token, $race, ['VIEW']);
 
         // Then
-        $this->assertEquals(VoterInterface::ACCESS_DENIED, $result);
+        $this->assertSame(VoterInterface::ACCESS_DENIED, $result);
     }
 
     public function testNonOwnerCannotCreatePlan(): void
@@ -150,7 +150,7 @@ final class ImportedRaceVoterTest extends TestCase
             ascent: 10000,
             descent: 10000,
             startDateTime: new \DateTimeImmutable('2024-08-30 18:00:00'),
-            startLocation: 'Chamonix',
+            startLocation: 0,
             finishLocation: 'Chamonix',
             externalRaceId: 'external-race-123',
             externalEventId: 'external-event-456',
@@ -163,7 +163,7 @@ final class ImportedRaceVoterTest extends TestCase
         $result = $this->voter->vote($token, $race, ['CREATE_PLAN']);
 
         // Then
-        $this->assertEquals(VoterInterface::ACCESS_DENIED, $result);
+        $this->assertSame(VoterInterface::ACCESS_DENIED, $result);
     }
 
     public function testUnauthenticatedUserCannotAccess(): void
@@ -177,7 +177,7 @@ final class ImportedRaceVoterTest extends TestCase
             ascent: 10000,
             descent: 10000,
             startDateTime: new \DateTimeImmutable('2024-08-30 18:00:00'),
-            startLocation: 'Chamonix',
+            startLocation: 0,
             finishLocation: 'Chamonix',
             externalRaceId: 'external-race-123',
             externalEventId: 'external-event-456',
@@ -190,7 +190,7 @@ final class ImportedRaceVoterTest extends TestCase
         $result = $this->voter->vote($token, $race, ['VIEW']);
 
         // Then
-        $this->assertEquals(VoterInterface::ACCESS_DENIED, $result);
+        $this->assertSame(VoterInterface::ACCESS_DENIED, $result);
     }
 
     public function testDoesNotSupportOtherSubjects(): void
@@ -205,7 +205,7 @@ final class ImportedRaceVoterTest extends TestCase
         $result = $this->voter->vote($token, new \stdClass(), ['VIEW']);
 
         // Then
-        $this->assertEquals(VoterInterface::ACCESS_ABSTAIN, $result);
+        $this->assertSame(VoterInterface::ACCESS_ABSTAIN, $result);
     }
 
     public function testDoesNotSupportOtherAttributes(): void
@@ -221,7 +221,7 @@ final class ImportedRaceVoterTest extends TestCase
             ascent: 10000,
             descent: 10000,
             startDateTime: new \DateTimeImmutable('2024-08-30 18:00:00'),
-            startLocation: 'Chamonix',
+            startLocation: 0,
             finishLocation: 'Chamonix',
             externalRaceId: 'external-race-123',
             externalEventId: 'external-event-456',
@@ -234,6 +234,6 @@ final class ImportedRaceVoterTest extends TestCase
         $result = $this->voter->vote($token, $race, ['UNKNOWN_PERMISSION']);
 
         // Then
-        $this->assertEquals(VoterInterface::ACCESS_ABSTAIN, $result);
+        $this->assertSame(VoterInterface::ACCESS_ABSTAIN, $result);
     }
 }

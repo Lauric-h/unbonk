@@ -15,6 +15,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/nutrition-plans/{nutritionPlanId}/segments/{segmentId}/nutrition-items/{nutritionItemId}', name: 'api.nutrition_plan.segment.delete_nutrition_item', methods: ['DELETE'])]
+#[IsGranted('EDIT', subject: 'nutritionPlan')]
 final class DeleteNutritionItemController extends AbstractController
 {
     public function __construct(
@@ -22,7 +23,6 @@ final class DeleteNutritionItemController extends AbstractController
     ) {
     }
 
-    #[IsGranted('DELETE', subject: 'nutritionPlan')]
     public function __invoke(
         #[MapEntity(id: 'nutritionPlanId')]
         NutritionPlan $nutritionPlan,

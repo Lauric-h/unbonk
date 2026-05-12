@@ -18,9 +18,8 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
  */
 class NutritionPlanVoter extends Voter
 {
-    public const VIEW = 'VIEW';
-    public const EDIT = 'EDIT';
-    public const DELETE = 'DELETE';
+    // Only one role for now
+    public const string EDIT = 'EDIT';
 
     protected function supports(string $attribute, mixed $subject): bool
     {
@@ -28,7 +27,7 @@ class NutritionPlanVoter extends Voter
             return false;
         }
 
-        return in_array($attribute, [self::VIEW, self::EDIT, self::DELETE], true);
+        return self::EDIT === $attribute;
     }
 
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool

@@ -18,6 +18,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/nutrition-plans/{nutritionPlanId}/segments/{segmentId}/nutrition-items/{itemId}', name: 'api.nutrition_plan.segment.update_quantity', methods: ['POST'])]
+#[IsGranted('EDIT', subject: 'nutritionPlan')]
 final class UpdateNutritionItemQuantityController extends AbstractController
 {
     public function __construct(
@@ -26,7 +27,6 @@ final class UpdateNutritionItemQuantityController extends AbstractController
     ) {
     }
 
-    #[IsGranted('EDIT', subject: 'nutritionPlan')]
     public function __invoke(
         Request $request,
         #[MapEntity(id: 'nutritionPlanId')]

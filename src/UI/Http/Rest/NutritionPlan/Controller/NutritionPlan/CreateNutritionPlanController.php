@@ -22,6 +22,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/imported-races/{raceId}/nutrition-plans', name: 'api.nutrition_plan.create', methods: ['POST'])]
+#[IsGranted('EDIT', subject: 'race')]
 final class CreateNutritionPlanController extends AbstractController
 {
     public function __construct(
@@ -32,7 +33,6 @@ final class CreateNutritionPlanController extends AbstractController
     ) {
     }
 
-    #[IsGranted('CREATE_PLAN', subject: 'race')]
     public function __invoke(
         #[MapEntity(id: 'raceId')]
         ImportedRace $race,

@@ -3,7 +3,9 @@
 namespace App\UI\Http\Rest\Food\Brand;
 
 use App\Application\Food\UseCase\UpdateBrand\UpdateBrandCommand;
+use App\Domain\Food\Entity\Brand;
 use App\Infrastructure\Shared\Bus\CommandBus;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,8 +24,11 @@ final class UpdateBrandController extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request): JsonResponse
-    {
+    public function __invoke(
+        #[MapEntity(id: 'id')]
+        Brand $brand,
+        Request $request
+    ): JsonResponse {
         $command = $this->serializer->deserialize($request->getContent(), UpdateBrandCommand::class, 'json');
 
         $this->messageBus->dispatch($command);

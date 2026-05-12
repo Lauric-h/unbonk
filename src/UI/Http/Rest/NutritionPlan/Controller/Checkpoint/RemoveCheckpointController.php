@@ -17,6 +17,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/nutrition-plans/{nutritionPlanId}/checkpoints/{checkpointId}', name: 'api.nutrition_plan.remove_checkpoint', methods: ['DELETE'])]
+#[IsGranted('EDIT', subject: 'nutritionPlan')]
 final class RemoveCheckpointController extends AbstractController
 {
     public function __construct(
@@ -24,7 +25,6 @@ final class RemoveCheckpointController extends AbstractController
     ) {
     }
 
-    #[IsGranted('EDIT', subject: 'nutritionPlan')]
     public function __invoke(
         #[MapEntity(id: 'nutritionPlanId')]
         NutritionPlan $nutritionPlan,

@@ -15,6 +15,7 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/nutrition-plans/{nutritionPlanId}', name: 'api.nutrition_plan.get', methods: ['GET'])]
+#[IsGranted('EDIT', subject: 'nutritionPlan')]
 final class GetNutritionPlanController extends AbstractController
 {
     public function __construct(
@@ -22,7 +23,6 @@ final class GetNutritionPlanController extends AbstractController
     ) {
     }
 
-    #[IsGranted('VIEW', subject: 'nutritionPlan')]
     public function __invoke(
         #[MapEntity(id: 'nutritionPlanId')]
         NutritionPlan $nutritionPlan,

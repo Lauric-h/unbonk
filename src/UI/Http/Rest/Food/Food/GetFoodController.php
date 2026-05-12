@@ -3,7 +3,9 @@
 namespace App\UI\Http\Rest\Food\Food;
 
 use App\Application\Food\UseCase\GetFood\GetFoodQuery;
+use App\Domain\Food\Entity\Food;
 use App\Infrastructure\Shared\Bus\QueryBus;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,10 +18,12 @@ final class GetFoodController extends AbstractController
     {
     }
 
-    public function __invoke(string $id): JsonResponse
-    {
+    public function __invoke(
+        #[MapEntity(id: 'id')]
+        Food $food
+    ): JsonResponse {
         return new JsonResponse(
-            $this->queryBus->query(new GetFoodQuery($id)),
+            $this->queryBus->query(new GetFoodQuery($food->id)),
             Response::HTTP_OK
         );
     }
