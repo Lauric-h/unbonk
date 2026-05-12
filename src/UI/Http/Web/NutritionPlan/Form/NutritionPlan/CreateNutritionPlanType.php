@@ -15,8 +15,8 @@ final class CreateNutritionPlanType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, [
-                'label' => 'Nom du plan (optionnel)',
-                'required' => false,
+                'label' => 'Nom du plan',
+                'required' => true,
                 'attr' => [
                     'placeholder' => 'Ex: Mon plan UTMB 2024',
                 ],
