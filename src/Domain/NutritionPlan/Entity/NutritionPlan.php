@@ -380,4 +380,12 @@ class NutritionPlan
             $this->segments->add($segment);
         }
     }
+
+    /**
+     * Rename the nutrition plan.
+     */
+    public function rename(?string $name): void
+    {
+        $this->name = $name;
+    }
 }

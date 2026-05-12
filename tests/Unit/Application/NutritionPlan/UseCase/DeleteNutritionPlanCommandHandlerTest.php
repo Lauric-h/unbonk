@@ -12,23 +12,34 @@ use PHPUnit\Framework\TestCase;
 
 final class DeleteNutritionPlanCommandHandlerTest extends TestCase
 {
-    public function testDeleteNutritionPlan(): void
+    public function testItDeletesNutritionPlan(): void
     {
-        $repository = $this->createMock(NutritionPlansCatalog::class);
-        $handler = new DeleteNutritionPlanCommandHandler($repository);
+        // Arrange
+        $nutritionPlanId = 'nutrition-plan-id';
 
-        $nutritionPlan = new NutritionPlanTestFixture()->build();
-        $id = $nutritionPlan->id;
+        $nutritionPlan = new NutritionPlanTestFixture()
+            ->withId($nutritionPlanId)
+            ->build();
 
-        $repository->expects($this->once())
+        $nutritionPlansCatalog = $this->createMock(NutritionPlansCatalog::class);
+        $nutritionPlansCatalog->expects($this->once())
             ->method('get')
-            ->with($id)
+            ->with($nutritionPlanId)
             ->willReturn($nutritionPlan);
 
-        $repository->expects($this->once())
+        $nutritionPlansCatalog->expects($this->once())
             ->method('remove')
             ->with($nutritionPlan);
 
-        ($handler)(new DeleteNutritionPlanCommand($id));
+        $handler = new DeleteNutritionPlanCommandHandler($nutritionPlansCatalog);
+
+        $command = new DeleteNutritionPlanCommand(
+            nutritionPlanId: $nutritionPlanId,
+        );
+
+        // Act
+        $handler($command);
+
+        // Assert: expectations verified by PHPUnit
     }
 }
