@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UI\Http\Rest\NutritionPlan\Controller;
+namespace App\UI\Http\Rest\NutritionPlan\Controller\NutritionPlan;
 
 use App\Application\NutritionPlan\UseCase\GetNutritionPlan\GetNutritionPlanQuery;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UI\Http\Rest\NutritionPlan\Controller;
+namespace App\UI\Http\Rest\NutritionPlan\Controller\Event;
 
 use App\Application\NutritionPlan\UseCase\ListAllEvents\ListAllEventsQuery;
 use App\Infrastructure\Shared\Bus\QueryBus;

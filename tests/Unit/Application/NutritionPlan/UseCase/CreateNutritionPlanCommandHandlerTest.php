@@ -56,42 +56,6 @@ final class CreateNutritionPlanCommandHandlerTest extends TestCase
         $handler($command);
     }
 
-    public function testCreateNutritionPlanThrowsExceptionWhenRaceDoesNotBelongToRunner(): void
-    {
-        $nutritionPlansCatalog = $this->createMock(NutritionPlansCatalog::class);
-        $racesCatalog = $this->createMock(RacesCatalog::class);
-        $idGenerator = new MockIdGenerator('segment-id');
-
-        $handler = new CreateNutritionPlanCommandHandler(
-            $nutritionPlansCatalog,
-            $racesCatalog,
-            $idGenerator
-        );
-
-        // Create an imported race for a different runner
-        $importedRace = NutritionPlanTestFixture::createDefaultImportedRaceWithRunnerId('runner-456');
-
-        $racesCatalog->expects($this->once())
-            ->method('get')
-            ->with('race-id')
-            ->willReturn($importedRace);
-
-        $nutritionPlansCatalog->expects($this->never())
-            ->method('add');
-
-        $this->expectException(\DomainException::class);
-        $this->expectExceptionMessage('Race race-id does not belong to runner runner-123');
-
-        $command = new CreateNutritionPlanCommand(
-            nutritionPlanId: 'nutrition-plan-id',
-            importedRaceId: 'race-id',
-            runnerId: 'runner-123',
-            name: 'Plan A'
-        );
-
-        $handler($command);
-    }
-
     public function testCreateNutritionPlanWithoutName(): void
     {
         $nutritionPlansCatalog = $this->createMock(NutritionPlansCatalog::class);

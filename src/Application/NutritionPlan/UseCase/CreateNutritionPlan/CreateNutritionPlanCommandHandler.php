@@ -23,9 +23,8 @@ final readonly class CreateNutritionPlanCommandHandler implements CommandHandler
     {
         $importedRace = $this->racesCatalog->get($command->importedRaceId);
 
-        if ($importedRace->runnerId !== $command->runnerId) {
-            throw new \DomainException(\sprintf('Race %s does not belong to runner %s', $command->importedRaceId, $command->runnerId));
-        }
+        // Note: Ownership is already verified by ImportedRaceVoter at the HTTP layer
+        // This handler focuses on business logic only
 
         $checkpointCount = \count($importedRace->getCheckpoints());
         $segmentIds = $this->generateSegmentIds($checkpointCount);

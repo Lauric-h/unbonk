@@ -8,6 +8,6 @@ final class RaceNotFoundException extends NotFoundException
 {
     public function __construct(string $id)
     {
-        parent::__construct(\sprintf('Race with id %s not found', $id));
+        parent::__construct(\sprintf('Event with id %s not found', $id));
     }
 }

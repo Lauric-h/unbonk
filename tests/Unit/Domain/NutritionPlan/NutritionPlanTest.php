@@ -229,7 +229,7 @@ final class NutritionPlanTest extends TestCase
             id: 'custom-checkpoint-id',
             name: 'Beyond Finish',
             location: 'Too Far',
-            distanceFromStart: 60000, // Race is 50000m
+            distanceFromStart: 60000, // Event is 50000m
             ascentFromStart: 2500,
             descentFromStart: 2000,
             cutoff: null,

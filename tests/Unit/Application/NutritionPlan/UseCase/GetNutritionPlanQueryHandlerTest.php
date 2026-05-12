@@ -58,7 +58,7 @@ final class GetNutritionPlanQueryHandlerTest extends TestCase
 
         // Check imported race
         $this->assertInstanceOf(ImportedRaceReadModel::class, $result->race);
-        $this->assertSame('Test Race', $result->race->name);
+        $this->assertSame('Test Event', $result->race->name);
         $this->assertCount(3, $result->race->checkpoints);
 
         // Check segments

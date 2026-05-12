@@ -1,14 +1,12 @@
 <?php
 
-declare(strict_types=1);
+namespace App\UI\Http\Rest\NutritionPlan\Controller\NutritionPlan;
 
-namespace App\UI\Http\Rest\NutritionPlan\Controller;
-
-use App\Application\NutritionPlan\UseCase\AddCheckpoint\AddCheckpointCommand;
+use App\Application\NutritionPlan\UseCase\AddNutritionItem\AddNutritionItemCommand;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\Infrastructure\User\Security\UserAdapter;
-use App\UI\Http\Rest\NutritionPlan\Request\AddCheckpointRequest;
+use App\UI\Http\Rest\NutritionPlan\Request\AddNutritionItemRequest;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,9 +18,8 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
-#[Route('/nutrition-plans/{nutritionPlanId}/checkpoints', name: 'api.nutrition_plan.add_checkpoint', methods: ['POST'])]
-#[IsGranted('EDIT', subject: 'nutritionPlan')]
-final class AddCheckpointController extends AbstractController
+#[Route('/nutrition-plans/{nutritionPlanId}/segments/{segmentId}/nutrition-items', name: 'api.nutrition_plan.segment.add_nutrition_item', methods: ['POST'])]
+final class AddNutritionItemController extends AbstractController
 {
     public function __construct(
         private readonly SerializerInterface $serializer,
@@ -31,29 +28,18 @@ final class AddCheckpointController extends AbstractController
     ) {
     }
 
+    #[IsGranted('EDIT', subject: 'nutritionPlan')]
     public function __invoke(
         #[MapEntity(id: 'nutritionPlanId')]
         NutritionPlan $nutritionPlan,
+        string $segmentId,
         Request $request,
         #[CurrentUser]
         UserAdapter $userAdapter
     ): JsonResponse {
-        $addCheckpointRequest = $this->serializer->deserialize($request->getContent(), AddCheckpointRequest::class, 'json');
+        $addNutritionItemRequest = $this->serializer->deserialize($request->getContent(), AddNutritionItemRequest::class, 'json');
 
-        $cutoffTime = null !== $addCheckpointRequest->cutoffTime
-            ? new \DateTimeImmutable($addCheckpointRequest->cutoffTime)
-            : null;
-
-        $this->commandBus->dispatch(new AddCheckpointCommand(
-            nutritionPlanId: $nutritionPlan->id,
-            name: $addCheckpointRequest->name,
-            location: $addCheckpointRequest->location,
-            distanceFromStart: $addCheckpointRequest->distanceFromStart,
-            ascentFromStart: $addCheckpointRequest->ascentFromStart,
-            descentFromStart: $addCheckpointRequest->descentFromStart,
-            cutoffTime: $cutoffTime,
-            assistanceAllowed: $addCheckpointRequest->assistanceAllowed,
-        ));
+        $this->commandBus->dispatch(new AddNutritionItemCommand($addNutritionItemRequest->id, $nutritionPlan->id, $segmentId, $addNutritionItemRequest->quantity));
 
         return new JsonResponse(
             [],
