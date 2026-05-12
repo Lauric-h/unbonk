@@ -21,10 +21,10 @@ final class Version20260512094121 extends AbstractMigration
     {
         // Add column as nullable first
         $this->addSql('ALTER TABLE imported_race ADD event_name VARCHAR(255) DEFAULT NULL');
-        
+
         // Fill existing rows with race name (temporary solution)
         $this->addSql('UPDATE imported_race SET event_name = name WHERE event_name IS NULL');
-        
+
         // Make column NOT NULL
         $this->addSql('ALTER TABLE imported_race ALTER COLUMN event_name SET NOT NULL');
     }

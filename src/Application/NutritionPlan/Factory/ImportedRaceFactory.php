@@ -17,14 +17,14 @@ final readonly class ImportedRaceFactory
     ) {
     }
 
-    public function createFromExternalRace(ExternalRaceDTO $externalRace, string $eventName, string $runnerId): ImportedRace
+    public function createFromExternalRace(ExternalRaceDTO $externalRace, string $runnerId): ImportedRace
     {
         $importedRace = new ImportedRace(
             id: $this->idGenerator->generate(),
             runnerId: $runnerId,
             externalRaceId: $externalRace->id,
             externalEventId: $externalRace->eventId,
-            eventName: $eventName,
+            eventName: $externalRace->eventName,
             name: $externalRace->name,
             distance: $externalRace->distance,
             ascent: $externalRace->ascent,

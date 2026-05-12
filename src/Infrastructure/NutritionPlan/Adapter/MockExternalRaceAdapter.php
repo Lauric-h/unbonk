@@ -48,6 +48,7 @@ final class MockExternalRaceAdapter implements ExternalRacePort
             $races[] = new ExternalRaceDTO(
                 id: Uuid::v4()->toRfc4122(),
                 eventId: $eventId,
+                eventName: 'UTMB Event',
                 name: 'UTMB'.$i,
                 distance: 1000,
                 ascent: 2000,
@@ -92,6 +93,7 @@ final class MockExternalRaceAdapter implements ExternalRacePort
         return new ExternalRaceDTO(
             id: $raceId,
             eventId: 'eventid',
+            eventName: 'Serre Chevalier Event',
             name: 'Serre Che Trail',
             distance: 60,
             ascent: 4000,
