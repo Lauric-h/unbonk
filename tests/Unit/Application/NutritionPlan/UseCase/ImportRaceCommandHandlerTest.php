@@ -29,6 +29,7 @@ final class ImportRaceCommandHandlerTest extends TestCase
         $externalRace = new ExternalRaceDTO(
             id: 'external-race-id',
             eventId: 'external-event-id',
+            eventName: 'Test Event',
             name: 'Test Event',
             distance: 50000,
             ascent: 2000,
@@ -40,20 +41,7 @@ final class ImportRaceCommandHandlerTest extends TestCase
             aidStations: [],
         );
 
-        $externalEvent = new \App\Domain\NutritionPlan\DTO\ExternalEventDTO(
-            id: 'external-event-id',
-            name: 'Test Event',
-            location: 'Test Location',
-            date: new \DateTimeImmutable('2024-06-01'),
-            url: null,
-            races: [],
-        );
-
         $externalRacePort = $this->createMock(ExternalRacePort::class);
-        $externalRacePort->expects($this->once())
-            ->method('getEvent')
-            ->with($externalEventId)
-            ->willReturn($externalEvent);
         $externalRacePort->expects($this->once())
             ->method('getRaceDetails')
             ->with($externalEventId, $externalRaceId)
@@ -65,6 +53,7 @@ final class ImportRaceCommandHandlerTest extends TestCase
             ->with($this->callback(function ($nutritionPlan) use ($nutritionPlanId, $runnerId): bool {
                 $this->assertSame($nutritionPlanId, $nutritionPlan->id);
                 $this->assertSame($runnerId, $nutritionPlan->race->runnerId);
+                $this->assertSame('Test Event', $nutritionPlan->race->eventName);
                 $this->assertSame('Test Event', $nutritionPlan->race->name);
 
                 return true;
@@ -104,8 +93,6 @@ final class ImportRaceCommandHandlerTest extends TestCase
         $command = new ImportRaceCommand('id', $externalEventId, $externalRaceId, 'runner-id');
 
         $externalRacePort = $this->createMock(ExternalRacePort::class);
-        $externalRacePort->expects($this->never())
-            ->method('getEvent');
         $externalRacePort->expects($this->once())
             ->method('getRaceDetails')
             ->with($externalEventId, $externalRaceId)
