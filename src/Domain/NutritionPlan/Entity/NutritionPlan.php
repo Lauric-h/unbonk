@@ -381,9 +381,6 @@ class NutritionPlan
         }
     }
 
-    /**
-     * Rename the nutrition plan.
-     */
     public function rename(?string $name): void
     {
         $this->name = $name;
