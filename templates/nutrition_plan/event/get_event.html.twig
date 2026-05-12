@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ event.name }}{% endblock %}
+
+{% block body %}
+    <h1>{{ event.name }}</h1>
+    
+    <p><a href="{{ url('app.event.list') }}">← Retour à la liste des événements</a></p>
+    
+    <h2>Informations</h2>
+    <ul>
+        <li><strong>Lieu :</strong> {{ event.location }}</li>
+        <li><strong>Date :</strong> {{ event.date|date('d/m/Y') }}</li>
+        {% if event.url %}
+            <li><strong>Site web :</strong> <a href="{{ event.url }}" target="_blank">{{ event.url }}</a></li>
+        {% endif %}
+    </ul>
+    
+    <h2>Courses disponibles</h2>
+    
+    {% if event.races|length > 0 %}
+        <table border="1" cellpadding="10">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Distance</th>
+                    <th>D+</th>
+                    <th>D-</th>
+                    <th>Checkpoints</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for race in event.races %}
+                    <tr>
+                        <td><strong>{{ race.name }}</strong></td>
+                        <td>{{ (race.distance / 1000)|number_format(1) }} km</td>
+                        <td>{{ race.ascent }} m</td>
+                        <td>{{ race.descent }} m</td>
+                        <td>{{ race.aidStations|length }}</td>
+                        <td>
+                            <form method="post" action="{{ url('app.race.import', {eventId: event.id, raceId: race.id}) }}" style="display: inline;">
+                                <button type="submit">Importer cette course</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Aucune course disponible pour cet événement.</p>
+    {% endif %}
+{% endblock %}

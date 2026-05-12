@@ -21,7 +21,7 @@ class GetFoodController extends AbstractController
         #[MapEntity(id: 'id')]
         Food $food
     ): Response {
-        return $this->render('Food/get_food.html.twig', [
+        return $this->render('food/get_food.html.twig', [
             'food' => $this->queryBus->query(new GetFoodQuery($food->id)),
         ]);
     }

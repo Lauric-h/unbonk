@@ -42,7 +42,7 @@ final class CreateBrandController extends AbstractController
             }
         }
 
-        return $this->render('Food/create_brand.html.twig', [
+        return $this->render('food/create_brand.html.twig', [
             'form' => $form,
         ]);
     }

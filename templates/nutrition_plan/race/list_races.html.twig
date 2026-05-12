@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes courses importées{% endblock %}
+
+{% block body %}
+    <h1>Mes courses importées</h1>
+    
+    <p><a href="{{ url('app.event.list') }}">← Retour aux événements</a></p>
+    
+    {% for message in app.flashes('success') %}
+        <p style="color: green;"><strong>✓ {{ message }}</strong></p>
+    {% endfor %}
+    
+    {% if races|length > 0 %}
+        <table border="1" cellpadding="10">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Lieu</th>
+                    <th>Date</th>
+                    <th>Distance</th>
+                    <th>D+</th>
+                    <th>D-</th>
+                    <th>Checkpoints</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for race in races %}
+                    <tr>
+                        <td><strong>{{ race.name }}</strong></td>
+                        <td>{{ race.location }}</td>
+                        <td>{{ race.startDateTime|date('d/m/Y H:i') }}</td>
+                        <td>{{ (race.distance / 1000)|number_format(1) }} km</td>
+                        <td>{{ race.ascent }} m</td>
+                        <td>{{ race.descent }} m</td>
+                        <td>{{ race.checkpoints|length }}</td>
+                        <td>
+                            <a href="{{ url('app.race.nutrition_plans', {raceId: race.id}) }}">Voir les plans</a>
+                            |
+                            <form method="post" action="{{ url('app.race.delete', {raceId: race.id}) }}" style="display: inline;" onsubmit="return confirm('Supprimer cette course ?');">
+                                <button type="submit">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Vous n'avez pas encore importé de course.</p>
+        <p><a href="{{ url('app.event.list') }}">Parcourir les événements</a></p>
+    {% endif %}
+{% endblock %}

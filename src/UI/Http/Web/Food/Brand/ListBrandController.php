@@ -17,7 +17,7 @@ final class ListBrandController extends AbstractController
 
     public function __invoke(): Response
     {
-        return $this->render('Food/list_brand.html.twig', [
+        return $this->render('food/list_brand.html.twig', [
             'list' => $this->queryBus->query(new ListBrandQuery()),
         ]);
     }

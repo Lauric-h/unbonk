@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes plans de nutrition{% endblock %}
+
+{% block body %}
+    <h1>Mes plans de nutrition</h1>
+    
+    <p><a href="{{ url('app.race.list') }}">← Retour à mes courses</a></p>
+    
+    {% if nutritionPlans|length > 0 %}
+        <table border="1" cellpadding="10">
+            <thead>
+                <tr>
+                    <th>Nom du plan</th>
+                    <th>Événement</th>
+                    <th>Course</th>
+                    <th>Distance</th>
+                    <th>Date</th>
+                    <th>Glucides totaux</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for plan in nutritionPlans %}
+                    <tr>
+                        <td><strong>{{ plan.nutritionPlanName ?? '(Sans nom)' }}</strong></td>
+                        <td>{{ plan.eventName }}</td>
+                        <td>{{ plan.raceName }}</td>
+                        <td>{{ (plan.raceDistance / 1000)|number_format(1) }} km</td>
+                        <td>{{ plan.raceDate|date('d/m/Y') }}</td>
+                        <td>{{ plan.totalCarbs }} g</td>
+                        <td>
+                            <a href="#">Voir</a>
+                            |
+                            <a href="#">Éditer</a>
+                            |
+                            <form method="post" action="#" style="display: inline;" onsubmit="return confirm('Supprimer ce plan ?');">
+                                <button type="submit">Supprimer</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>Vous n'avez pas encore créé de plan de nutrition.</p>
+        <p><a href="{{ url('app.race.list') }}">Voir mes courses importées</a></p>
+    {% endif %}
+{% endblock %}

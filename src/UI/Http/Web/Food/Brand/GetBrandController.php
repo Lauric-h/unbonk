@@ -22,7 +22,7 @@ final class GetBrandController extends AbstractController
         #[MapEntity(id: 'id')]
         Brand $brand
     ): Response {
-        return $this->render('Food/get_brand.html.twig', [
+        return $this->render('food/get_brand.html.twig', [
             'brand' => $this->queryBus->query(new GetBrandQuery($brand->id)),
             'foods' => $this->queryBus->query(new ListFoodQuery($brand->id)),
         ]);

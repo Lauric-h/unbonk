@@ -33,7 +33,7 @@ final class RegisterController extends AbstractController
                     $registerModel->password,
                 ));
             } catch (UserAlreadyExistsException $e) {
-                return $this->render('User/register.html.twig', [
+                return $this->render('user/register.html.twig', [
                     'form' => $form,
                     'hasError' => true,
                 ]);
@@ -42,7 +42,7 @@ final class RegisterController extends AbstractController
             return $this->redirectToRoute('app.user.login');
         }
 
-        return $this->render('User/register.html.twig', [
+        return $this->render('user/register.html.twig', [
             'form' => $form,
             'hasError' => false,
         ]);
