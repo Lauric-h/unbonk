@@ -7,7 +7,6 @@ namespace App\UI\Http\Rest\NutritionPlan\Controller\Checkpoint;
 use App\Application\NutritionPlan\UseCase\UpdateCheckpoint\UpdateCheckpointCommand;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Infrastructure\Shared\Bus\CommandBus;
-use App\Infrastructure\User\Security\UserAdapter;
 use App\UI\Http\Rest\NutritionPlan\Request\UpdateCheckpointRequest;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,7 +14,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -33,9 +31,7 @@ final class UpdateCheckpointController extends AbstractController
         #[MapEntity(id: 'nutritionPlanId')]
         NutritionPlan $nutritionPlan,
         string $checkpointId,
-        Request $request,
-        #[CurrentUser]
-        UserAdapter $userAdapter
+        Request $request
     ): JsonResponse {
         $updateCheckpointRequest = $this->serializer->deserialize($request->getContent(), UpdateCheckpointRequest::class, 'json');
 

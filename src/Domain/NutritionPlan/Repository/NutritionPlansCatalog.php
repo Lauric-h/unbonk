@@ -16,4 +16,9 @@ interface NutritionPlansCatalog
      * @return NutritionPlan[]
      */
     public function findByRaceId(string $raceId): array;
+
+    /**
+     * @return NutritionPlan[]
+     */
+    public function getByRunner(string $runnerId): array;
 }

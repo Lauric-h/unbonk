@@ -50,4 +50,13 @@ class DoctrineNutritionPlansCatalog extends ServiceEntityRepository implements N
             ->getQuery()
             ->getResult();
     }
+
+    public function getByRunner(string $runnerId): array
+    {
+        return $this->createQueryBuilder('nutritionPlan')
+            ->where('nutritionPlan.runner = :runnerId')
+            ->setParameter('runnerId', $runnerId)
+            ->getQuery()
+            ->getResult();
+    }
 }

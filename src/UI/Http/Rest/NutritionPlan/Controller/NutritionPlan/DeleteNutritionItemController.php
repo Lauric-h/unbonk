@@ -5,13 +5,11 @@ namespace App\UI\Http\Rest\NutritionPlan\Controller\NutritionPlan;
 use App\Application\NutritionPlan\UseCase\DeleteNutritionItem\DeleteNutritionItemCommand;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Infrastructure\Shared\Bus\CommandBus;
-use App\Infrastructure\User\Security\UserAdapter;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/nutrition-plans/{nutritionPlanId}/segments/{segmentId}/nutrition-items/{nutritionItemId}', name: 'api.nutrition_plan.segment.delete_nutrition_item', methods: ['DELETE'])]
@@ -27,9 +25,7 @@ final class DeleteNutritionItemController extends AbstractController
         #[MapEntity(id: 'nutritionPlanId')]
         NutritionPlan $nutritionPlan,
         string $segmentId,
-        string $nutritionItemId,
-        #[CurrentUser]
-        UserAdapter $userAdapter
+        string $nutritionItemId
     ): JsonResponse {
         $this->commandBus->dispatch(new DeleteNutritionItemCommand($nutritionPlan->id, $segmentId, $nutritionItemId));
 

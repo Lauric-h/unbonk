@@ -4,14 +4,13 @@ namespace App\UI\Http\Rest\NutritionPlan\Controller\Race;
 
 use App\Application\NutritionPlan\UseCase\ImportRace\ImportRaceCommand;
 use App\Application\Shared\IdGeneratorInterface;
+use App\Application\Shared\Security\CurrentUserIdProvider;
 use App\Infrastructure\Shared\Bus\CommandBus;
-use App\Infrastructure\User\Security\UserAdapter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
 #[Route('/events/{eventId}/races/{raceId}', name: 'api.event.import_race', methods: ['POST'])]
 final class ImportRaceController extends AbstractController
@@ -20,12 +19,11 @@ final class ImportRaceController extends AbstractController
         private readonly CommandBus $commandBus,
         private readonly IdGeneratorInterface $idGenerator,
         private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly CurrentUserIdProvider $currentUserIdProvider,
     ) {
     }
 
     public function __invoke(
-        #[CurrentUser]
-        UserAdapter $userAdapter,
         string $eventId,
         string $raceId,
     ): JsonResponse {
@@ -34,7 +32,7 @@ final class ImportRaceController extends AbstractController
             nutritionPlanId: $nutritionPlanId,
             externalEventId: $eventId,
             externalRaceId: $raceId,
-            runnerId: $userAdapter->getUser()->id,
+            runnerId: $this->currentUserIdProvider->getCurrentUserId(),
         ));
 
         return new JsonResponse(
