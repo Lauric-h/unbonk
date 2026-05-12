@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\UI\Http\Rest\NutritionPlan\Controller;
+namespace App\UI\Http\Rest\NutritionPlan\Controller\Checkpoint;
 
 use App\Application\NutritionPlan\UseCase\UpdateCheckpoint\UpdateCheckpointCommand;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\Infrastructure\User\Security\UserAdapter;
 use App\UI\Http\Rest\NutritionPlan\Request\UpdateCheckpointRequest;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +20,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/nutrition-plans/{nutritionPlanId}/checkpoints/{checkpointId}', name: 'api.nutrition_plan.update_checkpoint', methods: ['PUT'])]
+#[IsGranted('EDIT', subject: 'nutritionPlan')]
 final class UpdateCheckpointController extends AbstractController
 {
     public function __construct(
@@ -27,8 +29,8 @@ final class UpdateCheckpointController extends AbstractController
     ) {
     }
 
-    #[IsGranted('EDIT', subject: 'nutritionPlan')]
     public function __invoke(
+        #[MapEntity(id: 'nutritionPlanId')]
         NutritionPlan $nutritionPlan,
         string $checkpointId,
         Request $request,

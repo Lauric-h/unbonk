@@ -4,7 +4,9 @@ namespace App\UI\Http\Web\Food\Brand;
 
 use App\Application\Food\UseCase\GetBrand\GetBrandQuery;
 use App\Application\Food\UseCase\ListFood\ListFoodQuery;
+use App\Domain\Food\Entity\Brand;
 use App\Infrastructure\Shared\Bus\QueryBus;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -16,11 +18,13 @@ final class GetBrandController extends AbstractController
     {
     }
 
-    public function __invoke(string $id): Response
-    {
+    public function __invoke(
+        #[MapEntity(id: 'id')]
+        Brand $brand
+    ): Response {
         return $this->render('Food/get_brand.html.twig', [
-            'brand' => $this->queryBus->query(new GetBrandQuery($id)),
-            'foods' => $this->queryBus->query(new ListFoodQuery($id)),
+            'brand' => $this->queryBus->query(new GetBrandQuery($brand->id)),
+            'foods' => $this->queryBus->query(new ListFoodQuery($brand->id)),
         ]);
     }
 }

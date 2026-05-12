@@ -1,39 +1,28 @@
 <?php
 
-namespace App\Application\NutritionPlan\UseCase\ImportRace;
+declare(strict_types=1);
 
-use App\Application\NutritionPlan\Factory\ImportedRaceFactory;
+namespace App\Application\NutritionPlan\UseCase\CreateNutritionPlan;
+
 use App\Application\Shared\IdGeneratorInterface;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
-use App\Domain\NutritionPlan\Port\ExternalRacePort;
 use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
 use App\Domain\NutritionPlan\Repository\RacesCatalog;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
 
-final readonly class ImportRaceCommandHandler implements CommandHandlerInterface
+final readonly class CreateNutritionPlanCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private NutritionPlansCatalog $nutritionPlansCatalog,
         private RacesCatalog $racesCatalog,
-        private ExternalRacePort $client,
-        private ImportedRaceFactory $importedRaceFactory,
         private IdGeneratorInterface $idGenerator,
     ) {
     }
 
-    public function __invoke(ImportRaceCommand $command): void
+    public function __invoke(CreateNutritionPlanCommand $command): void
     {
-        $externalRace = $this->client->getRaceDetails($command->externalEventId, $command->externalRaceId);
+        $importedRace = $this->racesCatalog->get($command->importedRaceId);
 
-        if (null === $externalRace) {
-            throw new \DomainException(\sprintf('Event with id %s not found', $command->externalRaceId));
-        }
-
-        $importedRace = $this->importedRaceFactory->createFromExternalRace($externalRace, $command->runnerId);
-
-        $this->racesCatalog->add($importedRace);
-
-        // Generate segment IDs based on imported checkpoint count
         $checkpointCount = \count($importedRace->getCheckpoints());
         $segmentIds = $this->generateSegmentIds($checkpointCount);
 
@@ -41,16 +30,13 @@ final readonly class ImportRaceCommandHandler implements CommandHandlerInterface
             id: $command->nutritionPlanId,
             race: $importedRace,
             segmentIds: $segmentIds,
-            name: \sprintf('Nutrition plan for %s race', $externalRace->name),
+            name: $command->name,
         );
 
         $this->nutritionPlansCatalog->add($nutritionPlan);
     }
 
     /**
-     * Generate segment IDs based on checkpoint count.
-     * Formula: segmentCount = checkpointCount - 1.
-     *
      * @return string[]
      */
     private function generateSegmentIds(int $checkpointCount): array

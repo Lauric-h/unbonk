@@ -7,6 +7,7 @@ use App\Domain\Food\Entity\Food;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\UI\Http\Web\Food\Form\UpdateFood\UpdateFoodForm;
 use App\UI\Http\Web\Food\Form\UpdateFood\UpdateFoodModel;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,8 +20,11 @@ final class UpdateFoodController extends AbstractController
     {
     }
 
-    public function __invoke(Request $request, Food $food): Response
-    {
+    public function __invoke(
+        #[MapEntity(id: 'id')]
+        Food $food,
+        Request $request
+    ): Response {
         $foodModel = UpdateFoodModel::fromFood($food);
         $form = $this->createForm(UpdateFoodForm::class, $foodModel);
 

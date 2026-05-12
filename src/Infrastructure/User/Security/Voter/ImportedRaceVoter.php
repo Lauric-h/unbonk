@@ -4,26 +4,25 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\User\Security\Voter;
 
-use App\Domain\NutritionPlan\Entity\NutritionPlan;
+use App\Domain\NutritionPlan\Entity\ImportedRace;
 use App\Domain\User\Entity\User;
 use App\Infrastructure\User\Security\UserAdapter;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 /**
- * Voter for NutritionPlan authorization.
- * Checks if the current user owns the NutritionPlan.
+ * Voter for ImportedRace authorization.
+ * Checks if the current user owns the ImportedRace.
  *
- * @extends Voter<string, NutritionPlan>
+ * @extends Voter<string, ImportedRace>
  */
-class NutritionPlanVoter extends Voter
+class ImportedRaceVoter extends Voter
 {
-    // Only one role for now
     public const string EDIT = 'EDIT';
 
     protected function supports(string $attribute, mixed $subject): bool
     {
-        if (!$subject instanceof NutritionPlan) {
+        if (!$subject instanceof ImportedRace) {
             return false;
         }
 
@@ -41,14 +40,15 @@ class NutritionPlanVoter extends Voter
 
         $user = $userInterface->getUser();
 
-        /** @var NutritionPlan $nutritionPlan */
-        $nutritionPlan = $subject;
+        /** @var ImportedRace $race */
+        $race = $subject;
 
-        return $this->canAccess($nutritionPlan, $user);
+        return $this->canAccess($race, $user);
     }
 
-    private function canAccess(NutritionPlan $nutritionPlan, User $user): bool
+    private function canAccess(ImportedRace $race, User $user): bool
     {
-        return $nutritionPlan->race->runnerId === $user->id;
+        // User can access the race if they are the runner
+        return $race->runnerId === $user->id;
     }
 }

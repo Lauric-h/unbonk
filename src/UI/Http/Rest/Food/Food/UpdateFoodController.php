@@ -3,7 +3,9 @@
 namespace App\UI\Http\Rest\Food\Food;
 
 use App\Application\Food\UseCase\UpdateFood\UpdateFoodCommand;
+use App\Domain\Food\Entity\Food;
 use App\Infrastructure\Shared\Bus\CommandBus;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,8 +24,11 @@ final class UpdateFoodController extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request, string $id): JsonResponse
-    {
+    public function __invoke(
+        #[MapEntity(id: 'id')]
+        Food $food,
+        Request $request
+    ): JsonResponse {
         $command = $this->serializer->deserialize($request->getContent(), UpdateFoodCommand::class, 'json');
         $this->messageBus->dispatch($command);
 

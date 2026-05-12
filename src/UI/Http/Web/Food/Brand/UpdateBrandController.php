@@ -8,6 +8,7 @@ use App\Domain\Food\Exception\BrandAlreadyExistsException;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\UI\Http\Web\Food\Form\UpdateBrand\UpdateBrandForm;
 use App\UI\Http\Web\Food\Form\UpdateBrand\UpdateBrandModel;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,8 +23,11 @@ final class UpdateBrandController extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request, Brand $brand): Response
-    {
+    public function __invoke(
+        #[MapEntity(id: 'id')]
+        Brand $brand,
+        Request $request
+    ): Response {
         $updateBrandModel = UpdateBrandModel::fromBrand($brand);
         $form = $this->createForm(UpdateBrandForm::class, $updateBrandModel);
 

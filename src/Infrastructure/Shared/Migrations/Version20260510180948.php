@@ -40,10 +40,10 @@ final class Version20260510180948 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_1881F5656F6240F0 ON segment (start_checkpoint_id)');
         $this->addSql('CREATE INDEX IDX_1881F56513B24925 ON segment (end_checkpoint_id)');
         $this->addSql('CREATE INDEX IDX_1881F565113D03C9 ON segment (nutrition_plan_id)');
-        $this->addSql('CREATE TABLE "user" (id VARCHAR(255) NOT NULL, username VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649F85E0677 ON "user" (username)');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D649E7927C74 ON "user" (email)');
-        $this->addSql('CREATE UNIQUE INDEX UNIQ_8D93D64935C246D5 ON "user" (password)');
+        $this->addSql('CREATE TABLE app_user (id VARCHAR(255) NOT NULL, username VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_88BDF3E9F85E0677 ON app_user (username)');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_88BDF3E9E7927C74 ON app_user (email)');
+        $this->addSql('CREATE UNIQUE INDEX UNIQ_88BDF3E935C246D5 ON app_user (password)');
         $this->addSql('ALTER TABLE checkpoint ADD CONSTRAINT FK_F00F7BEBAA58852 FOREIGN KEY (imported_race_id) REFERENCES imported_race (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE checkpoint ADD CONSTRAINT FK_F00F7BE113D03C9 FOREIGN KEY (nutrition_plan_id) REFERENCES nutrition_plan (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE food ADD CONSTRAINT FK_D43829F744F5D008 FOREIGN KEY (brand_id) REFERENCES brand (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
@@ -73,6 +73,6 @@ final class Version20260510180948 extends AbstractMigration
         $this->addSql('DROP TABLE nutrition_item');
         $this->addSql('DROP TABLE nutrition_plan');
         $this->addSql('DROP TABLE segment');
-        $this->addSql('DROP TABLE "user"');
+        $this->addSql('DROP TABLE app_user');
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\UI\Http\Rest\NutritionPlan\Controller;
+namespace App\UI\Http\Rest\NutritionPlan\Controller\Race;
 
 use App\Application\NutritionPlan\UseCase\ListUserRaces\ListUserRacesQuery;
 use App\Infrastructure\Shared\Bus\QueryBus;
