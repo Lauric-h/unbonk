@@ -42,7 +42,7 @@ final class UpdateBrandController extends AbstractController
             }
         }
 
-        return $this->render('Food/update_brand.html.twig', [
+        return $this->render('food/update_brand.html.twig', [
             'form' => $form,
             'brand' => $brand,
         ]);

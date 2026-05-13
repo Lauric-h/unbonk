@@ -39,7 +39,7 @@ final class AddFoodController extends AbstractController
             return $this->redirectToRoute('app.brand.get', ['id' => $brand->id]);
         }
 
-        return $this->render('Food/create_food.html.twig', [
+        return $this->render('food/create_food.html.twig', [
             'form' => $form,
             'brandName' => $brand->name,
         ]);

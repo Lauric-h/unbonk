@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des événements{% endblock %}
+
+{% block body %}
+    <h1>Événements disponibles</h1>
+    
+    <p><a href="{{ url('app.race.list') }}">Voir mes courses importées</a></p>
+    
+    <ul>
+        {% for event in events %}
+            <li>
+                <a href="{{ url('app.event.get', {eventId: event.id}) }}">
+                    <strong>{{ event.name }}</strong>
+                </a>
+                - {{ event.location }}
+                - {{ event.date|date('d/m/Y') }}
+                ({{ event.races|length }} course(s))
+            </li>
+        {% else %}
+            <li>Aucun événement disponible</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

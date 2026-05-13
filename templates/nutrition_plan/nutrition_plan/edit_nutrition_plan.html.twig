@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Éditer {{ nutritionPlan.name ?? 'Plan de nutrition' }}{% endblock %}
+
+{% block body %}
+    <h1>Éditer : {{ nutritionPlan.name ?? 'Plan de nutrition' }}</h1>
+    
+    <p>
+        <a href="{{ path('app.nutrition_plan.get', {nutritionPlanId: nutritionPlan.id}) }}">← Retour au plan</a>
+    </p>
+    
+    {% for message in app.flashes('success') %}
+        <p style="color: green;"><strong>✓ {{ message }}</strong></p>
+    {% endfor %}
+    
+    <h2>Course : {{ nutritionPlan.race.name }}</h2>
+    <p>{{ (nutritionPlan.race.distance / 1000)|number_format(1) }} km - D+ {{ nutritionPlan.race.ascent }} m</p>
+    
+    <h2>Segments et nutrition</h2>
+    
+    {% for segment in nutritionPlan.segments %}
+        <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px;">
+            <h3>Segment {{ segment.position }} : {{ segment.startCheckpoint.name }} → {{ segment.endCheckpoint.name }}</h3>
+            <p>
+                {{ (segment.distance / 1000)|number_format(1) }} km - 
+                D+ {{ segment.ascent }} m - 
+                D- {{ segment.descent }} m - 
+                <strong>{{ segment.totalCarbs }} g glucides</strong>
+            </p>
+            
+            <h4>Aliments actuels</h4>
+            {% if segment.nutritionItems|length > 0 %}
+                <table border="1" cellpadding="5">
+                    <thead>
+                        <tr>
+                            <th>Aliment</th>
+                            <th>Quantité</th>
+                            <th>Glucides</th>
+                            <th>Calories</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in segment.nutritionItems %}
+                            <tr>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.quantity }}</td>
+                                <td>{{ item.carbs * item.quantity }} g</td>
+                                <td>{{ item.calories * item.quantity }} kcal</td>
+                                <td>
+                                    <form method="post" action="{{ path('app.nutrition_plan.delete_item', {nutritionPlanId: nutritionPlan.id, segmentId: segment.id, itemId: item.id}) }}" style="display: inline;" onsubmit="return confirm('Supprimer cet aliment ?');">
+                                        <button type="submit">Supprimer</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p><em>Aucun aliment pour ce segment</em></p>
+            {% endif %}
+            
+            <h4>Ajouter un aliment</h4>
+            <form method="post" action="{{ path('app.nutrition_plan.add_item', {nutritionPlanId: nutritionPlan.id, segmentId: segment.id}) }}">
+                <label>
+                    Aliment :
+                    <select name="foodId" required>
+                        <option value="">-- Sélectionner --</option>
+                        {# TODO: Charger la liste des aliments depuis le catalogue #}
+                        <option value="example-food-id">Gel énergétique (exemple)</option>
+                    </select>
+                </label>
+                
+                <label>
+                    Quantité :
+                    <input type="number" name="quantity" min="1" value="1" required>
+                </label>
+                
+                <button type="submit">Ajouter</button>
+            </form>
+        </div>
+    {% endfor %}
+    
+    <p>
+        <a href="{{ path('app.nutrition_plan.get', {nutritionPlanId: nutritionPlan.id}) }}">Terminer l'édition</a>
+    </p>
+{% endblock %}

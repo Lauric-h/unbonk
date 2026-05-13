@@ -11,6 +11,19 @@
         {% endblock %}
     </head>
     <body>
+        {% if app.user %}
+            <nav style="border-bottom: 1px solid #ccc; padding: 10px; margin-bottom: 20px;">
+                <strong>Unbonk</strong> | 
+                <a href="{{ url('app.event.list') }}">Événements</a> |
+                <a href="{{ url('app.race.list') }}">Mes courses</a> |
+                <a href="{{ url('app.nutrition_plan.list') }}">Mes plans</a> |
+                <span style="float: right;">
+                    Connecté : {{ app.user.getUser().username }} |
+                    <a href="{{ url('_logout_main') }}">Déconnexion</a>
+                </span>
+            </nav>
+        {% endif %}
+        
         {% block body %}{% endblock %}
     </body>
 </html>

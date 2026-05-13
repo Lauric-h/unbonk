@@ -41,7 +41,7 @@ final class UpdateFoodController extends AbstractController
             return $this->redirectToRoute('app.food.list');
         }
 
-        return $this->render('Food/update_food.html.twig', [
+        return $this->render('food/update_food.html.twig', [
             'food' => $foodModel,
             'form' => $form,
         ]);
