@@ -6,25 +6,39 @@ namespace App\Domain\NutritionPlan\Entity;
 
 class Checkpoint
 {
+    private ?\DateTimeImmutable $cutoffDateTime;
+
     public function __construct(
         public string $id,
         public RunnerRace $runnerRace,
-        public ?string $externalCheckpointId, // null if custom checkpoint
+        public ?string $externalCheckpointId,
         public string $name,
         public string $location,
         public int $distanceFromStart,
         public int $ascentFromStart,
         public int $descentFromStart,
-        public ?Cutoff $cutoff = null,
+        ?Cutoff $cutoff = null,
         public bool $assistanceAllowed = false,
         public CheckpointType $type = CheckpointType::Intermediate,
     ) {
+        $this->cutoffDateTime = $cutoff?->dateTime;
         $this->validate();
+    }
+
+    public function getCutoff(): ?Cutoff
+    {
+        if (null === $this->cutoffDateTime) {
+            return null;
+        }
+
+        return new Cutoff($this->cutoffDateTime);
     }
 
     public function getCutoffInMinutes(): ?int
     {
-        return $this->cutoff?->getInMinutes($this->runnerRace->startDateTime);
+        $cutoff = $this->getCutoff();
+
+        return $cutoff?->getInMinutes($this->runnerRace->startDateTime);
     }
 
     public function isAssistanceAllowed(): bool
@@ -37,28 +51,16 @@ class Checkpoint
         return $this->type;
     }
 
-    /**
-     * Check if this checkpoint is custom (created by user).
-     * Custom checkpoints have no externalCheckpointId.
-     */
     public function isCustom(): bool
     {
         return null === $this->externalCheckpointId;
     }
 
-    /**
-     * Check if this checkpoint is editable.
-     * Only custom checkpoints can be edited.
-     */
     public function isEditable(): bool
     {
         return $this->isCustom();
     }
 
-    /**
-     * Update checkpoint properties.
-     * Only custom checkpoints can be updated.
-     */
     public function update(
         string $name,
         string $location,
@@ -78,7 +80,7 @@ class Checkpoint
         $this->distanceFromStart = $distanceFromStart;
         $this->ascentFromStart = $ascentFromStart;
         $this->descentFromStart = $descentFromStart;
-        $this->cutoff = $cutoff;
+        $this->cutoffDateTime = $cutoff?->dateTime;
         $this->assistanceAllowed = $assistanceAllowed;
         $this->type = $type;
 

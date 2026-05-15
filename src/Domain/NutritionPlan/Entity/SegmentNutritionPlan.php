@@ -22,6 +22,15 @@ class SegmentNutritionPlan
     ) {
     }
 
+    public function getTotalCarbsFromItems(): int
+    {
+        $total = 0;
+        foreach ($this->items as $item) {
+            $total += $item->carbs->value;
+        }
+        return $total;
+    }
+
     /**
      * @return Collection<int, NutritionItem>
      */

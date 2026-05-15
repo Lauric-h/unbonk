@@ -16,6 +16,7 @@ final readonly class NutritionPlanReadModel
         public ?string $name,
         public string $runnerId,
         public RunnerRaceReadModel $runnerRace,
+        public int $totalCarbs,
         public array $segmentPlans = [],
     ) {
     }
@@ -32,6 +33,7 @@ final readonly class NutritionPlanReadModel
             name: $nutritionPlan->name,
             runnerId: $nutritionPlan->runnerRace->runnerId,
             runnerRace: RunnerRaceReadModel::fromRunnerRace($nutritionPlan->runnerRace),
+            totalCarbs: $nutritionPlan->getTotalCarbs(),
             segmentPlans: $segmentPlans,
         );
     }

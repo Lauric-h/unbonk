@@ -14,8 +14,7 @@
         <field name="descentFromStart" type="integer" column="descent_from_start"/>
         <field name="assistanceAllowed" type="boolean" column="assistance_allowed"/>
         <field name="type" type="string" enum-type="App\Domain\NutritionPlan\Entity\CheckpointType"/>
-
-        <embedded name="cutoff" class="App\Domain\NutritionPlan\Entity\Cutoff" column-prefix="cutoff_"/>
+        <field name="cutoffDateTime" type="datetime_immutable" column="cutoff_date_time" nullable="true"/>
 
         <many-to-one field="runnerRace" target-entity="App\Domain\NutritionPlan\Entity\RunnerRace" inversed-by="checkpoints">
             <join-column name="runner_race_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>

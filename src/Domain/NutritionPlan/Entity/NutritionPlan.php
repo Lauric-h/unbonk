@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\NutritionPlan\Entity;
 
+use App\Domain\Shared\Entity\Carbs;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -73,4 +74,14 @@ class NutritionPlan
     {
         $this->name = $name;
     }
+
+    public function getTotalCarbs(): int
+    {
+        $total = 0;
+        foreach ($this->segmentPlans as $segmentPlan) {
+            $total += $segmentPlan->getTotalCarbsFromItems();
+        }
+        return $total;
+    }
+
 }
