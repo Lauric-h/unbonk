@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier le checkpoint{% endblock %}
+
+{% block body %}
+    <h1>Modifier le checkpoint : {{ checkpoint.name }}</h1>
+    
+    <p><a href="{{ path('app.nutrition_plan.edit', {nutritionPlanId: nutritionPlan.id}) }}">← Retour à l'édition du plan</a></p>
+    
+    <h2>Plan : {{ nutritionPlan.name ?? 'Sans nom' }}</h2>
+    <p>Course : {{ nutritionPlan.race.name }}</p>
+    
+    {{ form_start(form) }}
+        {{ form_row(form.name) }}
+        {{ form_row(form.location) }}
+        {{ form_row(form.distanceFromStart) }}
+        {{ form_row(form.ascentFromStart) }}
+        {{ form_row(form.descentFromStart) }}
+        {{ form_row(form.cutoffTime) }}
+        {{ form_row(form.assistanceAllowed) }}
+        
+        <button type="submit">Modifier le checkpoint</button>
+        <a href="{{ path('app.nutrition_plan.edit', {nutritionPlanId: nutritionPlan.id}) }}">Annuler</a>
+    {{ form_end(form) }}
+{% endblock %}

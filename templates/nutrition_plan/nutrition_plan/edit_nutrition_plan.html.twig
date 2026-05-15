@@ -16,6 +16,44 @@
     <h2>Course : {{ nutritionPlan.race.name }}</h2>
     <p>{{ (nutritionPlan.race.distance / 1000)|number_format(1) }} km - D+ {{ nutritionPlan.race.ascent }} m</p>
     
+    <h2>Checkpoints</h2>
+    <p><a href="{{ path('app.checkpoint.add', {nutritionPlanId: nutritionPlan.id}) }}">+ Ajouter un checkpoint personnalisé</a></p>
+    
+    <table border="1" cellpadding="5" style="margin-bottom: 20px;">
+        <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Distance</th>
+                <th>D+</th>
+                <th>D-</th>
+                <th>Type</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for checkpoint in nutritionPlan.checkpoints %}
+                <tr>
+                    <td>{{ checkpoint.name }}</td>
+                    <td>{{ checkpoint.distanceFromStart }} km</td>
+                    <td>{{ checkpoint.ascentFromStart }} m</td>
+                    <td>{{ checkpoint.descentFromStart }} m</td>
+                    <td>{{ checkpoint.isEditable ? 'Personnalisé' : 'Importé' }}</td>
+                    <td>
+                        {% if checkpoint.isEditable %}
+                            <a href="{{ path('app.checkpoint.edit', {nutritionPlanId: nutritionPlan.id, checkpointId: checkpoint.id}) }}">Modifier</a>
+                            |
+                            <form method="post" action="{{ path('app.checkpoint.delete', {nutritionPlanId: nutritionPlan.id, checkpointId: checkpoint.id}) }}" style="display: inline;" onsubmit="return confirm('Supprimer ce checkpoint ?');">
+                                <button type="submit">Supprimer</button>
+                            </form>
+                        {% else %}
+                            <em>Non modifiable</em>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
     <h2>Segments et nutrition</h2>
     
     {% for segment in nutritionPlan.segments %}

@@ -13,7 +13,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/nutrition-plans', name: 'app.nutrition_plan.list', methods: ['GET'])]
-#[IsGranted('EDIT', subject: 'nutritionPlan')]
 final class ListNutritionPlansController extends AbstractController
 {
     public function __construct(

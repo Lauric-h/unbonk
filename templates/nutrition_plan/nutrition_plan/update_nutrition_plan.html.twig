@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Renommer le plan{% endblock %}
+
+{% block body %}
+    <h1>Renommer le plan</h1>
+    
+    <p><a href="{{ path('app.nutrition_plan.get', {nutritionPlanId: nutritionPlan.id}) }}">← Retour au plan</a></p>
+    
+    <h2>Course : {{ nutritionPlan.race.name }}</h2>
+    
+    {{ form_start(form) }}
+        {{ form_row(form.name) }}
+        
+        <button type="submit">Renommer</button>
+        <a href="{{ path('app.nutrition_plan.get', {nutritionPlanId: nutritionPlan.id}) }}">Annuler</a>
+    {{ form_end(form) }}
+{% endblock %}
