@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Application\NutritionPlan\UseCase\ListUserRaces;
+namespace App\Application\NutritionPlan\UseCase\ListRunnerRaces;
 
 use App\Application\NutritionPlan\ReadModel\RunnerRaceReadModel;
-use App\Domain\NutritionPlan\Entity\ImportedRace;
+use App\Domain\NutritionPlan\Entity\RunnerRace;
 use App\Domain\NutritionPlan\Repository\RunnerRacesCatalog;
 use App\Domain\Shared\Bus\QueryHandlerInterface;
 
-final readonly class ListUserRacesQueryHandler implements QueryHandlerInterface
+final readonly class ListRunnerRacesQueryHandler implements QueryHandlerInterface
 {
     public function __construct(
         private RunnerRacesCatalog $racesCatalog,
@@ -17,12 +17,12 @@ final readonly class ListUserRacesQueryHandler implements QueryHandlerInterface
     /**
      * @return RunnerRaceReadModel[]
      */
-    public function __invoke(ListUserRacesQuery $query): array
+    public function __invoke(ListRunnerRacesQuery $query): array
     {
         $races = $this->racesCatalog->findByRunnerId($query->userId);
 
         return array_map(
-            static fn (ImportedRace $race) => RunnerRaceReadModel::fromImportedRace($race),
+            static fn (RunnerRace $race) => RunnerRaceReadModel::fromRunnerRace($race),
             $races
         );
     }

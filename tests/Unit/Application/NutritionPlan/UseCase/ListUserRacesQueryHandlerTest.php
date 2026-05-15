@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 
 use App\Application\NutritionPlan\ReadModel\RunnerRaceReadModel;
-use App\Application\NutritionPlan\UseCase\ListUserRaces\ListUserRacesQuery;
-use App\Application\NutritionPlan\UseCase\ListUserRaces\ListUserRacesQueryHandler;
+use App\Application\NutritionPlan\UseCase\ListRunnerRaces\ListRunnerRacesQuery;
+use App\Application\NutritionPlan\UseCase\ListRunnerRaces\ListUserRacesQueryHandler;
 use App\Domain\NutritionPlan\Entity\ImportedRace;
 use App\Domain\NutritionPlan\Repository\RunnerRacesCatalog;
 use PHPUnit\Framework\TestCase;
@@ -26,7 +26,7 @@ final class ListUserRacesQueryHandlerTest extends TestCase
             ->with($userId)
             ->willReturn($races);
 
-        $result = ($handler)(new ListUserRacesQuery($userId));
+        $result = ($handler)(new ListRunnerRacesQuery($userId));
 
         $this->assertCount(2, $result);
         $this->assertContainsOnlyInstancesOf(RunnerRaceReadModel::class, $result);
@@ -52,7 +52,7 @@ final class ListUserRacesQueryHandlerTest extends TestCase
             ->with($userId)
             ->willReturn([]);
 
-        $result = ($handler)(new ListUserRacesQuery($userId));
+        $result = ($handler)(new ListRunnerRacesQuery($userId));
 
         $this->assertIsArray($result);
         $this->assertEmpty($result);

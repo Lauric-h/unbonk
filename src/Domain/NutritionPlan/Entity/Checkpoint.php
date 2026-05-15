@@ -15,7 +15,7 @@ class Checkpoint
         public int $distanceFromStart,
         public int $ascentFromStart,
         public int $descentFromStart,
-        public ?Cutoff $cutoff,
+        public ?Cutoff $cutoff = null,
         public bool $assistanceAllowed,
         public CheckpointType $type = CheckpointType::Intermediate,
     ) {
