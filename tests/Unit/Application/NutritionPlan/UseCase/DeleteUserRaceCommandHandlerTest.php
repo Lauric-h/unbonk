@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 
-use App\Application\NutritionPlan\UseCase\DeleteUserRace\DeleteUserRaceCommand;
-use App\Application\NutritionPlan\UseCase\DeleteUserRace\DeleteUserRaceCommandHandler;
+use App\Application\NutritionPlan\UseCase\DeleteUserRace\DeleteRunnerRaceCommand;
+use App\Application\NutritionPlan\UseCase\DeleteUserRace\DeleteRunnerRaceCommandHandler;
 use App\Domain\NutritionPlan\Entity\ImportedRace;
 use App\Domain\NutritionPlan\Exception\RaceNotFoundException;
 use App\Domain\NutritionPlan\Repository\RunnerRacesCatalog;
@@ -41,8 +41,8 @@ final class DeleteUserRaceCommandHandlerTest extends TestCase
             ->method('remove')
             ->with($race);
 
-        $handler = new DeleteUserRaceCommandHandler($racesCatalog);
-        $command = new DeleteUserRaceCommand($raceId);
+        $handler = new DeleteRunnerRaceCommandHandler($racesCatalog);
+        $command = new DeleteRunnerRaceCommand($raceId);
 
         ($handler)($command);
     }
@@ -60,8 +60,8 @@ final class DeleteUserRaceCommandHandlerTest extends TestCase
         $racesCatalog->expects($this->never())
             ->method('remove');
 
-        $handler = new DeleteUserRaceCommandHandler($racesCatalog);
-        $command = new DeleteUserRaceCommand($raceId);
+        $handler = new DeleteRunnerRaceCommandHandler($racesCatalog);
+        $command = new DeleteRunnerRaceCommand($raceId);
 
         $this->expectException(RaceNotFoundException::class);
 

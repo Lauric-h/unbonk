@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\UI\Http\Web\NutritionPlan\Race;
 
 use App\Application\NutritionPlan\UseCase\ListNutritionPlansByRace\ListNutritionPlansByRaceQuery;
-use App\Domain\NutritionPlan\Entity\ImportedRace;
+use App\Domain\NutritionPlan\Entity\RunnerRace;
 use App\Infrastructure\Shared\Bus\QueryBus;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,7 +24,7 @@ final class ListNutritionPlansByRaceController extends AbstractController
 
     public function __invoke(
         #[MapEntity(id: 'raceId')]
-        ImportedRace $race,
+        RunnerRace $race,
     ): Response {
         $nutritionPlans = $this->queryBus->query(new ListNutritionPlansByRaceQuery(
             raceId: $race->id,

@@ -2,7 +2,7 @@
 
 namespace App\UI\Http\Rest\NutritionPlan\Controller\Race;
 
-use App\Application\NutritionPlan\UseCase\DeleteUserRace\DeleteUserRaceCommand;
+use App\Application\NutritionPlan\UseCase\DeleteUserRace\DeleteRunnerRaceCommand;
 use App\Domain\NutritionPlan\Entity\RunnerRace;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -26,7 +26,7 @@ final class DeleteUserRaceController extends AbstractController
         #[MapEntity(id: 'raceId')]
         RunnerRace $race,
     ): JsonResponse {
-        $this->commandBus->dispatch(new DeleteUserRaceCommand($race->id));
+        $this->commandBus->dispatch(new DeleteRunnerRaceCommand($race->id));
 
         return new JsonResponse(status: Response::HTTP_NO_CONTENT);
     }

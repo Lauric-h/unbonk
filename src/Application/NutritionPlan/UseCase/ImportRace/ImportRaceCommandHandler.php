@@ -16,7 +16,7 @@ final readonly class ImportRaceCommandHandler implements CommandHandlerInterface
         private NutritionPlansCatalog $nutritionPlansCatalog,
         private RunnerRacesCatalog    $racesCatalog,
         private ExternalRacePort      $client,
-        private RunnerRaceFactory     $importedRaceFactory,
+        private RunnerRaceFactory     $RunnerRaceFactory,
     ) {
     }
 
@@ -28,13 +28,13 @@ final readonly class ImportRaceCommandHandler implements CommandHandlerInterface
             throw new \DomainException(\sprintf('Race with id %s not found', $command->externalRaceId));
         }
 
-        $importedRace = $this->importedRaceFactory->createFromExternalRace($externalRace, $command->runnerId);
+        $RunnerRace = $this->RunnerRaceFactory->createFromExternalRace($externalRace, $command->runnerId);
 
-        $this->racesCatalog->add($importedRace);
+        $this->racesCatalog->add($RunnerRace);
 
         $nutritionPlan = NutritionPlan::createFromRunnerRace(
             id: $command->nutritionPlanId,
-            runnerRace: $importedRace,
+            runnerRace: $RunnerRace,
             name: \sprintf('Nutrition plan for %s race', $externalRace->name),
         );
 

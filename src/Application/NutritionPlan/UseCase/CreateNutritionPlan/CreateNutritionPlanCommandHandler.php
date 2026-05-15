@@ -21,14 +21,14 @@ final readonly class CreateNutritionPlanCommandHandler implements CommandHandler
 
     public function __invoke(CreateNutritionPlanCommand $command): void
     {
-        $importedRace = $this->racesCatalog->get($command->importedRaceId);
+        $RunnerRace = $this->racesCatalog->get($command->RunnerRaceId);
 
-        $checkpointCount = \count($importedRace->getCheckpoints());
+        $checkpointCount = \count($RunnerRace->getCheckpoints());
         $segmentIds = $this->generateSegmentIds($checkpointCount);
 
-        $nutritionPlan = NutritionPlan::createFromImportedRace(
+        $nutritionPlan = NutritionPlan::createFromRunnerRace(
             id: $command->nutritionPlanId,
-            race: $importedRace,
+            race: $RunnerRace,
             segmentIds: $segmentIds,
             name: $command->name,
         );

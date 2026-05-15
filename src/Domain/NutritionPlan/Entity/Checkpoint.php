@@ -16,7 +16,7 @@ class Checkpoint
         public int $ascentFromStart,
         public int $descentFromStart,
         public ?Cutoff $cutoff = null,
-        public bool $assistanceAllowed,
+        public bool $assistanceAllowed = false,
         public CheckpointType $type = CheckpointType::Intermediate,
     ) {
         $this->validate();

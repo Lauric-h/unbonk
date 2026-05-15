@@ -7,7 +7,7 @@ namespace App\Domain\NutritionPlan\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
-final class RunnerRace
+class RunnerRace
 {
     /**
      * @var Collection<int, Checkpoint>
