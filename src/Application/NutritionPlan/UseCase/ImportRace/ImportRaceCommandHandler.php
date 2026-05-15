@@ -2,22 +2,21 @@
 
 namespace App\Application\NutritionPlan\UseCase\ImportRace;
 
-use App\Application\NutritionPlan\Factory\ImportedRaceFactory;
+use App\Application\NutritionPlan\Factory\RunnerRaceFactory;
 use App\Application\Shared\IdGeneratorInterface;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Domain\NutritionPlan\Port\ExternalRacePort;
 use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
-use App\Domain\NutritionPlan\Repository\RacesCatalog;
+use App\Domain\NutritionPlan\Repository\RunnerRacesCatalog;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
 
 final readonly class ImportRaceCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
         private NutritionPlansCatalog $nutritionPlansCatalog,
-        private RacesCatalog $racesCatalog,
-        private ExternalRacePort $client,
-        private ImportedRaceFactory $importedRaceFactory,
-        private IdGeneratorInterface $idGenerator,
+        private RunnerRacesCatalog    $racesCatalog,
+        private ExternalRacePort      $client,
+        private RunnerRaceFactory     $importedRaceFactory,
     ) {
     }
 
@@ -33,38 +32,12 @@ final readonly class ImportRaceCommandHandler implements CommandHandlerInterface
 
         $this->racesCatalog->add($importedRace);
 
-        // Generate segment IDs based on imported checkpoint count
-        $checkpointCount = \count($importedRace->getCheckpoints());
-        $segmentIds = $this->generateSegmentIds($checkpointCount);
-
-        $nutritionPlan = NutritionPlan::createFromImportedRace(
+        $nutritionPlan = NutritionPlan::createFromRunnerRace(
             id: $command->nutritionPlanId,
-            race: $importedRace,
-            segmentIds: $segmentIds,
+            runnerRace: $importedRace,
             name: \sprintf('Nutrition plan for %s race', $externalRace->name),
         );
 
         $this->nutritionPlansCatalog->add($nutritionPlan);
-    }
-
-    /**
-     * Generate segment IDs based on checkpoint count.
-     * Formula: segmentCount = checkpointCount - 1.
-     *
-     * @return string[]
-     */
-    private function generateSegmentIds(int $checkpointCount): array
-    {
-        $segmentCount = $checkpointCount - 1;
-        if ($segmentCount < 0) {
-            return [];
-        }
-
-        $segmentIds = [];
-        for ($i = 0; $i < $segmentCount; ++$i) {
-            $segmentIds[] = $this->idGenerator->generate();
-        }
-
-        return $segmentIds;
     }
 }

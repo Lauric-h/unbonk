@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 
-use App\Application\NutritionPlan\ReadModel\ImportedRaceReadModel;
+use App\Application\NutritionPlan\ReadModel\RunnerRaceReadModel;
 use App\Application\NutritionPlan\UseCase\ListUserRaces\ListUserRacesQuery;
 use App\Application\NutritionPlan\UseCase\ListUserRaces\ListUserRacesQueryHandler;
 use App\Domain\NutritionPlan\Entity\ImportedRace;
-use App\Domain\NutritionPlan\Repository\RacesCatalog;
+use App\Domain\NutritionPlan\Repository\RunnerRacesCatalog;
 use PHPUnit\Framework\TestCase;
 
 final class ListUserRacesQueryHandlerTest extends TestCase
 {
     public function testListUserRacesReturnsReadModels(): void
     {
-        $racesCatalog = $this->createMock(RacesCatalog::class);
+        $racesCatalog = $this->createMock(RunnerRacesCatalog::class);
         $handler = new ListUserRacesQueryHandler($racesCatalog);
 
         $userId = 'user-123';
@@ -29,7 +29,7 @@ final class ListUserRacesQueryHandlerTest extends TestCase
         $result = ($handler)(new ListUserRacesQuery($userId));
 
         $this->assertCount(2, $result);
-        $this->assertContainsOnlyInstancesOf(ImportedRaceReadModel::class, $result);
+        $this->assertContainsOnlyInstancesOf(RunnerRaceReadModel::class, $result);
 
         $this->assertSame('race-1', $result[0]->id);
         $this->assertSame('UTMB 2024', $result[0]->name);
@@ -42,7 +42,7 @@ final class ListUserRacesQueryHandlerTest extends TestCase
 
     public function testListUserRacesReturnsEmptyArrayWhenNoRaces(): void
     {
-        $racesCatalog = $this->createMock(RacesCatalog::class);
+        $racesCatalog = $this->createMock(RunnerRacesCatalog::class);
         $handler = new ListUserRacesQueryHandler($racesCatalog);
 
         $userId = 'user-123';

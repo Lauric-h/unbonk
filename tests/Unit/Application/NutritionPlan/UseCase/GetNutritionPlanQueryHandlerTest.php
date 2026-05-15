@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 
 use App\Application\NutritionPlan\ReadModel\CheckpointReadModel;
-use App\Application\NutritionPlan\ReadModel\ImportedRaceReadModel;
+use App\Application\NutritionPlan\ReadModel\RunnerRaceReadModel;
 use App\Application\NutritionPlan\ReadModel\NutritionItemReadModel;
 use App\Application\NutritionPlan\ReadModel\NutritionPlanReadModel;
 use App\Application\NutritionPlan\ReadModel\SegmentReadModel;
@@ -57,7 +57,7 @@ final class GetNutritionPlanQueryHandlerTest extends TestCase
         $this->assertSame($nutritionPlan->race->runnerId, $result->runnerId);
 
         // Check imported race
-        $this->assertInstanceOf(ImportedRaceReadModel::class, $result->race);
+        $this->assertInstanceOf(RunnerRaceReadModel::class, $result->race);
         $this->assertSame('Test Event', $result->race->name);
         $this->assertCount(3, $result->race->checkpoints);
 

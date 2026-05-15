@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Application\NutritionPlan\UseCase\UpdateCheckpoint;
 
 use App\Application\Shared\IdGeneratorInterface;
+use App\Domain\NutritionPlan\Entity\Cutoff;
 use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
-use App\Domain\NutritionPlan\ValueObject\Cutoff;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
 
 final readonly class UpdateCheckpointCommandHandler implements CommandHandlerInterface

@@ -2,13 +2,13 @@
 
 namespace App\Application\NutritionPlan\UseCase\DeleteUserRace;
 
-use App\Domain\NutritionPlan\Repository\RacesCatalog;
+use App\Domain\NutritionPlan\Repository\RunnerRacesCatalog;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
 
 final readonly class DeleteUserRaceCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
-        private RacesCatalog $racesCatalog
+        private RunnerRacesCatalog $racesCatalog
     ) {
     }
 

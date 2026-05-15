@@ -1,102 +1,64 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domain\NutritionPlan\Entity;
 
 use App\Domain\Shared\Entity\Ascent;
 use App\Domain\Shared\Entity\Descent;
 use App\Domain\Shared\Entity\Distance;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Uid\Uuid;
 
 class Segment
 {
-    /** @var Collection<int, NutritionItem> */
-    private Collection $nutritionItems;
-
-    /**
-     * @param Collection<int, NutritionItem>|null $nutritionItems
-     */
     public function __construct(
-        public string $id,
-        public int $position,
-        public AbstractCheckpoint $startCheckpoint,
-        public AbstractCheckpoint $endCheckpoint,
-        public NutritionPlan $nutritionPlan,
-        ?Collection $nutritionItems = null,
+        public string     $id,
+        public RunnerRace $runnerRace,
+        public Checkpoint $fromCheckpoint,
+        public Checkpoint $toCheckpoint,
+        public int        $position,
     ) {
-        $this->nutritionItems = $nutritionItems ?? new ArrayCollection();
     }
 
-    public static function createFromCheckpoints(
-        string $id,
+    public static function create(
+        RunnerRace $runnerRace,
+        Checkpoint $fromCheckpoint,
+        Checkpoint $toCheckpoint,
         int $position,
-        AbstractCheckpoint $startCheckpoint,
-        AbstractCheckpoint $endCheckpoint,
-        NutritionPlan $nutritionPlan,
-    ): self {
+    ): self
+    {
         return new self(
-            id: $id,
+            id: Uuid::v7()->toRfc4122(), // Shortcut to avoid pollution and complication everywhere
+            runnerRace: $runnerRace,
+            fromCheckpoint: $fromCheckpoint,
+            toCheckpoint: $toCheckpoint,
             position: $position,
-            startCheckpoint: $startCheckpoint,
-            endCheckpoint: $endCheckpoint,
-            nutritionPlan: $nutritionPlan,
         );
+    }
+
+    public function refresh(
+        Checkpoint $fromCheckpoint,
+        Checkpoint $toCheckpoint,
+        int $position,
+    ): void
+    {
+       $this->fromCheckpoint = $fromCheckpoint;
+       $this->toCheckpoint = $toCheckpoint;
+       $this->position = $position;
     }
 
     public function getDistance(): Distance
     {
-        return new Distance($this->endCheckpoint->getDistanceFromStart() - $this->startCheckpoint->getDistanceFromStart());
+        return new Distance($this->toCheckpoint->distanceFromStart - $this->fromCheckpoint->distanceFromStart);
     }
 
     public function getAscent(): Ascent
     {
-        return new Ascent($this->endCheckpoint->getAscentFromStart() - $this->startCheckpoint->getAscentFromStart());
+        return new Ascent($this->toCheckpoint->ascentFromStart - $this->fromCheckpoint->ascentFromStart);
     }
 
     public function getDescent(): Descent
     {
-        return new Descent($this->endCheckpoint->getDescentFromStart() - $this->startCheckpoint->getDescentFromStart());
-    }
-
-    /**
-     * @return Collection<int, NutritionItem>
-     */
-    public function getNutritionItems(): Collection
-    {
-        return $this->nutritionItems;
-    }
-
-    public function addNutritionItem(NutritionItem $nutritionItem): void
-    {
-        $existingNutritionItem = $this->getNutritionItemByExternalReference($nutritionItem->externalReference);
-        if (null !== $existingNutritionItem) {
-            $this->nutritionItems->removeElement($existingNutritionItem);
-        }
-
-        $this->nutritionItems->add($nutritionItem);
-        $nutritionItem->segment = $this;
-    }
-
-    public function getNutritionItemByExternalReference(string $externalReference): ?NutritionItem
-    {
-        return $this->nutritionItems->findFirst(
-            static fn (int $key, NutritionItem $nutritionItem) => $nutritionItem->externalReference === $externalReference
-        );
-    }
-
-    public function getNutritionItemById(string $nutritionItemId): ?NutritionItem
-    {
-        return $this->nutritionItems->findFirst(
-            static fn (int $key, NutritionItem $nutritionItem) => $nutritionItem->id === $nutritionItemId
-        );
-    }
-
-    public function removeNutritionItem(string $nutritionItemId): void
-    {
-        $nutritionItem = $this->getNutritionItemById($nutritionItemId);
-        if (null === $nutritionItem) {
-            throw new \DomainException(\sprintf('Segment does not have NutritionItem with id %s', $nutritionItemId));
-        }
-        $this->nutritionItems->removeElement($nutritionItem);
+        return new Descent($this->toCheckpoint->descentFromStart - $this->fromCheckpoint->descentFromStart);
     }
 }

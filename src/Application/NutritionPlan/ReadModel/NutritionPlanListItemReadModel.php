@@ -27,8 +27,8 @@ final readonly class NutritionPlanListItemReadModel
     {
         // Calculate total carbs from all segments
         $totalCarbs = 0;
-        foreach ($nutritionPlan->getSegments() as $segment) {
-            foreach ($segment->getNutritionItems() as $nutritionItem) {
+        foreach ($nutritionPlan->getSegmentPlans() as $segment) {
+            foreach ($segment->getItems() as $nutritionItem) {
                 $totalCarbs += $nutritionItem->carbs->value * $nutritionItem->quantity->value;
             }
         }
@@ -36,10 +36,10 @@ final readonly class NutritionPlanListItemReadModel
         return new self(
             id: $nutritionPlan->id,
             nutritionPlanName: $nutritionPlan->name,
-            eventName: $nutritionPlan->race->eventName,
-            raceName: $nutritionPlan->race->name,
-            raceDistance: $nutritionPlan->race->distance,
-            raceDate: $nutritionPlan->race->startDateTime,
+            eventName: $nutritionPlan->runnerRace->eventName,
+            raceName: $nutritionPlan->runnerRace->name,
+            raceDistance: $nutritionPlan->runnerRace->distance,
+            raceDate: $nutritionPlan->runnerRace->startDateTime,
             totalCarbs: $totalCarbs,
         );
     }

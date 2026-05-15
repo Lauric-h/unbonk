@@ -4,28 +4,26 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="App\Domain\NutritionPlan\Entity\Segment" repository-class="App\Infrastructure\NutritionPlan\Persistence\DoctrineSegmentsCatalog" table="segment">
+    <entity name="App\Domain\NutritionPlan\Entity\Segment" table="segment">
         <id name="id" type="string" />
         <field name="position" type="integer"/>
 
-        <many-to-one field="startCheckpoint" target-entity="App\Domain\NutritionPlan\Entity\AbstractCheckpoint">
-            <join-column name="start_checkpoint_id" referenced-column-name="id" nullable="false" on-delete="CASCADE" />
+        <many-to-one field="runnerRace" target-entity="App\Domain\NutritionPlan\Entity\RunnerRace" inversed-by="segments">
+            <join-column name="runner_race_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
         </many-to-one>
 
-        <many-to-one field="endCheckpoint" target-entity="App\Domain\NutritionPlan\Entity\AbstractCheckpoint">
-            <join-column name="end_checkpoint_id" referenced-column-name="id" nullable="false" on-delete="CASCADE" />
+        <many-to-one field="fromCheckpoint" target-entity="App\Domain\NutritionPlan\Entity\Checkpoint">
+            <join-column name="from_checkpoint_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
         </many-to-one>
 
-        <many-to-one field="nutritionPlan" target-entity="App\Domain\NutritionPlan\Entity\NutritionPlan" inversed-by="segments">
-            <join-column name="nutrition_plan_id" referenced-column-name="id" nullable="false" on-delete="CASCADE" />
+        <many-to-one field="toCheckpoint" target-entity="App\Domain\NutritionPlan\Entity\Checkpoint">
+            <join-column name="to_checkpoint_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
         </many-to-one>
 
-        <one-to-many field="nutritionItems" target-entity="App\Domain\NutritionPlan\Entity\NutritionItem" mapped-by="segment" orphan-removal="true">
-            <cascade>
-                <cascade-persist/>
-                <cascade-remove/>
-            </cascade>
-        </one-to-many>
+        <indexes>
+            <index name="idx_segment_runner_race" columns="runner_race_id"/>
+            <index name="idx_segment_checkpoints" columns="from_checkpoint_id,to_checkpoint_id"/>
+        </indexes>
     </entity>
 
 </doctrine-mapping>

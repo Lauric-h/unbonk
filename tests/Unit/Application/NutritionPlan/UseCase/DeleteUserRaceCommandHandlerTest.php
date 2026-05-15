@@ -8,7 +8,7 @@ use App\Application\NutritionPlan\UseCase\DeleteUserRace\DeleteUserRaceCommand;
 use App\Application\NutritionPlan\UseCase\DeleteUserRace\DeleteUserRaceCommandHandler;
 use App\Domain\NutritionPlan\Entity\ImportedRace;
 use App\Domain\NutritionPlan\Exception\RaceNotFoundException;
-use App\Domain\NutritionPlan\Repository\RacesCatalog;
+use App\Domain\NutritionPlan\Repository\RunnerRacesCatalog;
 use PHPUnit\Framework\TestCase;
 
 final class DeleteUserRaceCommandHandlerTest extends TestCase
@@ -31,7 +31,7 @@ final class DeleteUserRaceCommandHandlerTest extends TestCase
             location: 'Paris',
         );
 
-        $racesCatalog = $this->createMock(RacesCatalog::class);
+        $racesCatalog = $this->createMock(RunnerRacesCatalog::class);
         $racesCatalog->expects($this->once())
             ->method('get')
             ->with($raceId)
@@ -51,7 +51,7 @@ final class DeleteUserRaceCommandHandlerTest extends TestCase
     {
         $raceId = 'race-not-found';
 
-        $racesCatalog = $this->createMock(RacesCatalog::class);
+        $racesCatalog = $this->createMock(RunnerRacesCatalog::class);
         $racesCatalog->expects($this->once())
             ->method('get')
             ->with($raceId)
