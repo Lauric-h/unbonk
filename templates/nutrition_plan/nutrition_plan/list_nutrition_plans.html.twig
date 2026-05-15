@@ -32,9 +32,9 @@
                         <td>
                             <a href="{{ path('app.nutrition_plan.get', {nutritionPlanId: plan.id}) }}">Voir</a>
                             |
-                            <a href="{{ path('app.nutrition_plan.edit', {nutritionPlanId: plan.nutritionPlanId}) }}">Éditer</a>
+                            <a href="{{ path('app.nutrition_plan.edit', {nutritionPlanId: plan.id}) }}">Éditer</a>
                             |
-                            <form method="post" action="{{ path('app.nutrition_plan.delete', {nutritionPlanId: plan.nutritionPlanId}) }}" style="display: inline;" onsubmit="return confirm('Supprimer ce plan ?');">
+                            <form method="post" action="{{ path('app.nutrition_plan.delete', {nutritionPlanId: plan.id}) }}" style="display: inline;" onsubmit="return confirm('Supprimer ce plan ?');">
                                 <button type="submit">Supprimer</button>
                             </form>
                         </td>

@@ -103,6 +103,9 @@
     <h2>Actions</h2>
     <p>
         <a href="{{ path('app.nutrition_plan.edit', {nutritionPlanId: nutritionPlan.id}) }}">Éditer ce plan</a>
+        |
+        <a href="{{ path('app.nutrition_plan.rename', {nutritionPlanId: nutritionPlan.id}) }}">Renommer</a>
+        |
         <form method="post" action="{{ path('app.nutrition_plan.delete', {nutritionPlanId: nutritionPlan.id}) }}" style="display: inline;" onsubmit="return confirm('Supprimer ce plan ?');">
             <button type="submit">Supprimer</button>
         </form>
