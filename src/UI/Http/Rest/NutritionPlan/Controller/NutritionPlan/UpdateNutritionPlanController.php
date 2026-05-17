@@ -33,7 +33,7 @@ final class UpdateNutritionPlanController extends AbstractController
     ): JsonResponse {
         $this->commandBus->dispatch(new UpdateNutritionPlanCommand(
             nutritionPlanId: $nutritionPlan->id,
-            name: $request->name,
+            name: $request->name, // @phpstan-ignore-line assert in Request
         ));
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
