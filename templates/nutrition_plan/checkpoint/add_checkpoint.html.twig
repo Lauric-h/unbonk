@@ -5,10 +5,10 @@
 {% block body %}
     <h1>Ajouter un checkpoint personnalisé</h1>
     
-    <p><a href="{{ path('app.nutrition_plan.edit', {nutritionPlanId: nutritionPlan.id}) }}">← Retour à l'édition du plan</a></p>
+    <p><a href="{{ url('app.nutrition_plan.edit', {nutritionPlanId: nutritionPlan.id}) }}">← Retour à l'édition du plan</a></p>
     
     <h2>Plan : {{ nutritionPlan.name ?? 'Sans nom' }}</h2>
-    <p>Course : {{ nutritionPlan.race.name }}</p>
+    <p>Course : {{ nutritionPlan.runnerRace.name }}</p>
     
     {{ form_start(form) }}
         {{ form_row(form.name) }}
@@ -20,6 +20,6 @@
         {{ form_row(form.assistanceAllowed) }}
         
         <button type="submit">Ajouter le checkpoint</button>
-        <a href="{{ path('app.nutrition_plan.edit', {nutritionPlanId: nutritionPlan.id}) }}">Annuler</a>
+        <a href="{{ url('app.nutrition_plan.edit', {nutritionPlanId: nutritionPlan.id}) }}">Annuler</a>
     {{ form_end(form) }}
 {% endblock %}

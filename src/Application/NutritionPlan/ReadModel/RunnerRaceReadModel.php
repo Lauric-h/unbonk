@@ -4,11 +4,13 @@ namespace App\Application\NutritionPlan\ReadModel;
 
 use App\Domain\NutritionPlan\Entity\Checkpoint;
 use App\Domain\NutritionPlan\Entity\RunnerRace;
+use App\Domain\NutritionPlan\Entity\Segment;
 
 final readonly class RunnerRaceReadModel
 {
     /**
      * @param CheckpointReadModel[] $checkpoints
+     * @param SegmentReadModel[] $segments
      */
     public function __construct(
         public string $id,
@@ -21,6 +23,7 @@ final readonly class RunnerRaceReadModel
         public \DateTimeImmutable $startDateTime,
         public string $location,
         public array $checkpoints = [],
+        public array $segments = [],
     ) {
     }
 
@@ -40,6 +43,10 @@ final readonly class RunnerRaceReadModel
                 static fn (Checkpoint $checkpoint) => CheckpointReadModel::fromCheckpoint($checkpoint),
                 $runnerRace->orderedCheckpoints()
             ),
+            segments: array_map(
+                static fn (Segment $segment) => SegmentReadModel::fromSegment($segment),
+                $runnerRace->segments()->toArray(),
+            )
         );
     }
 }
