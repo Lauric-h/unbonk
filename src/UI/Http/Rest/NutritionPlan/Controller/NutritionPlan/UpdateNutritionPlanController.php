@@ -16,8 +16,8 @@ use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/nutrition-plans/{nutritionPlanId}', name: 'api.nutrition_plan.update', methods: ['PATCH'])]
-#[IsGranted('EDIT', subject: 'nutritionPlan')]
+#[Route('/race/{raceId}/checkpoints/{checkpointId}', name: 'api.nutrition_plan.update', methods: ['PATCH'])]
+#[IsGranted('EDIT', subject: 'race')]
 final class UpdateNutritionPlanController extends AbstractController
 {
     public function __construct(

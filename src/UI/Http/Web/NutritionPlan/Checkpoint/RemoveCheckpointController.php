@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\UI\Http\Web\NutritionPlan\Checkpoint;
 
 use App\Application\NutritionPlan\UseCase\RemoveCheckpoint\RemoveCheckpointCommand;
+use App\Domain\NutritionPlan\Entity\Checkpoint;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Domain\NutritionPlan\Entity\RunnerRace;
 use App\Infrastructure\Shared\Bus\CommandBus;
@@ -26,11 +27,11 @@ final class RemoveCheckpointController extends AbstractController
     public function __invoke(
         #[MapEntity(id: 'raceId')]
         RunnerRace $race,
-        string $checkpointId
+        #[MapEntity(id: 'checkpointId')] Checkpoint $checkpoint,
     ): Response {
         $this->commandBus->dispatch(new RemoveCheckpointCommand(
             runnerRaceId: $race->id,
-            checkpointId: $checkpointId,
+            checkpointId: $checkpoint->id,
         ));
 
         $this->addFlash('success', 'Checkpoint supprimé avec succès !');

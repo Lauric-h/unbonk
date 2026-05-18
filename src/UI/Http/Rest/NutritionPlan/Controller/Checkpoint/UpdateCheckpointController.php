@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\UI\Http\Rest\NutritionPlan\Controller\Checkpoint;
 
 use App\Application\NutritionPlan\UseCase\UpdateCheckpoint\UpdateCheckpointCommand;
+use App\Domain\NutritionPlan\Entity\Checkpoint;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
+use App\Domain\NutritionPlan\Entity\RunnerRace;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\UI\Http\Rest\NutritionPlan\Request\UpdateCheckpointRequest;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -17,8 +19,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
-#[Route('/nutrition-plans/{nutritionPlanId}/checkpoints/{checkpointId}', name: 'api.nutrition_plan.update_checkpoint', methods: ['PUT'])]
-#[IsGranted('EDIT', subject: 'nutritionPlan')]
+#[Route('/race/{raceId}/checkpoints/{checkpointId}', name: 'api.nutrition_plan.update_checkpoint', methods: ['PUT'])]
+#[IsGranted('EDIT', subject: 'race')]
 final class UpdateCheckpointController extends AbstractController
 {
     public function __construct(
@@ -28,9 +30,9 @@ final class UpdateCheckpointController extends AbstractController
     }
 
     public function __invoke(
-        #[MapEntity(id: 'nutritionPlanId')]
-        NutritionPlan $nutritionPlan,
-        string $checkpointId,
+        #[MapEntity(id: 'raceId')]
+        RunnerRace $race,
+        #[MapEntity(id: 'checkpointId')] Checkpoint $checkpoint,
         Request $request
     ): JsonResponse {
         $updateCheckpointRequest = $this->serializer->deserialize($request->getContent(), UpdateCheckpointRequest::class, 'json');
@@ -40,8 +42,8 @@ final class UpdateCheckpointController extends AbstractController
             : null;
 
         $this->commandBus->dispatch(new UpdateCheckpointCommand(
-            nutritionPlanId: $nutritionPlan->id,
-            checkpointId: $checkpointId,
+            runnerRaceId: $race->id,
+            checkpointId: $checkpoint->id,
             name: $updateCheckpointRequest->name,
             location: $updateCheckpointRequest->location,
             distanceFromStart: $updateCheckpointRequest->distanceFromStart,
