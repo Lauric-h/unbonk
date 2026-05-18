@@ -116,6 +116,39 @@ class RunnerRace
         $this->rebuildSegments();
     }
 
+    public function updateCheckpoint(
+        string $checkpointId,
+        string $name,
+        string $location,
+        int $distanceFromStart,
+        int $ascentFromStart,
+        int $descentFromStart,
+        ?Cutoff $cutoff,
+        bool $assistanceAllowed,
+        CheckpointType $type = CheckpointType::Intermediate,
+    ): void {
+        $checkpoint = $this->checkpoint($checkpointId);
+
+        if (null === $checkpoint) {
+            throw new \DomainException(
+                sprintf('Checkpoint "%s" not found.', $checkpointId)
+            );
+        }
+
+        $checkpoint->update(
+            name: $name,
+            location: $location,
+            distanceFromStart: $distanceFromStart,
+            ascentFromStart: $ascentFromStart,
+            descentFromStart: $descentFromStart,
+            cutoff: $cutoff,
+            assistanceAllowed: $assistanceAllowed,
+            type: $type,
+        );
+
+        $this->rebuildSegments();
+    }
+
     public function rebuildSegments(): void
     {
         $orderedCheckpoints = $this->orderedCheckpoints();
