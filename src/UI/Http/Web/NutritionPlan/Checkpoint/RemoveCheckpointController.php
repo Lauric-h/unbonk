@@ -6,7 +6,6 @@ namespace App\UI\Http\Web\NutritionPlan\Checkpoint;
 
 use App\Application\NutritionPlan\UseCase\RemoveCheckpoint\RemoveCheckpointCommand;
 use App\Domain\NutritionPlan\Entity\Checkpoint;
-use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Domain\NutritionPlan\Entity\RunnerRace;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;

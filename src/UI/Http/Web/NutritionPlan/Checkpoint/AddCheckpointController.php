@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\UI\Http\Web\NutritionPlan\Checkpoint;
 
 use App\Application\NutritionPlan\UseCase\AddCheckpoint\AddCheckpointCommand;
-use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Domain\NutritionPlan\Entity\RunnerRace;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\UI\Http\Web\NutritionPlan\Form\Checkpoint\CheckpointModel;
@@ -18,7 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/race/{raceId}/checkpoints/add', name: 'app.checkpoint.add', methods: ['GET', 'POST'])]
-#[IsGranted('EDIT', subject: 'nutritionPlan')]
+#[IsGranted('EDIT', subject: 'race')]
 final class AddCheckpointController extends AbstractController
 {
     public function __construct(

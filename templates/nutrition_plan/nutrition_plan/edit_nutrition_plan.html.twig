@@ -41,7 +41,7 @@
     </table>
     
     <h2>Checkpoints</h2>
-    <p><a href="{{ url('app.checkpoint.add', {nutritionPlanId: nutritionPlan.id}) }}">+ Ajouter un checkpoint personnalisé</a></p>
+    <p><a href="{{ url('app.checkpoint.add', {raceId: nutritionPlan.runnerRace.id}) }}">+ Ajouter un checkpoint personnalisé</a></p>
     
     <table border="1" cellpadding="5" style="margin-bottom: 20px;">
         <thead>
@@ -64,9 +64,9 @@
                     <td>{{ checkpoint.isEditable ? 'Personnalisé' : 'Importé' }}</td>
                     <td>
                         {% if checkpoint.isEditable %}
-                            <a href="{{ url('app.checkpoint.edit', {nutritionPlanId: nutritionPlan.id, checkpointId: checkpoint.id}) }}">Modifier</a>
+                            <a href="{{ url('app.checkpoint.edit', {raceId: nutritionPlan.runnerRace.id, checkpointId: checkpoint.id}) }}">Modifier</a>
                             |
-                            <form method="post" action="{{ url('app.checkpoint.delete', {nutritionPlanId: nutritionPlan.id, checkpointId: checkpoint.id}) }}" style="display: inline;" onsubmit="return confirm('Supprimer ce checkpoint ?');">
+                            <form method="post" action="{{ url('app.checkpoint.delete', {raceId: nutritionPlan.runnerRace.id, checkpointId: checkpoint.id}) }}" style="display: inline;" onsubmit="return confirm('Supprimer ce checkpoint ?');">
                                 <button type="submit">Supprimer</button>
                             </form>
                         {% else %}
