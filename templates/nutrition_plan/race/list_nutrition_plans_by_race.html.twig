@@ -5,7 +5,7 @@
 {% block body %}
     <h1>Plans de nutrition pour {{ race.name }}</h1>
     
-    <p><a href="{{ path('app.race.list') }}">← Retour à mes courses</a></p>
+    <p><a href="{{ url('app.race.list') }}">← Retour à mes courses</a></p>
     
     <h2>Informations de la course</h2>
     <ul>
@@ -15,12 +15,12 @@
         <li><strong>Distance :</strong> {{ (race.distance / 1000)|number_format(1) }} km</li>
         <li><strong>D+ :</strong> {{ race.ascent }} m</li>
         <li><strong>D- :</strong> {{ race.descent }} m</li>
-        <li><strong>Checkpoints :</strong> {{ race.checkpoints|length }}</li>
+        <li><strong>Checkpoints :</strong> {{ race.orderedCheckpoints()|length }}</li>
     </ul>
     
     <h2>Plans de nutrition</h2>
     
-    <p><a href="{{ path('app.nutrition_plan.create', {raceId: race.id}) }}">+ Créer un nouveau plan</a></p>
+    <p><a href="{{ url('app.nutrition_plan.create', {raceId: race.id}) }}">+ Créer un nouveau plan</a></p>
     
     {% if nutritionPlans|length > 0 %}
         <table border="1" cellpadding="10">
@@ -37,11 +37,11 @@
                         <td><strong>{{ plan.nutritionPlanName ?? '(Sans nom)' }}</strong></td>
                         <td>{{ plan.totalCarbs }} g</td>
                         <td>
-                            <a href="{{ path('app.nutrition_plan.get', {nutritionPlanId: plan.id}) }}">Voir</a>
+                            <a href="{{ url('app.nutrition_plan.get', {nutritionPlanId: plan.id}) }}">Voir</a>
                             |
-                            <a href="{{ path('app.nutrition_plan.edit', {nutritionPlanId: plan.nutritionPlanId}) }}">Éditer</a>
+                            <a href="{{ url('app.nutrition_plan.edit', {nutritionPlanId: plan.id}) }}">Éditer</a>
                             |
-                            <form method="post" action="{{ path('app.nutrition_plan.delete', {nutritionPlanId: plan.nutritionPlanId}) }}" style="display: inline;" onsubmit="return confirm('Supprimer ce plan ?');">
+                            <form method="post" action="{{ url('app.nutrition_plan.delete', {nutritionPlanId: plan.id}) }}" style="display: inline;" onsubmit="return confirm('Supprimer ce plan ?');">
                                 <button type="submit">Supprimer</button>
                             </form>
                         </td>
@@ -51,6 +51,6 @@
         </table>
     {% else %}
         <p>Aucun plan de nutrition pour cette course.</p>
-        <p><a href="{{ path('app.nutrition_plan.create', {raceId: race.id}) }}">Créer un plan de nutrition</a></p>
+        <p><a href="{{ url('app.nutrition_plan.create', {raceId: race.id}) }}">Créer un plan de nutrition</a></p>
     {% endif %}
 {% endblock %}

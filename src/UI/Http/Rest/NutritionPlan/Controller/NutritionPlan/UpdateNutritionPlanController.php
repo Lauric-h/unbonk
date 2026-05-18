@@ -16,8 +16,8 @@ use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/nutrition-plans/{nutritionPlanId}', name: 'api.nutrition_plan.update', methods: ['PATCH'])]
-#[IsGranted('EDIT', subject: 'nutritionPlan')]
+#[Route('/race/{raceId}/checkpoints/{checkpointId}', name: 'api.nutrition_plan.update', methods: ['PATCH'])]
+#[IsGranted('EDIT', subject: 'race')]
 final class UpdateNutritionPlanController extends AbstractController
 {
     public function __construct(
@@ -33,7 +33,7 @@ final class UpdateNutritionPlanController extends AbstractController
     ): JsonResponse {
         $this->commandBus->dispatch(new UpdateNutritionPlanCommand(
             nutritionPlanId: $nutritionPlan->id,
-            name: $request->name,
+            name: $request->name, // @phpstan-ignore-line assert in Request
         ));
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);

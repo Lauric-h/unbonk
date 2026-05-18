@@ -6,18 +6,42 @@
     <h1>Éditer : {{ nutritionPlan.name ?? 'Plan de nutrition' }}</h1>
     
     <p>
-        <a href="{{ path('app.nutrition_plan.get', {nutritionPlanId: nutritionPlan.id}) }}">← Retour au plan</a>
+        <a href="{{ url('app.nutrition_plan.get', {nutritionPlanId: nutritionPlan.id}) }}">← Retour au plan</a>
     </p>
     
     {% for message in app.flashes('success') %}
         <p style="color: green;"><strong>✓ {{ message }}</strong></p>
     {% endfor %}
     
-    <h2>Course : {{ nutritionPlan.race.name }}</h2>
-    <p>{{ (nutritionPlan.race.distance / 1000)|number_format(1) }} km - D+ {{ nutritionPlan.race.ascent }} m</p>
+    <h2>Course : {{ nutritionPlan.runnerRace.name }}</h2>
+    <p>{{ (nutritionPlan.runnerRace.distance / 1000)|number_format(1) }} km - D+ {{ nutritionPlan.runnerRace.ascent }} m</p>
+    
+    <h2>Segments de la course</h2>
+    <table border="1" cellpadding="5" style="margin-bottom: 20px;">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>De → À</th>
+                <th>Distance</th>
+                <th>D+</th>
+                <th>D-</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for segment in nutritionPlan.runnerRace.segments %}
+                <tr>
+                    <td>{{ segment.position }}</td>
+                    <td>{{ segment.fromCheckpoint.name }} → {{ segment.toCheckpoint.name }}</td>
+                    <td>{{ (segment.distance / 1000)|number_format(1) }} km</td>
+                    <td>{{ segment.ascent }} m</td>
+                    <td>{{ segment.descent }} m</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     
     <h2>Checkpoints</h2>
-    <p><a href="{{ path('app.checkpoint.add', {nutritionPlanId: nutritionPlan.id}) }}">+ Ajouter un checkpoint personnalisé</a></p>
+    <p><a href="{{ url('app.checkpoint.add', {raceId: nutritionPlan.runnerRace.id}) }}">+ Ajouter un checkpoint personnalisé</a></p>
     
     <table border="1" cellpadding="5" style="margin-bottom: 20px;">
         <thead>
@@ -31,18 +55,18 @@
             </tr>
         </thead>
         <tbody>
-            {% for checkpoint in nutritionPlan.checkpoints %}
+            {% for checkpoint in nutritionPlan.runnerRace.checkpoints %}
                 <tr>
                     <td>{{ checkpoint.name }}</td>
-                    <td>{{ checkpoint.distanceFromStart }} km</td>
+                    <td>{{ (checkpoint.distanceFromStart / 1000)|number_format(1) }} km</td>
                     <td>{{ checkpoint.ascentFromStart }} m</td>
                     <td>{{ checkpoint.descentFromStart }} m</td>
                     <td>{{ checkpoint.isEditable ? 'Personnalisé' : 'Importé' }}</td>
                     <td>
                         {% if checkpoint.isEditable %}
-                            <a href="{{ path('app.checkpoint.edit', {nutritionPlanId: nutritionPlan.id, checkpointId: checkpoint.id}) }}">Modifier</a>
+                            <a href="{{ url('app.checkpoint.edit', {raceId: nutritionPlan.runnerRace.id, checkpointId: checkpoint.id}) }}">Modifier</a>
                             |
-                            <form method="post" action="{{ path('app.checkpoint.delete', {nutritionPlanId: nutritionPlan.id, checkpointId: checkpoint.id}) }}" style="display: inline;" onsubmit="return confirm('Supprimer ce checkpoint ?');">
+                            <form method="post" action="{{ url('app.checkpoint.delete', {raceId: nutritionPlan.runnerRace.id, checkpointId: checkpoint.id}) }}" style="display: inline;" onsubmit="return confirm('Supprimer ce checkpoint ?');">
                                 <button type="submit">Supprimer</button>
                             </form>
                         {% else %}
@@ -54,44 +78,50 @@
         </tbody>
     </table>
     
-    <h2>Segments et nutrition</h2>
+    <h2>Plans nutritionnels par segment</h2>
     
-    {% for segment in nutritionPlan.segments %}
+    {% for segmentPlan in nutritionPlan.segmentPlans %}
         <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px;">
-            <h3>Segment {{ segment.position }} : {{ segment.startCheckpoint.name }} → {{ segment.endCheckpoint.name }}</h3>
+            <h3>Segment {{ segmentPlan.segment.position }} : {{ segmentPlan.segment.fromCheckpoint.name }} → {{ segmentPlan.segment.toCheckpoint.name }}</h3>
             <p>
-                {{ (segment.distance / 1000)|number_format(1) }} km - 
-                D+ {{ segment.ascent }} m - 
-                D- {{ segment.descent }} m - 
-                <strong>{{ segment.totalCarbs }} g glucides</strong>
+                {{ (segmentPlan.segment.distance / 1000)|number_format(1) }} km - 
+                D+ {{ segmentPlan.segment.ascent }} m - 
+                D- {{ segmentPlan.segment.descent }} m
             </p>
             
+            <p><strong>Objectif glucides :</strong> {{ segmentPlan.targetCarbs ?? 'Non défini' }} g</p>
+            
             <h4>Aliments actuels</h4>
-            {% if segment.nutritionItems|length > 0 %}
+            {% if segmentPlan.items|length > 0 %}
+                {% set totalCarbs = 0 %}
                 <table border="1" cellpadding="5">
                     <thead>
                         <tr>
                             <th>Aliment</th>
                             <th>Quantité</th>
                             <th>Glucides</th>
-                            <th>Calories</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% for item in segment.nutritionItems %}
+                        {% for item in segmentPlan.items %}
+                            {% set totalCarbs = totalCarbs + (item.carbs * item.quantity) %}
                             <tr>
-                                <td>{{ item.name }}</td>
+                                <td>{{ item.foodItemId }}</td>
                                 <td>{{ item.quantity }}</td>
                                 <td>{{ item.carbs * item.quantity }} g</td>
-                                <td>{{ item.calories * item.quantity }} kcal</td>
                                 <td>
-                                    <form method="post" action="{{ path('app.nutrition_plan.delete_item', {nutritionPlanId: nutritionPlan.id, segmentId: segment.id, itemId: item.id}) }}" style="display: inline;" onsubmit="return confirm('Supprimer cet aliment ?');">
+                                    <form method="post" action="{{ url('app.nutrition_plan.delete_item', {nutritionPlanId: nutritionPlan.id, segmentPlanId: segmentPlan.id, itemId: item.id}) }}" style="display: inline;" onsubmit="return confirm('Supprimer cet aliment ?');">
                                         <button type="submit">Supprimer</button>
                                     </form>
                                 </td>
                             </tr>
                         {% endfor %}
+                        <tr style="font-weight: bold;">
+                            <td colspan="2">Total</td>
+                            <td>{{ totalCarbs }} g</td>
+                            <td></td>
+                        </tr>
                     </tbody>
                 </table>
             {% else %}
@@ -99,7 +129,7 @@
             {% endif %}
             
             <h4>Ajouter un aliment</h4>
-            <form method="post" action="{{ path('app.nutrition_plan.add_item', {nutritionPlanId: nutritionPlan.id, segmentId: segment.id}) }}">
+            <form method="post" action="{{ url('app.nutrition_plan.add_item', {nutritionPlanId: nutritionPlan.id, segmentPlanId: segmentPlan.id}) }}">
                 <label>
                     Aliment :
                     <select name="foodId" required>
@@ -120,6 +150,6 @@
     {% endfor %}
     
     <p>
-        <a href="{{ path('app.nutrition_plan.get', {nutritionPlanId: nutritionPlan.id}) }}">Terminer l'édition</a>
+        <a href="{{ url('app.nutrition_plan.get', {nutritionPlanId: nutritionPlan.id}) }}">Terminer l'édition</a>
     </p>
 {% endblock %}

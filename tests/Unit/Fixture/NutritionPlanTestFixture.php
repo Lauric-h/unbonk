@@ -3,10 +3,10 @@
 namespace App\Tests\Unit\Fixture;
 
 use App\Domain\NutritionPlan\Entity\CheckpointType;
+use App\Domain\NutritionPlan\Entity\Cutoff;
 use App\Domain\NutritionPlan\Entity\ImportedCheckpoint;
 use App\Domain\NutritionPlan\Entity\ImportedRace;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
-use App\Domain\NutritionPlan\ValueObject\Cutoff;
 
 final class NutritionPlanTestFixture
 {

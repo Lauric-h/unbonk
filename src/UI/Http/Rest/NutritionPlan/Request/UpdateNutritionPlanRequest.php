@@ -10,6 +10,7 @@ final readonly class UpdateNutritionPlanRequest
 {
     public function __construct(
         #[Assert\Length(max: 255)]
+        #[Assert\NotBlank]
         public ?string $name = null,
     ) {
     }

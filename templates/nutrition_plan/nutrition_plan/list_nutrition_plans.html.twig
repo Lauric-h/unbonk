@@ -30,11 +30,11 @@
                         <td>{{ plan.raceDate|date('d/m/Y') }}</td>
                         <td>{{ plan.totalCarbs }} g</td>
                         <td>
-                            <a href="{{ path('app.nutrition_plan.get', {nutritionPlanId: plan.id}) }}">Voir</a>
+                            <a href="{{ url('app.nutrition_plan.get', {nutritionPlanId: plan.id}) }}">Voir</a>
                             |
-                            <a href="{{ path('app.nutrition_plan.edit', {nutritionPlanId: plan.id}) }}">Éditer</a>
+                            <a href="{{ url('app.nutrition_plan.edit', {nutritionPlanId: plan.id}) }}">Éditer</a>
                             |
-                            <form method="post" action="{{ path('app.nutrition_plan.delete', {nutritionPlanId: plan.id}) }}" style="display: inline;" onsubmit="return confirm('Supprimer ce plan ?');">
+                            <form method="post" action="{{ url('app.nutrition_plan.delete', {nutritionPlanId: plan.id}) }}" style="display: inline;" onsubmit="return confirm('Supprimer ce plan ?');">
                                 <button type="submit">Supprimer</button>
                             </form>
                         </td>

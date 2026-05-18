@@ -45,7 +45,7 @@ class DoctrineNutritionPlansCatalog extends ServiceEntityRepository implements N
     public function findByRaceId(string $raceId): array
     {
         return $this->createQueryBuilder('nutritionPlan')
-            ->where('nutritionPlan.race = :raceId')
+            ->where('nutritionPlan.runnerRace = :raceId')
             ->setParameter('raceId', $raceId)
             ->getQuery()
             ->getResult();

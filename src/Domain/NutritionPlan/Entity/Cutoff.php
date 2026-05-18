@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Domain\NutritionPlan\ValueObject;
+namespace App\Domain\NutritionPlan\Entity;
 
 final readonly class Cutoff
 {

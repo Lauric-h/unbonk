@@ -2,7 +2,8 @@
 
 namespace App\Application\NutritionPlan\ReadModel;
 
-use App\Domain\NutritionPlan\Entity\CheckpointInterface;
+
+use App\Domain\NutritionPlan\Entity\Checkpoint;
 
 final readonly class CheckpointReadModel
 {
@@ -21,30 +22,17 @@ final readonly class CheckpointReadModel
     ) {
     }
 
-    public static function fromCheckpoint(CheckpointInterface $checkpoint): self
+    public static function fromCheckpoint(Checkpoint $checkpoint): self
     {
-        // For imported checkpoints, externalId exists
-        // For custom checkpoints, it doesn't (they don't have an externalId property)
-        $externalId = null;
-        if (method_exists($checkpoint, 'externalId')) {
-            $externalId = $checkpoint->getId();
-        }
-
-        // Get cutoff in minutes based on checkpoint type
-        $cutoffInMinutes = null;
-        if (method_exists($checkpoint, 'getCutoffInMinutes')) {
-            $cutoffInMinutes = $checkpoint->getCutoffInMinutes();
-        }
-
         return new self(
-            id: $checkpoint->getId(),
-            externalId: $externalId,
-            name: $checkpoint->getName(),
-            location: $checkpoint->getLocation(),
-            distanceFromStart: $checkpoint->getDistanceFromStart(),
-            ascentFromStart: $checkpoint->getAscentFromStart(),
-            descentFromStart: $checkpoint->getDescentFromStart(),
-            cutoffInMinutes: $cutoffInMinutes,
+            id: $checkpoint->id,
+            externalId: $checkpoint->externalCheckpointId,
+            name: $checkpoint->name,
+            location: $checkpoint->location,
+            distanceFromStart: $checkpoint->distanceFromStart,
+            ascentFromStart: $checkpoint->ascentFromStart,
+            descentFromStart: $checkpoint->descentFromStart,
+            cutoffInMinutes: $checkpoint->getCutoffInMinutes(),
             assistanceAllowed: $checkpoint->isAssistanceAllowed(),
             type: $checkpoint->getType()->value,
             isEditable: $checkpoint->isEditable(),

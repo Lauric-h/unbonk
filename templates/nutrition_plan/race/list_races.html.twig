@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mes courses importées{% endblock %}
+{% block title %}Mes courses{% endblock %}
 
 {% block body %}
-    <h1>Mes courses importées</h1>
+    <h1>Mes courses</h1>
     
     <p><a href="{{ url('app.event.list') }}">← Retour aux événements</a></p>
     
@@ -47,7 +47,7 @@
             </tbody>
         </table>
     {% else %}
-        <p>Vous n'avez pas encore importé de course.</p>
-        <p><a href="{{ url('app.event.list') }}">Parcourir les événements</a></p>
+        <p>Vous n'avez pas encore de course.</p>
+        <p><a href="{{ url('app.event.list') }}">Parcourir les événements pour importer une course</a></p>
     {% endif %}
 {% endblock %}

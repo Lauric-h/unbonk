@@ -5,7 +5,7 @@
 {% block body %}
     <h1>Créer un plan de nutrition</h1>
     
-    <p><a href="{{ path('app.race.nutrition_plans', {raceId: race.id}) }}">← Retour aux plans de cette course</a></p>
+    <p><a href="{{ url('app.race.nutrition_plans', {raceId: race.id}) }}">← Retour aux plans de cette course</a></p>
     
     <h2>Course : {{ race.name }}</h2>
     <ul>
@@ -13,7 +13,7 @@
         <li><strong>Date :</strong> {{ race.startDateTime|date('d/m/Y H:i') }}</li>
         <li><strong>Distance :</strong> {{ (race.distance / 1000)|number_format(1) }} km</li>
         <li><strong>D+ :</strong> {{ race.ascent }} m</li>
-        <li><strong>Checkpoints :</strong> {{ race.checkpoints|length }}</li>
+        <li><strong>Checkpoints :</strong> {{ race.orderedCheckpoints()|length }}</li>
     </ul>
     
     <h2>Nouveau plan</h2>
@@ -22,6 +22,6 @@
         {{ form_row(form.name) }}
         
         <button type="submit">Créer le plan</button>
-        <a href="{{ path('app.race.nutrition_plans', {raceId: race.id}) }}">Annuler</a>
+        <a href="{{ url('app.race.nutrition_plans', {raceId: race.id}) }}">Annuler</a>
     {{ form_end(form) }}
 {% endblock %}

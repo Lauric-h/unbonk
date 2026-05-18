@@ -2,17 +2,17 @@
 
 namespace App\Application\NutritionPlan\UseCase\DeleteUserRace;
 
-use App\Domain\NutritionPlan\Repository\RacesCatalog;
+use App\Domain\NutritionPlan\Repository\RunnerRacesCatalog;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
 
-final readonly class DeleteUserRaceCommandHandler implements CommandHandlerInterface
+final readonly class DeleteRunnerRaceCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
-        private RacesCatalog $racesCatalog
+        private RunnerRacesCatalog $racesCatalog
     ) {
     }
 
-    public function __invoke(DeleteUserRaceCommand $command): void
+    public function __invoke(DeleteRunnerRaceCommand $command): void
     {
         $race = $this->racesCatalog->get($command->raceId);
         $this->racesCatalog->remove($race);

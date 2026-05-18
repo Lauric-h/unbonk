@@ -1,112 +1,111 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ nutritionPlan.name ?? 'Plan de nutrition' }} - {{ nutritionPlan.race.name }}{% endblock %}
+{% block title %}{{ nutritionPlan.name ?? 'Plan de nutrition' }} - {{ nutritionPlan.runnerRace.name }}{% endblock %}
 
 {% block body %}
     <h1>{{ nutritionPlan.name ?? 'Plan de nutrition' }}</h1>
     
     <p>
-        <a href="{{ path('app.race.nutrition_plans', {raceId: nutritionPlan.race.id}) }}">← Retour aux plans de cette course</a>
+        <a href="{{ url('app.race.nutrition_plans', {raceId: nutritionPlan.runnerRace.id}) }}">← Retour aux plans de cette course</a>
         |
-        <a href="{{ path('app.nutrition_plan.list') }}">Tous mes plans</a>
+        <a href="{{ url('app.nutrition_plan.list') }}">Tous mes plans</a>
     </p>
     
     <h2>Informations de la course</h2>
     <ul>
-        <li><strong>Événement :</strong> {{ nutritionPlan.race.eventName ?? nutritionPlan.race.name }}</li>
-        <li><strong>Course :</strong> {{ nutritionPlan.race.name }}</li>
-        <li><strong>Lieu :</strong> {{ nutritionPlan.race.location }}</li>
-        <li><strong>Date :</strong> {{ nutritionPlan.race.startDateTime|date('d/m/Y H:i') }}</li>
-        <li><strong>Distance :</strong> {{ (nutritionPlan.race.distance / 1000)|number_format(1) }} km</li>
-        <li><strong>D+ :</strong> {{ nutritionPlan.race.ascent }} m</li>
-        <li><strong>D- :</strong> {{ nutritionPlan.race.descent }} m</li>
+        <li><strong>Événement :</strong> {{ nutritionPlan.runnerRace.eventName ?? nutritionPlan.runnerRace.name }}</li>
+        <li><strong>Course :</strong> {{ nutritionPlan.runnerRace.name }}</li>
+        <li><strong>Lieu :</strong> {{ nutritionPlan.runnerRace.location }}</li>
+        <li><strong>Date :</strong> {{ nutritionPlan.runnerRace.startDateTime|date('d/m/Y H:i') }}</li>
+        <li><strong>Distance :</strong> {{ (nutritionPlan.runnerRace.distance / 1000)|number_format(1) }} km</li>
+        <li><strong>D+ :</strong> {{ nutritionPlan.runnerRace.ascent }} m</li>
+        <li><strong>D- :</strong> {{ nutritionPlan.runnerRace.descent }} m</li>
     </ul>
     
-    <h2>Résumé nutritionnel</h2>
-    <p><strong>Total glucides :</strong> {{ nutritionPlan.totalCarbs }} g</p>
-    
     <h2>Segments et nutrition</h2>
-    
-    {% if nutritionPlan.segments|length > 0 %}
-        {% for segment in nutritionPlan.segments %}
-            <h3>Segment {{ segment.position }} : {{ segment.startCheckpoint.name }} → {{ segment.endCheckpoint.name }}</h3>
-            
-            <table border="1" cellpadding="5" style="margin-bottom: 20px;">
-                <tr>
-                    <th>Distance</th>
-                    <th>D+</th>
-                    <th>D-</th>
-                    <th>Glucides</th>
-                </tr>
-                <tr>
-                    <td>{{ (segment.distance / 1000)|number_format(1) }} km</td>
-                    <td>{{ segment.ascent }} m</td>
-                    <td>{{ segment.descent }} m</td>
-                    <td><strong>{{ segment.totalCarbs }} g</strong></td>
-                </tr>
-            </table>
-            
-            <h4>Checkpoints</h4>
-            <ul>
-                <li>
-                    <strong>Départ :</strong> {{ segment.startCheckpoint.name }} 
-                    ({{ (segment.startCheckpoint.distanceFromStart / 1000)|number_format(1) }} km)
-                    {% if segment.startCheckpoint.cutoffInMinutes %}
-                        - Cutoff : {{ segment.startCheckpoint.cutoffInMinutes|date }}
-                    {% endif %}
-                </li>
-                <li>
-                    <strong>Arrivée :</strong> {{ segment.endCheckpoint.name }} 
-                    ({{ (segment.endCheckpoint.distanceFromStart / 1000)|number_format(1) }} km)
-                    {% if segment.endCheckpoint.cutoffInMinutes %}
-                        - Cutoff : {{ segment.endCheckpoint.cutoffInMinutes }}
-                    {% endif %}
-                </li>
-            </ul>
-            
-            <h4>Nutrition prévue</h4>
-            {% if segment.nutritionItems|length > 0 %}
-                <table border="1" cellpadding="5">
-                    <thead>
-                        <tr>
-                            <th>Aliment</th>
-                            <th>Quantité</th>
-                            <th>Glucides unitaires</th>
-                            <th>Glucides totaux</th>
-                            <th>Calories unitaires</th>
-                            <th>Calories totales</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in segment.nutritionItems %}
-                            <tr>
-                                <td>{{ item.name }}</td>
-                                <td>{{ item.quantity }}</td>
-                                <td>{{ item.carbs }} g</td>
-                                <td><strong>{{ item.carbs * item.quantity }} g</strong></td>
-                                <td>{{ item.calories }} kcal</td>
-                                <td><strong>{{ item.calories * item.quantity }} kcal</strong></td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
+
+    {% if nutritionPlan.segmentPlans|length > 0 %}
+        {% for segmentPlan in nutritionPlan.segmentPlans %}
+            <div style="border: 1px solid #ccc; padding: 15px; margin-bottom: 20px;">
+                <h3>Segment {{ segmentPlan.segment.position }} : {{ segmentPlan.segment.fromCheckpoint.name }} → {{ segmentPlan.segment.toCheckpoint.name }}</h3>
+                
+                <table border="1" cellpadding="5" style="margin-bottom: 10px;">
+                    <tr>
+                        <th>Distance</th>
+                        <th>D+</th>
+                        <th>D-</th>
+                        <th>Objectif glucides</th>
+                    </tr>
+                    <tr>
+                        <td>{{ (segmentPlan.segment.distance / 1000)|number_format(1) }} km</td>
+                        <td>{{ segmentPlan.segment.ascent }} m</td>
+                        <td>{{ segmentPlan.segment.descent }} m</td>
+                        <td><strong>{{ segmentPlan.targetCarbs ?? '-' }} g</strong></td>
+                    </tr>
                 </table>
-            {% else %}
-                <p><em>Aucun aliment prévu pour ce segment</em></p>
-            {% endif %}
-            
-            <hr>
+                
+                <h4>Checkpoints</h4>
+                <ul>
+                    <li>
+                        <strong>Départ :</strong> {{ segmentPlan.segment.fromCheckpoint.name }} 
+                        ({{ (segmentPlan.segment.fromCheckpoint.distanceFromStart / 1000)|number_format(1) }} km)
+                        {% if segmentPlan.segment.fromCheckpoint.cutoffInMinutes %}
+                            - Cutoff : {{ segmentPlan.segment.fromCheckpoint.cutoffInMinutes }} min
+                        {% endif %}
+                    </li>
+                    <li>
+                        <strong>Arrivée :</strong> {{ segmentPlan.segment.toCheckpoint.name }} 
+                        ({{ (segmentPlan.segment.toCheckpoint.distanceFromStart / 1000)|number_format(1) }} km)
+                        {% if segmentPlan.segment.toCheckpoint.cutoffInMinutes %}
+                            - Cutoff : {{ segmentPlan.segment.toCheckpoint.cutoffInMinutes }} min
+                        {% endif %}
+                    </li>
+                </ul>
+                
+                <h4>Nutrition prévue</h4>
+                {% if segmentPlan.items|length > 0 %}
+                    {% set totalCarbs = 0 %}
+                    <table border="1" cellpadding="5">
+                        <thead>
+                            <tr>
+                                <th>Aliment</th>
+                                <th>Quantité</th>
+                                <th>Glucides unitaires</th>
+                                <th>Glucides totaux</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in segmentPlan.items %}
+                                {% set totalCarbs = totalCarbs + (item.carbs * item.quantity) %}
+                                <tr>
+                                    <td>{{ item.foodItemId }}</td>
+                                    <td>{{ item.quantity }}</td>
+                                    <td>{{ item.carbs }} g</td>
+                                    <td><strong>{{ item.carbs * item.quantity }} g</strong></td>
+                                </tr>
+                            {% endfor %}
+                            <tr style="font-weight: bold;">
+                                <td colspan="3">Total</td>
+                                <td>{{ totalCarbs }} g</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p><em>Aucun aliment prévu pour ce segment</em></p>
+                {% endif %}
+            </div>
         {% endfor %}
     {% else %}
-        <p>Aucun segment disponible.</p>
+        <p>Aucun plan nutritionnel défini pour les segments.</p>
     {% endif %}
     
     <h2>Actions</h2>
     <p>
-        <a href="{{ path('app.nutrition_plan.edit', {nutritionPlanId: nutritionPlan.id}) }}">Éditer ce plan</a>
+        <a href="{{ url('app.nutrition_plan.edit', {nutritionPlanId: nutritionPlan.id}) }}">Éditer ce plan</a>
         |
-        <a href="{{ path('app.nutrition_plan.rename', {nutritionPlanId: nutritionPlan.id}) }}">Renommer</a>
+        <a href="{{ url('app.nutrition_plan.rename', {nutritionPlanId: nutritionPlan.id}) }}">Renommer</a>
         |
-        <form method="post" action="{{ path('app.nutrition_plan.delete', {nutritionPlanId: nutritionPlan.id}) }}" style="display: inline;" onsubmit="return confirm('Supprimer ce plan ?');">
+        <form method="post" action="{{ url('app.nutrition_plan.delete', {nutritionPlanId: nutritionPlan.id}) }}" style="display: inline;" onsubmit="return confirm('Supprimer ce plan ?');">
             <button type="submit">Supprimer</button>
         </form>
     </p>

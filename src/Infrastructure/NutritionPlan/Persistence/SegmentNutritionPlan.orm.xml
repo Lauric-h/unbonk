@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Domain\NutritionPlan\Entity\SegmentNutritionPlan" table="segment_nutrition_plan">
+        <id name="id" type="string" />
+
+        <embedded name="targetCarbs" class="App\Domain\Shared\Entity\Carbs" column-prefix="target_carbs_"/>
+
+        <many-to-one field="nutritionPlan" target-entity="App\Domain\NutritionPlan\Entity\NutritionPlan" inversed-by="segmentPlans">
+            <join-column name="nutrition_plan_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
+        </many-to-one>
+
+        <many-to-one field="segment" target-entity="App\Domain\NutritionPlan\Entity\Segment">
+            <join-column name="segment_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
+        </many-to-one>
+
+        <one-to-many field="items" target-entity="App\Domain\NutritionPlan\Entity\NutritionItem" orphan-removal="true" mapped-by="segmentNutritionPlan">
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
+        </one-to-many>
+
+        <indexes>
+            <index name="idx_segment_nutrition_plan_nutrition_plan" columns="nutrition_plan_id"/>
+            <index name="idx_segment_nutrition_plan_segment" columns="segment_id"/>
+        </indexes>
+    </entity>
+
+</doctrine-mapping>
