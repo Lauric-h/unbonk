@@ -17,6 +17,7 @@ final readonly class ImportRaceCommandHandler implements CommandHandlerInterface
         private RunnerRacesCatalog    $racesCatalog,
         private ExternalRacePort      $client,
         private RunnerRaceFactory     $RunnerRaceFactory,
+        private IdGeneratorInterface  $idGenerator,
     ) {
     }
 
@@ -36,6 +37,7 @@ final readonly class ImportRaceCommandHandler implements CommandHandlerInterface
             id: $command->nutritionPlanId,
             runnerRace: $RunnerRace,
             name: \sprintf('Nutrition plan for %s race', $externalRace->name),
+            idGenerator: fn() => $this->idGenerator->generate(),
         );
 
         $this->nutritionPlansCatalog->add($nutritionPlan);

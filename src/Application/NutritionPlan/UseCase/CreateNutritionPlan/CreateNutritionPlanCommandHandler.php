@@ -15,6 +15,7 @@ final readonly class CreateNutritionPlanCommandHandler implements CommandHandler
     public function __construct(
         private NutritionPlansCatalog $nutritionPlansCatalog,
         private RunnerRacesCatalog    $racesCatalog,
+        private IdGeneratorInterface  $idGenerator,
     ) {
     }
 
@@ -22,12 +23,11 @@ final readonly class CreateNutritionPlanCommandHandler implements CommandHandler
     {
         $runnerRace = $this->racesCatalog->get($command->RunnerRaceId);
 
-        $checkpointCount = \count($runnerRace->orderedCheckpoints());
-
         $nutritionPlan = NutritionPlan::createFromRunnerRace(
             id: $command->nutritionPlanId,
             runnerRace: $runnerRace,
             name: $command->name,
+            idGenerator: fn() => $this->idGenerator->generate(),
         );
 
         $this->nutritionPlansCatalog->add($nutritionPlan);

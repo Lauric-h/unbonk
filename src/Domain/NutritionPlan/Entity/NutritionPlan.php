@@ -26,6 +26,7 @@ class NutritionPlan
         string $id,
         RunnerRace $runnerRace,
         ?string $name = null,
+        ?callable $idGenerator = null,
     ): self {
         $nutritionPlan = new self(
             id: $id,
@@ -33,6 +34,19 @@ class NutritionPlan
             name: $name,
             createdAt: new \DateTimeImmutable(),
         );
+
+        // Créer un SegmentNutritionPlan pour chaque segment de la course
+        if (null !== $idGenerator) {
+            foreach ($runnerRace->segments() as $segment) {
+                $segmentPlan = new SegmentNutritionPlan(
+                    id: $idGenerator(),
+                    nutritionPlan: $nutritionPlan,
+                    segment: $segment,
+                    targetCarbs: null, // À définir par l'utilisateur plus tard
+                );
+                $nutritionPlan->addSegmentPlan($segmentPlan);
+            }
+        }
 
         return $nutritionPlan;
     }
