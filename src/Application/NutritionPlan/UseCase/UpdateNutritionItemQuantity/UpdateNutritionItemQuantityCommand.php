@@ -9,6 +9,8 @@ final readonly class UpdateNutritionItemQuantityCommand implements CommandInterf
 {
     public function __construct(
         #[Assert\Uuid]
+        public string $nutritionPlanId,
+        #[Assert\Uuid]
         public string $segmentId,
         #[Assert\Uuid]
         public string $nutritionItemId,

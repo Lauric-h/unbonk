@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\UI\Http\Web\NutritionPlan\Checkpoint;
 
 use App\Application\NutritionPlan\UseCase\UpdateCheckpoint\UpdateCheckpointCommand;
-use App\Domain\NutritionPlan\Entity\NutritionPlan;
+use App\Domain\NutritionPlan\Entity\Checkpoint;
+use App\Domain\NutritionPlan\Entity\RunnerRace;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\UI\Http\Web\NutritionPlan\Form\Checkpoint\CheckpointModel;
 use App\UI\Http\Web\NutritionPlan\Form\Checkpoint\CheckpointType;
@@ -16,8 +17,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-#[Route('/nutrition-plans/{nutritionPlanId}/checkpoints/{checkpointId}/edit', name: 'app.checkpoint.edit', methods: ['GET', 'POST'])]
-#[IsGranted('EDIT', subject: 'nutritionPlan')]
+#[Route('/race/{raceId}/checkpoints/{checkpointId}/edit', name: 'app.checkpoint.edit', methods: ['GET', 'POST'])]
+#[IsGranted('EDIT', subject: 'race')]
 final class UpdateCheckpointController extends AbstractController
 {
     public function __construct(
@@ -26,27 +27,22 @@ final class UpdateCheckpointController extends AbstractController
     }
 
     public function __invoke(
-        Request $request,
-        #[MapEntity(id: 'nutritionPlanId')] NutritionPlan $nutritionPlan,
-        string $checkpointId,
+        #[MapEntity(id: 'raceId')]
+        RunnerRace $race,
+        #[MapEntity(id: 'checkpointId')] Checkpoint $checkpoint,
+        Request $request
     ): Response {
-        $checkpoint = $nutritionPlan->getCheckpointById($checkpointId);
-
-        if (!$checkpoint) {
-            throw $this->createNotFoundException('Checkpoint non trouvé');
-        }
-
         if (!$checkpoint->isEditable()) {
             $this->addFlash('error', 'Seuls les checkpoints personnalisés peuvent être modifiés');
-            return $this->redirectToRoute('app.nutrition_plan.edit', ['nutritionPlanId' => $nutritionPlan->id]);
+            return $this->redirectToRoute('app.race.nutrition_plans', ['raceId' => $race->id]);
         }
 
         $model = new CheckpointModel(
-            name: $checkpoint->getName(),
-            location: $checkpoint->getLocation(),
-            distanceFromStart: $checkpoint->getDistanceFromStart(),
-            ascentFromStart: $checkpoint->getAscentFromStart(),
-            descentFromStart: $checkpoint->getDescentFromStart(),
+            name: $checkpoint->name,
+            location: $checkpoint->location,
+            distanceFromStart: $checkpoint->distanceFromStart,
+            ascentFromStart: $checkpoint->ascentFromStart,
+            descentFromStart: $checkpoint->descentFromStart,
             cutoffTime: $checkpoint->getCutoff()?->dateTime,
             assistanceAllowed: $checkpoint->isAssistanceAllowed(),
         );
@@ -56,8 +52,8 @@ final class UpdateCheckpointController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->commandBus->dispatch(new UpdateCheckpointCommand(
-                nutritionPlanId: $nutritionPlan->id,
-                checkpointId: $checkpointId,
+                runnerRaceId: $race->id,
+                checkpointId: $checkpoint->id,
                 name: $model->name,
                 location: $model->location,
                 distanceFromStart: $model->distanceFromStart,
@@ -69,12 +65,12 @@ final class UpdateCheckpointController extends AbstractController
 
             $this->addFlash('success', 'Checkpoint modifié avec succès !');
 
-            return $this->redirectToRoute('app.nutrition_plan.edit', ['nutritionPlanId' => $nutritionPlan->id]);
+            return $this->redirectToRoute('app.race.nutrition_plans', ['raceId' => $race->id]);
         }
 
         return $this->render('nutrition_plan/checkpoint/update_checkpoint.html.twig', [
             'form' => $form,
-            'nutritionPlan' => $nutritionPlan,
+            'race' => $race,
             'checkpoint' => $checkpoint,
         ]);
     }

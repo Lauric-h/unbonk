@@ -14,7 +14,7 @@ final readonly class UpdateNutritionPlanCommand implements CommandInterface
         #[Assert\Uuid]
         public string $nutritionPlanId,
         #[Assert\Length(max: 255)]
-        public ?string $name,
+        public string $name,
     ) {
     }
 }

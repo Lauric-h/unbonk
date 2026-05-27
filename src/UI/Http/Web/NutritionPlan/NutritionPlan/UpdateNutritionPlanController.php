@@ -39,7 +39,7 @@ final class UpdateNutritionPlanController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->commandBus->dispatch(new UpdateNutritionPlanCommand(
                 nutritionPlanId: $nutritionPlan->id,
-                name: $model->name,
+                name: $model->name,  // @phpstan-ignore-line assert in Request
             ));
 
             $this->addFlash('success', 'Plan renommé avec succès !');

@@ -49,6 +49,6 @@ class NutritionPlanVoter extends Voter
 
     private function canAccess(NutritionPlan $nutritionPlan, User $user): bool
     {
-        return $nutritionPlan->race->runnerId === $user->id;
+        return $nutritionPlan->runnerRace->runnerId === $user->id;
     }
 }

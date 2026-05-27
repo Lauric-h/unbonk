@@ -6,7 +6,7 @@ final readonly class Carbs
 {
     public const int DEFAULT_PER_HOUR = 60;
 
-    public readonly int $value;
+    public int $value;
 
     public function __construct(int $value)
     {

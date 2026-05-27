@@ -6,8 +6,10 @@ namespace App\UI\Http\Rest\NutritionPlan\Controller\Checkpoint;
 
 use App\Application\NutritionPlan\UseCase\AddCheckpoint\AddCheckpointCommand;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
+use App\Domain\NutritionPlan\Entity\RunnerRace;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\UI\Http\Rest\NutritionPlan\Request\AddCheckpointRequest;
+use PhpCsFixer\Runner\Runner;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,8 +20,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\SerializerInterface;
 
-#[Route('/nutrition-plans/{nutritionPlanId}/checkpoints', name: 'api.nutrition_plan.add_checkpoint', methods: ['POST'])]
-#[IsGranted('EDIT', subject: 'nutritionPlan')]
+#[Route('/race/{raceId}/checkpoints', name: 'api.nutrition_plan.add_checkpoint', methods: ['POST'])]
+#[IsGranted('EDIT', subject: 'race')]
 final class AddCheckpointController extends AbstractController
 {
     public function __construct(
@@ -30,8 +32,8 @@ final class AddCheckpointController extends AbstractController
     }
 
     public function __invoke(
-        #[MapEntity(id: 'nutritionPlanId')]
-        NutritionPlan $nutritionPlan,
+        #[MapEntity(id: 'raceId')]
+        RunnerRace $race,
         Request $request,
     ): JsonResponse {
         $addCheckpointRequest = $this->serializer->deserialize($request->getContent(), AddCheckpointRequest::class, 'json');
@@ -41,7 +43,7 @@ final class AddCheckpointController extends AbstractController
             : null;
 
         $this->commandBus->dispatch(new AddCheckpointCommand(
-            nutritionPlanId: $nutritionPlan->id,
+            runnerRaceId: $race->id,
             name: $addCheckpointRequest->name,
             location: $addCheckpointRequest->location,
             distanceFromStart: $addCheckpointRequest->distanceFromStart,
@@ -54,7 +56,7 @@ final class AddCheckpointController extends AbstractController
         return new JsonResponse(
             [],
             Response::HTTP_CREATED,
-            ['Location' => $this->urlGenerator->generate('api.nutrition_plan.get', ['nutritionPlanId' => $nutritionPlan->id])]
+            ['Location' => $this->urlGenerator->generate('app.race.nutrition_plans', ['raceId' => $race->id])]
         );
     }
 }

@@ -6,16 +6,19 @@
 
     <entity name="App\Domain\NutritionPlan\Entity\NutritionItem" table="nutrition_item">
         <id name="id" type="string" />
-        <field name="externalReference" type="string" column="external_reference"/>
-        <field name="name" type="string" />
+        <field name="foodItemId" type="string" column="food_item_id"/>
 
-        <embedded name="carbs" class="App\Domain\Shared\Entity\Carbs" column-prefix="carbs_"/>
         <embedded name="quantity" class="App\Domain\NutritionPlan\Entity\Quantity" column-prefix="quantity_"/>
-        <embedded name="calories" class="App\Domain\Shared\Entity\Calories" column-prefix="calories_"/>
+        <embedded name="carbs" class="App\Domain\Shared\Entity\Carbs" column-prefix="carbs_"/>
 
-        <many-to-one field="segment" target-entity="App\Domain\NutritionPlan\Entity\Segment" inversed-by="nutritionItems">
-            <join-column name="segment_id" referenced-column-name="id" nullable="false" on-delete="CASCADE" />
+        <many-to-one field="segmentNutritionPlan" target-entity="App\Domain\NutritionPlan\Entity\SegmentNutritionPlan" inversed-by="items">
+            <join-column name="segment_nutrition_plan_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
         </many-to-one>
+
+        <indexes>
+            <index name="idx_nutrition_item_segment_plan" columns="segment_nutrition_plan_id"/>
+            <index name="idx_nutrition_item_food_item" columns="food_item_id"/>
+        </indexes>
     </entity>
 
 </doctrine-mapping>

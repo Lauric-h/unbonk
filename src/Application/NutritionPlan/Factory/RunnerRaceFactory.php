@@ -5,25 +5,25 @@ namespace App\Application\NutritionPlan\Factory;
 use App\Application\Shared\IdGeneratorInterface;
 use App\Domain\NutritionPlan\DTO\ExternalAidStationDTO;
 use App\Domain\NutritionPlan\DTO\ExternalRaceDTO;
+use App\Domain\NutritionPlan\Entity\Checkpoint;
 use App\Domain\NutritionPlan\Entity\CheckpointType;
-use App\Domain\NutritionPlan\Entity\ImportedCheckpoint;
-use App\Domain\NutritionPlan\Entity\ImportedRace;
-use App\Domain\NutritionPlan\ValueObject\Cutoff;
+use App\Domain\NutritionPlan\Entity\Cutoff;
+use App\Domain\NutritionPlan\Entity\RunnerRace;
 
-final readonly class ImportedRaceFactory
+final readonly class RunnerRaceFactory
 {
     public function __construct(
         private IdGeneratorInterface $idGenerator,
     ) {
     }
 
-    public function createFromExternalRace(ExternalRaceDTO $externalRace, string $runnerId): ImportedRace
+    public function createFromExternalRace(ExternalRaceDTO $externalRace, string $runnerId): RunnerRace
     {
-        $importedRace = new ImportedRace(
+        $runnerRace = new RunnerRace(
             id: $this->idGenerator->generate(),
             runnerId: $runnerId,
-            externalRaceId: $externalRace->id,
-            externalEventId: $externalRace->eventId,
+            sourceRaceId: $externalRace->id,
+            eventId: $externalRace->eventId,
             eventName: $externalRace->eventName,
             name: $externalRace->name,
             distance: $externalRace->distance,
@@ -33,9 +33,11 @@ final readonly class ImportedRaceFactory
             location: $externalRace->startLocation,
         );
 
-        $startCheckpoint = new ImportedCheckpoint(
+        // Add start checkpoint
+        $startCheckpoint = new Checkpoint(
             id: $this->idGenerator->generate(),
-            externalId: $this->idGenerator->generate(),
+            runnerRace: $runnerRace,
+            externalCheckpointId: $this->idGenerator->generate(),
             name: 'Start',
             location: $externalRace->startLocation,
             distanceFromStart: 0,
@@ -43,19 +45,21 @@ final readonly class ImportedRaceFactory
             descentFromStart: 0,
             cutoff: null,
             assistanceAllowed: false,
-            importedRace: $importedRace,
             type: CheckpointType::StartCheckpoint,
         );
-        $importedRace->addCheckpoint($startCheckpoint);
+        $runnerRace->addCheckpoint($startCheckpoint);
 
+        // Add aid station checkpoints
         foreach ($externalRace->aidStations as $aidStation) {
-            $checkpoint = $this->createCheckpointFromAidStation($aidStation, $importedRace);
-            $importedRace->addCheckpoint($checkpoint);
+            $checkpoint = $this->createCheckpointFromAidStation($aidStation, $runnerRace);
+            $runnerRace->addCheckpoint($checkpoint);
         }
 
-        $finishCheckpoint = new ImportedCheckpoint(
+        // Add finish checkpoint
+        $finishCheckpoint = new Checkpoint(
             id: $this->idGenerator->generate(),
-            externalId: $this->idGenerator->generate(),
+            runnerRace: $runnerRace,
+            externalCheckpointId: $this->idGenerator->generate(),
             name: 'Finish',
             location: $externalRace->finishLocation,
             distanceFromStart: $externalRace->distance,
@@ -63,23 +67,23 @@ final readonly class ImportedRaceFactory
             descentFromStart: $externalRace->descent,
             cutoff: null,
             assistanceAllowed: false,
-            importedRace: $importedRace,
             type: CheckpointType::FinishCheckpoint,
         );
-        $importedRace->addCheckpoint($finishCheckpoint);
+        $runnerRace->addCheckpoint($finishCheckpoint);
 
-        return $importedRace;
+        return $runnerRace;
     }
 
-    private function createCheckpointFromAidStation(ExternalAidStationDTO $aidStation, ImportedRace $importedRace): ImportedCheckpoint
+    private function createCheckpointFromAidStation(ExternalAidStationDTO $aidStation, RunnerRace $runnerRace): Checkpoint
     {
         $cutoff = null !== $aidStation->cutoffTime
             ? new Cutoff($aidStation->cutoffTime)
             : null;
 
-        return new ImportedCheckpoint(
+        return new Checkpoint(
             id: $this->idGenerator->generate(),
-            externalId: $aidStation->id,
+            runnerRace: $runnerRace,
+            externalCheckpointId: $aidStation->id,
             name: $aidStation->name,
             location: $aidStation->location,
             distanceFromStart: $aidStation->distanceFromStart,
@@ -87,7 +91,6 @@ final readonly class ImportedRaceFactory
             descentFromStart: $aidStation->descentFromStart,
             cutoff: $cutoff,
             assistanceAllowed: $aidStation->assistanceAllowed,
-            importedRace: $importedRace,
             type: CheckpointType::AidStation,
         );
     }

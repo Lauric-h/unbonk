@@ -2,21 +2,33 @@
 
 namespace App\Application\NutritionPlan\UseCase\DeleteNutritionItem;
 
-use App\Domain\NutritionPlan\Repository\SegmentsCatalog;
+use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
 
 final readonly class DeleteNutritionItemCommandHandler implements CommandHandlerInterface
 {
-    public function __construct(private SegmentsCatalog $segmentsCatalog)
-    {
+    public function __construct(
+        private NutritionPlansCatalog $nutritionPlansCatalog,
+    ) {
     }
 
     public function __invoke(DeleteNutritionItemCommand $command): void
     {
-        $segment = $this->segmentsCatalog->getByNutritionPlanAndId($command->nutritionPlanId, $command->segmentId);
+        $nutritionPlan = $this->nutritionPlansCatalog->get($command->nutritionPlanId);
+        
+        $segmentPlan = $nutritionPlan->getSegmentPlanBySegmentId($command->segmentId);
+        
+        if (null === $segmentPlan) {
+            throw new \DomainException(
+                sprintf('Segment plan for segment %s not found in nutrition plan %s', 
+                    $command->segmentId, 
+                    $command->nutritionPlanId
+                )
+            );
+        }
 
-        $segment->removeNutritionItem($command->nutritionItemId);
+        $segmentPlan->removeItem($command->nutritionItemId);
 
-        $this->segmentsCatalog->add($segment);
+        $this->nutritionPlansCatalog->add($nutritionPlan);
     }
 }

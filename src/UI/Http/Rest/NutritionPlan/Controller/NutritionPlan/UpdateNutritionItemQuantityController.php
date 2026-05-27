@@ -33,7 +33,12 @@ final class UpdateNutritionItemQuantityController extends AbstractController
         string $itemId
     ): JsonResponse {
         $updateRequest = $this->serializer->deserialize($request->getContent(), UpdateNutritionItemRequest::class, 'json');
-        $this->commandBus->dispatch(new UpdateNutritionItemQuantityCommand($segmentId, $itemId, $updateRequest->quantity));
+        $this->commandBus->dispatch(new UpdateNutritionItemQuantityCommand(
+            nutritionPlanId: $nutritionPlan->id,
+            segmentId: $segmentId,
+            nutritionItemId: $itemId,
+            quantity: $updateRequest->quantity,
+        ));
 
         return new JsonResponse([], Response::HTTP_OK);
     }

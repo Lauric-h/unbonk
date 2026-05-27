@@ -11,7 +11,7 @@ final readonly class AddCheckpointCommand implements CommandInterface
 {
     public function __construct(
         #[Assert\Uuid]
-        public string $nutritionPlanId,
+        public string $runnerRaceId,
         #[Assert\NotBlank]
         public string $name,
         #[Assert\NotBlank]

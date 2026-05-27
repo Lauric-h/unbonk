@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                          https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Domain\NutritionPlan\Entity\Checkpoint" table="checkpoint">
+        <id name="id" type="string" />
+        <field name="externalCheckpointId" type="string" column="external_checkpoint_id" nullable="true"/>
+        <field name="name" type="string"/>
+        <field name="location" type="string"/>
+        <field name="distanceFromStart" type="integer" column="distance_from_start"/>
+        <field name="ascentFromStart" type="integer" column="ascent_from_start"/>
+        <field name="descentFromStart" type="integer" column="descent_from_start"/>
+        <field name="assistanceAllowed" type="boolean" column="assistance_allowed"/>
+        <field name="type" type="string" enum-type="App\Domain\NutritionPlan\Entity\CheckpointType"/>
+        <field name="cutoffDateTime" type="datetime_immutable" column="cutoff_date_time" nullable="true"/>
+
+        <many-to-one field="runnerRace" target-entity="App\Domain\NutritionPlan\Entity\RunnerRace" inversed-by="checkpoints">
+            <join-column name="runner_race_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
+        </many-to-one>
+
+        <indexes>
+            <index name="idx_checkpoint_runner_race" columns="runner_race_id"/>
+            <index name="idx_checkpoint_external_id" columns="external_checkpoint_id"/>
+        </indexes>
+    </entity>
+
+</doctrine-mapping>
