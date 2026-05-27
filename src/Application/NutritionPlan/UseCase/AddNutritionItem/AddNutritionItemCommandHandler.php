@@ -6,15 +6,14 @@ use App\Application\Shared\IdGeneratorInterface;
 use App\Domain\NutritionPlan\Entity\NutritionItem;
 use App\Domain\NutritionPlan\Entity\Quantity;
 use App\Domain\NutritionPlan\Port\ExternalFoodPort;
-use App\Domain\NutritionPlan\Repository\SegmentsCatalog;
+use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
-use App\Domain\Shared\Entity\Calories;
 use App\Domain\Shared\Entity\Carbs;
 
 final readonly class AddNutritionItemCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
-        private SegmentsCatalog $segmentsCatalog,
+        private NutritionPlansCatalog $nutritionPlansCatalog,
         private IdGeneratorInterface $idGenerator,
         private ExternalFoodPort $externalFoodPort,
     ) {
@@ -23,19 +22,29 @@ final readonly class AddNutritionItemCommandHandler implements CommandHandlerInt
     public function __invoke(AddNutritionItemCommand $command): void
     {
         $externalFood = $this->externalFoodPort->getById($command->externalFoodId);
-        $segment = $this->segmentsCatalog->get($command->segmentId);
+        $nutritionPlan = $this->nutritionPlansCatalog->get($command->nutritionPlanId);
+        
+        $segmentPlan = $nutritionPlan->getSegmentPlanBySegmentId($command->segmentId);
+        
+        if (null === $segmentPlan) {
+            throw new \DomainException(
+                sprintf('Segment plan for segment %s not found in nutrition plan %s', 
+                    $command->segmentId, 
+                    $command->nutritionPlanId
+                )
+            );
+        }
 
         $nutritionItem = new NutritionItem(
-            $this->idGenerator->generate(),
-            $externalFood->reference,
-            $externalFood->name,
-            new Carbs($externalFood->carbs),
-            new Quantity($command->quantity),
-            new Calories($externalFood->calories ?? 0),
+            id: $this->idGenerator->generate(),
+            segmentNutritionPlan: $segmentPlan,
+            foodItemId: $externalFood->reference,
+            quantity: new Quantity($command->quantity),
+            carbs: new Carbs($externalFood->carbs),
         );
 
-        $segment->addNutritionItem($nutritionItem);
+        $segmentPlan->addItem($nutritionItem);
 
-        $this->segmentsCatalog->add($segment);
+        $this->nutritionPlansCatalog->add($nutritionPlan);
     }
 }

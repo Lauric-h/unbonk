@@ -76,12 +76,12 @@
                         </thead>
                         <tbody>
                             {% for item in segmentPlan.items %}
-                                {% set totalCarbs = totalCarbs + (item.carbs * item.quantity) %}
+                                {% set totalCarbs = totalCarbs + (item.carbs.value * item.quantity.value) %}
                                 <tr>
                                     <td>{{ item.foodItemId }}</td>
-                                    <td>{{ item.quantity }}</td>
-                                    <td>{{ item.carbs }} g</td>
-                                    <td><strong>{{ item.carbs * item.quantity }} g</strong></td>
+                                    <td>{{ item.quantity.value }}</td>
+                                    <td>{{ item.carbs.value }} g</td>
+                                    <td><strong>{{ item.carbs.value * item.quantity.value }} g</strong></td>
                                 </tr>
                             {% endfor %}
                             <tr style="font-weight: bold;">

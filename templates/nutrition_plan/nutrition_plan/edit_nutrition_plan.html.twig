@@ -105,13 +105,13 @@
                     </thead>
                     <tbody>
                         {% for item in segmentPlan.items %}
-                            {% set totalCarbs = totalCarbs + (item.carbs * item.quantity) %}
+                            {% set totalCarbs = totalCarbs + (item.carbs.value * item.quantity.value) %}
                             <tr>
                                 <td>{{ item.foodItemId }}</td>
-                                <td>{{ item.quantity }}</td>
-                                <td>{{ item.carbs * item.quantity }} g</td>
+                                <td>{{ item.quantity.value }}</td>
+                                <td>{{ item.carbs.value * item.quantity.value }} g</td>
                                 <td>
-                                    <form method="post" action="{{ url('app.nutrition_plan.delete_item', {nutritionPlanId: nutritionPlan.id, segmentPlanId: segmentPlan.id, itemId: item.id}) }}" style="display: inline;" onsubmit="return confirm('Supprimer cet aliment ?');">
+                                    <form method="post" action="{{ url('app.nutrition_plan.delete_item', {nutritionPlanId: nutritionPlan.id, segmentId: segmentPlan.segment.id, itemId: item.id}) }}" style="display: inline;" onsubmit="return confirm('Supprimer cet aliment ?');">
                                         <button type="submit">Supprimer</button>
                                     </form>
                                 </td>
@@ -129,7 +129,7 @@
             {% endif %}
             
             <h4>Ajouter un aliment</h4>
-            <form method="post" action="{{ url('app.nutrition_plan.add_item', {nutritionPlanId: nutritionPlan.id, segmentPlanId: segmentPlan.id}) }}">
+            <form method="post" action="{{ url('app.nutrition_plan.add_item', {nutritionPlanId: nutritionPlan.id, segmentId: segmentPlan.segment.id}) }}">
                 <label>
                     Aliment :
                     <select name="foodId" required>
