@@ -27,8 +27,8 @@ final class ImportRaceCommandHandlerTest extends TestCase
         $command = new ImportRaceCommand($nutritionPlanId, $externalEventId, $externalRaceId, $runnerId);
 
         $externalRace = new ExternalRaceDTO(
-            id: 'external-race-id',
-            eventId: 'external-event-id',
+            id: $externalRaceId,
+            eventId: $externalEventId,
             eventName: 'Test Event',
             name: 'Test Event',
             distance: 50000,
@@ -52,9 +52,12 @@ final class ImportRaceCommandHandlerTest extends TestCase
             ->method('add')
             ->with($this->callback(function ($nutritionPlan) use ($nutritionPlanId, $runnerId): bool {
                 $this->assertSame($nutritionPlanId, $nutritionPlan->id);
-                $this->assertSame($runnerId, $nutritionPlan->race->runnerId);
-                $this->assertSame('Test Event', $nutritionPlan->race->eventName);
-                $this->assertSame('Test Event', $nutritionPlan->race->name);
+                $this->assertSame($runnerId, $nutritionPlan->runnerRace->runnerId);
+                $this->assertSame('external-race-id', $nutritionPlan->runnerRace->sourceRaceId);
+                $this->assertSame('external-event-id', $nutritionPlan->runnerRace->eventId);
+                $this->assertSame('Test Event', $nutritionPlan->runnerRace->eventName);
+                $this->assertSame('Test Event', $nutritionPlan->runnerRace->name);
+                $this->assertCount(1, $nutritionPlan->getSegmentPlans());
 
                 return true;
             }));

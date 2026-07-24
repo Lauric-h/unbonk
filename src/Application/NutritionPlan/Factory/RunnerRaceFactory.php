@@ -31,6 +31,7 @@ final readonly class RunnerRaceFactory
             descent: $externalRace->descent,
             startDateTime: $externalRace->startDateTime,
             location: $externalRace->startLocation,
+            segmentIdGenerator: fn (): string => $this->idGenerator->generate(),
         );
 
         // Add start checkpoint

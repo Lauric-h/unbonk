@@ -35,6 +35,7 @@ class RunnerRace
         public int $descent,
         public \DateTimeImmutable $startDateTime,
         public string $location,
+        private \Closure $segmentIdGenerator,
         ?Collection $checkpoints = null,
         ?Collection $segments = null,
     ) {
@@ -198,6 +199,7 @@ class RunnerRace
 
             $rebuiltSegments->add(
                 Segment::create(
+                    id: ($this->segmentIdGenerator)(),
                     runnerRace: $this,
                     fromCheckpoint: $from,
                     toCheckpoint: $to,

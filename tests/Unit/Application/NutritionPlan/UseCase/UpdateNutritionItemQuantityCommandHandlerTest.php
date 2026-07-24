@@ -7,10 +7,10 @@ namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 use App\Application\NutritionPlan\UseCase\UpdateNutritionItemQuantity\UpdateNutritionItemQuantityCommand;
 use App\Application\NutritionPlan\UseCase\UpdateNutritionItemQuantity\UpdateNutritionItemQuantityCommandHandler;
 use App\Domain\NutritionPlan\Entity\NutritionItem;
+use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Domain\NutritionPlan\Entity\Quantity;
-use App\Domain\NutritionPlan\Entity\Segment;
-use App\Domain\NutritionPlan\Repository\SegmentsCatalog;
-use App\Domain\Shared\Entity\Calories;
+use App\Domain\NutritionPlan\Entity\SegmentNutritionPlan;
+use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
 use App\Domain\Shared\Entity\Carbs;
 use App\Tests\Unit\Fixture\NutritionPlanTestFixture;
 use PHPUnit\Framework\TestCase;
@@ -19,85 +19,90 @@ final class UpdateNutritionItemQuantityCommandHandlerTest extends TestCase
 {
     public function testUpdateNutritionItemQuantityCommand(): void
     {
-        $repository = $this->createMock(SegmentsCatalog::class);
+        $repository = $this->createMock(NutritionPlansCatalog::class);
         $handler = new UpdateNutritionItemQuantityCommandHandler($repository);
 
         $nutritionPlan = new NutritionPlanTestFixture()->build();
-        $segment = $nutritionPlan->getSegmentByPosition(1);
-        $this->assertInstanceOf(Segment::class, $segment);
+        $segmentPlan = $this->getFirstSegmentPlan($nutritionPlan);
 
         $nutritionItem = new NutritionItem(
             id: 'abcde',
-            externalReference: 'externalReference',
-            name: 'name',
-            carbs: new Carbs(40),
+            segmentNutritionPlan: $segmentPlan,
+            foodItemId: 'externalReference',
             quantity: new Quantity(2),
-            calories: new Calories(0),
+            carbs: new Carbs(40),
         );
-        $segment->addNutritionItem($nutritionItem);
+        $segmentPlan->addItem($nutritionItem);
 
         $repository->expects($this->once())
             ->method('get')
-            ->with($segment->id)
-            ->willReturn($segment);
+            ->with($nutritionPlan->id)
+            ->willReturn($nutritionPlan);
 
         $repository->expects($this->once())
-            ->method('add');
+            ->method('add')
+            ->with($nutritionPlan);
 
-        ($handler)(new UpdateNutritionItemQuantityCommand($segment->id, 'abcde', 4));
+        ($handler)(new UpdateNutritionItemQuantityCommand($nutritionPlan->id, $segmentPlan->segment->id, 'abcde', 4));
 
         $this->assertSame(4, $nutritionItem->quantity->value);
     }
 
     public function testUpdateNutritionItemQuantityCommandWithZeroQuantityRemovesItem(): void
     {
-        $repository = $this->createMock(SegmentsCatalog::class);
+        $repository = $this->createMock(NutritionPlansCatalog::class);
         $handler = new UpdateNutritionItemQuantityCommandHandler($repository);
 
         $nutritionPlan = new NutritionPlanTestFixture()->build();
-        $segment = $nutritionPlan->getSegmentByPosition(1);
-        $this->assertInstanceOf(Segment::class, $segment);
+        $segmentPlan = $this->getFirstSegmentPlan($nutritionPlan);
 
         $nutritionItem = new NutritionItem(
             id: 'abcde',
-            externalReference: 'externalReference',
-            name: 'name',
-            carbs: new Carbs(40),
+            segmentNutritionPlan: $segmentPlan,
+            foodItemId: 'externalReference',
             quantity: new Quantity(2),
-            calories: new Calories(0),
+            carbs: new Carbs(40),
         );
-        $segment->addNutritionItem($nutritionItem);
+        $segmentPlan->addItem($nutritionItem);
 
         $repository->expects($this->once())
             ->method('get')
-            ->with($segment->id)
-            ->willReturn($segment);
+            ->with($nutritionPlan->id)
+            ->willReturn($nutritionPlan);
 
         $repository->expects($this->once())
-            ->method('add');
+            ->method('add')
+            ->with($nutritionPlan);
 
-        ($handler)(new UpdateNutritionItemQuantityCommand($segment->id, 'abcde', 0));
+        ($handler)(new UpdateNutritionItemQuantityCommand($nutritionPlan->id, $segmentPlan->segment->id, 'abcde', 0));
 
-        $this->assertNotInstanceOf(NutritionItem::class, $segment->getNutritionItemById('abcde'));
+        $this->assertNull($segmentPlan->getItemById('abcde'));
     }
 
-    public function testUpdateNutritionItemQuantityCommandWithUnknowItemThrowsException(): void
+    public function testUpdateNutritionItemQuantityCommandWithUnknownItemThrowsException(): void
     {
-        $repository = $this->createMock(SegmentsCatalog::class);
+        $repository = $this->createMock(NutritionPlansCatalog::class);
         $handler = new UpdateNutritionItemQuantityCommandHandler($repository);
 
         $nutritionPlan = new NutritionPlanTestFixture()->build();
-        $segment = $nutritionPlan->getSegmentByPosition(1);
-        $this->assertInstanceOf(Segment::class, $segment);
+        $segmentPlan = $this->getFirstSegmentPlan($nutritionPlan);
 
         $repository->expects($this->once())
             ->method('get')
-            ->with($segment->id)
-            ->willReturn($segment);
+            ->with($nutritionPlan->id)
+            ->willReturn($nutritionPlan);
 
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\DomainException::class);
         $this->expectExceptionMessage('Nutrition item with id "abcde" not found');
 
-        ($handler)(new UpdateNutritionItemQuantityCommand($segment->id, 'abcde', 1));
+        ($handler)(new UpdateNutritionItemQuantityCommand($nutritionPlan->id, $segmentPlan->segment->id, 'abcde', 1));
+    }
+
+    private function getFirstSegmentPlan(NutritionPlan $nutritionPlan): SegmentNutritionPlan
+    {
+        $segmentPlan = $nutritionPlan->getSegmentPlans()->first();
+        $this->assertInstanceOf(SegmentNutritionPlan::class, $segmentPlan);
+
+        return $segmentPlan;
     }
 }
