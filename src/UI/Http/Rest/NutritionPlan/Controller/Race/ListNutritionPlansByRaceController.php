@@ -23,8 +23,7 @@ class ListNutritionPlansByRaceController extends AbstractController
     public function __invoke(
         #[MapEntity(id: 'raceId')]
         RunnerRace $race,
-    ): JsonResponse
-    {
+    ): JsonResponse {
         return new JsonResponse(
             $this->queryBus->query(new ListNutritionPlansByRaceQuery($race->id)),
             Response::HTTP_OK,

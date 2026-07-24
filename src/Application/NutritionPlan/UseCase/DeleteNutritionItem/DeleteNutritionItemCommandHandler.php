@@ -15,16 +15,11 @@ final readonly class DeleteNutritionItemCommandHandler implements CommandHandler
     public function __invoke(DeleteNutritionItemCommand $command): void
     {
         $nutritionPlan = $this->nutritionPlansCatalog->get($command->nutritionPlanId);
-        
+
         $segmentPlan = $nutritionPlan->getSegmentPlanBySegmentId($command->segmentId);
-        
+
         if (null === $segmentPlan) {
-            throw new \DomainException(
-                sprintf('Segment plan for segment %s not found in nutrition plan %s', 
-                    $command->segmentId, 
-                    $command->nutritionPlanId
-                )
-            );
+            throw new \DomainException(sprintf('Segment plan for segment %s not found in nutrition plan %s', $command->segmentId, $command->nutritionPlanId));
         }
 
         $segmentPlan->removeItem($command->nutritionItemId);

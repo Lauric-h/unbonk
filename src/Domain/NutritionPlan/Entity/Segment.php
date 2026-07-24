@@ -40,9 +40,9 @@ class Segment
         Checkpoint $toCheckpoint,
         int $position,
     ): void {
-       $this->fromCheckpoint = $fromCheckpoint;
-       $this->toCheckpoint = $toCheckpoint;
-       $this->position = $position;
+        $this->fromCheckpoint = $fromCheckpoint;
+        $this->toCheckpoint = $toCheckpoint;
+        $this->position = $position;
     }
 
     public function getDistance(): Distance

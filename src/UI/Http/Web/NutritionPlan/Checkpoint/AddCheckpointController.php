@@ -27,7 +27,8 @@ final class AddCheckpointController extends AbstractController
 
     public function __invoke(
         Request $request,
-        #[MapEntity(id: 'raceId')] RunnerRace $race,
+        #[MapEntity(id: 'raceId')]
+        RunnerRace $race,
     ): Response {
         $model = new CheckpointModel();
         $form = $this->createForm(CheckpointType::class, $model);

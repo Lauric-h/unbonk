@@ -23,16 +23,11 @@ final readonly class AddNutritionItemCommandHandler implements CommandHandlerInt
     {
         $externalFood = $this->externalFoodPort->getById($command->externalFoodId);
         $nutritionPlan = $this->nutritionPlansCatalog->get($command->nutritionPlanId);
-        
+
         $segmentPlan = $nutritionPlan->getSegmentPlanBySegmentId($command->segmentId);
-        
+
         if (null === $segmentPlan) {
-            throw new \DomainException(
-                sprintf('Segment plan for segment %s not found in nutrition plan %s', 
-                    $command->segmentId, 
-                    $command->nutritionPlanId
-                )
-            );
+            throw new \DomainException(sprintf('Segment plan for segment %s not found in nutrition plan %s', $command->segmentId, $command->nutritionPlanId));
         }
 
         $nutritionItem = new NutritionItem(

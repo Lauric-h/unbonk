@@ -27,7 +27,8 @@ final class UpdateNutritionPlanController extends AbstractController
 
     public function __invoke(
         Request $request,
-        #[MapEntity(id: 'nutritionPlanId')] NutritionPlan $nutritionPlan,
+        #[MapEntity(id: 'nutritionPlanId')]
+        NutritionPlan $nutritionPlan,
     ): Response {
         $model = new UpdateNutritionPlanModel(
             name: $nutritionPlan->name,

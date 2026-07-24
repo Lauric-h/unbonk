@@ -9,7 +9,7 @@
         <field name="name" type="string" nullable="true"/>
         <field name="createdAt" type="datetime_immutable" column="created_at"/>
 
-        <many-to-one field="runnerRace" target-entity="App\Domain\NutritionPlan\Entity\RunnerRace" inversed-by="nutritionPlans">
+        <many-to-one field="runnerRace" target-entity="App\Domain\NutritionPlan\Entity\RunnerRace">
             <join-column name="runner_race_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
         </many-to-one>
 

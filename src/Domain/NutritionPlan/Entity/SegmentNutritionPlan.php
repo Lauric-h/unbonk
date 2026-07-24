@@ -28,6 +28,7 @@ class SegmentNutritionPlan
         foreach ($this->items as $item) {
             $total += $item->carbs->value;
         }
+
         return $total;
     }
 

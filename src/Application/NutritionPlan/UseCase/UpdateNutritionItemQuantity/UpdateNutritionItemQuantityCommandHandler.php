@@ -16,24 +16,17 @@ final readonly class UpdateNutritionItemQuantityCommandHandler implements Comman
     public function __invoke(UpdateNutritionItemQuantityCommand $command): void
     {
         $nutritionPlan = $this->nutritionPlansCatalog->get($command->nutritionPlanId);
-        
+
         $segmentPlan = $nutritionPlan->getSegmentPlanBySegmentId($command->segmentId);
-        
+
         if (null === $segmentPlan) {
-            throw new \DomainException(
-                sprintf('Segment plan for segment %s not found in nutrition plan %s', 
-                    $command->segmentId, 
-                    $command->nutritionPlanId
-                )
-            );
+            throw new \DomainException(sprintf('Segment plan for segment %s not found in nutrition plan %s', $command->segmentId, $command->nutritionPlanId));
         }
-        
+
         $nutritionItem = $segmentPlan->getItemById($command->nutritionItemId);
 
         if (null === $nutritionItem) {
-            throw new \DomainException(
-                sprintf('Nutrition item with id "%s" not found', $command->nutritionItemId)
-            );
+            throw new \DomainException(sprintf('Nutrition item with id "%s" not found', $command->nutritionItemId));
         }
 
         if (0 === $command->quantity) {

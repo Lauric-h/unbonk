@@ -6,7 +6,6 @@ namespace App\UI\Http\Rest\NutritionPlan\Controller\Checkpoint;
 
 use App\Application\NutritionPlan\UseCase\RemoveCheckpoint\RemoveCheckpointCommand;
 use App\Domain\NutritionPlan\Entity\Checkpoint;
-use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Domain\NutritionPlan\Entity\RunnerRace;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -28,7 +27,8 @@ final class RemoveCheckpointController extends AbstractController
     public function __invoke(
         #[MapEntity(id: 'raceId')]
         RunnerRace $race,
-        #[MapEntity(id: 'checkpointId')] Checkpoint $checkpoint,
+        #[MapEntity(id: 'checkpointId')]
+        Checkpoint $checkpoint,
     ): JsonResponse {
         $this->commandBus->dispatch(new RemoveCheckpointCommand($race->id, $checkpoint->id));
 

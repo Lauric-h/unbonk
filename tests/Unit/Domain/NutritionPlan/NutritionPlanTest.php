@@ -35,7 +35,7 @@ final class NutritionPlanTest extends TestCase
             $segmentPlan,
             $nutritionPlan->getSegmentPlanBySegmentId($segmentPlan->segment->id)
         );
-        $this->assertNull($nutritionPlan->getSegmentPlanBySegmentId('missing-segment-id'));
+        $this->assertNotInstanceOf(SegmentNutritionPlan::class, $nutritionPlan->getSegmentPlanBySegmentId('missing-segment-id'));
     }
 
     public function testRemoveSegmentPlanRemovesPlan(): void
@@ -46,7 +46,7 @@ final class NutritionPlanTest extends TestCase
         $nutritionPlan->removeSegmentPlan($segmentPlan->segment->id);
 
         $this->assertCount(1, $nutritionPlan->getSegmentPlans());
-        $this->assertNull($nutritionPlan->getSegmentPlanBySegmentId($segmentPlan->segment->id));
+        $this->assertNotInstanceOf(SegmentNutritionPlan::class, $nutritionPlan->getSegmentPlanBySegmentId($segmentPlan->segment->id));
     }
 
     public function testRemoveSegmentPlanThrowsExceptionForMissingPlan(): void

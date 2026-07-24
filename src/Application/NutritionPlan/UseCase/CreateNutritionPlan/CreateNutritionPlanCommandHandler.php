@@ -14,8 +14,8 @@ final readonly class CreateNutritionPlanCommandHandler implements CommandHandler
 {
     public function __construct(
         private NutritionPlansCatalog $nutritionPlansCatalog,
-        private RunnerRacesCatalog    $racesCatalog,
-        private IdGeneratorInterface  $idGenerator,
+        private RunnerRacesCatalog $racesCatalog,
+        private IdGeneratorInterface $idGenerator,
     ) {
     }
 
@@ -27,7 +27,7 @@ final readonly class CreateNutritionPlanCommandHandler implements CommandHandler
             id: $command->nutritionPlanId,
             runnerRace: $runnerRace,
             name: $command->name,
-            idGenerator: fn() => $this->idGenerator->generate(),
+            idGenerator: fn () => $this->idGenerator->generate(),
         );
 
         $this->nutritionPlansCatalog->add($nutritionPlan);

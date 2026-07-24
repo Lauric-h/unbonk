@@ -76,7 +76,7 @@ final class UpdateNutritionItemQuantityCommandHandlerTest extends TestCase
 
         ($handler)(new UpdateNutritionItemQuantityCommand($nutritionPlan->id, $segmentPlan->segment->id, 'abcde', 0));
 
-        $this->assertNull($segmentPlan->getItemById('abcde'));
+        $this->assertNotInstanceOf(NutritionItem::class, $segmentPlan->getItemById('abcde'));
     }
 
     public function testUpdateNutritionItemQuantityCommandWithUnknownItemThrowsException(): void

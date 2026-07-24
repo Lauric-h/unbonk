@@ -6,7 +6,6 @@ use App\Domain\NutritionPlan\DTO\ExternalAidStationDTO;
 use App\Domain\NutritionPlan\DTO\ExternalEventDTO;
 use App\Domain\NutritionPlan\DTO\ExternalRaceDTO;
 use App\Domain\NutritionPlan\Port\ExternalRacePort;
-use Symfony\Component\Uid\Uuid;
 
 /**
  * Mock implementation of ExternalRacePort for development/testing.
@@ -14,8 +13,8 @@ use Symfony\Component\Uid\Uuid;
  */
 final class MockExternalRaceAdapter implements ExternalRacePort
 {
-    private const EVENT_ID = '4ac9cf45-3864-4751-aa2c-19503c7877ac';
-    private const RACE_ID = '4ac9cf45-3864-4751-aa2c-19503c7877ac';
+    private const string EVENT_ID = '4ac9cf45-3864-4751-aa2c-19503c7877ac';
+    private const string RACE_ID = '4ac9cf45-3864-4751-aa2c-19503c7877ac';
 
     /**
      * @return ExternalEventDTO[]
@@ -128,7 +127,7 @@ final class MockExternalRaceAdapter implements ExternalRacePort
     public function getRaceDetails(string $eventId, string $raceId): ?ExternalRaceDTO
     {
         $event = $this->getEvent($eventId);
-        
+
         foreach ($event->races as $race) {
             if ($race->id === $raceId) {
                 return $race;

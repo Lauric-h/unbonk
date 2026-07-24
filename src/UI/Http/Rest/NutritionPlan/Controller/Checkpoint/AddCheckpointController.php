@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace App\UI\Http\Rest\NutritionPlan\Controller\Checkpoint;
 
 use App\Application\NutritionPlan\UseCase\AddCheckpoint\AddCheckpointCommand;
-use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Domain\NutritionPlan\Entity\RunnerRace;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\UI\Http\Rest\NutritionPlan\Request\AddCheckpointRequest;
-use PhpCsFixer\Runner\Runner;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;

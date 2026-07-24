@@ -6,7 +6,6 @@ namespace App\UI\Http\Rest\NutritionPlan\Controller\Checkpoint;
 
 use App\Application\NutritionPlan\UseCase\UpdateCheckpoint\UpdateCheckpointCommand;
 use App\Domain\NutritionPlan\Entity\Checkpoint;
-use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Domain\NutritionPlan\Entity\RunnerRace;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\UI\Http\Rest\NutritionPlan\Request\UpdateCheckpointRequest;
@@ -32,7 +31,8 @@ final class UpdateCheckpointController extends AbstractController
     public function __invoke(
         #[MapEntity(id: 'raceId')]
         RunnerRace $race,
-        #[MapEntity(id: 'checkpointId')] Checkpoint $checkpoint,
+        #[MapEntity(id: 'checkpointId')]
+        Checkpoint $checkpoint,
         Request $request
     ): JsonResponse {
         $updateCheckpointRequest = $this->serializer->deserialize($request->getContent(), UpdateCheckpointRequest::class, 'json');

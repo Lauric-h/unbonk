@@ -26,7 +26,8 @@ final class RemoveCheckpointController extends AbstractController
     public function __invoke(
         #[MapEntity(id: 'raceId')]
         RunnerRace $race,
-        #[MapEntity(id: 'checkpointId')] Checkpoint $checkpoint,
+        #[MapEntity(id: 'checkpointId')]
+        Checkpoint $checkpoint,
     ): Response {
         $this->commandBus->dispatch(new RemoveCheckpointCommand(
             runnerRaceId: $race->id,

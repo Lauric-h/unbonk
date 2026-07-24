@@ -10,7 +10,7 @@ final readonly class RunnerRaceReadModel
 {
     /**
      * @param CheckpointReadModel[] $checkpoints
-     * @param SegmentReadModel[] $segments
+     * @param SegmentReadModel[]    $segments
      */
     public function __construct(
         public string $id,

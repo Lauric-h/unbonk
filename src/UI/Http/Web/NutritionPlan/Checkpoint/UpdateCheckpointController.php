@@ -29,11 +29,13 @@ final class UpdateCheckpointController extends AbstractController
     public function __invoke(
         #[MapEntity(id: 'raceId')]
         RunnerRace $race,
-        #[MapEntity(id: 'checkpointId')] Checkpoint $checkpoint,
+        #[MapEntity(id: 'checkpointId')]
+        Checkpoint $checkpoint,
         Request $request
     ): Response {
         if (!$checkpoint->isEditable()) {
             $this->addFlash('error', 'Seuls les checkpoints personnalisés peuvent être modifiés');
+
             return $this->redirectToRoute('app.race.nutrition_plans', ['raceId' => $race->id]);
         }
 

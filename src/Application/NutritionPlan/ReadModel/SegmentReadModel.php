@@ -2,19 +2,18 @@
 
 namespace App\Application\NutritionPlan\ReadModel;
 
-use App\Domain\NutritionPlan\Entity\NutritionItem;
 use App\Domain\NutritionPlan\Entity\Segment;
 
 final class SegmentReadModel
 {
     public function __construct(
-        public string              $id,
-        public int                 $position,
+        public string $id,
+        public int $position,
         public CheckpointReadModel $fromCheckpoint,
         public CheckpointReadModel $toCheckpoint,
-        public int                 $distance,
-        public int                 $ascent,
-        public int                 $descent,
+        public int $distance,
+        public int $ascent,
+        public int $descent,
     ) {
     }
 

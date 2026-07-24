@@ -2,7 +2,6 @@
 
 namespace App\Application\NutritionPlan\ReadModel;
 
-
 use App\Domain\NutritionPlan\Entity\Checkpoint;
 
 final readonly class CheckpointReadModel

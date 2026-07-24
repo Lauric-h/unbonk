@@ -54,8 +54,7 @@ class RunnerRace
 
         usort(
             $checkpoints,
-            static fn (Checkpoint $a, Checkpoint $b) =>
-                $a->distanceFromStart <=> $b->distanceFromStart
+            static fn (Checkpoint $a, Checkpoint $b) => $a->distanceFromStart <=> $b->distanceFromStart
         );
 
         return $checkpoints;
@@ -72,16 +71,14 @@ class RunnerRace
     public function checkpoint(string $checkpointId): ?Checkpoint
     {
         return $this->checkpoints->findFirst(
-            static fn (int $key, Checkpoint $checkpoint) =>
-                $checkpoint->id === $checkpointId
+            static fn (int $key, Checkpoint $checkpoint) => $checkpoint->id === $checkpointId
         );
     }
 
     public function segment(string $segmentId): ?Segment
     {
         return $this->segments->findFirst(
-            static fn (int $key, Segment $segment) =>
-                $segment->id === $segmentId
+            static fn (int $key, Segment $segment) => $segment->id === $segmentId
         );
     }
 
@@ -101,15 +98,11 @@ class RunnerRace
         $checkpoint = $this->checkpoint($checkpointId);
 
         if (null === $checkpoint) {
-            throw new \DomainException(
-                sprintf('Checkpoint "%s" not found.', $checkpointId)
-            );
+            throw new \DomainException(sprintf('Checkpoint "%s" not found.', $checkpointId));
         }
 
         if (!$checkpoint->isCustom()) {
-            throw new \DomainException(
-                'Only custom checkpoints can be removed.'
-            );
+            throw new \DomainException('Only custom checkpoints can be removed.');
         }
 
         $this->checkpoints->removeElement($checkpoint);
@@ -131,9 +124,7 @@ class RunnerRace
         $checkpoint = $this->checkpoint($checkpointId);
 
         if (null === $checkpoint) {
-            throw new \DomainException(
-                sprintf('Checkpoint "%s" not found.', $checkpointId)
-            );
+            throw new \DomainException(sprintf('Checkpoint "%s" not found.', $checkpointId));
         }
 
         $checkpoint->update(
