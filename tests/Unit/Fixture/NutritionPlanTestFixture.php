@@ -1,20 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\Unit\Fixture;
 
+use App\Domain\NutritionPlan\Entity\Checkpoint;
 use App\Domain\NutritionPlan\Entity\CheckpointType;
-use App\Domain\NutritionPlan\Entity\ImportedCheckpoint;
-use App\Domain\NutritionPlan\Entity\ImportedRace;
+use App\Domain\NutritionPlan\Entity\Cutoff;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
-use App\Domain\NutritionPlan\ValueObject\Cutoff;
+use App\Domain\NutritionPlan\Entity\RunnerRace;
 
 final class NutritionPlanTestFixture
 {
     private string $id = 'nutrition-plan-id';
     private string $runnerId = 'runner-id';
     private ?string $name = null;
-    private ?ImportedRace $importedRace = null;
-    private int $segmentIdCounter = 1;
+    private ?RunnerRace $runnerRace = null;
 
     public function withId(string $id): self
     {
@@ -40,204 +41,97 @@ final class NutritionPlanTestFixture
         return $clone;
     }
 
-    public function withImportedRace(ImportedRace $importedRace): self
+    public function withRunnerRace(RunnerRace $runnerRace): self
     {
         $clone = clone $this;
-        $clone->importedRace = $importedRace;
+        $clone->runnerRace = $runnerRace;
 
         return $clone;
     }
 
     public function build(): NutritionPlan
     {
-        $importedRace = $this->importedRace ?? self::createDefaultImportedRaceWithRunnerId($this->runnerId);
+        $runnerRace = $this->runnerRace ?? self::createDefaultRunnerRaceWithRunnerId($this->runnerId);
+        $segmentPlanIdCounter = 0;
 
-        // Generate segment IDs based on checkpoint count
-        $checkpointCount = \count($importedRace->getCheckpoints());
-        $segmentIds = [];
-        for ($i = 0; $i < $checkpointCount - 1; ++$i) {
-            $segmentIds[] = 'segment-id-'.$this->segmentIdCounter++;
-        }
-
-        return NutritionPlan::createFromImportedRace(
-            $this->id,
-            $importedRace,
-            $segmentIds,
-            $this->name,
+        return NutritionPlan::createFromRunnerRace(
+            id: $this->id,
+            runnerRace: $runnerRace,
+            name: $this->name,
+            idGenerator: static function () use (&$segmentPlanIdCounter): string {
+                return 'segment-plan-id-'.++$segmentPlanIdCounter;
+            },
         );
     }
 
-    public static function createDefaultImportedRace(): ImportedRace
+    public static function createDefaultRunnerRace(): RunnerRace
     {
-        $importedRace = new ImportedRace(
-            'imported-race-id',
-            'runner-id',
-            'external-race-id',
-            'external-event-id',
-            'Test Event', // eventName
-            'Test Event',
-            50000,
-            2000,
-            1500,
-            new \DateTimeImmutable('2024-06-01 06:00:00'),
-            'Mountain Town',
-        );
-
-        $startCheckpoint = new ImportedCheckpoint(
-            'start-checkpoint-id',
-            'start',
-            'Start',
-            'Mountain Town',
-            0,
-            0,
-            0,
-            null,
-            false,
-            $importedRace,
-            CheckpointType::StartCheckpoint,
-        );
-        $importedRace->addCheckpoint($startCheckpoint);
-
-        $aidStation = new ImportedCheckpoint(
-            'aid-station-id',
-            'aid-1',
-            'Aid Station 1',
-            'Valley',
-            25000,
-            1000,
-            750,
-            new Cutoff(new \DateTimeImmutable('2024-06-01 12:00:00')),
-            true,
-            $importedRace,
-            CheckpointType::AidStation,
-        );
-        $importedRace->addCheckpoint($aidStation);
-
-        $finishCheckpoint = new ImportedCheckpoint(
-            'finish-checkpoint-id',
-            'finish',
-            'Finish',
-            'Mountain Town',
-            50000,
-            2000,
-            1500,
-            null,
-            false,
-            $importedRace,
-            CheckpointType::FinishCheckpoint,
-        );
-        $importedRace->addCheckpoint($finishCheckpoint);
-
-        return $importedRace;
+        return self::createDefaultRunnerRaceWithRunnerId('runner-id');
     }
 
-    public static function createDefaultImportedRaceWithRunnerId(string $runnerId): ImportedRace
+    public static function createDefaultRunnerRaceWithRunnerId(string $runnerId): RunnerRace
     {
-        $importedRace = new ImportedRace(
-            'imported-race-id',
-            $runnerId,
-            'external-race-id',
-            'external-event-id',
-            'Test Event', // eventName
-            'Test Event',
-            50000,
-            2000,
-            1500,
-            new \DateTimeImmutable('2024-06-01 06:00:00'),
-            'Mountain Town',
+        $segmentIdCounter = 0;
+
+        $runnerRace = new RunnerRace(
+            id: 'runner-race-id',
+            runnerId: $runnerId,
+            sourceRaceId: 'external-race-id',
+            eventId: 'external-event-id',
+            eventName: 'Test Event',
+            name: 'Test Event',
+            distance: 50000,
+            ascent: 2000,
+            descent: 1500,
+            startDateTime: new \DateTimeImmutable('2024-06-01 06:00:00'),
+            location: 'Mountain Town',
+            segmentIdGenerator: static function () use (&$segmentIdCounter): string {
+                return 'segment-id-'.++$segmentIdCounter;
+            },
         );
 
-        $startCheckpoint = new ImportedCheckpoint(
-            'start-checkpoint-id',
-            'start',
-            'Start',
-            'Mountain Town',
-            0,
-            0,
-            0,
-            null,
-            false,
-            $importedRace,
-            CheckpointType::StartCheckpoint,
-        );
-        $importedRace->addCheckpoint($startCheckpoint);
+        $runnerRace->addCheckpoint(new Checkpoint(
+            id: 'start-checkpoint-id',
+            runnerRace: $runnerRace,
+            externalCheckpointId: 'start',
+            name: 'Start',
+            location: 'Mountain Town',
+            distanceFromStart: 0,
+            ascentFromStart: 0,
+            descentFromStart: 0,
+            cutoff: null,
+            assistanceAllowed: false,
+            type: CheckpointType::StartCheckpoint,
+        ));
 
-        $aidStation = new ImportedCheckpoint(
-            'aid-station-id',
-            'aid-1',
-            'Aid Station 1',
-            'Valley',
-            25000,
-            1000,
-            750,
-            new Cutoff(new \DateTimeImmutable('2024-06-01 12:00:00')),
-            true,
-            $importedRace,
-            CheckpointType::AidStation,
-        );
-        $importedRace->addCheckpoint($aidStation);
+        $runnerRace->addCheckpoint(new Checkpoint(
+            id: 'aid-station-id',
+            runnerRace: $runnerRace,
+            externalCheckpointId: 'aid-1',
+            name: 'Aid Station 1',
+            location: 'Valley',
+            distanceFromStart: 25000,
+            ascentFromStart: 1000,
+            descentFromStart: 750,
+            cutoff: new Cutoff(new \DateTimeImmutable('2024-06-01 12:00:00')),
+            assistanceAllowed: true,
+            type: CheckpointType::AidStation,
+        ));
 
-        $finishCheckpoint = new ImportedCheckpoint(
-            'finish-checkpoint-id',
-            'finish',
-            'Finish',
-            'Mountain Town',
-            50000,
-            2000,
-            1500,
-            null,
-            false,
-            $importedRace,
-            CheckpointType::FinishCheckpoint,
-        );
-        $importedRace->addCheckpoint($finishCheckpoint);
+        $runnerRace->addCheckpoint(new Checkpoint(
+            id: 'finish-checkpoint-id',
+            runnerRace: $runnerRace,
+            externalCheckpointId: 'finish',
+            name: 'Finish',
+            location: 'Mountain Town',
+            distanceFromStart: 50000,
+            ascentFromStart: 2000,
+            descentFromStart: 1500,
+            cutoff: null,
+            assistanceAllowed: false,
+            type: CheckpointType::FinishCheckpoint,
+        ));
 
-        return $importedRace;
-    }
-
-    public static function createImportedRaceWithCheckpoints(int $checkpointCount): ImportedRace
-    {
-        $distance = 100000;
-        $importedRace = new ImportedRace(
-            'imported-race-id',
-            'runner-id',
-            'external-race-id',
-            'external-event-id',
-            'Test Event', // eventName
-            'Test Event',
-            $distance,
-            5000,
-            4000,
-            new \DateTimeImmutable('2024-06-01 06:00:00'),
-            'Start City',
-        );
-
-        for ($i = 0; $i < $checkpointCount; ++$i) {
-            $distanceFromStart = (int) (($distance / ($checkpointCount - 1)) * $i);
-
-            $type = CheckpointType::AidStation;
-            if (0 === $i) {
-                $type = CheckpointType::StartCheckpoint;
-            } elseif ($i === $checkpointCount - 1) {
-                $type = CheckpointType::FinishCheckpoint;
-            }
-
-            $checkpoint = new ImportedCheckpoint(
-                'checkpoint-'.$i,
-                0 === $i ? 'start' : ($i === $checkpointCount - 1 ? 'finish' : 'cp-'.$i),
-                0 === $i ? 'Start' : ($i === $checkpointCount - 1 ? 'Finish' : 'Checkpoint '.$i),
-                'Location '.$i,
-                $distanceFromStart,
-                (int) ($distanceFromStart * 0.05),
-                (int) ($distanceFromStart * 0.04),
-                null,
-                $i > 0 && $i < $checkpointCount - 1,
-                $importedRace,
-                $type,
-            );
-            $importedRace->addCheckpoint($checkpoint);
-        }
-
-        return $importedRace;
+        return $runnerRace;
     }
 }

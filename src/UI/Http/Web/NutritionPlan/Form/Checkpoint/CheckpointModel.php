@@ -10,18 +10,18 @@ final class CheckpointModel
 {
     public function __construct(
         #[Assert\NotBlank]
-        public ?string $name = null,
+        public string $name = '',
         #[Assert\NotBlank]
-        public ?string $location = null,
-        #[Assert\NotBlank]
-        #[Assert\PositiveOrZero]
-        public ?int $distanceFromStart = null,
+        public string $location = '',
         #[Assert\NotBlank]
         #[Assert\PositiveOrZero]
-        public ?int $ascentFromStart = null,
+        public int $distanceFromStart = 0,
         #[Assert\NotBlank]
         #[Assert\PositiveOrZero]
-        public ?int $descentFromStart = null,
+        public int $ascentFromStart = 0,
+        #[Assert\NotBlank]
+        #[Assert\PositiveOrZero]
+        public int $descentFromStart = 0,
         public ?\DateTimeImmutable $cutoffTime = null,
         public bool $assistanceAllowed = false,
     ) {

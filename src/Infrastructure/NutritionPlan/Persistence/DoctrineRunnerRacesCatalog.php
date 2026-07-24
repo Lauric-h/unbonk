@@ -2,33 +2,33 @@
 
 namespace App\Infrastructure\NutritionPlan\Persistence;
 
-use App\Domain\NutritionPlan\Entity\ImportedRace;
+use App\Domain\NutritionPlan\Entity\RunnerRace;
 use App\Domain\NutritionPlan\Exception\RaceNotFoundException;
-use App\Domain\NutritionPlan\Repository\RacesCatalog;
+use App\Domain\NutritionPlan\Repository\RunnerRacesCatalog;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<ImportedRace>
+ * @extends ServiceEntityRepository<RunnerRace>
  */
-class DoctrineRacesCatalog extends ServiceEntityRepository implements RacesCatalog
+class DoctrineRunnerRacesCatalog extends ServiceEntityRepository implements RunnerRacesCatalog
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, ImportedRace::class);
+        parent::__construct($registry, RunnerRace::class);
     }
 
-    public function add(ImportedRace $race): void
+    public function add(RunnerRace $race): void
     {
         $this->getEntityManager()->persist($race);
     }
 
-    public function remove(ImportedRace $race): void
+    public function remove(RunnerRace $race): void
     {
         $this->getEntityManager()->remove($race);
     }
 
-    public function get(string $id): ImportedRace
+    public function get(string $id): RunnerRace
     {
         $race = $this->find($id);
 
@@ -40,7 +40,7 @@ class DoctrineRacesCatalog extends ServiceEntityRepository implements RacesCatal
     }
 
     /**
-     * @return ImportedRace[]
+     * @return RunnerRace[]
      */
     public function findByRunnerId(string $runnerId): array
     {

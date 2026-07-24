@@ -27,7 +27,8 @@ final class UpdateNutritionPlanController extends AbstractController
 
     public function __invoke(
         Request $request,
-        #[MapEntity(id: 'nutritionPlanId')] NutritionPlan $nutritionPlan,
+        #[MapEntity(id: 'nutritionPlanId')]
+        NutritionPlan $nutritionPlan,
     ): Response {
         $model = new UpdateNutritionPlanModel(
             name: $nutritionPlan->name,
@@ -39,7 +40,7 @@ final class UpdateNutritionPlanController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->commandBus->dispatch(new UpdateNutritionPlanCommand(
                 nutritionPlanId: $nutritionPlan->id,
-                name: $model->name,
+                name: $model->name,  // @phpstan-ignore-line assert in Request
             ));
 
             $this->addFlash('success', 'Plan renommé avec succès !');

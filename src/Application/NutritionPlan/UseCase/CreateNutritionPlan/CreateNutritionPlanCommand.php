@@ -15,7 +15,7 @@ final readonly class CreateNutritionPlanCommand implements CommandInterface
         public string $nutritionPlanId,
         #[Assert\NotBlank]
         #[Assert\Uuid]
-        public string $importedRaceId,
+        public string $RunnerRaceId,
         #[Assert\NotBlank]
         #[Assert\Uuid]
         public string $runnerId,

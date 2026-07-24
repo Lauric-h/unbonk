@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 
-use App\Application\NutritionPlan\Factory\ImportedRaceFactory;
+use App\Application\NutritionPlan\Factory\RunnerRaceFactory;
 use App\Application\NutritionPlan\UseCase\ImportRace\ImportRaceCommand;
 use App\Application\NutritionPlan\UseCase\ImportRace\ImportRaceCommandHandler;
 use App\Application\Shared\IdGeneratorInterface;
 use App\Domain\NutritionPlan\DTO\ExternalRaceDTO;
 use App\Domain\NutritionPlan\Port\ExternalRacePort;
 use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
-use App\Domain\NutritionPlan\Repository\RacesCatalog;
+use App\Domain\NutritionPlan\Repository\RunnerRacesCatalog;
 use App\Tests\Unit\MockIdGenerator;
 use PHPUnit\Framework\TestCase;
 
@@ -27,8 +27,8 @@ final class ImportRaceCommandHandlerTest extends TestCase
         $command = new ImportRaceCommand($nutritionPlanId, $externalEventId, $externalRaceId, $runnerId);
 
         $externalRace = new ExternalRaceDTO(
-            id: 'external-race-id',
-            eventId: 'external-event-id',
+            id: $externalRaceId,
+            eventId: $externalEventId,
             eventName: 'Test Event',
             name: 'Test Event',
             distance: 50000,
@@ -52,9 +52,12 @@ final class ImportRaceCommandHandlerTest extends TestCase
             ->method('add')
             ->with($this->callback(function ($nutritionPlan) use ($nutritionPlanId, $runnerId): bool {
                 $this->assertSame($nutritionPlanId, $nutritionPlan->id);
-                $this->assertSame($runnerId, $nutritionPlan->race->runnerId);
-                $this->assertSame('Test Event', $nutritionPlan->race->eventName);
-                $this->assertSame('Test Event', $nutritionPlan->race->name);
+                $this->assertSame($runnerId, $nutritionPlan->runnerRace->runnerId);
+                $this->assertSame('external-race-id', $nutritionPlan->runnerRace->sourceRaceId);
+                $this->assertSame('external-event-id', $nutritionPlan->runnerRace->eventId);
+                $this->assertSame('Test Event', $nutritionPlan->runnerRace->eventName);
+                $this->assertSame('Test Event', $nutritionPlan->runnerRace->name);
+                $this->assertCount(1, $nutritionPlan->getSegmentPlans());
 
                 return true;
             }));
@@ -68,9 +71,9 @@ final class ImportRaceCommandHandlerTest extends TestCase
             }
         };
 
-        $importedRaceFactory = new ImportedRaceFactory($idGenerator);
+        $importedRaceFactory = new RunnerRaceFactory($idGenerator);
 
-        $racesCatalog = $this->createMock(RacesCatalog::class);
+        $racesCatalog = $this->createMock(RunnerRacesCatalog::class);
         $racesCatalog->expects($this->once())
             ->method('add');
 
@@ -102,9 +105,9 @@ final class ImportRaceCommandHandlerTest extends TestCase
         $repository->expects($this->never())->method('add');
 
         $idGenerator = new MockIdGenerator('id');
-        $importedRaceFactory = new ImportedRaceFactory($idGenerator);
+        $importedRaceFactory = new RunnerRaceFactory($idGenerator);
 
-        $racesCatalog = $this->createMock(RacesCatalog::class);
+        $racesCatalog = $this->createMock(RunnerRacesCatalog::class);
         $racesCatalog->expects($this->never())->method('add');
 
         $handler = new ImportRaceCommandHandler(

@@ -7,7 +7,7 @@ namespace App\UI\Http\Rest\NutritionPlan\Controller\NutritionPlan;
 use App\Application\NutritionPlan\UseCase\CreateNutritionPlan\CreateNutritionPlanCommand;
 use App\Application\Shared\IdGeneratorInterface;
 use App\Application\Shared\Security\CurrentUserIdProvider;
-use App\Domain\NutritionPlan\Entity\ImportedRace;
+use App\Domain\NutritionPlan\Entity\RunnerRace;
 use App\Infrastructure\Shared\Bus\CommandBus;
 use App\UI\Http\Rest\NutritionPlan\Request\CreateNutritionPlanRequest;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
@@ -35,7 +35,7 @@ final class CreateNutritionPlanController extends AbstractController
 
     public function __invoke(
         #[MapEntity(id: 'raceId')]
-        ImportedRace $race,
+        RunnerRace $race,
         Request $request,
     ): JsonResponse {
         $createRequest = $this->serializer->deserialize(
@@ -48,7 +48,7 @@ final class CreateNutritionPlanController extends AbstractController
 
         $this->commandBus->dispatch(new CreateNutritionPlanCommand(
             nutritionPlanId: $nutritionPlanId,
-            importedRaceId: $race->id,
+            RunnerRaceId: $race->id,
             runnerId: $this->currentUserIdProvider->getCurrentUserId(),
             name: $createRequest->name,
         ));

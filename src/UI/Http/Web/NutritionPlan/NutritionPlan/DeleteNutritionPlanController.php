@@ -26,7 +26,7 @@ final class DeleteNutritionPlanController extends AbstractController
         #[MapEntity(id: 'nutritionPlanId')]
         NutritionPlan $nutritionPlan,
     ): Response {
-        $raceId = $nutritionPlan->race->id;
+        $raceId = $nutritionPlan->runnerRace->id;
 
         $this->commandBus->dispatch(new DeleteNutritionPlanCommand(
             nutritionPlanId: $nutritionPlan->id,

@@ -10,7 +10,6 @@ use App\Infrastructure\Shared\Bus\QueryBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/nutrition-plans', name: 'app.nutrition_plan.list', methods: ['GET'])]
 final class ListNutritionPlansController extends AbstractController
