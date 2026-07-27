@@ -29,7 +29,7 @@ final class GetCatalogEventController extends AbstractController
             return $this->redirectToRoute('app.catalog.event.list');
         }
 
-        return $this->render('race/event.html.twig', [
+        return $this->render('race/catalog/event.html.twig', [
             'event' => $event,
         ]);
     }

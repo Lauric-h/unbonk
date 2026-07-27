@@ -132,7 +132,7 @@ final class MockRaceCatalogAdapter implements RaceCatalogPort
                 new CatalogAidStationReadModel(
                     id: 'aid-3',
                     name: 'Bois de Boulogne',
-                    location: null, // pas encore de localisation dans le modèle Go (point 5)
+                    location: 'Bois de Boulogne, France',
                     distanceFromStartInMeters: 60_000,
                     ascentFromStart: 600,
                     descentFromStart: 600,

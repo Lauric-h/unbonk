@@ -25,6 +25,6 @@ final class ListCatalogEventsController extends AbstractController
             $events = [];
         }
 
-        return $this->render('race/events.html.twig', ['events' => $events]);
+        return $this->render('race/catalog/events.html.twig', ['events' => $events]);
     }
 }

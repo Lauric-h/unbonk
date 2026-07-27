@@ -29,7 +29,7 @@ final class GetRaceController extends AbstractController
             return $this->redirectToRoute('app.catalog.event.races', ['eventId' => $eventId]);
         }
 
-        return $this->render('race/race.html.twig', [
+        return $this->render('race/catalog/race.html.twig', [
             'race' => $race,
         ]);
     }

@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catalogue de courses{% endblock %}
+
+{% block body %}
+    <ul>
+        {% for event in events %}
+            <li>
+                <a href="{{ url('app.catalog.event.races', {eventId: event.id}) }}">
+                    {{ event.name}}
+                </a>
+            </li>
+            <li>Nb de courses {{ event.races|length }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

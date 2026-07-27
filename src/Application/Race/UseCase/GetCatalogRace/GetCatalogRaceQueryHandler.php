@@ -13,7 +13,7 @@ final readonly class GetCatalogRaceQueryHandler implements QueryHandlerInterface
     {
     }
 
-    public function __invoke(GetCatalogRAceQuery $query): CatalogRaceReadModel
+    public function __invoke(GetCatalogRaceQuery $query): CatalogRaceReadModel
     {
         return $this->raceCatalogPort->getRace($query->eventId, $query->raceId);
     }
