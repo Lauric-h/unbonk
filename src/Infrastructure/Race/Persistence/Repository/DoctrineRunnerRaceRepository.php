@@ -35,4 +35,13 @@ final class DoctrineRunnerRaceRepository extends ServiceEntityRepository impleme
 
         return null !== $result;
     }
+
+    public function findByRunnerId(string $runnerId): array
+    {
+        return $this->createQueryBuilder('r')
+            ->where('r.runnerId = :runnerId')
+            ->setParameter('runnerId', $runnerId)
+            ->getQuery()
+            ->getResult();
+    }
 }

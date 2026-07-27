@@ -23,7 +23,7 @@ final class ListRunnerRacesController extends AbstractController
         UserAdapter $user,
     ): Response {
         return $this->render('race/runner_races.html.twig', [
-            'race' => $this->queryBus->query(new ListRunnerRacesQuery($user->getUser()->id)),
+            'races' => $this->queryBus->query(new ListRunnerRacesQuery($user->getUser()->id)),
         ]);
     }
 }

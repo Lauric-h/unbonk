@@ -89,57 +89,57 @@ final class RunnerRace
         return $runnerRace;
     }
 
-    public function id(): string
+    public function getId(): string
     {
         return $this->id;
     }
 
-    public function runnerId(): string
+    public function getRunnerId(): string
     {
         return $this->runnerId;
     }
 
-    public function sourceRaceId(): string
+    public function getSourceRaceId(): string
     {
         return $this->sourceRaceId;
     }
 
-    public function eventId(): string
+    public function getEventId(): string
     {
         return $this->eventId;
     }
 
-    public function eventName(): string
+    public function getEventName(): string
     {
         return $this->eventName;
     }
 
-    public function name(): string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function distance(): int
+    public function getDistance(): int
     {
         return $this->distance;
     }
 
-    public function ascent(): int
+    public function getAscent(): int
     {
         return $this->ascent;
     }
 
-    public function descent(): int
+    public function getDescent(): int
     {
         return $this->descent;
     }
 
-    public function startDateTime(): \DateTimeImmutable
+    public function getStartDateTime(): \DateTimeImmutable
     {
         return $this->startDateTime;
     }
 
-    public function location(): string
+    public function getLocation(): string
     {
         return $this->location;
     }

@@ -4,4 +4,9 @@
 
 {% block body %}
 
+    <ul>
+        {% for race in races %}
+            <li>{{ race.name }} - {{ race.distance / 1000}} km</li>
+        {% endfor %}
+    </ul>
 {% endblock %}
