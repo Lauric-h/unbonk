@@ -4,7 +4,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                    https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <entity name="App\Domain\Race\Entity\RunnerRace" table="runner_races">
+    <entity name="App\Domain\Race\Entity\RunnerRace" table="runner_races" repository-class="App\Infrastructure\Race\Persistence\Repository\DoctrineRunnerRaceRepository">
 
         <id name="id" type="string" length="36">
             <generator strategy="NONE"/>
