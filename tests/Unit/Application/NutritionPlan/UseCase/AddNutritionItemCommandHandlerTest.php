@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 
+use App\Application\NutritionPlan\Port\ExternalFoodPort;
 use App\Application\NutritionPlan\UseCase\AddNutritionItem\AddNutritionItemCommand;
 use App\Application\NutritionPlan\UseCase\AddNutritionItem\AddNutritionItemCommandHandler;
 use App\Domain\NutritionPlan\DTO\ExternalNutritionItemDTO;
 use App\Domain\NutritionPlan\Entity\Segment;
-use App\Domain\NutritionPlan\Port\ExternalFoodPort;
 use App\Domain\NutritionPlan\Repository\SegmentsCatalog;
 use App\Tests\Unit\Fixture\NutritionPlanTestFixture;
 use App\Tests\Unit\MockIdGenerator;

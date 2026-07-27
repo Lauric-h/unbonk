@@ -7,16 +7,16 @@ namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 use App\Application\NutritionPlan\ReadModel\External\ExternalEventReadModel;
 use App\Application\NutritionPlan\UseCase\ListAllEvents\ListAllEventsQuery;
 use App\Application\NutritionPlan\UseCase\ListAllEvents\ListAllEventsQueryHandler;
+use App\Application\Race\Port\RaceCatalogPort;
 use App\Domain\NutritionPlan\DTO\ExternalEventDTO;
 use App\Domain\NutritionPlan\DTO\ExternalRaceDTO;
-use App\Domain\NutritionPlan\Port\ExternalRacePort;
 use PHPUnit\Framework\TestCase;
 
 final class ListAllEventsQueryHandlerTest extends TestCase
 {
     public function testListAllEventsReturnsReadModels(): void
     {
-        $racePort = $this->createMock(ExternalRacePort::class);
+        $racePort = $this->createMock(RaceCatalogPort::class);
         $handler = new ListAllEventsQueryHandler($racePort);
 
         $eventDTOs = $this->createEventDTOs();
@@ -40,7 +40,7 @@ final class ListAllEventsQueryHandlerTest extends TestCase
 
     public function testListAllEventsReturnsEmptyArrayWhenNoEvents(): void
     {
-        $racePort = $this->createMock(ExternalRacePort::class);
+        $racePort = $this->createMock(RaceCatalogPort::class);
         $handler = new ListAllEventsQueryHandler($racePort);
 
         $racePort->expects($this->once())

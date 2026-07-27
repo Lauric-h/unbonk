@@ -7,16 +7,16 @@ namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 use App\Application\NutritionPlan\ReadModel\External\ExternalEventReadModel;
 use App\Application\NutritionPlan\UseCase\GetEvent\GetEventQuery;
 use App\Application\NutritionPlan\UseCase\GetEvent\GetEventQueryHandler;
+use App\Application\Race\Port\RaceCatalogPort;
 use App\Domain\NutritionPlan\DTO\ExternalEventDTO;
 use App\Domain\NutritionPlan\DTO\ExternalRaceDTO;
-use App\Domain\NutritionPlan\Port\ExternalRacePort;
 use PHPUnit\Framework\TestCase;
 
 final class GetEventQueryHandlerTest extends TestCase
 {
     public function testGetEventReturnsReadModel(): void
     {
-        $racePort = $this->createMock(ExternalRacePort::class);
+        $racePort = $this->createMock(RaceCatalogPort::class);
         $handler = new GetEventQueryHandler($racePort);
 
         $eventDTO = $this->createEventDTO();

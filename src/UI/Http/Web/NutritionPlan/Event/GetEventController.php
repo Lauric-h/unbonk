@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\UI\Http\Web\NutritionPlan\Event;
 
-use App\Domain\NutritionPlan\Port\ExternalRacePort;
+use App\Application\Race\Port\RaceCatalogPort;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class GetEventController extends AbstractController
 {
     public function __construct(
-        private readonly ExternalRacePort $externalRacePort,
+        private readonly RaceCatalogPort $externalRacePort,
     ) {
     }
 

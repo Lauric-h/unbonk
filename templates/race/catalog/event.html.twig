@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Catalogue de courses{% endblock %}
+
+{% block body %}
+    <ul>
+        {% for race in event.races %}
+            <li>
+                <a href="{{ url('app.cataloge.event.race', {eventId: event.id, raceId: race.id}) }}">
+                    {{ race.name}}
+                </a>
+            </li>
+            <li>KM {{ race.distanceInMeters / 1000 }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

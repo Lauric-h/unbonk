@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Race{% endblock %}
+
+{% block body %}
+    <div>
+        <p>{{ race.name }}</p>
+        <p>{{ race.distanceInMeters / 100 }}km</p>
+        <p>{{ race.ascent }}m de dénivelé</p>
+    </div>
+{% endblock %}
