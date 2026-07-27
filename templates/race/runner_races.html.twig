@@ -6,7 +6,7 @@
 
     <ul>
         {% for race in races %}
-            <li>{{ race.name }} - {{ race.distance / 1000}} km</li>
+            <li><a href="{{ url('app.runner_races.show', {id: race.id}) }}">{{ race.name }} - {{ race.distance / 1000}} km</a></li>
         {% endfor %}
     </ul>
 {% endblock %}

@@ -2,11 +2,10 @@
 
 namespace App\Application\Race\UseCase\ListRunnerRaces;
 
-use App\Application\Race\ReadModel\RunnerRaceReadModel;
+use App\Application\Race\UseCase\ListRunnerRaces\ReadModel\RunnerRaceSummaryReadModel;
 use App\Domain\Race\Entity\RunnerRace;
 use App\Domain\Race\Repository\RunnerRaceRepositoryInterface;
 use App\Domain\Shared\Bus\QueryHandlerInterface;
-use App\UI\Http\Rest\NutritionPlan\Controller\Race\DeleteUserRaceController;
 
 final readonly class ListRunnerRacesQueryHandler implements QueryHandlerInterface
 {
@@ -15,14 +14,14 @@ final readonly class ListRunnerRacesQueryHandler implements QueryHandlerInterfac
     }
 
     /**
-     * @return RunnerRaceReadModel[]
+     * @return RunnerRaceSummaryReadModel[]
      */
     public function __invoke(ListRunnerRacesQuery $query): array
     {
         $races = $this->raceRepository->findByRunnerId($query->runnerId);
 
         return array_map(
-            static fn (RunnerRace $runnerRace) => new RunnerRaceReadModel(
+            static fn (RunnerRace $runnerRace) => new RunnerRaceSummaryReadModel(
                id: $runnerRace->getId(),
                name: $runnerRace->getName(),
                eventName: $runnerRace->getEventName(),

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Application\Race\ReadModel;
+namespace App\Application\Race\UseCase\ListRunnerRaces\ReadModel;
 
-final readonly class RunnerRaceReadModel
+final readonly class RunnerRaceSummaryReadModel
 {
     public function __construct(
         public string $id,
@@ -12,5 +12,6 @@ final readonly class RunnerRaceReadModel
         public int $distance,
         public int $ascent,
         public int $descent,
-    ) {}
+    ) {
+    }
 }

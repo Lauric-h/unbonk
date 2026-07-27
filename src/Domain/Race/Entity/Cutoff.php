@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Race\Entity;
 
-final readonly class Cutoff
+readonly class Cutoff
 {
     public function __construct(
         public int $offsetInMinutes,
