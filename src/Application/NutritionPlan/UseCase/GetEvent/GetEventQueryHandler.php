@@ -2,8 +2,8 @@
 
 namespace App\Application\NutritionPlan\UseCase\GetEvent;
 
-use App\Application\NutritionPlan\Port\RaceCatalogPort;
 use App\Application\NutritionPlan\ReadModel\External\ExternalEventReadModel;
+use App\Application\Race\Port\RaceCatalogPort;
 use App\Domain\Shared\Bus\QueryHandlerInterface;
 
 final readonly class GetEventQueryHandler implements QueryHandlerInterface

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\NutritionPlan\ReadModel\Catalog;
+namespace App\Application\Race\ReadModel;
 
 final readonly class CatalogAidStationReadModel
 {

@@ -2,8 +2,8 @@
 
 namespace App\Application\NutritionPlan\UseCase\ListAllEvents;
 
-use App\Application\NutritionPlan\Port\RaceCatalogPort;
 use App\Application\NutritionPlan\ReadModel\External\ExternalEventReadModel;
+use App\Application\Race\Port\RaceCatalogPort;
 use App\Domain\NutritionPlan\DTO\ExternalEventDTO;
 use App\Domain\Shared\Bus\QueryHandlerInterface;
 

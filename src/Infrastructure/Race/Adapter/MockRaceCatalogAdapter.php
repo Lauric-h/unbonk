@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Infrastructure\NutritionPlan\Adapter;
+namespace App\Infrastructure\Race\Adapter;
 
-use App\Application\NutritionPlan\Exception\CatalogEventNotFoundException;
-use App\Application\NutritionPlan\Exception\CatalogRaceNotFoundException;
-use App\Application\NutritionPlan\Port\RaceCatalogPort;
-use App\Application\NutritionPlan\ReadModel\Catalog\CatalogAidStationReadModel;
-use App\Application\NutritionPlan\ReadModel\Catalog\CatalogEventReadModel;
-use App\Application\NutritionPlan\ReadModel\Catalog\CatalogRaceReadModel;
+use App\Application\Race\Exception\CatalogEventNotFoundException;
+use App\Application\Race\Exception\CatalogRaceNotFoundException;
+use App\Application\Race\Port\RaceCatalogPort;
+use App\Application\Race\ReadModel\CatalogAidStationReadModel;
+use App\Application\Race\ReadModel\CatalogEventReadModel;
+use App\Application\Race\ReadModel\CatalogRaceReadModel;
 
 /**
  * Mock implementation of RaceCatalogPort for development/testing.
- * TODO: Replace with real implementation (e.g., LiveTrail API adapter).
+ * TODO: Replace with real implementation
  */
 
 final class MockRaceCatalogAdapter implements RaceCatalogPort

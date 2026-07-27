@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Application\NutritionPlan\Port;
+namespace App\Application\Race\Port;
 
-use App\Application\NutritionPlan\Exception\CatalogEventNotFoundException;
-use App\Application\NutritionPlan\Exception\CatalogRaceNotFoundException;
-use App\Application\NutritionPlan\ReadModel\Catalog\CatalogEventReadModel;
-use App\Application\NutritionPlan\ReadModel\Catalog\CatalogRaceReadModel;
+use App\Application\Race\Exception\CatalogEventNotFoundException;
+use App\Application\Race\Exception\CatalogRaceNotFoundException;
+use App\Application\Race\ReadModel\CatalogEventReadModel;
+use App\Application\Race\ReadModel\CatalogRaceReadModel;
 
 interface RaceCatalogPort
 {

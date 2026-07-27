@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 
 use App\Application\NutritionPlan\Factory\ImportedRaceFactory;
-use App\Application\NutritionPlan\Port\RaceCatalogPort;
 use App\Application\NutritionPlan\UseCase\ImportRace\ImportRaceCommand;
 use App\Application\NutritionPlan\UseCase\ImportRace\ImportRaceCommandHandler;
+use App\Application\Race\Port\RaceCatalogPort;
 use App\Application\Shared\IdGeneratorInterface;
 use App\Domain\NutritionPlan\DTO\ExternalRaceDTO;
 use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;

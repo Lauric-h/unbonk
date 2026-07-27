@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 
-use App\Application\NutritionPlan\Port\RaceCatalogPort;
 use App\Application\NutritionPlan\ReadModel\External\ExternalEventReadModel;
 use App\Application\NutritionPlan\UseCase\GetEvent\GetEventQuery;
 use App\Application\NutritionPlan\UseCase\GetEvent\GetEventQueryHandler;
+use App\Application\Race\Port\RaceCatalogPort;
 use App\Domain\NutritionPlan\DTO\ExternalEventDTO;
 use App\Domain\NutritionPlan\DTO\ExternalRaceDTO;
 use PHPUnit\Framework\TestCase;

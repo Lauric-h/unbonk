@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\NutritionPlan\Exception;
+namespace App\Application\Race\Exception;
 
 final class CatalogEventNotFoundException extends \RuntimeException
 {

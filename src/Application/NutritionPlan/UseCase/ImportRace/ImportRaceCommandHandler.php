@@ -3,7 +3,7 @@
 namespace App\Application\NutritionPlan\UseCase\ImportRace;
 
 use App\Application\NutritionPlan\Factory\ImportedRaceFactory;
-use App\Application\NutritionPlan\Port\RaceCatalogPort;
+use App\Application\Race\Port\RaceCatalogPort;
 use App\Application\Shared\IdGeneratorInterface;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
