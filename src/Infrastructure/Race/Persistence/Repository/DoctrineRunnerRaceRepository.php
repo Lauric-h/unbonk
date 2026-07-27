@@ -22,7 +22,7 @@ final class DoctrineRunnerRaceRepository extends ServiceEntityRepository impleme
 
     public function existsForRunner(string $runnerId, string $sourceRaceId): bool
     {
-        $result = $this->em->createQueryBuilder()
+        $result = $this->getEntityManager()->createQueryBuilder()
             ->select('1')
             ->from(RunnerRace::class, 'rr')
             ->where('rr.runnerId = :runnerId')

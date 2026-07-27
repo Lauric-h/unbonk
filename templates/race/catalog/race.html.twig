@@ -4,8 +4,11 @@
 
 {% block body %}
     <div>
-        <p>{{ race.name }}</p>
-        <p>{{ race.distanceInMeters / 100 }}km</p>
-        <p>{{ race.ascent }}m de dénivelé</p>
+        <form action="{{ url('app.catalog.event.race.import', {eventId: race.eventId, raceId: race.id}) }}" method="post">
+            <p>{{ race.name }}</p>
+            <p>{{ race.distanceInMeters / 100 }}km</p>
+            <p>{{ race.ascent }}m de dénivelé</p>
+            <button>Importer</button>
+        </form>
     </div>
 {% endblock %}

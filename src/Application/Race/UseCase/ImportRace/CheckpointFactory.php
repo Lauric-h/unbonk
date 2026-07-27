@@ -7,6 +7,7 @@ use App\Application\Race\ReadModel\CatalogRaceReadModel;
 use App\Application\Shared\IdGeneratorInterface;
 use App\Domain\Race\Entity\Checkpoint;
 use App\Domain\Race\Entity\CheckpointType;
+use App\Domain\Race\Entity\Cutoff;
 
 final readonly class CheckpointFactory
 {
@@ -49,12 +50,12 @@ final readonly class CheckpointFactory
     {
         return new Checkpoint(
             id: $this->idGenerator->generate(),
-            name: 'Départ',
+            name: 'Arrivée',
             location: $catalogRaceReadModel->finishLocation,
             distanceFromStart: $catalogRaceReadModel->distanceInMeters,
             ascentFromStart: $catalogRaceReadModel->ascent,
             descentFromStart: $catalogRaceReadModel->descent,
-            cutoff: $catalogRaceReadModel->maxDurationInMinutes,
+            cutoff: new Cutoff($catalogRaceReadModel->maxDurationInMinutes),
             assistanceAllowed: true,
             type: CheckpointType::Finish,
         );
@@ -69,7 +70,7 @@ final readonly class CheckpointFactory
             distanceFromStart: $catalogAidStationReadModel->distanceFromStartInMeters,
             ascentFromStart: $catalogAidStationReadModel->ascentFromStart,
             descentFromStart: $catalogAidStationReadModel->descentFromStart,
-            cutoff: $catalogAidStationReadModel->cutoffOffsetInMinutes,
+            cutoff: new Cutoff($catalogAidStationReadModel->cutoffOffsetInMinutes),
             assistanceAllowed: $catalogAidStationReadModel->assistanceAllowed,
             type: CheckpointType::Intermediate,
         );

@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/catalog/event/{eventId}/races/{raceId}', name: 'app.cataloge.event.race', methods: ['GET'])]
+#[Route('/catalog/event/{eventId}/races/{raceId}', name: 'app.catalog.event.race', methods: ['GET'])]
 final class GetRaceController extends AbstractController
 {
     public function __construct(private readonly QueryBus $queryBus)
@@ -25,7 +25,7 @@ final class GetRaceController extends AbstractController
             $this->addFlash('error', 'Le catalogue de courses est momentanément indisponible.');
         }
 
-        if ($race === null) {
+        if (null === $race) {
             return $this->redirectToRoute('app.catalog.event.races', ['eventId' => $eventId]);
         }
 
