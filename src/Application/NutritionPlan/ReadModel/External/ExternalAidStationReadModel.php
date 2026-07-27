@@ -4,6 +4,7 @@ namespace App\Application\NutritionPlan\ReadModel\External;
 
 use App\Domain\NutritionPlan\DTO\ExternalAidStationDTO;
 
+// @TODO REMOVE
 final readonly class ExternalAidStationReadModel
 {
     public function __construct(

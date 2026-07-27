@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 
 use App\Application\NutritionPlan\Factory\ImportedRaceFactory;
+use App\Application\NutritionPlan\Port\RaceCatalogPort;
 use App\Application\NutritionPlan\UseCase\ImportRace\ImportRaceCommand;
 use App\Application\NutritionPlan\UseCase\ImportRace\ImportRaceCommandHandler;
 use App\Application\Shared\IdGeneratorInterface;
 use App\Domain\NutritionPlan\DTO\ExternalRaceDTO;
-use App\Domain\NutritionPlan\Port\ExternalRacePort;
 use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
 use App\Domain\NutritionPlan\Repository\RacesCatalog;
 use App\Tests\Unit\MockIdGenerator;
@@ -41,7 +41,7 @@ final class ImportRaceCommandHandlerTest extends TestCase
             aidStations: [],
         );
 
-        $externalRacePort = $this->createMock(ExternalRacePort::class);
+        $externalRacePort = $this->createMock(RaceCatalogPort::class);
         $externalRacePort->expects($this->once())
             ->method('getRaceDetails')
             ->with($externalEventId, $externalRaceId)
@@ -92,7 +92,7 @@ final class ImportRaceCommandHandlerTest extends TestCase
 
         $command = new ImportRaceCommand('id', $externalEventId, $externalRaceId, 'runner-id');
 
-        $externalRacePort = $this->createMock(ExternalRacePort::class);
+        $externalRacePort = $this->createMock(RaceCatalogPort::class);
         $externalRacePort->expects($this->once())
             ->method('getRaceDetails')
             ->with($externalEventId, $externalRaceId)

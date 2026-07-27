@@ -4,6 +4,7 @@ namespace App\Application\NutritionPlan\ReadModel\External;
 
 use App\Domain\NutritionPlan\DTO\ExternalRaceDTO;
 
+// @TODO REMOVE
 final readonly class ExternalRaceListItemReadModel
 {
     public function __construct(
