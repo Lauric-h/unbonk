@@ -3,11 +3,12 @@
 namespace App\Domain\Race\Repository;
 
 use App\Domain\Race\Entity\RunnerRace;
+use App\Domain\Race\Entity\Segment;
 use App\Domain\Shared\Repository\ObjectRepositoryInterface;
 
 /**
- * @extends ObjectRepositoryInterface<RunnerRace>
+ * @extends ObjectRepositoryInterface<Segment>
  */
-interface RunnerRaceRepositoryInterface extends ObjectRepositoryInterface
+interface SegmentRepositoryInterface extends ObjectRepositoryInterface
 {
 }

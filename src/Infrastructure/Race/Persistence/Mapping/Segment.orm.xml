@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                   https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Domain\Race\Entity\Segment" table="segments" repository-class="App\Infrastructure\Race\Persistence\Repository\DoctrineSegmentRepository">
+
+        <id name="id" type="string" length="36">
+            <generator strategy="NONE"/>
+        </id>
+
+        <field name="position" type="integer"/>
+
+        <many-to-one field="runnerRace" target-entity="App\Domain\Race\Entity\RunnerRace">
+            <join-column name="runner_race_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
+        </many-to-one>
+
+        <!--
+            Pas de cascade ici : from/toCheckpoint référencent des Checkpoint déjà
+            persistés par la relation ci-dessus (RunnerRace -> Checkpoint), on ne veut
+            surtout pas que Doctrine tente de les recréer/dupliquer depuis Segment.
+        -->
+        <many-to-one field="fromCheckpoint" target-entity="App\Domain\Race\Entity\Checkpoint">
+            <join-column name="from_checkpoint_id" referenced-column-name="id" nullable="false"/>
+        </many-to-one>
+
+        <many-to-one field="toCheckpoint" target-entity="App\Domain\Race\Entity\Checkpoint">
+            <join-column name="to_checkpoint_id" referenced-column-name="id" nullable="false"/>
+        </many-to-one>
+
+        <unique-constraints>
+            <unique-constraint columns="runner_race_id,position" name="uniq_segment_race_position"/>
+        </unique-constraints>
+    </entity>
+</doctrine-mapping>
