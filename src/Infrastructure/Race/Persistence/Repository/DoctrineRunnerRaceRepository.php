@@ -19,4 +19,20 @@ final class DoctrineRunnerRaceRepository extends ServiceEntityRepository impleme
     {
         parent::__construct($registry, RunnerRace::class);
     }
+
+    public function existsForRunner(string $runnerId, string $sourceRaceId): bool
+    {
+        $result = $this->em->createQueryBuilder()
+            ->select('1')
+            ->from(RunnerRace::class, 'rr')
+            ->where('rr.runnerId = :runnerId')
+            ->andWhere('rr.sourceRaceId = :sourceRaceId')
+            ->setParameter('runnerId', $runnerId)
+            ->setParameter('sourceRaceId', $sourceRaceId)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return null !== $result;
+    }
 }
