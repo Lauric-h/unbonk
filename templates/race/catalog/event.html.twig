@@ -6,7 +6,7 @@
     <ul>
         {% for race in event.races %}
             <li>
-                <a href="{{ url('app.cataloge.event.race', {eventId: event.id, raceId: race.id}) }}">
+                <a href="{{ url('app.catalog.event.race', {eventId: event.id, raceId: race.id}) }}">
                     {{ race.name}}
                 </a>
             </li>
