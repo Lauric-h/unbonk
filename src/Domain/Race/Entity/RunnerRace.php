@@ -4,22 +4,21 @@ declare(strict_types=1);
 
 namespace App\Domain\Race\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+
 final class RunnerRace
 {
     /**
-     * @var Checkpoint[]
+     * @var Collection<int, Checkpoint>
      */
-    private array $checkpoints;
+    private Collection $checkpoints;
 
     /**
-     * @var Segment[]
+     * @var Collection<int, Segment>
      */
-    private array $segments;
+    private Collection $segments;
 
-    /**
-     * @param Checkpoint[] $checkpoints Doivent être fournis triés ou non — l'ordre est
-     *                                  recalculé en interne sur distanceFromStart
-     */
     private function __construct(
         private readonly string $id,
         private readonly string $runnerId,
@@ -32,19 +31,14 @@ final class RunnerRace
         private readonly int $descent,
         private readonly \DateTimeImmutable $startDateTime,
         private readonly string $location,
-        array $checkpoints,
-        private readonly \Closure $segmentIdGenerator,
     ) {
-        if (count($checkpoints) < 2) {
-            throw new \DomainException('A race must have at least a start and finish checkpoint.');
-        }
-
-        $this->checkpoints = $this->orderByDistance($checkpoints);
-        $this->segments = $this->buildSegments();
+        $this->checkpoints = new ArrayCollection();
+        $this->segments = new ArrayCollection();
     }
 
     /**
-     * @param Checkpoint[] $checkpoints
+     * @param Checkpoint[]           $checkpoints     Doivent être fournis triés ou non — l'ordre
+     *                                                 est recalculé en interne sur distanceFromStart
      * @param callable(int): string $segmentIdGenerator Fournit un ID par segment (position)
      */
     public static function import(
@@ -62,7 +56,11 @@ final class RunnerRace
         array $checkpoints,
         callable $segmentIdGenerator,
     ): self {
-        return new self(
+        if (count($checkpoints) < 2) {
+            throw new \DomainException('A race must have at least a start and finish checkpoint.');
+        }
+
+        $runnerRace = new self(
             id: $id,
             runnerId: $runnerId,
             sourceRaceId: $sourceRaceId,
@@ -74,9 +72,21 @@ final class RunnerRace
             descent: $descent,
             startDateTime: $startDateTime,
             location: $location,
-            checkpoints: $checkpoints,
-            segmentIdGenerator: \Closure::fromCallable($segmentIdGenerator),
         );
+
+        $orderedCheckpoints = self::orderByDistance($checkpoints);
+
+        foreach ($orderedCheckpoints as $checkpoint) {
+            $checkpoint->attachToRace($runnerRace);
+            $runnerRace->checkpoints->add($checkpoint);
+        }
+
+        foreach (self::buildSegments($orderedCheckpoints, $segmentIdGenerator) as $segment) {
+            $segment->attachToRace($runnerRace);
+            $runnerRace->segments->add($segment);
+        }
+
+        return $runnerRace;
     }
 
     public function id(): string
@@ -139,7 +149,7 @@ final class RunnerRace
      */
     public function checkpoints(): array
     {
-        return $this->checkpoints;
+        return $this->checkpoints->toArray();
     }
 
     /**
@@ -147,54 +157,63 @@ final class RunnerRace
      */
     public function segments(): array
     {
-        return $this->segments;
+        return $this->segments->toArray();
     }
 
     public function checkpoint(string $checkpointId): Checkpoint
     {
-        foreach ($this->checkpoints as $checkpoint) {
-            if ($checkpoint->id() === $checkpointId) {
-                return $checkpoint;
-            }
+        $checkpoint = $this->checkpoints->findFirst(
+            static fn (int $key, Checkpoint $checkpoint): bool => $checkpoint->id() === $checkpointId
+        );
+
+        if (null === $checkpoint) {
+            throw new \DomainException(sprintf('Checkpoint "%s" not found.', $checkpointId));
         }
 
-        throw new \DomainException(sprintf('Checkpoint "%s" not found.', $checkpointId));
+        return $checkpoint;
     }
 
     public function segment(string $segmentId): Segment
     {
-        foreach ($this->segments as $segment) {
-            if ($segment->id() === $segmentId) {
-                return $segment;
-            }
+        $segment = $this->segments->findFirst(
+            static fn (int $key, Segment $segment): bool => $segment->id() === $segmentId
+        );
+
+        if (null === $segment) {
+            throw new \DomainException(sprintf('Segment "%s" not found.', $segmentId));
         }
 
-        throw new \DomainException(sprintf('Segment "%s" not found.', $segmentId));
+        return $segment;
     }
 
     /**
      * @param Checkpoint[] $checkpoints
      * @return Checkpoint[]
      */
-    private function orderByDistance(array $checkpoints): array
+    private static function orderByDistance(array $checkpoints): array
     {
-        usort($checkpoints, static fn (Checkpoint $a, Checkpoint $b) => $a->distanceFromStart() <=> $b->distanceFromStart());
+        usort(
+            $checkpoints,
+            static fn (Checkpoint $a, Checkpoint $b): int => $a->distanceFromStart() <=> $b->distanceFromStart()
+        );
 
         return array_values($checkpoints);
     }
 
     /**
+     * @param Checkpoint[]           $orderedCheckpoints
+     * @param callable(int): string $segmentIdGenerator
      * @return Segment[]
      */
-    private function buildSegments(): array
+    private static function buildSegments(array $orderedCheckpoints, callable $segmentIdGenerator): array
     {
         $segments = [];
 
-        for ($i = 0; $i < count($this->checkpoints) - 1; ++$i) {
+        for ($i = 0; $i < count($orderedCheckpoints) - 1; ++$i) {
             $segments[] = new Segment(
-                id: ($this->segmentIdGenerator)($i + 1),
-                fromCheckpoint: $this->checkpoints[$i],
-                toCheckpoint: $this->checkpoints[$i + 1],
+                id: $segmentIdGenerator($i + 1),
+                fromCheckpoint: $orderedCheckpoints[$i],
+                toCheckpoint: $orderedCheckpoints[$i + 1],
                 position: $i + 1,
             );
         }

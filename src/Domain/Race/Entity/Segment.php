@@ -6,13 +6,20 @@ namespace App\Domain\Race\Entity;
 
 final class Segment
 {
+    private RunnerRace $runnerRace;
+
     public function __construct(
         private readonly string $id,
-        private readonly RunnerRace $runnerRace,
         private readonly Checkpoint $fromCheckpoint,
         private readonly Checkpoint $toCheckpoint,
         private readonly int $position,
     ) {
+    }
+
+    /** @internal */
+    public function attachToRace(RunnerRace $runnerRace): void
+    {
+        $this->runnerRace = $runnerRace;
     }
 
     public function id(): string

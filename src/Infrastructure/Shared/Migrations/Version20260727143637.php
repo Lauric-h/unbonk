@@ -30,7 +30,6 @@ final class Version20260727143637 extends AbstractMigration
         $this->addSql('ALTER TABLE segments ADD CONSTRAINT FK_26CEDB2928080DEE FOREIGN KEY (runner_race_id) REFERENCES runner_races (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE segments ADD CONSTRAINT FK_26CEDB29BB2860C8 FOREIGN KEY (from_checkpoint_id) REFERENCES checkpoints (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
         $this->addSql('ALTER TABLE segments ADD CONSTRAINT FK_26CEDB297DCD6A03 FOREIGN KEY (to_checkpoint_id) REFERENCES checkpoints (id) NOT DEFERRABLE INITIALLY IMMEDIATE');
-        $this->addSql('ALTER TABLE imported_race ADD event_name VARCHAR(255) NOT NULL');
     }
 
     public function down(Schema $schema): void
@@ -43,6 +42,5 @@ final class Version20260727143637 extends AbstractMigration
         $this->addSql('DROP TABLE checkpoints');
         $this->addSql('DROP TABLE runner_races');
         $this->addSql('DROP TABLE segments');
-        $this->addSql('ALTER TABLE imported_race DROP event_name');
     }
 }

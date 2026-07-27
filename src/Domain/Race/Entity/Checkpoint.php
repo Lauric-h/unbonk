@@ -6,9 +6,10 @@ namespace App\Domain\Race\Entity;
 
 final class Checkpoint
 {
+    private RunnerRace $runnerRace;
+
     public function __construct(
         private readonly string $id,
-        private readonly RunnerRace $runnerRace,
         private readonly string $name,
         private readonly string $location,
         private readonly int $distanceFromStart,
@@ -18,6 +19,16 @@ final class Checkpoint
         private readonly bool $assistanceAllowed,
         private readonly CheckpointType $type,
     ) {
+    }
+
+    /**
+     * @internal Appelé uniquement par RunnerRace::import(). Ne pas utiliser ailleurs :
+     *           ce n'est pas une opération métier, juste la liaison bidirectionnelle
+     *           nécessaire à Doctrine.
+     */
+    public function attachToRace(RunnerRace $runnerRace): void
+    {
+        $this->runnerRace = $runnerRace;
     }
 
     public function id(): string
