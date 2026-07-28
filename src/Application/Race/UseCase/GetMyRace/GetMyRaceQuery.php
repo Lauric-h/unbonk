@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Application\Race\UseCase\GetRunnerRace;
+namespace App\Application\Race\UseCase\GetMyRace;
 
 use App\Domain\Shared\Bus\QueryInterface;
 
-final readonly class GetRunnerRaceQuery implements QueryInterface
+final readonly class GetMyRaceQuery implements QueryInterface
 {
 
     public function __construct(

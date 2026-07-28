@@ -3,7 +3,7 @@
 namespace App\Application\Race\Port;
 
 
-use App\Application\Race\UseCase\GetRunnerRace\ReadModel\RunnerRaceDetailReadModel;
+use App\Application\Race\UseCase\GetMyRace\ReadModel\RunnerRaceDetailReadModel;
 
 interface RunnerRaceReaderInterface
 {

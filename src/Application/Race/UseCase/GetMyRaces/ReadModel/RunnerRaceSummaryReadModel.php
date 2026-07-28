@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Race\UseCase\ListRunnerRaces\ReadModel;
+namespace App\Application\Race\UseCase\GetMyRaces\ReadModel;
 
 final readonly class RunnerRaceSummaryReadModel
 {

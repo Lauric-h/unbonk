@@ -48,6 +48,6 @@ final class ImportCatalogRaceController extends AbstractController
 
         $this->addFlash('success', 'La course a été importée avec succès.');
 
-        return $this->redirectToRoute('app.runner_races.list');
+        return $this->redirectToRoute('app.my_races.list');
     }
 }

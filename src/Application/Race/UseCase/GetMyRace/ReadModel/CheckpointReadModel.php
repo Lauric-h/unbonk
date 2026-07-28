@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Application\Race\UseCase\GetRunnerRace\ReadModel;
+namespace App\Application\Race\UseCase\GetMyRace\ReadModel;
 final readonly class CheckpointReadModel
 {
     public function __construct(
