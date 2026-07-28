@@ -4,14 +4,14 @@ namespace App\Infrastructure\NutritionPlan\Persistence;
 
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Domain\NutritionPlan\Exception\NutritionPlanNotFoundException;
-use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
+use App\Domain\NutritionPlan\Repository\NutritionPlanRepository;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<NutritionPlan>
  */
-class DoctrineNutritionPlansCatalog extends ServiceEntityRepository implements NutritionPlansCatalog
+class DoctrineNutritionPlanRepository extends ServiceEntityRepository implements NutritionPlanRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

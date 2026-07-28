@@ -6,7 +6,7 @@ namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 
 use App\Application\NutritionPlan\UseCase\UpdateNutritionPlan\UpdateNutritionPlanCommand;
 use App\Application\NutritionPlan\UseCase\UpdateNutritionPlan\UpdateNutritionPlanCommandHandler;
-use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
+use App\Domain\NutritionPlan\Repository\NutritionPlanRepository;
 use App\Tests\Unit\Fixture\NutritionPlanTestFixture;
 use PHPUnit\Framework\TestCase;
 
@@ -22,7 +22,7 @@ final class UpdateNutritionPlanCommandHandlerTest extends TestCase
             ->withId($nutritionPlanId)
             ->build();
 
-        $nutritionPlansCatalog = $this->createMock(NutritionPlansCatalog::class);
+        $nutritionPlansCatalog = $this->createMock(NutritionPlanRepository::class);
         $nutritionPlansCatalog->expects($this->once())
             ->method('get')
             ->with($nutritionPlanId)
@@ -52,7 +52,7 @@ final class UpdateNutritionPlanCommandHandlerTest extends TestCase
             ->withName('Original Name')
             ->build();
 
-        $nutritionPlansCatalog = $this->createMock(NutritionPlansCatalog::class);
+        $nutritionPlansCatalog = $this->createMock(NutritionPlanRepository::class);
         $nutritionPlansCatalog->expects($this->once())
             ->method('get')
             ->with($nutritionPlanId)

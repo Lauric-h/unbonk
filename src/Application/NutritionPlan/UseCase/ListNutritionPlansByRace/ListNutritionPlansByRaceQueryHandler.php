@@ -6,13 +6,13 @@ namespace App\Application\NutritionPlan\UseCase\ListNutritionPlansByRace;
 
 use App\Application\NutritionPlan\ReadModel\NutritionPlanListItemReadModel;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
-use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
+use App\Domain\NutritionPlan\Repository\NutritionPlanRepository;
 use App\Domain\Shared\Bus\QueryHandlerInterface;
 
 final readonly class ListNutritionPlansByRaceQueryHandler implements QueryHandlerInterface
 {
     public function __construct(
-        private NutritionPlansCatalog $nutritionPlansCatalog,
+        private NutritionPlanRepository $nutritionPlansCatalog,
     ) {
     }
 

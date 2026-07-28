@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace App\Application\NutritionPlan\UseCase\UpdateCheckpoint;
 
 use App\Application\Shared\IdGeneratorInterface;
-use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
+use App\Domain\NutritionPlan\Repository\NutritionPlanRepository;
 use App\Domain\NutritionPlan\ValueObject\Cutoff;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
 
 final readonly class UpdateCheckpointCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
-        private NutritionPlansCatalog $nutritionPlansCatalog,
-        private IdGeneratorInterface $idGenerator,
+        private NutritionPlanRepository $nutritionPlansCatalog,
+        private IdGeneratorInterface    $idGenerator,
     ) {
     }
 

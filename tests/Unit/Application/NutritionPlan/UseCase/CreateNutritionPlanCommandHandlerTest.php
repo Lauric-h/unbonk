@@ -6,7 +6,7 @@ namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 
 use App\Application\NutritionPlan\UseCase\CreateNutritionPlan\CreateNutritionPlanCommand;
 use App\Application\NutritionPlan\UseCase\CreateNutritionPlan\CreateNutritionPlanCommandHandler;
-use App\Domain\NutritionPlan\Repository\NutritionPlansCatalog;
+use App\Domain\NutritionPlan\Repository\NutritionPlanRepository;
 use App\Domain\NutritionPlan\Repository\RacesCatalog;
 use App\Tests\Unit\Fixture\NutritionPlanTestFixture;
 use App\Tests\Unit\MockIdGenerator;
@@ -16,7 +16,7 @@ final class CreateNutritionPlanCommandHandlerTest extends TestCase
 {
     public function testCreateNutritionPlan(): void
     {
-        $nutritionPlansCatalog = $this->createMock(NutritionPlansCatalog::class);
+        $nutritionPlansCatalog = $this->createMock(NutritionPlanRepository::class);
         $racesCatalog = $this->createMock(RacesCatalog::class);
         $idGenerator = new MockIdGenerator('segment-id');
 
@@ -58,7 +58,7 @@ final class CreateNutritionPlanCommandHandlerTest extends TestCase
 
     public function testCreateNutritionPlanWithoutName(): void
     {
-        $nutritionPlansCatalog = $this->createMock(NutritionPlansCatalog::class);
+        $nutritionPlansCatalog = $this->createMock(NutritionPlanRepository::class);
         $racesCatalog = $this->createMock(RacesCatalog::class);
         $idGenerator = new MockIdGenerator('segment-id');
 
