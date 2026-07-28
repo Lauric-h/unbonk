@@ -4,7 +4,7 @@ namespace App\UI\Http\Web\Race;
 
 use App\Application\Race\Exception\RunnerRaceAccessDeniedException;
 use App\Application\Race\Exception\RunnerRaceNotFoundException;
-use App\Application\Race\UseCase\GetRunnerRace\GetRunnerRaceQuery;
+use App\Application\Race\UseCase\GetMyRace\GetMyRaceQuery;
 use App\Infrastructure\Shared\Bus\QueryBus;
 use App\Infrastructure\User\Security\UserAdapter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -12,8 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
-#[Route('/races/{id}', name: 'app.runner_races.show', methods: ['GET'])]
-final class GetRunnerRaceController extends AbstractController
+#[Route('/my-races/{id}', name: 'app.my_races.show', methods: ['GET'])]
+final class GetMyRaceController extends AbstractController
 {
     public function __construct(private QueryBus $queryBus)
     {
@@ -25,7 +25,7 @@ final class GetRunnerRaceController extends AbstractController
     ): Response
     {
         try {
-            $race = $this->queryBus->query(new GetRunnerRaceQuery(
+            $race = $this->queryBus->query(new GetMyRaceQuery(
                 runnerId: $user->getUser()->id,
                 raceId: $id,
             ));
@@ -37,7 +37,7 @@ final class GetRunnerRaceController extends AbstractController
             throw $this->createNotFoundException('Cette course n\'existe pas.');
         }
 
-        return $this->render('race/runner_race.html.twig', [
+        return $this->render('race/my_race_show.html.twig', [
             'race' => $race,
         ]);
     }

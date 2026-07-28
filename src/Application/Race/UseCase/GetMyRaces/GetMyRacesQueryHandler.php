@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Application\Race\UseCase\ListRunnerRaces;
+namespace App\Application\Race\UseCase\GetMyRaces;
 
-use App\Application\Race\UseCase\ListRunnerRaces\ReadModel\RunnerRaceSummaryReadModel;
+use App\Application\Race\UseCase\GetMyRaces\ReadModel\RunnerRaceSummaryReadModel;
 use App\Domain\Race\Entity\RunnerRace;
 use App\Domain\Race\Repository\RunnerRaceRepositoryInterface;
 use App\Domain\Shared\Bus\QueryHandlerInterface;
 
-final readonly class ListRunnerRacesQueryHandler implements QueryHandlerInterface
+final readonly class GetMyRacesQueryHandler implements QueryHandlerInterface
 {
     public function __construct(private RunnerRaceRepositoryInterface $raceRepository)
     {
@@ -16,7 +16,7 @@ final readonly class ListRunnerRacesQueryHandler implements QueryHandlerInterfac
     /**
      * @return RunnerRaceSummaryReadModel[]
      */
-    public function __invoke(ListRunnerRacesQuery $query): array
+    public function __invoke(GetMyRacesQuery $query): array
     {
         $races = $this->raceRepository->findByRunnerId($query->runnerId);
 

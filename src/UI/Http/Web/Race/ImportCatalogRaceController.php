@@ -37,17 +37,17 @@ final class ImportCatalogRaceController extends AbstractController
         } catch (RaceAlreadyImportedException) {
             $this->addFlash('error', 'La course a déjà été importée.');
 
-            return $this->redirectToRoute('app.catalog.event.get', ['eventId' => $eventId]);
+            return $this->redirectToRoute('app.catalog.event.races', ['eventId' => $eventId]);
         } catch (CatalogRaceNotFoundException) {
             throw $this->createNotFoundException('Cette course n\'existe pas ou n\'est plus disponible.');
         } catch (RaceCatalogUnavailableException) {
             $this->addFlash('error', 'Le catalogue de courses est momentanément indisponible.');
 
-            return $this->redirectToRoute('app.catalog.event.get', ['eventId' => $eventId]);
+            return $this->redirectToRoute('app.catalog.event.races', ['eventId' => $eventId]);
         }
 
         $this->addFlash('success', 'La course a été importée avec succès.');
 
-        return $this->redirectToRoute('app.runner_races.list');
+        return $this->redirectToRoute('app.my_races.list');
     }
 }

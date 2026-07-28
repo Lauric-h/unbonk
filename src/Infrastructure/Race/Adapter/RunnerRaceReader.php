@@ -3,9 +3,9 @@
 namespace App\Infrastructure\Race\Adapter;
 
 use App\Application\Race\Port\RunnerRaceReaderInterface;
-use App\Application\Race\UseCase\GetRunnerRace\ReadModel\CheckpointReadModel;
-use App\Application\Race\UseCase\GetRunnerRace\ReadModel\RunnerRaceDetailReadModel;
-use App\Application\Race\UseCase\GetRunnerRace\ReadModel\SegmentReadModel;
+use App\Application\Race\UseCase\GetMyRace\ReadModel\CheckpointReadModel;
+use App\Application\Race\UseCase\GetMyRace\ReadModel\RunnerRaceDetailReadModel;
+use App\Application\Race\UseCase\GetMyRace\ReadModel\SegmentReadModel;
 use App\Domain\Race\Entity\Checkpoint;
 use App\Domain\Race\Entity\RunnerRace;
 use App\Domain\Race\Repository\RunnerRaceRepositoryInterface;
