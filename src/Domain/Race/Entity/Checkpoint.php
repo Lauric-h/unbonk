@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Race\Entity;
 
-final class Checkpoint
+class Checkpoint
 {
     private RunnerRace $runnerRace;
 
@@ -15,7 +15,7 @@ final class Checkpoint
         private readonly int $distanceFromStart,
         private readonly int $ascentFromStart,
         private readonly int $descentFromStart,
-        private readonly ?Cutoff $cutoff,
+        private readonly Cutoff $cutoff,
         private readonly bool $assistanceAllowed,
         private readonly CheckpointType $type,
     ) {
@@ -31,47 +31,47 @@ final class Checkpoint
         $this->runnerRace = $runnerRace;
     }
 
-    public function id(): string
+    public function getId(): string
     {
         return $this->id;
     }
 
-    public function name(): string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function location(): string
+    public function getLocation(): string
     {
         return $this->location;
     }
 
-    public function distanceFromStart(): int
+    public function getDistanceFromStart(): int
     {
         return $this->distanceFromStart;
     }
 
-    public function ascentFromStart(): int
+    public function getAscentFromStart(): int
     {
         return $this->ascentFromStart;
     }
 
-    public function descentFromStart(): int
+    public function getDescentFromStart(): int
     {
         return $this->descentFromStart;
     }
 
-    public function cutoff(): ?Cutoff
+    public function getCutoff(): Cutoff
     {
         return $this->cutoff;
     }
 
-    public function assistanceAllowed(): bool
+    public function isAssistanceAllowed(): bool
     {
         return $this->assistanceAllowed;
     }
 
-    public function type(): CheckpointType
+    public function getType(): CheckpointType
     {
         return $this->type;
     }

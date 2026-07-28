@@ -11,4 +11,9 @@ use App\Domain\Shared\Repository\ObjectRepositoryInterface;
 interface RunnerRaceRepositoryInterface extends ObjectRepositoryInterface
 {
     public function existsForRunner(string $runnerId, string $sourceRaceId): bool;
+
+    /**
+     * @return RunnerRace[]
+     */
+    public function findByRunnerId(string $runnerId): array;
 }

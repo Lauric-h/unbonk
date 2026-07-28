@@ -5,6 +5,6 @@
                    https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
     <embeddable name="App\Domain\Race\Entity\Cutoff">
-        <field name="offsetInMinutes" type="integer" column="cutoff_offset_in_minutes" nullable="true"/>
+        <field name="offsetInMinutes" type="integer" column="cutoff_offset_in_minutes" nullable="false"/>
     </embeddable>
 </doctrine-mapping>

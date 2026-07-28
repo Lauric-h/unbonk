@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Race\Entity;
 
-final class Segment
+class Segment
 {
     private RunnerRace $runnerRace;
 
