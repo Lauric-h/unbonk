@@ -14,7 +14,7 @@ use App\Application\NutritionPlan\UseCase\GetNutritionPlan\GetNutritionPlanQuery
 use App\Domain\NutritionPlan\Entity\NutritionItem;
 use App\Domain\NutritionPlan\Entity\Quantity;
 use App\Domain\NutritionPlan\Entity\Segment;
-use App\Domain\NutritionPlan\Repository\NutritionPlanRepository;
+use App\Domain\NutritionPlan\Repository\NutritionPlanRepositoryInterface;
 use App\Domain\Shared\Entity\Calories;
 use App\Domain\Shared\Entity\Carbs;
 use App\Tests\Unit\Fixture\NutritionPlanTestFixture;
@@ -24,7 +24,7 @@ final class GetNutritionPlanQueryHandlerTest extends TestCase
 {
     public function testGetNutritionPlan(): void
     {
-        $repository = $this->createMock(NutritionPlanRepository::class);
+        $repository = $this->createMock(NutritionPlanRepositoryInterface::class);
         $handler = new GetNutritionPlanQueryHandler($repository);
 
         $nutritionPlan = new NutritionPlanTestFixture()->build();

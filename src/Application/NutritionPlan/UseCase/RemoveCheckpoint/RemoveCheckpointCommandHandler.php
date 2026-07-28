@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Application\NutritionPlan\UseCase\RemoveCheckpoint;
 
 use App\Application\Shared\IdGeneratorInterface;
-use App\Domain\NutritionPlan\Repository\NutritionPlanRepository;
+use App\Domain\NutritionPlan\Repository\NutritionPlanRepositoryInterface;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
 
 final readonly class RemoveCheckpointCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
-        private NutritionPlanRepository $nutritionPlansCatalog,
-        private IdGeneratorInterface    $idGenerator,
+        private NutritionPlanRepositoryInterface $nutritionPlansCatalog,
+        private IdGeneratorInterface             $idGenerator,
     ) {
     }
 

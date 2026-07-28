@@ -6,7 +6,7 @@ namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 
 use App\Application\NutritionPlan\UseCase\ListNutritionPlansByRace\ListNutritionPlansByRaceQuery;
 use App\Application\NutritionPlan\UseCase\ListNutritionPlansByRace\ListNutritionPlansByRaceQueryHandler;
-use App\Domain\NutritionPlan\Repository\NutritionPlanRepository;
+use App\Domain\NutritionPlan\Repository\NutritionPlanRepositoryInterface;
 use App\Tests\Unit\Fixture\NutritionPlanTestFixture;
 use PHPUnit\Framework\TestCase;
 
@@ -27,7 +27,7 @@ final class ListNutritionPlansByRaceQueryHandlerTest extends TestCase
             ->withName('Plan 2')
             ->build();
 
-        $nutritionPlansCatalog = $this->createMock(NutritionPlanRepository::class);
+        $nutritionPlansCatalog = $this->createMock(NutritionPlanRepositoryInterface::class);
         $nutritionPlansCatalog->expects($this->once())
             ->method('findByRaceId')
             ->with($raceId)
@@ -51,7 +51,7 @@ final class ListNutritionPlansByRaceQueryHandlerTest extends TestCase
         // Arrange
         $raceId = 'race-id';
 
-        $nutritionPlansCatalog = $this->createMock(NutritionPlanRepository::class);
+        $nutritionPlansCatalog = $this->createMock(NutritionPlanRepositoryInterface::class);
         $nutritionPlansCatalog->expects($this->once())
             ->method('findByRaceId')
             ->with($raceId)

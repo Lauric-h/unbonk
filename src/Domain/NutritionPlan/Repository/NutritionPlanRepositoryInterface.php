@@ -8,6 +8,6 @@ use App\Domain\Shared\Repository\ObjectRepositoryInterface;
 /**
  * @extends ObjectRepositoryInterface<NutritionPlan>
  */
-interface NutritionPlanRepository extends ObjectRepositoryInterface
+interface NutritionPlanRepositoryInterface extends ObjectRepositoryInterface
 {
 }

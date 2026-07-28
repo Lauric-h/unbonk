@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Application\NutritionPlan\UseCase\DeleteNutritionPlan;
 
-use App\Domain\NutritionPlan\Repository\NutritionPlanRepository;
+use App\Domain\NutritionPlan\Repository\NutritionPlanRepositoryInterface;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
 
 final readonly class DeleteNutritionPlanCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
-        private NutritionPlanRepository $nutritionPlansCatalog,
+        private NutritionPlanRepositoryInterface $nutritionPlansCatalog,
     ) {
     }
 

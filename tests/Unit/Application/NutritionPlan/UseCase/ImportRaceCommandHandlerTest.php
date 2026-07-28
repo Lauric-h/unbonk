@@ -10,7 +10,7 @@ use App\Application\NutritionPlan\UseCase\ImportRace\ImportRaceCommandHandler;
 use App\Application\Race\Port\RaceCatalogPort;
 use App\Application\Shared\IdGeneratorInterface;
 use App\Domain\NutritionPlan\DTO\ExternalRaceDTO;
-use App\Domain\NutritionPlan\Repository\NutritionPlanRepository;
+use App\Domain\NutritionPlan\Repository\NutritionPlanRepositoryInterface;
 use App\Domain\NutritionPlan\Repository\RacesCatalog;
 use App\Tests\Unit\MockIdGenerator;
 use PHPUnit\Framework\TestCase;
@@ -47,7 +47,7 @@ final class ImportRaceCommandHandlerTest extends TestCase
             ->with($externalEventId, $externalRaceId)
             ->willReturn($externalRace);
 
-        $repository = $this->createMock(NutritionPlanRepository::class);
+        $repository = $this->createMock(NutritionPlanRepositoryInterface::class);
         $repository->expects($this->once())
             ->method('add')
             ->with($this->callback(function ($nutritionPlan) use ($nutritionPlanId, $runnerId): bool {
@@ -98,7 +98,7 @@ final class ImportRaceCommandHandlerTest extends TestCase
             ->with($externalEventId, $externalRaceId)
             ->willReturn(null);
 
-        $repository = $this->createMock(NutritionPlanRepository::class);
+        $repository = $this->createMock(NutritionPlanRepositoryInterface::class);
         $repository->expects($this->never())->method('add');
 
         $idGenerator = new MockIdGenerator('id');

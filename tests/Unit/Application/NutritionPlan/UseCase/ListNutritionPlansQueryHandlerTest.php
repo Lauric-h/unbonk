@@ -7,7 +7,7 @@ namespace App\Tests\Unit\Application\NutritionPlan\UseCase;
 use App\Application\NutritionPlan\ReadModel\NutritionPlanListItemReadModel;
 use App\Application\NutritionPlan\UseCase\ListNutritionPlans\ListNutritionPlansQuery;
 use App\Application\NutritionPlan\UseCase\ListNutritionPlans\ListNutritionPlansQueryHandler;
-use App\Domain\NutritionPlan\Repository\NutritionPlanRepository;
+use App\Domain\NutritionPlan\Repository\NutritionPlanRepositoryInterface;
 use App\Tests\Unit\Fixture\NutritionPlanTestFixture;
 use PHPUnit\Framework\TestCase;
 
@@ -15,7 +15,7 @@ final class ListNutritionPlansQueryHandlerTest extends TestCase
 {
     public function testListNutritionPlansReturnsReadModels(): void
     {
-        $nutritionPlansCatalog = $this->createMock(NutritionPlanRepository::class);
+        $nutritionPlansCatalog = $this->createMock(NutritionPlanRepositoryInterface::class);
         $handler = new ListNutritionPlansQueryHandler($nutritionPlansCatalog);
 
         $runnerId = 'runner-123';
@@ -58,7 +58,7 @@ final class ListNutritionPlansQueryHandlerTest extends TestCase
 
     public function testListNutritionPlansReturnsEmptyArrayWhenNoPlans(): void
     {
-        $nutritionPlansCatalog = $this->createMock(NutritionPlanRepository::class);
+        $nutritionPlansCatalog = $this->createMock(NutritionPlanRepositoryInterface::class);
         $handler = new ListNutritionPlansQueryHandler($nutritionPlansCatalog);
 
         $runnerId = 'runner-123';

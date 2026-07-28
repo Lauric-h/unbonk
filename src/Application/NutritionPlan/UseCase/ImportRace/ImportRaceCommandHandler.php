@@ -6,18 +6,18 @@ use App\Application\NutritionPlan\Factory\ImportedRaceFactory;
 use App\Application\Race\Port\RaceCatalogPort;
 use App\Application\Shared\IdGeneratorInterface;
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
-use App\Domain\NutritionPlan\Repository\NutritionPlanRepository;
+use App\Domain\NutritionPlan\Repository\NutritionPlanRepositoryInterface;
 use App\Domain\NutritionPlan\Repository\RacesCatalog;
 use App\Domain\Shared\Bus\CommandHandlerInterface;
 
 final readonly class ImportRaceCommandHandler implements CommandHandlerInterface
 {
     public function __construct(
-        private NutritionPlanRepository $nutritionPlansCatalog,
-        private RacesCatalog            $racesCatalog,
-        private RaceCatalogPort         $client,
-        private ImportedRaceFactory     $importedRaceFactory,
-        private IdGeneratorInterface    $idGenerator,
+        private NutritionPlanRepositoryInterface $nutritionPlansCatalog,
+        private RacesCatalog                     $racesCatalog,
+        private RaceCatalogPort                  $client,
+        private ImportedRaceFactory              $importedRaceFactory,
+        private IdGeneratorInterface             $idGenerator,
     ) {
     }
 
