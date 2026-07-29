@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                   https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Domain\NutritionPlan\Entity\NutritionItem" table="nutrition_items">
+
+        <id name="id" type="string" length="36">
+            <generator strategy="NONE"/>
+        </id>
+
+        <field name="foodCatalogId" type="string" length="36" column="food_catalog_id"/>
+        <field name="name" type="string" length="255"/>
+        <field name="quantity" type="integer"/>
+
+        <!--
+            Pas de use-column-prefix="false" ici volontairement : deux embeddable Carbs
+            existent dans le schéma global (targetCarbs sur SegmentNutritionPlan,
+            carbsPerUnit ici). Sans préfixe explicite, les deux généreraient la même
+            colonne "grams" - inoffensif car ce sont deux tables différentes, mais on
+            garde un nom de colonne explicite par clarté de lecture en DB.
+        -->
+        <embedded name="carbsPerUnit" class="App\Domain\Shared\ValueObject\Carbs" use-column-prefix="true" column-prefix="carbs_per_unit_"/>
+
+        <many-to-one field="segmentNutritionPlan" target-entity="App\Domain\NutritionPlan\Entity\SegmentNutritionPlan">
+            <join-column name="segment_nutrition_plan_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>
+        </many-to-one>
+
+    </entity>
+</doctrine-mapping>

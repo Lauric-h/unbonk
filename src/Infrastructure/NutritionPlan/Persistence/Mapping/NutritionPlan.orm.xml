@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                   https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <entity name="App\Domain\NutritionPlan\Entity\NutritionPlan" table="nutrition_plans">
+
+        <id name="id" type="string" length="36">
+            <generator strategy="NONE"/>
+        </id>
+
+        <field name="runnerRaceId" type="string" length="36" column="runner_race_id"/>
+        <field name="name" type="string" length="255" nullable="true"/>
+        <field name="createdAt" type="datetime_immutable" column="created_at"/>
+
+        <!--
+            cascade-persist : NutritionPlan::create() construit ses SegmentNutritionPlan
+            en même temps que lui, un seul persist() sur le plan doit suffire à tout créer.
+            cascade-remove + orphan-removal : si un SegmentNutritionPlan est un jour retiré
+            de la Collection (aujourd'hui impossible côté Domain, mais le mapping le permet
+            proprement si la règle change), Doctrine doit générer le DELETE lui-même.
+        -->
+        <one-to-many field="segmentPlans" target-entity="App\Domain\NutritionPlan\Entity\SegmentNutritionPlan" mapped-by="nutritionPlan" orphan-removal="true">
+            <cascade>
+                <cascade-persist/>
+                <cascade-remove/>
+            </cascade>
+            <order-by>
+                <order-by-field name="order" direction="ASC"/>
+            </order-by>
+        </one-to-many>
+
+    </entity>
+</doctrine-mapping>

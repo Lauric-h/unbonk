@@ -37,7 +37,7 @@ doctrine:
             NutritionPlan:
                 type: xml
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Infrastructure/NutritionPlan/Persistence'
+                dir: '%kernel.project_dir%/src/Infrastructure/NutritionPlan/Persistence/Mapping'
                 prefix: 'App\Domain\NutritionPlan\Entity'
                 alias: NutritionPlan
             Shared:
