@@ -13,7 +13,7 @@
         <field name="segmentId" type="string" length="36" column="segment_id"/>
         <field name="order" type="integer"/>
 
-        <embedded name="targetCarbs" class="App\Domain\Shared\ValueObject\Carbs" use-column-prefix="false"/>
+        <embedded name="targetCarbs" class="App\Domain\NutritionPlan\Entity\Carbs" use-column-prefix="false"/>
 
         <many-to-one field="nutritionPlan" target-entity="App\Domain\NutritionPlan\Entity\NutritionPlan">
             <join-column name="nutrition_plan_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>

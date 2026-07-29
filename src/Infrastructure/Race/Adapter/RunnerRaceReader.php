@@ -55,12 +55,12 @@ final readonly class RunnerRaceReader implements RunnerRaceReaderInterface
     private function toCheckpointReadModel(Checkpoint $checkpoint, \DateTimeImmutable $raceStart): CheckpointReadModel
     {
         return new CheckpointReadModel(
-            id: $checkpoint->id(),
-            name: $checkpoint->name(),
-            location: $checkpoint->location(),
-            distanceFromStart: $checkpoint->distanceFromStart(),
-            assistanceAllowed: $checkpoint->assistanceAllowed(),
-            cutoffAt: $checkpoint->cutoff()?->absoluteDateTime($raceStart),
+            id: $checkpoint->getId(),
+            name: $checkpoint->getName(),
+            location: $checkpoint->getLocation(),
+            distanceFromStart: $checkpoint->getDistanceFromStart(),
+            assistanceAllowed: $checkpoint->isAssistanceAllowed(),
+            cutoffAt: $checkpoint->getCutoff()?->absoluteDateTime($raceStart),
         );
     }
 }

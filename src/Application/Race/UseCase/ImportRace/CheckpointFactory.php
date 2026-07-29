@@ -40,7 +40,7 @@ final readonly class CheckpointFactory
             distanceFromStart: 0,
             ascentFromStart: 0,
             descentFromStart: 0,
-            cutoff: 0,
+            cutoff: new Cutoff(0),
             assistanceAllowed: true,
             type: CheckpointType::Start,
         );
