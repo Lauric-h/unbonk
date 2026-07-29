@@ -163,7 +163,7 @@ class RunnerRace
     public function checkpoint(string $checkpointId): Checkpoint
     {
         $checkpoint = $this->checkpoints->findFirst(
-            static fn (int $key, Checkpoint $checkpoint): bool => $checkpoint->id() === $checkpointId
+            static fn (int $key, Checkpoint $checkpoint): bool => $checkpoint->getId() === $checkpointId
         );
 
         if (null === $checkpoint) {
@@ -194,7 +194,7 @@ class RunnerRace
     {
         usort(
             $checkpoints,
-            static fn (Checkpoint $a, Checkpoint $b): int => $a->distanceFromStart() <=> $b->distanceFromStart()
+            static fn (Checkpoint $a, Checkpoint $b): int => $a->getDistanceFromStart() <=> $b->getDescentFromStart()
         );
 
         return array_values($checkpoints);

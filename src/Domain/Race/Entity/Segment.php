@@ -44,21 +44,21 @@ class Segment
 
     public function distanceInMeters(): int
     {
-        return $this->toCheckpoint->distanceFromStart() - $this->fromCheckpoint->distanceFromStart();
+        return $this->toCheckpoint->getDistanceFromStart() - $this->fromCheckpoint->getDistanceFromStart();
     }
 
     public function ascent(): int
     {
-        return $this->toCheckpoint->ascentFromStart() - $this->fromCheckpoint->ascentFromStart();
+        return $this->toCheckpoint->getAscentFromStart() - $this->fromCheckpoint->getAscentFromStart();
     }
 
     public function descent(): int
     {
-        return $this->toCheckpoint->descentFromStart() - $this->fromCheckpoint->descentFromStart();
+        return $this->toCheckpoint->getDescentFromStart() - $this->fromCheckpoint->getDescentFromStart();
     }
 
     public function cutoff(): ?Cutoff
     {
-        return $this->toCheckpoint->cutoff();
+        return $this->toCheckpoint->getCutoff();
     }
 }

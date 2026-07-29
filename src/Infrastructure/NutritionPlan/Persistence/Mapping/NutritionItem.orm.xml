@@ -21,7 +21,7 @@
             colonne "grams" - inoffensif car ce sont deux tables différentes, mais on
             garde un nom de colonne explicite par clarté de lecture en DB.
         -->
-        <embedded name="carbsPerUnit" class="App\Domain\Shared\ValueObject\Carbs" use-column-prefix="true" column-prefix="carbs_per_unit_"/>
+        <embedded name="carbsPerUnit" class="App\Domain\NutritionPlan\Entity\Carbs" use-column-prefix="true" column-prefix="carbs_per_unit_"/>
 
         <many-to-one field="segmentNutritionPlan" target-entity="App\Domain\NutritionPlan\Entity\SegmentNutritionPlan">
             <join-column name="segment_nutrition_plan_id" referenced-column-name="id" nullable="false" on-delete="CASCADE"/>

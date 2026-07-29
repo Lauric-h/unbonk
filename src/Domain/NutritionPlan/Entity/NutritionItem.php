@@ -2,9 +2,6 @@
 
 namespace App\Domain\NutritionPlan\Entity;
 
-use App\Domain\Shared\Entity\Calories;
-use App\Domain\Shared\ValueObject\Carbs;
-
 final class NutritionItem
 {
     private SegmentNutritionPlan $segmentNutritionPlan;

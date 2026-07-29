@@ -5,8 +5,8 @@
                           https://www.doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
 
-    <embeddable name="App\Domain\Shared\Entity\Carbs">
-        <field name="value" type="integer" />
+    <embeddable name="App\Domain\NutritionPlan\Entity\Carbs">
+        <field name="grams" type="integer" />
     </embeddable>
 
 </doctrine-mapping>

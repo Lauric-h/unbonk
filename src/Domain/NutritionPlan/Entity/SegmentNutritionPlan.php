@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domain\NutritionPlan\Entity;
 
-use App\Domain\Shared\ValueObject\Carbs;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
@@ -13,7 +12,7 @@ final class SegmentNutritionPlan
     /**
      * @var Collection<int, NutritionItem>
      */
-    private Collection $NutritionItems;
+    private Collection $nutritionItems;
 
     private NutritionPlan $nutritionPlan;
 
@@ -23,7 +22,7 @@ final class SegmentNutritionPlan
         private readonly int $order,
         private ?Carbs $targetCarbs = null,
     ) {
-        $this->NutritionItems = new ArrayCollection();
+        $this->nutritionItems = new ArrayCollection();
     }
 
     public function getId(): string
@@ -62,32 +61,32 @@ final class SegmentNutritionPlan
      */
     public function getNutritionItems(): array
     {
-        return $this->NutritionItems->toArray();
+        return $this->nutritionItems->toArray();
     }
 
-    public function addNutritionItem(NutritionItem $NutritionItem): void
+    public function addNutritionItem(NutritionItem $nutritionItem): void
     {
-        $NutritionItem->attachToSegmentPlan($this);
-        $this->NutritionItems->add($NutritionItem);
+        $nutritionItem->attachToSegmentPlan($this);
+        $this->nutritionItems->add($nutritionItem);
     }
 
     public function removeNutritionItem(string $NutritionItemId): void
     {
-        $NutritionItem = $this->NutritionItems->findFirst(
-            static fn (int $key, NutritionItem $item): bool => $item->id() === $NutritionItemId
+        $NutritionItem = $this->nutritionItems->findFirst(
+            static fn (int $key, NutritionItem $item): bool => $item->getId() === $NutritionItemId
         );
 
         if (null === $NutritionItem) {
             throw new \DomainException(sprintf('Food item "%s" not found.', $NutritionItemId));
         }
 
-        $this->NutritionItems->removeElement($NutritionItem);
+        $this->nutritionItems->removeElement($NutritionItem);
     }
 
     public function totalCarbs(): Carbs
     {
         return array_reduce(
-            $this->NutritionItems->toArray(),
+            $this->nutritionItems->toArray(),
             static fn (Carbs $total, NutritionItem $item): Carbs => $total->add($item->totalCarbs()),
             Carbs::zero(),
         );

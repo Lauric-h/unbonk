@@ -9,8 +9,8 @@ readonly class Cutoff
     public function __construct(
         public int $offsetInMinutes,
     ) {
-        if ($this->offsetInMinutes <= 0) {
-            throw new \DomainException('Cutoff offset must be strictly positive.');
+        if ($this->offsetInMinutes < 0) {
+            throw new \DomainException('Cutoff offset must be positive.');
         }
     }
 

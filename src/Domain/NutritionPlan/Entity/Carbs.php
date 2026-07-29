@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domain\Shared\ValueObject;
+namespace App\Domain\NutritionPlan\Entity;
 
 final readonly class Carbs
 {
