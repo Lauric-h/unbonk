@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 
-#[Route('/races/{runnerRaceId}/nutrition-plan')]
+#[Route('/races/{runnerRaceId}/nutrition-plan', name: 'app.nutrition_plan.create')]
 final class CreateNutritionPlanController extends AbstractController
 {
     public function __construct(
