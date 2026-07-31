@@ -20,4 +20,18 @@ class DoctrineNutritionPlanRepository extends ServiceEntityRepository implements
     {
         parent::__construct($registry, NutritionPlan::class);
     }
+
+    public function existsForRunnerRace(string $runnerRaceId): bool
+    {
+        $result = $this->em->createQueryBuilder()
+            ->select('1')
+            ->from(NutritionPlan::class, 'np')
+            ->where('np.runnerRaceId = :runnerRaceId')
+            ->setParameter('runnerRaceId', $runnerRaceId)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return null !== $result;
+    }
 }

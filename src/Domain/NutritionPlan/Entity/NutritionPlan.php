@@ -33,7 +33,7 @@ final class NutritionPlan
         string $runnerRaceId,
         array $orderedSegmentIds,
         callable $idGenerator,
-        ?string $name = null,
+        string $name,
     ): self {
         if ([] === $orderedSegmentIds) {
             throw new \DomainException('Cannot create a nutrition plan without any segment.');
