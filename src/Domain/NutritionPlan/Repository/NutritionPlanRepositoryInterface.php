@@ -11,4 +11,6 @@ use App\Domain\Shared\Repository\ObjectRepositoryInterface;
 interface NutritionPlanRepositoryInterface extends ObjectRepositoryInterface
 {
     public function existsForRunnerRace(string $runnerRaceId): bool;
+
+    public function findByRunnerRaceId(string $runnerRaceId): ?NutritionPlan;
 }

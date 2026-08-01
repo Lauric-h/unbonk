@@ -6,6 +6,7 @@ use App\Application\Race\Port\RunnerRaceReaderInterface;
 use App\Application\Race\UseCase\GetMyRace\ReadModel\CheckpointReadModel;
 use App\Application\Race\UseCase\GetMyRace\ReadModel\RunnerRaceDetailReadModel;
 use App\Application\Race\UseCase\GetMyRace\ReadModel\SegmentReadModel;
+use App\Application\Race\UseCase\GetMyRaces\ReadModel\RunnerRaceSummaryReadModel;
 use App\Domain\Race\Entity\Checkpoint;
 use App\Domain\Race\Entity\RunnerRace;
 use App\Domain\Race\Repository\RunnerRaceRepositoryInterface;
@@ -61,6 +62,24 @@ final readonly class RunnerRaceReader implements RunnerRaceReaderInterface
             distanceFromStart: $checkpoint->getDistanceFromStart(),
             assistanceAllowed: $checkpoint->isAssistanceAllowed(),
             cutoffAt: $checkpoint->getCutoff()?->absoluteDateTime($raceStart),
+        );
+    }
+
+    public function listForRunner(string $runnerId): array
+    {
+        $runnerRaces = $this->repository->findByRunnerId($runnerId);
+
+        return array_map(
+            static fn (RunnerRace $runnerRace) => new RunnerRaceSummaryReadModel(
+                id: $runnerRace->getId(),
+                name: $runnerRace->getName(),
+                eventName: $runnerRace->getEventName(),
+                startDateTime: $runnerRace->getStartDateTime(),
+                distance: $runnerRace->getDistance(),
+                ascent: $runnerRace->getAscent(),
+                descent: $runnerRace->getDescent(),
+            ),
+            $runnerRaces,
         );
     }
 }
