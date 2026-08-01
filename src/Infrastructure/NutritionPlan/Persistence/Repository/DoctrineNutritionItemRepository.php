@@ -3,6 +3,7 @@
 namespace App\Infrastructure\NutritionPlan\Persistence\Repository;
 
 use App\Domain\NutritionPlan\Entity\NutritionPlan;
+use App\Domain\NutritionPlan\Repository\NutritionItemRepositoryInterface;
 use App\Domain\NutritionPlan\Repository\NutritionPlanRepositoryInterface;
 use App\Infrastructure\Shared\Persistence\Repository\DoctrineRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
@@ -11,7 +12,7 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<NutritionItem>
  */
-class DoctrineNutritionItemRepository extends ServiceEntityRepository implements NutritionPlanRepositoryInterface
+class DoctrineNutritionItemRepository extends ServiceEntityRepository implements NutritionItemRepositoryInterface
 {
     use DoctrineRepositoryTrait;
 

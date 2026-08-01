@@ -10,4 +10,5 @@ use App\Domain\Shared\Repository\ObjectRepositoryInterface;
  */
 interface NutritionPlanRepositoryInterface extends ObjectRepositoryInterface
 {
+    public function existsForRunnerRace(string $runnerRaceId): bool;
 }

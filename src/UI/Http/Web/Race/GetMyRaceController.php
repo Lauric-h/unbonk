@@ -32,8 +32,6 @@ final class GetMyRaceController extends AbstractController
         } catch (RunnerRaceNotFoundException) {
             throw $this->createNotFoundException('Cette course n\'existe pas.');
         } catch (RunnerRaceAccessDeniedException) {
-            // Volontairement 404 plutôt que 403 : ne pas révéler qu'une course
-            // avec cet ID existe mais appartient à quelqu'un d'autre.
             throw $this->createNotFoundException('Cette course n\'existe pas.');
         }
 

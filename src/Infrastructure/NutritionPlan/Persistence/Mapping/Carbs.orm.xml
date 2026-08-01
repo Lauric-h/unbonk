@@ -6,7 +6,7 @@
 
 
     <embeddable name="App\Domain\NutritionPlan\Entity\Carbs">
-        <field name="grams" type="integer" />
+        <field name="grams" type="integer" nullable="true"/>
     </embeddable>
 
 </doctrine-mapping>

@@ -11,7 +11,7 @@
         </id>
 
         <field name="segmentId" type="string" length="36" column="segment_id"/>
-        <field name="order" type="integer"/>
+        <field name="position" type="integer"/>
 
         <embedded name="targetCarbs" class="App\Domain\NutritionPlan\Entity\Carbs" use-column-prefix="false"/>
 

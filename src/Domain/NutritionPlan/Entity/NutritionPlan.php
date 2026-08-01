@@ -33,7 +33,7 @@ final class NutritionPlan
         string $runnerRaceId,
         array $orderedSegmentIds,
         callable $idGenerator,
-        ?string $name = null,
+        string $name,
     ): self {
         if ([] === $orderedSegmentIds) {
             throw new \DomainException('Cannot create a nutrition plan without any segment.');
@@ -46,11 +46,11 @@ final class NutritionPlan
             createdAt: new \DateTimeImmutable(),
         );
 
-        foreach (array_values($orderedSegmentIds) as $order => $segmentId) {
+        foreach (array_values($orderedSegmentIds) as $position => $segmentId) {
             $segmentPlan = new SegmentNutritionPlan(
-                id: $idGenerator($order),
+                id: $idGenerator(),
                 segmentId: $segmentId,
-                order: $order,
+                position: $position,
             );
 
             $segmentPlan->attachToPlan($plan);
