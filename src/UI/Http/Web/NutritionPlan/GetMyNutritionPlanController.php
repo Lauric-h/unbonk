@@ -21,7 +21,6 @@ final class GetMyNutritionPlanController extends AbstractController
 
     public function __invoke(
         #[CurrentUser] UserAdapter $userAdapter,
-        string $raceId,
         string $nutritionPlanId,
     ): Response
     {
@@ -36,7 +35,7 @@ final class GetMyNutritionPlanController extends AbstractController
             throw $this->createNotFoundException('Ce plan nutrition n\'existe pas.');
         }
 
-        return $this->render('nutrition-plan/my-nutrition-plan.html.twig', [
+        return $this->render('nutrition_plan/my_nutrition_plan.html.twig', [
             'nutrition_plan' => $nutritionPlan,
         ]);
     }

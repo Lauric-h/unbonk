@@ -46,7 +46,7 @@ final class NutritionPlanReadModelAssembler
 
         return new SegmentNutritionPlanReadModel(
             segmentId: $segment->id,
-            order: $segmentPlan->getOrder(),
+            position: $segmentPlan->getPosition(),
             fromCheckpointName: $segment->fromCheckpoint->name,
             toCheckpointName: $segment->toCheckpoint->name,
             distanceInMeters: $segment->distanceInMeters,

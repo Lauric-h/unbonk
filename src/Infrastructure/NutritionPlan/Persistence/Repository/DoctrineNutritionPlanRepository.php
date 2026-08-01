@@ -23,7 +23,7 @@ class DoctrineNutritionPlanRepository extends ServiceEntityRepository implements
 
     public function existsForRunnerRace(string $runnerRaceId): bool
     {
-        $result = $this->em->createQueryBuilder()
+        $result = $this->createQueryBuilder('qb')
             ->select('1')
             ->from(NutritionPlan::class, 'np')
             ->where('np.runnerRaceId = :runnerRaceId')

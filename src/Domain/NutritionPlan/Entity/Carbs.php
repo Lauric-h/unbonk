@@ -6,9 +6,9 @@ namespace App\Domain\NutritionPlan\Entity;
 
 final readonly class Carbs
 {
-    private function __construct(public int $grams)
+    private function __construct(public ?int $grams = null)
     {
-        if ($this->grams < 0) {
+        if ($this->grams && $this->grams < 0) {
             throw new \DomainException('Carbs cannot be negative.');
         }
     }

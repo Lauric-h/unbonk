@@ -20,7 +20,7 @@ final readonly class GetMyNutritionPlanQueryHandler implements QueryHandlerInter
     public function __invoke(GetMyNutritionPlanQuery $query): NutritionPlanReadModel
     {
         $nutritionPlan = $this->nutritionPlanRepository->get($query->nutritionPlanId);
-        $race = $this->runnerRaceReader->get($nutritionPlan->raceId);
+        $race = $this->runnerRaceReader->get($nutritionPlan->getRunnerRaceId());
 
         if ($query->runnerId !== $race->runnerId) {
             throw new NutritionPlanAccessDeniedException($query->nutritionPlanId, $query->runnerId);

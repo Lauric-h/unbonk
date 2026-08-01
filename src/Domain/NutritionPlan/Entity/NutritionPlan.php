@@ -46,11 +46,11 @@ final class NutritionPlan
             createdAt: new \DateTimeImmutable(),
         );
 
-        foreach (array_values($orderedSegmentIds) as $order => $segmentId) {
+        foreach (array_values($orderedSegmentIds) as $position => $segmentId) {
             $segmentPlan = new SegmentNutritionPlan(
-                id: $idGenerator($order),
+                id: $idGenerator(),
                 segmentId: $segmentId,
-                order: $order,
+                position: $position,
             );
 
             $segmentPlan->attachToPlan($plan);

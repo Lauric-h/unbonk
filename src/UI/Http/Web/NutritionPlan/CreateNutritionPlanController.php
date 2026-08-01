@@ -43,9 +43,9 @@ final class CreateNutritionPlanController extends AbstractController
         } catch (NutritionPlanAlreadyExistsException) {
             $this->addFlash('error', 'Un plan nutrition existe déjà pour cette course.');
 
-            return $this->redirectToRoute('app.my_races.show', ['runnerRaceId' => $runnerRaceId]);
+            return $this->redirectToRoute('app.my_races.show', ['id' => $runnerRaceId]);
         }
 
-        return $this->redirectToRoute('');
+        return $this->redirectToRoute('app.nutrition_plan.get', ['id' => $nutritionPlanId]);
     }
 }

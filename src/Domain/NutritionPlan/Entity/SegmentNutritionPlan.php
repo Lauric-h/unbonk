@@ -19,8 +19,8 @@ final class SegmentNutritionPlan
     public function __construct(
         private readonly string $id,
         private readonly string $segmentId,
-        private readonly int $order,
-        private ?Carbs $targetCarbs = null,
+        private readonly int    $position,
+        private ?Carbs          $targetCarbs = null,
     ) {
         $this->nutritionItems = new ArrayCollection();
     }
@@ -35,9 +35,9 @@ final class SegmentNutritionPlan
         return $this->segmentId;
     }
 
-    public function getOrder(): int
+    public function getPosition(): int
     {
-        return $this->order;
+        return $this->position;
     }
 
     public function getTargetCarbs(): ?Carbs

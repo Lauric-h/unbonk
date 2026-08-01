@@ -4,4 +4,7 @@
 
 {% block body %}
     {{ race.name }}
+    <form action="{{ url('app.nutrition_plan.create', {runnerRaceId: race.id}) }}" method="post">
+        <button>Créer un NP</button>
+    </form>
 {% endblock %}
