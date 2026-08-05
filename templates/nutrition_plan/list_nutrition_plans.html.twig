@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Plans de nutrition{% endblock %}
+
+{% block body %}
+<h1>Liste</h1>
+    {% for np in nutrition_plans %}
+    {{ np.name }}
+    {% endfor %}
+
+
+{% endblock %}

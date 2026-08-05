@@ -34,4 +34,9 @@ class DoctrineNutritionPlanRepository extends ServiceEntityRepository implements
 
         return null !== $result;
     }
+
+    public function findByRunnerRaceId(string $runnerRaceId): ?NutritionPlan
+    {
+        return $this->findOneBy(['runnerRaceId' => $runnerRaceId]);
+    }
 }
