@@ -44,4 +44,20 @@ final class DoctrineRunnerRaceRepository extends ServiceEntityRepository impleme
             ->getQuery()
             ->getResult();
     }
+
+    public function belongsToRunner(string $runnerRaceId, string $runnerId): bool
+    {
+        $result = $this->getEntityManager()->createQueryBuilder()
+            ->select('1')
+            ->from(RunnerRace::class, 'rr')
+            ->where('rr.id = :runnerRaceId')
+            ->andWhere('rr.runnerId = :runnerId')
+            ->setParameter('runnerRaceId', $runnerRaceId)
+            ->setParameter('runnerId', $runnerId)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return null !== $result;
+    }
 }

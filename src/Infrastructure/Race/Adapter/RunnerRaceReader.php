@@ -2,6 +2,7 @@
 
 namespace App\Infrastructure\Race\Adapter;
 
+use App\Application\Race\Exception\RunnerRaceNotFoundException;
 use App\Application\Race\Port\RunnerRaceReaderInterface;
 use App\Application\Race\UseCase\GetMyRace\ReadModel\CheckpointReadModel;
 use App\Application\Race\UseCase\GetMyRace\ReadModel\RunnerRaceDetailReadModel;
@@ -81,5 +82,10 @@ final readonly class RunnerRaceReader implements RunnerRaceReaderInterface
             ),
             $runnerRaces,
         );
+    }
+
+    public function belongsToRunner(string $runnerRaceId, string $runnerId): bool
+    {
+        return $this->repository->belongsToRunner($runnerRaceId, $runnerId);
     }
 }

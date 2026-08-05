@@ -14,4 +14,6 @@ interface RunnerRaceReaderInterface
      * @return RunnerRaceSummaryReadModel[]
      */
     public function listForRunner(string $runnerId): array;
+
+    public function belongsToRunner(string $runnerRaceId, string $runnerId): bool;
 }

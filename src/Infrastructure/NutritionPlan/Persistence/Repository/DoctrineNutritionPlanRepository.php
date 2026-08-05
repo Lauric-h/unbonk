@@ -6,7 +6,6 @@ use App\Domain\NutritionPlan\Entity\NutritionPlan;
 use App\Domain\NutritionPlan\Repository\NutritionPlanRepositoryInterface;
 use App\Infrastructure\Shared\Persistence\Repository\DoctrineRepositoryTrait;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -38,5 +37,15 @@ class DoctrineNutritionPlanRepository extends ServiceEntityRepository implements
     public function findByRunnerRaceId(string $runnerRaceId): ?NutritionPlan
     {
         return $this->findOneBy(['runnerRaceId' => $runnerRaceId]);
+    }
+
+    public function deleteByRunnerRaceId(string $runnerRaceId): void
+    {
+        $this->createQueryBuilder('n')
+            ->delete(NutritionPlan::class, 'np')
+            ->where('np.runnerRaceId = :runnerRaceId')
+            ->setParameter('runnerRaceId', $runnerRaceId)
+            ->getQuery()
+            ->execute();
     }
 }

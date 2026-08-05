@@ -16,4 +16,6 @@ interface RunnerRaceRepositoryInterface extends ObjectRepositoryInterface
      * @return RunnerRace[]
      */
     public function findByRunnerId(string $runnerId): array;
+
+    public function belongsToRunner(string $runnerRaceId, string $runnerId): bool;
 }
