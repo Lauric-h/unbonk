@@ -4,9 +4,16 @@
 
 {% block body %}
 <h1>Liste</h1>
+    <ul>
     {% for np in nutrition_plans %}
-    {{ np.name }}
+       <div>
+        {{ np.name }}
+       </div>
+        <form action="{{ url('app.nutrition_plan.delete', {id: np.id}) }}" method="post">
+            <input type="hidden" name="_method" value="DELETE">
+            <button type="submit">delete</button>
+        </form>
     {% endfor %}
-
+    </ul>
 
 {% endblock %}

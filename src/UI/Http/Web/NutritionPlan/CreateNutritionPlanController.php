@@ -46,6 +46,6 @@ final class CreateNutritionPlanController extends AbstractController
             return $this->redirectToRoute('app.my_races.show', ['id' => $runnerRaceId]);
         }
 
-        return $this->redirectToRoute('app.nutrition_plan.get', ['id' => $nutritionPlanId]);
+        return $this->redirectToRoute('app.nutrition_plan.get', ['nutritionPlanId' => $nutritionPlanId]);
     }
 }

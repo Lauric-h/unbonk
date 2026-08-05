@@ -13,4 +13,6 @@ interface NutritionPlanRepositoryInterface extends ObjectRepositoryInterface
     public function existsForRunnerRace(string $runnerRaceId): bool;
 
     public function findByRunnerRaceId(string $runnerRaceId): ?NutritionPlan;
+
+    public function deleteByRunnerRaceId(string $runnerRaceId): void;
 }
