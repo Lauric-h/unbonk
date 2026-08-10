@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Plans de nutrition{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+    <button>Enregistrer</button>
+    {{ form_end(form) }}
+{% endblock %}
