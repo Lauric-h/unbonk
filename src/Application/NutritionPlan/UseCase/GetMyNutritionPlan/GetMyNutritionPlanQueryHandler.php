@@ -23,7 +23,7 @@ final readonly class GetMyNutritionPlanQueryHandler implements QueryHandlerInter
         $race = $this->runnerRaceReader->get($nutritionPlan->getRunnerRaceId());
 
         if ($query->runnerId !== $race->runnerId) {
-            throw new NutritionPlanAccessDeniedException($query->nutritionPlanId, $query->runnerId);
+            throw new NutritionPlanAccessDeniedException($query->runnerId);
         }
 
         return $this->assembler->assemble($nutritionPlan, $race);
